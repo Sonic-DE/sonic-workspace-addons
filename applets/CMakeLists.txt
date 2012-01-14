@@ -82,7 +82,7 @@ if(NOT WIN32)
   add_subdirectory(showdesktop)
   add_subdirectory(paste)
   add_subdirectory(plasmaboard)
-  add_subdirectory(screensaver-inhibitor)
+  add_subdirectory(powermanagement-inhibitor)
   add_subdirectory(systemloadviewer)
 endif(NOT WIN32)
 
