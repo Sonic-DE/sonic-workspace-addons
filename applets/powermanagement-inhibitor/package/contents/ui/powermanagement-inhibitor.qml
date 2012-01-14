@@ -39,10 +39,12 @@ Item {
 
     QIconItem {
         id: actionIcon
-        icon: QIcon ("preferences-system-powermanagement")
-        )
-        height: actionsList.actionIconHeight
-        width: actionsList.actionIconHeight
+        icon: QIcon ("preferences-system-power-management")
+
+        anchors.fill: parent
+
+//        height: actionsList.actionIconHeight
+ //       width: actionsList.actionIconHeight
     }
 
 
