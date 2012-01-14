@@ -47,9 +47,7 @@ add_subdirectory(rssnow)
 add_subdirectory(spellcheck)
 add_subdirectory(showdashboard)
 add_subdirectory(timer)
-
 add_subdirectory(eyes)
-
 add_subdirectory(unitconverter)
 add_subdirectory(weatherstation)
 
@@ -84,6 +82,7 @@ if(NOT WIN32)
   add_subdirectory(showdesktop)
   add_subdirectory(paste)
   add_subdirectory(plasmaboard)
+  add_subdirectory(screensaver-inhibitor)
   add_subdirectory(systemloadviewer)
 endif(NOT WIN32)
 
