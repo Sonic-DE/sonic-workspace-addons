@@ -2,7 +2,7 @@
 Name=Powermanagment Inhibitor
 Comment=Prevent or enable the screensaver to use run.
 
-Icon=preferences-system-powermanagement
+Icon=preferences-system-power-management
 Type=Service
 X-KDE-ServiceTypes=Plasma/Applet
 
