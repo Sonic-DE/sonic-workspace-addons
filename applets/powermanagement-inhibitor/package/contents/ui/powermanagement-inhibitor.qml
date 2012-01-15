@@ -29,7 +29,7 @@ Item {
  //   property int minimumHeight: 300
 
     PlasmaCore.DataSource {
-        id: profilesSource
+        id: pmSource
         engine: "powermanagement"
     }
 
@@ -50,9 +50,25 @@ Item {
             anchors.fill: parent
 
             onClicked: {
-                //call service and get it done
+                //call service and either do or undo it
+                service = pmSource.serviceForSource("PowerDevil")
 
-                inhibited = !inhibited
+                if (!inhibited) {
+                    operation = service.operationDescription("inhibitScreensaver")
+                    operation.reason = "Powermanagement-inhibitor Plasma Applet toggled"
+
+                    //FIXME: track result (success/fail). forgot the JS binding for that...
+                    service.startOperationCall(operation)
+
+                    inhibited = true
+                } else {
+                    operation = service.operationDescription("uninhibitScreensaver")
+                    operation.reason = "powermanagement-inhibitor Plasma Applet toggled via user"
+
+                    service.startOperationCall(operation)
+
+                    inhibited = false
+                }
             }
         }
     }
