@@ -59,10 +59,13 @@ Item {
         id: disabledIcon
 
         // TODO: maximum size limit...
-        width: 24
-        height: 24
+        width: 48
+        height: 48
 
-        anchors {bottom: pmIcon.bottom; right: pmIcon.right; }
+        anchors {
+            bottom: pmIcon.bottom
+            right: pmIcon.right
+        }
 
         visible: inhibited
         icon: QIcon("dialog-cancel")
