@@ -94,22 +94,6 @@ Item {
 //        horizontalAlignment: Text.AlignHCenter
 //    }
 //
-//   PlasmaCore.Svg {
-//       id: lineSvg
-//       imagePath: "widgets/line"
-//    }
-//
-//    PlasmaCore.SvgItem {
-//        id: separator
-//
-//        anchors { top: header.bottom; left: parent.left; right: parent.right }
-//        anchors { topMargin: 3 }
-//
-//        svg: lineSvg
-//        elementId: "horizontal-line"
-//        height: lineSvg.elementSize("horizontal-line").height
-//    }
-//
 //    //we use this to compute a fixed height for the items, and also to implement
 //    //the said constant below (itemHeight)
 //    Text {
