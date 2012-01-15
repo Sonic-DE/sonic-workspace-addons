@@ -50,6 +50,8 @@ Item {
             anchors.fill: parent
 
             onClicked: {
+                //call service and get it done
+
                 inhibited = !inhibited
             }
         }
@@ -58,9 +60,20 @@ Item {
     QIconItem {
         id: disabledIcon
 
-        // TODO: maximum size limit...
-        width: 48
-        height: 48
+        function sizeFactor() {
+            var size = pmIcon.width
+
+            if (size > 48) {
+                // 48x48 is the max size for this icon.
+                // so that's the closest we can get..
+                size = 48
+            }
+
+            return size
+        }
+
+        width: sizeFactor()
+        height: sizeFactor()
 
         anchors {
             bottom: pmIcon.bottom
