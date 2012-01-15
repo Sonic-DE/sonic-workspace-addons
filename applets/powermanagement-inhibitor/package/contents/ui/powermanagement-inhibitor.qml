@@ -24,6 +24,7 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
    id: konsoleProfiles
 
+   property bool inhibited: false
 //    property int minimumWidth: 200
  //   property int minimumHeight: 300
 
@@ -38,13 +39,34 @@ Item {
     }
 
     QIconItem {
-        id: actionIcon
-        icon: QIcon ("preferences-system-power-management")
+        id: pmIcon
+        icon: QIcon("preferences-system-power-management")
 
         anchors.fill: parent
 
-//        height: actionsList.actionIconHeight
- //       width: actionsList.actionIconHeight
+        smooth: true
+
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked: {
+                inhibited = !inhibited
+            }
+        }
+    }
+
+    QIconItem {
+        id: disabledIcon
+
+        // TODO: maximum size limit...
+        width: 24
+        height: 24
+
+        anchors {bottom: pmIcon.bottom; right: pmIcon.right; }
+
+        visible: inhibited
+        icon: QIcon("dialog-cancel")
+        smooth: true
     }
 
 
