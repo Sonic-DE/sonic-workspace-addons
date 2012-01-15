@@ -8,7 +8,7 @@ X-KDE-ServiceTypes=Plasma/Applet
 
 X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/powermanagement-inhibitor.qml
-X-Plasma-DefaultSize=290,340
+X-Plasma-DefaultSize=64,64
 
 X-KDE-PluginInfo-Author=Shaun Reich
 X-KDE-PluginInfo-Email=shaun.reich@kdemail.net
