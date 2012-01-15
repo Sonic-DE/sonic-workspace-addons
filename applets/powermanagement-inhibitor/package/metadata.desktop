@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Powermanagment Inhibitor
-Comment=Prevent or enable the screensaver to use run.
+Comment=Enables or disables powermanagement and screensaver at a touch of a button
 
 Icon=preferences-system-power-management
 Type=Service
