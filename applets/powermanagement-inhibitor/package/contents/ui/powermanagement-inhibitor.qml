@@ -24,9 +24,13 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
    id: main
 
-   property bool inhibited: false
-//    property int minimumWidth: 200
- //   property int minimumHeight: 300
+    //FIXME: you'd think anchors would do this for me.
+    property int minimumWidth: 16
+    property int minimumHeight: 16
+
+    property bool inhibited: false
+
+    property bool labelVisible: pmIcon.width > inhibitedLabel.paintedWidth
 
     PlasmaCore.DataSource {
         id: pmSource
@@ -42,7 +46,12 @@ Item {
         id: pmIcon
         icon: QIcon("preferences-system-power-management")
 
-        anchors { top: parent.top; bottom: inhibitedLabel.top; left: parent.left; right: parent.right }
+        anchors {
+            top: parent.top
+            bottom: labelVisible ? inhibitedLabel.top : parent.bottom
+            left: parent.left
+            right: parent.right
+        }
 
         smooth: true
 
@@ -106,5 +115,6 @@ Item {
         text: inhibited ? i18n("Powersaving Disabled") : i18n("Powersaving Enabled")
         anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
         horizontalAlignment: Text.AlignHCenter
+        visible: labelVisible
     }
 }
