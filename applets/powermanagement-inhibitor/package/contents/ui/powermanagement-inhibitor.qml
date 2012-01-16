@@ -42,7 +42,7 @@ Item {
         id: pmIcon
         icon: QIcon("preferences-system-power-management")
 
-        anchors.fill: parent
+        anchors { top: parent.top; bottom: inhibitedLabel.top; left: parent.left; right: parent.right }
 
         smooth: true
 
@@ -101,20 +101,10 @@ Item {
         smooth: true
     }
 
-
-//
-//    PlasmaComponents.Label {
-//        id: header
-//        text: i18n("Konsole Profiles")
-//        anchors { top: parent.top; left: parent.left; right: parent.right }
-//        horizontalAlignment: Text.AlignHCenter
-//    }
-//
-//    //we use this to compute a fixed height for the items, and also to implement
-//    //the said constant below (itemHeight)
-//    Text {
-//        id: heightMetric
-//        visible: false
-//        text: "Arbitrary String"
-//    }
+   PlasmaComponents.Label {
+        id: inhibitedLabel
+        text: inhibited ? i18n("Powersaving Disabled") : i18n("Powersaving Enabled")
+        anchors { bottom: parent.bottom; left: parent.left; right: parent.right }
+        horizontalAlignment: Text.AlignHCenter
+    }
 }
