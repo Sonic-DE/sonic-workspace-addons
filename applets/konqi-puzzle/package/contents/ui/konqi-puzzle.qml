@@ -65,6 +65,8 @@ Item {
 
         model: puzzleModel
 
+        interactive: false
+
         delegate: puzzleDelegate
     }
 
