@@ -24,8 +24,8 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
     id: konqiPuzzle
 
-    width: 400
-    height: 400
+    property int minimumWidth: 200
+    property int minimumHeight: 200
 
     ListModel {
         id: puzzleModel
@@ -108,22 +108,23 @@ Item {
         id: puzzleDelegate
 
         Item {
-            width: 80
-            height: 80
+            width: 50
+            height: 50
 
 //            id: delegateItem
 
 
             Rectangle {
 
-                width: 80
-                height: 80
+                width: 50
+                height: 50
 
-                x: parent.x
-                y: parent.y
+             //   x: parent.x
+              //  y: parent.y
                // anchors.fill: parent
                 color: model.itemVisible ? "lightgreen" : "darkred"
 
+                //FIXME: fucker doesn't work right
                 Behavior on x { NumberAnimation { duration: 1400; easing.type: Easing.InOutCubic  } }
                 Behavior on y { NumberAnimation { duration: 1400; easing.type: Easing.InOutCubic } }
 
@@ -137,7 +138,12 @@ Item {
 
                     onClicked: {
                         console.log("CLICKED!")
-                        puzzleModel.move(model.index, model.index-1, 1);
+                        //we can move whereever it says it's false
+                        if (model[index].isVisible == false) {
+                            //except here
+                        } else if (model[index].isVisible == false) {
+                            puzzleModel.move(model.index, model.index-1, 1);
+                        }
                     }
                 }
             }
