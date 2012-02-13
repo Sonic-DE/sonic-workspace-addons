@@ -24,4 +24,77 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
     id: konqiPuzzle
 
+    ListModel {
+        id: puzzleModel
+
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+        ListElement {
+        }
+    }
+
+    Rectangle {
+        width: 400; height: 400; color: "black"
+
+        Grid {
+            x: 5
+            y: 5
+
+            rows: 5
+            columns: 5
+
+            spacing: 10
+
+            Repeater {
+                model: puzzleModel
+
+                Rectangle {
+                    width: 70
+                    height: 70
+                    color: "lightgreen"
+
+                    Text {
+                        // so we don't get 0
+                        text: index + 1
+                        font.pointSize: 30
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: {
+                            puzzleModel.move(0, puzzleModel.count - 3, 3)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
