@@ -24,65 +24,84 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
     id: konqiPuzzle
 
+    width: 400
+    height: 400
+
     ListModel {
         id: puzzleModel
 
         ListElement {
             text: "1"
+            itemVisible: true
         }
         ListElement {
             text: "2"
+            itemVisible: true
         }
         ListElement {
             text: "3"
+            itemVisible: true
         }
         ListElement {
             text: "4"
+            itemVisible: true
         }
         ListElement {
             text: "5"
+            itemVisible: true
         }
         ListElement {
             text: "6"
+            itemVisible: true
         }
         ListElement {
             text: "7"
+            itemVisible: true
         }
         ListElement {
             text: "8"
+            itemVisible: true
         }
         ListElement {
             text: "9"
+            itemVisible: true
         }
         ListElement {
             text: "10"
+            itemVisible: true
         }
         ListElement {
             text: "11"
+            itemVisible: true
         }
         ListElement {
             text: "12"
+            itemVisible: true
         }
         ListElement {
             text: "13"
+            itemVisible: true
         }
         ListElement {
             text: "14"
+            itemVisible: true
         }
         ListElement {
             text: "15"
+            itemVisible: false
         }
     }
 
     GridView {
-        width: 300
-        height: 300
+        anchors.fill: parent
 
         model: puzzleModel
 
         interactive: false
 
         delegate: puzzleDelegate
+
+
     }
 
     Component {
@@ -92,24 +111,38 @@ Item {
             width: 80
             height: 80
 
+//            id: delegateItem
+
+
             Rectangle {
-                anchors.fill: parent
-                color: "lightgreen"
+
+                width: 80
+                height: 80
+
+                x: parent.x
+                y: parent.y
+               // anchors.fill: parent
+                color: model.itemVisible ? "lightgreen" : "darkred"
+
+                Behavior on x { NumberAnimation { duration: 1400; easing.type: Easing.InOutCubic  } }
+                Behavior on y { NumberAnimation { duration: 1400; easing.type: Easing.InOutCubic } }
 
                 Text {
                     anchors.fill: parent
                     text: model.text
                 }
-            }
 
-            MouseArea {
-                anchors.fill: parent
+                MouseArea {
+                    anchors.fill: parent
 
-                onClicked: {
-                    console.log("CLICKED!")
-                    puzzleModel.move(model.index, model.index-1, 1);
+                    onClicked: {
+                        console.log("CLICKED!")
+                        puzzleModel.move(model.index, model.index-1, 1);
+                    }
                 }
             }
+
+
         }
     }
 }
