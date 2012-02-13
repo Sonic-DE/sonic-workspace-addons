@@ -89,9 +89,8 @@ Item {
         id: puzzleDelegate
 
         Item {
-            width: 30
-            height: 30
-        //  anchors.fill: parent
+            width: 80
+            height: 80
 
             Rectangle {
                 anchors.fill: parent
