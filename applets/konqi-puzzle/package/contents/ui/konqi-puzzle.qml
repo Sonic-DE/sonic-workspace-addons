@@ -28,34 +28,49 @@ Item {
         id: puzzleModel
 
         ListElement {
+            text: "1"
         }
         ListElement {
+            text: "2"
         }
         ListElement {
+            text: "3"
         }
         ListElement {
+            text: "4"
         }
         ListElement {
+            text: "5"
         }
         ListElement {
+            text: "6"
         }
         ListElement {
+            text: "7"
         }
         ListElement {
+            text: "8"
         }
         ListElement {
+            text: "9"
         }
         ListElement {
+            text: "10"
         }
         ListElement {
+            text: "11"
         }
         ListElement {
+            text: "12"
         }
         ListElement {
+            text: "13"
         }
         ListElement {
+            text: "14"
         }
         ListElement {
+            text: "15"
         }
     }
 
@@ -74,17 +89,32 @@ Item {
         id: puzzleDelegate
 
         Item {
-
+            width: 30
+            height: 30
         //  anchors.fill: parent
 
             Rectangle {
-                width: 30
-                height: 30
+                anchors.fill: parent
                 color: "lightgreen"
+
+                Text {
+                    anchors.fill: parent
+                    text: model.text
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    console.log("CLICKED!")
+                    puzzleModel.move(model.index, model.index-1, 1);
+                }
             }
         }
     }
 }
+
 //    Rectangle {
 //        width: 400; height: 400; color: "black"
 //
