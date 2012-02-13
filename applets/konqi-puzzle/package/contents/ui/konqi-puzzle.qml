@@ -59,42 +59,67 @@ Item {
         }
     }
 
-    Rectangle {
-        width: 400; height: 400; color: "black"
+    GridView {
+        width: 300
+        height: 300
 
-        Grid {
-            x: 5
-            y: 5
+        model: puzzleModel
 
-            rows: 5
-            columns: 5
+        delegate: puzzleDelegate
+    }
 
-            spacing: 10
+    Component {
+        id: puzzleDelegate
 
-            Repeater {
-                model: puzzleModel
+        Item {
 
-                Rectangle {
-                    width: 70
-                    height: 70
-                    color: "lightgreen"
+        //  anchors.fill: parent
 
-                    Text {
-                        // so we don't get 0
-                        text: index + 1
-                        font.pointSize: 30
-                        anchors.centerIn: parent
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-
-                        onClicked: {
-                            puzzleModel.move(0, puzzleModel.count - 3, 3)
-                        }
-                    }
-                }
+            Rectangle {
+                width: 30
+                height: 30
+                color: "lightgreen"
             }
         }
     }
 }
+//    Rectangle {
+//        width: 400; height: 400; color: "black"
+//
+//        Grid {
+//            x: 5
+//            y: 5
+//
+//            rows: 5
+//            columns: 5
+//
+//            spacing: 10
+//
+//            Repeater {
+//                id: repeater
+//                model: 25
+//
+//                Rectangle {
+//                    width: 70
+//                    height: 70
+//                    color: "lightgreen"
+//
+//                    Text {
+//                        // so we don't get 0
+//                        text: index + 1
+//                        font.pointSize: 30
+//                        anchors.centerIn: parent
+//                    }
+//
+//                    MouseArea {
+//                        anchors.fill: parent
+//
+//                        onClicked: {
+//                            console.log("CLICKED!")
+//                            puzzleModel.move(0, 2, 2)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
