@@ -34,7 +34,7 @@ Item {
             }
 
             //FIXME: hardcoded
-            width: 100
+            width: 150
             height: parent.height
         }
 
@@ -47,7 +47,7 @@ Item {
                 bottom: parent.bottom
             }
 
-            width: 100
+            width: 150
             height: parent.height
         }
 
@@ -60,7 +60,7 @@ Item {
                 bottom: parent.bottom
             }
 
-            width: 100
+            width: 150
             height: parent.height
         }
 }

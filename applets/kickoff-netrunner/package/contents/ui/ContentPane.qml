@@ -24,35 +24,6 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
    id: contentPane
 
-    ListModel {
-        id: contentPaneModel
-
-        ListElement {
-            icon: "applications-internet"
-            text: "Net"
-        }
-
-        ListElement {
-            icon: "preferences-system"
-            text: "Settings"
-        }
-
-        ListElement {
-            icon: "folder-documents"
-            text: "Files"
-        }
-
-        ListElement {
-            icon: "applications-other"
-            text: "Apps"
-        }
-
-        ListElement {
-            icon: "favorites"
-            text: "Favorites"
-        }
-    }
-
     ListView {
         id: contentPaneView
         anchors.fill: parent
@@ -60,7 +31,7 @@ Item {
         interactive: false
         clip: true
 
-        model: contentPaneModel
+        model: 20
 
         delegate: contentPaneDelegate
 
@@ -100,12 +71,11 @@ Item {
             QIconItem {
                 id: contentPaneIcon
 
-                anchors.fill: parent
-//                anchors {
-//                    left: parent.left
-//                    top: parent.top
-//                    bottom: parent.bottom
-//                }
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    bottom: parent.bottom
+                }
 
                 width: 22
                 height: 22
@@ -116,13 +86,12 @@ Item {
             PlasmaComponents.Label {
                 id: contentPaneText
 
-                anchors.fill: parent
-//                anchors {
-//                    left: contentPaneIcon.right
-//                    right: parent.right
-//                    top: parent.top
-//                    bottom: parent.bottom
-//                }
+                anchors {
+                    left: contentPaneIcon.right
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                }
 
                 text: "TEST!!"
             }
