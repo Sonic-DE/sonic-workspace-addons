@@ -74,14 +74,15 @@ Item {
     LeaveArea {
         id: leaveArea
 
-            x: (parent.width / 2) - (width / 2)
+        //really HACK, because Row doesn't seem to want to be horiz centered
+        //interesting..means there's got to be a layout bug inside LeaveArea i think
+        x: (searchField.width / 2) - (width / 2) + 35
         anchors {
- //           left: contextArea.right;
-//            right: parent.right;
-
+        // doesn't work -_-
+        //    left: searchField.left;
+        //    right: searchField.right;
             bottom: parent.bottom
-            //really HACK, because Row doesn't seem to want to be horiz centered
-            //interesting..means there's got to be a layout bug inside LeaveArea i think
+
             //FIXME hardcoded, plasma comp bug?
             bottomMargin: 25
         }

@@ -30,7 +30,8 @@ Item {
 
     }
 
-        width: lock.width + leave.width + switchuser.width
+    width: lock.width + leave.width + switchuser.width
+
     Row {
         id: row
         anchors.fill: parent
