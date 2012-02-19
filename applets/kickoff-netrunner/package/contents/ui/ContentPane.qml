@@ -76,7 +76,7 @@ Item {
        id: contentPaneDelegate
 
         Item {
-            height: parent.height
+            height: 22
             width: parent.width
 
             MouseArea {
@@ -95,6 +95,36 @@ Item {
                 onExited: {
                     contentPaneView.highlightItem.opacity = 0
                 }
+            }
+
+            QIconItem {
+                id: contentPaneIcon
+
+                anchors.fill: parent
+//                anchors {
+//                    left: parent.left
+//                    top: parent.top
+//                    bottom: parent.bottom
+//                }
+
+                width: 22
+                height: 22
+
+                icon: QIcon("favorites")
+            }
+
+            PlasmaComponents.Label {
+                id: contentPaneText
+
+                anchors.fill: parent
+//                anchors {
+//                    left: contentPaneIcon.right
+//                    right: parent.right
+//                    top: parent.top
+//                    bottom: parent.bottom
+//                }
+
+                text: "TEST!!"
             }
         }
     }
