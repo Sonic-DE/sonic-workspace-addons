@@ -48,8 +48,8 @@ Item {
        }
 
         ListElement {
-           icon: "favorites"
-           text: "Favorites"
+           icon: "go-home"
+           text: "Home"
        }
    }
 

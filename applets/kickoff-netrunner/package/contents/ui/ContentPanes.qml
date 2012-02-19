@@ -22,45 +22,52 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.components 0.1 as PlasmaComponents
 
 Item {
-   id: contentPanes
+    id: contentPanes
 
-        property int paneWidth;
-        ContentPane {
-            id: pane1
+//    states: [
+//        State {
+//            name: "home"
+//            PropertyChanges { target: panel }
+//        }
+//    ]
 
-            anchors {
-                left: parent.left
-                top: parent.top
-                bottom: parent.bottom
-            }
+    property int paneWidth;
+    ContentPane {
+        id: pane1
 
-            width: paneWidth
-            height: parent.height
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
         }
 
-        ContentPane {
-            id: pane2
+        width: paneWidth
+        height: parent.height
+    }
 
-            anchors {
-                left: pane1.right
-                top: parent.top
-                bottom: parent.bottom
-            }
+    ContentPane {
+        id: pane2
 
-            width: paneWidth
-            height: parent.height
+        anchors {
+            left: pane1.right
+            top: parent.top
+            bottom: parent.bottom
         }
 
-        ContentPane {
-            id: pane3
+        width: paneWidth
+        height: parent.height
+    }
 
-            anchors {
-                left: pane2.right
-                top: parent.top
-                bottom: parent.bottom
-            }
+    ContentPane {
+        id: pane3
 
-            width: paneWidth
-            height: parent.height
+        anchors {
+            left: pane2.right
+            top: parent.top
+            bottom: parent.bottom
         }
+
+        width: paneWidth
+        height: parent.height
+    }
 }
