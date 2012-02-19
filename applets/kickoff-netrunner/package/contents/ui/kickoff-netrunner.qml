@@ -49,6 +49,17 @@ Item {
     }
 
     ContextArea {
+        anchors.fill: parent
+//        anchors {
+//            left: parent.left
+//            top: parent.top
+//            bottom: leaveArea.top
+//        }
+    }
+
+    LeaveArea {
+        id: leaveArea
+
         anchors {
             left: parent.left;
             right: parent.right;

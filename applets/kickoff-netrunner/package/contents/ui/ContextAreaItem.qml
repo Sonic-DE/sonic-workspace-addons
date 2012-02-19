@@ -22,26 +22,44 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.components 0.1 as PlasmaComponents
 
 Item {
-   id: contextArea
+   id: contextAreaItem
 
-   Column {
-       anchors.fill: parent
-        ContextAreaItem {
-            anchors {
-                left: parent.left
+    property int iconSize: 48
+
+    width: iconSize + text.paintedWidth
+    height: iconSize + text.paintedHeight * 2
+
+    QIconItem {
+        id: icon
+
+        width: iconSize
+        height: iconSize
+
+        icon: QIcon("system-shutdown")
+
+        MouseArea {
+            anchors.fill: parent
+
+            hoverEnabled: true
+
+            onEntered: {
+
+            }
+
+            onExited: {
+
             }
         }
+    }
 
-        ContextAreaItem {
-            anchors {
-                left: parent.left
-            }
+    PlasmaComponents.Label {
+        id: text
+
+        anchors {
+            top: icon.bottom
+            horizontalCenter: icon.horizontalCenter
         }
 
-        ContextAreaItem {
-            anchors {
-                left: parent.left
-            }
-        }
-   }
+        text: "TEST"
+    }
 }

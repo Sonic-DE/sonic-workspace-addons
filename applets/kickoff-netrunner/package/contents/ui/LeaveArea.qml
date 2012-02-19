@@ -22,26 +22,48 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.components 0.1 as PlasmaComponents
 
 Item {
-   id: contextArea
+   id: leaveArea
 
-   Column {
-       anchors.fill: parent
-        ContextAreaItem {
-            anchors {
-                left: parent.left
+    PlasmaCore.DataSource {
+       id: powerSource
+       engine: "powermanagement"
+
+    }
+
+    Row {
+        anchors.fill: parent
+
+        PlasmaComponents.Button {
+            text: i18n("Lock Session")
+            iconSource: "system-lock-screen"
+
+            onClicked: {
+                var service = powerSource.serviceForSource("PowerDevil");
+                var operation = service.operationDescription("lockScreen");
+                var job = service.startOperationCall(operation);
             }
         }
 
-        ContextAreaItem {
-            anchors {
-                left: parent.left
+        PlasmaComponents.Button {
+            text: i18n("Leave...")
+            iconSource: "system-shutdown"
+
+            onClicked: {
+                var service = powerSource.serviceForSource("PowerDevil");
+                var operation = service.operationDescription("lockScreen");
+                var job = service.startOperationCall(operation);
             }
         }
 
-        ContextAreaItem {
-            anchors {
-                left: parent.left
+        PlasmaComponents.Button {
+            text: i18n("Switch User")
+            iconSource: "system-switch-user"
+
+            onClicked: {
+                var service = powerSource.serviceForSource("PowerDevil");
+                var operation = service.operationDescription("lockScreen");
+                var job = service.startOperationCall(operation);
             }
         }
-   }
+    }
 }
