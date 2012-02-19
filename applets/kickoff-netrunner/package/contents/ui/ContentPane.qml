@@ -31,7 +31,7 @@ Item {
         interactive: true
         clip: true
 
-        model: 20
+        model: 50
 
         delegate: contentPaneDelegate
 
