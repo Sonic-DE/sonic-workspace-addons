@@ -74,6 +74,10 @@ Item {
     ContentPanes {
         id: contentPanes
 
+        //FIXME HACK: why in the *hell* do i do this and it works
+        //but if i do parent.width /3 , where width is 249, it fucking doesn't..argh
+        paneWidth: 249
+
         anchors {
             left: contextArea.right
             top: searchField.bottom

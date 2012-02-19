@@ -24,7 +24,7 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
    id: contentPanes
 
-        property int paneWidth: parent.width / 3
+        property int paneWidth;
         ContentPane {
             id: pane1
 

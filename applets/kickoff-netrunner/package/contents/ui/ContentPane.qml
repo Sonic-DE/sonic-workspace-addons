@@ -66,12 +66,15 @@ Item {
        id: contentPaneDelegate
 
         Item {
-            height: 22
+            height: 40
             width: parent.width
 
             MouseArea {
-                height: parent.height + 15
-                anchors { left: parent.left; right: parent.right; }
+//                height: parent.height + 15
+ //               anchors { left: parent.left; right: parent.right; }
+ anchors { left: parent.left; right: parent.right; bottom: parent.bottom; top: parent.top }
+ //width: 100
+// height: 100
                 hoverEnabled: true
 
                 onClicked: {
@@ -83,7 +86,7 @@ Item {
                 }
 
                 onExited: {
-                    contentPaneView.highlightItem.opacity = 0
+                    contentPaneView.highlightItem.opacity = 1
                 }
             }
 
