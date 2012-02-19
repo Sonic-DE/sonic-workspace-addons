@@ -80,6 +80,7 @@ Item {
                 id: contextAreaItem
                anchors {
                     left: parent.left
+                    horizontalCenter: parent.horizontalCenter
               }
 
                 icon: model.icon

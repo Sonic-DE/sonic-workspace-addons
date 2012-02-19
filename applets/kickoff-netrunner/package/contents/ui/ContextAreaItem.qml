@@ -37,6 +37,7 @@ Item {
 
         width: iconSize
         height: iconSize
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 
     PlasmaComponents.Label {
