@@ -25,23 +25,46 @@ Item {
    id: contextArea
 
 
+    PlasmaCore.DataSource {
+       id: powerSource
+       engine: "powermanagement"
+
+    }
+
     Row {
         anchors.fill: parent
 
         PlasmaComponents.Button {
             text: i18n("Lock Session")
             iconSource: "system-lock-screen"
+
+            onClicked: {
+                var service = powerSource.serviceForSource("PowerDevil");
+                var operation = service.operationDescription("lockScreen");
+                var job = service.startOperationCall(operation);
+            }
         }
 
         PlasmaComponents.Button {
             text: i18n("Leave...")
             iconSource: "system-shutdown"
-//            textHorizontalAlignment: Text.AlignHCenter
+
+            onClicked: {
+                var service = powerSource.serviceForSource("PowerDevil");
+                var operation = service.operationDescription("lockScreen");
+                var job = service.startOperationCall(operation);
+            }
         }
 
         PlasmaComponents.Button {
             text: i18n("Switch User")
             iconSource: "system-switch-user"
+
+            onClicked: {
+                var service = powerSource.serviceForSource("PowerDevil");
+                var operation = service.operationDescription("lockScreen");
+                var job = service.startOperationCall(operation);
+            }
         }
     }
 }
