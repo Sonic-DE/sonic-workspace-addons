@@ -24,51 +24,50 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
    id: contextArea
 
-   Column {
-       anchors.fill: parent
+   ListModel {
+       id: contextAreaModel
+
+       ListElement {
+           icon: "applications-internet"
+           text: "Net"
+       }
+       ListElement {
+           icon: "preferences-system"
+           text: "Settings"
+       }
+              ListElement {
+           icon: "folder-documents"
+           text: "Files"
+       }
+              ListElement {
+           icon: "applications-other"
+           text: "Apps"
+       }
+              ListElement {
+           icon: "favorites"
+           text: "Favorites"
+       }
+   }
+
+   ListView {
+        anchors.fill: parent
+
+        model: contextAreaModel
+
+        delegate: contextAreaDelegate
+
+    }
+
+    Component {
+        id: contextAreaDelegate
+
         ContextAreaItem {
-            anchors {
-                left: parent.left
-            }
+         //   anchors {
+        //        left: parent.left
+          //  }
 
-            icon: "applications-internet"
-            text: "Net"
-        }
-
-        ContextAreaItem {
-            anchors {
-                left: parent.left
-            }
-
-            icon: "preferences-system"
-            text: "Settings"
-        }
-
-        ContextAreaItem {
-            anchors {
-                left: parent.left
-            }
-
-            icon: "folder-documents"
-            text: "Files"
-        }
-
-        ContextAreaItem {
-            anchors {
-                left: parent.left
-            }
-
-            icon: "applications-other"
-            text: "Apps"
-        }
-
-        ContextAreaItem {
-            anchors {
-                left: parent.left
-            }
-
-            icon: "favorites"
-            text: "Favorites"
+            icon: model.icon
+            text: model.text
         }
    }
 }

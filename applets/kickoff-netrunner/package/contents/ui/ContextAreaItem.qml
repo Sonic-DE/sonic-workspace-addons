@@ -28,7 +28,7 @@ Item {
     property alias icon: icon.icon
     property alias text: text.text
 
-    width: iconSize + text.paintedWidth
+    width: text.paintedWidth + iconSize
     height: iconSize + text.paintedHeight * 2
 
     PlasmaCore.Svg {
