@@ -31,7 +31,7 @@ Item {
                 left: parent.left
             }
 
-            icon: "system-reboot"
+            icon: "applications-internet"
             text: "Net"
         }
 
@@ -40,7 +40,7 @@ Item {
                 left: parent.left
             }
 
-            icon: "system-reboot"
+            icon: "preferences-system"
             text: "Settings"
         }
 
@@ -49,23 +49,25 @@ Item {
                 left: parent.left
             }
 
-            icon: "system-reboot"
+            icon: "folder-documents"
             text: "Files"
         }
+
         ContextAreaItem {
             anchors {
                 left: parent.left
             }
 
-            icon: "system-reboot"
+            icon: "applications-other"
             text: "Apps"
         }
+
         ContextAreaItem {
             anchors {
                 left: parent.left
             }
 
-            icon: "system-reboot"
+            icon: "favorites"
             text: "Favorites"
         }
    }
