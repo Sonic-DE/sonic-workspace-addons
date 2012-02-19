@@ -71,6 +71,17 @@ Item {
         }
     }
 
+    ContentPanes {
+        id: contentPanes
+
+        anchors {
+            left: contextArea.right
+            top: searchField.bottom
+            bottom: leaveArea.top
+            right: parent.right
+        }
+    }
+
     LeaveArea {
         id: leaveArea
 
