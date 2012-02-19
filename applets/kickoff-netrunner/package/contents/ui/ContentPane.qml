@@ -28,7 +28,7 @@ Item {
         id: contentPaneView
         anchors.fill: parent
         spacing: 5
-        interactive: false
+        interactive: true
         clip: true
 
         model: 20
