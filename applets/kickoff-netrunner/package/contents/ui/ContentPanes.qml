@@ -24,6 +24,7 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
    id: contentPanes
 
+        property int paneWidth: parent.width / 3
         ContentPane {
             id: pane1
 
@@ -33,8 +34,7 @@ Item {
                 bottom: parent.bottom
             }
 
-            //FIXME: hardcoded
-            width: 150
+            width: paneWidth
             height: parent.height
         }
 
@@ -47,7 +47,7 @@ Item {
                 bottom: parent.bottom
             }
 
-            width: 150
+            width: paneWidth
             height: parent.height
         }
 
@@ -60,7 +60,7 @@ Item {
                 bottom: parent.bottom
             }
 
-            width: 150
+            width: paneWidth
             height: parent.height
         }
 }

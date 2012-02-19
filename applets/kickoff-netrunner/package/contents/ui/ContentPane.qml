@@ -48,8 +48,6 @@ Item {
 
         highlightMoveDuration: 250
         highlightMoveSpeed: 1
-
-
     }
 
     PlasmaComponents.ScrollBar {
