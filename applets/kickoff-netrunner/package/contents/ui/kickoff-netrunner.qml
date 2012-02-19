@@ -99,78 +99,13 @@ Item {
         }
     }
 
-//        PlasmaComponents.Label {
-//            id: header
-//            text: i18n("Konsole Profiles")
-//            anchors { horizontalCenter: parent.horizontalCenter }
-//            horizontalAlignment: Text.AlignHCenter
-//        }
-//    }
-//
-//    PlasmaCore.SvgItem {
-//        id: separator
-//
-//        anchors { left: headerRow.left; right: headerRow.right; top: headerRow.bottom }
-//        svg: lineSvg
-//        elementId: "horizontal-line"
-//        height: lineSvg.elementSize("horizontal-line").height
-//    }
-//
+
+
 //    Text {
 //        id: textMetric
 //        visible: false
 //        // translated but not used, we just need length/height
 //        text: i18n("Arbitrary String Which Says The Dictionary Type")
-//    }
-//
-//    ListView {
-//        id: view
-//
-//        anchors { left: parent.left; right: scrollBar.left; bottom: parent.bottom; top: separator.bottom; topMargin: 5}
-//
-//        model: profilesModel
-//        clip: true
-//
-//        delegate: Item {
-//            id: listdelegate
-//       height: textMetric.paintedHeight * 2
-//            anchors { left: parent.left; leftMargin: 10; right: parent.right;  }
-//
-//            PlasmaComponents.Label {
-//                id: profileText
-//                anchors.fill: parent
-//                text: model.prettyName
-//            }
-//
-//            MouseArea {
-//                height: parent.height + 15
-//                anchors { left: parent.left; right: parent.right;}
-//                hoverEnabled: true
-//
-//                onClicked: {
-//                    var service = profilesSource.serviceForSource(model["DataEngineSource"])
-//                    var operation = service.operationDescription("open")
-//                    var job = service.startOperationCall(operation)
-//                }
-//
-//                onEntered: {
-//                    view.currentIndex = index
-//                    view.highlightItem.opacity = 1
-//                }
-//
-//                onExited: {
-//                    view.highlightItem.opacity = 0
-//                }
-//            }
-//        }
-//
-//        highlight: PlasmaComponents.Highlight {
-//            hover: true
-//        }
-//
-//        highlightMoveDuration: 250
-//        highlightMoveSpeed: 1
-//    }
 //
 //    PlasmaComponents.ScrollBar {
 //        id: scrollBar
