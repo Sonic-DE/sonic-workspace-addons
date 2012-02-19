@@ -50,7 +50,10 @@ Item {
    }
 
    ListView {
+       id: contextAreaView
         anchors.fill: parent
+        spacing: 5
+        interactive: false
 
         model: contextAreaModel
 
@@ -61,13 +64,23 @@ Item {
     Component {
         id: contextAreaDelegate
 
-        ContextAreaItem {
-         //   anchors {
-        //        left: parent.left
-          //  }
+        PlasmaCore.FrameSvgItem {
 
-            icon: model.icon
-            text: model.text
+            width: contextAreaView.width
+            height: contextAreaItem.height
+
+            imagePath: "widgets/viewitem"
+            prefix: "normal"
+
+            ContextAreaItem {
+                id: contextAreaItem
+               anchors {
+                    left: parent.left
+              }
+
+                icon: model.icon
+                text: model.text
+            }
         }
-   }
+    }
 }

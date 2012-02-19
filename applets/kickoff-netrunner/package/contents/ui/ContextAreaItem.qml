@@ -31,47 +31,20 @@ Item {
     width: text.paintedWidth + iconSize
     height: iconSize + text.paintedHeight * 2
 
-    PlasmaCore.Svg {
-        id: lineSvg
-        imagePath: "widgets/viewitem"
+
+    QIconItem {
+        id: icon
+
+        width: iconSize
+        height: iconSize
     }
 
-    PlasmaCore.FrameSvgItem {
+    PlasmaComponents.Label {
+        id: text
 
-        width: parent.width
-        height: parent.height
-
-        imagePath: "widgets/viewitem"
-        prefix: "normal"
-
-        QIconItem {
-            id: icon
-
-            width: iconSize
-            height: iconSize
-
-            MouseArea {
-                anchors.fill: parent
-
-                hoverEnabled: true
-
-                onEntered: {
-
-                }
-
-                onExited: {
-
-                }
-            }
-        }
-
-        PlasmaComponents.Label {
-            id: text
-
-            anchors {
-                top: icon.bottom
-                horizontalCenter: icon.horizontalCenter
-            }
+        anchors {
+            top: icon.bottom
+            horizontalCenter: icon.horizontalCenter
         }
     }
 }
