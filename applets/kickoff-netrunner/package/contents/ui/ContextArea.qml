@@ -107,23 +107,11 @@ Item {
                 }
             }
 
-            PlasmaCore.FrameSvgItem {
-                id: contextAreaSvg
-
-                width: contextAreaView.width
-                height: contextAreaItem.height
-                visible: false
-
-                imagePath: "widgets/viewitem"
-                prefix: "hover"
-            }
-
             ContextAreaItem {
                 id: contextAreaItem
 
                 anchors {
-                    left: contextAreaSvg.left
-                    horizontalCenter: contextAreaSvg.horizontalCenter
+                    horizontalCenter: parent.horizontalCenter
                 }
 
                 icon: model.icon

@@ -76,8 +76,8 @@ Item {
        id: contentPaneDelegate
 
         Item {
-            height: contentPaneItem.height
-            width: contentPaneView.width
+            height: parent.height
+            width: parent.width
 
             MouseArea {
                 height: parent.height + 15
@@ -96,19 +96,6 @@ Item {
                     contentPaneView.highlightItem.opacity = 0
                 }
             }
-
-            PlasmaCore.FrameSvgItem {
-                id: contentPaneSvg
-
-                width: contentPaneView.width
-                height: contentPaneItem.height
-                visible: false
-
-                imagePath: "widgets/viewitem"
-                prefix: "hover"
-            }
-
-
         }
     }
 }
