@@ -26,7 +26,14 @@ Item {
 
     ListView {
         id: contentPaneView
-        anchors.fill: parent
+
+        anchors {
+            left: parent.left
+            right: scrollBar.left
+            top: parent.top
+            bottom: parent.bottom
+        }
+
         spacing: 5
         interactive: true
         clip: true
@@ -48,7 +55,7 @@ Item {
     PlasmaComponents.ScrollBar {
         id: scrollBar
 
-        anchors { top: contentPaneView.top; bottom: contentPaneView.bottom; right: contentPaneView.right; }
+        anchors { top: contentPaneView.top; bottom: contentPaneView.bottom; right: parent.right }
 
         orientation: Qt.Vertical
         stepSize: contentPaneView.count / 4
