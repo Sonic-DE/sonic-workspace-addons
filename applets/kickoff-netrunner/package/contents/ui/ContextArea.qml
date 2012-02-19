@@ -53,11 +53,13 @@ Item {
        }
    }
 
+
    ListView {
         id: contextAreaView
         anchors.fill: parent
         spacing: 5
         interactive: false
+        clip: true
 
         model: contextAreaModel
 
@@ -69,6 +71,16 @@ Item {
 
         highlightMoveDuration: 250
         highlightMoveSpeed: 1
+
+        focus: true
+
+        Keys.onDownPressed: {
+            contextAreaView.incrementCurrentIndex();
+        }
+
+        Keys.onUpPressed: {
+            contextAreaView.decrementCurrentIndex();
+        }
     }
 
     Component {
