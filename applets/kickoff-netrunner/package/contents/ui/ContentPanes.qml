@@ -24,19 +24,28 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
    id: contentPanes
 
-    Row {
-        anchors.fill: parent
-        id: contentPaneRow
-
         ContentPane {
             id: pane1
 
+            anchors {
+                left: parent.left
+                top: parent.top
+                bottom: parent.bottom
+            }
+
+            //FIXME: hardcoded
             width: 100
             height: parent.height
         }
 
         ContentPane {
             id: pane2
+
+            anchors {
+                left: pane1.right
+                top: parent.top
+                bottom: parent.bottom
+            }
 
             width: 100
             height: parent.height
@@ -45,8 +54,13 @@ Item {
         ContentPane {
             id: pane3
 
+            anchors {
+                left: pane2.right
+                top: parent.top
+                bottom: parent.bottom
+            }
+
             width: 100
             height: parent.height
         }
-    }
 }
