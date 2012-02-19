@@ -48,6 +48,17 @@ Item {
         plasmoid.aspectRatioMode = IgnoreAspectRatio;
     }
 
+    ContextArea {
+        anchors {
+            left: parent.left;
+            right: parent.right;
+
+            bottom: parent.bottom
+            //FIXME hardcoded, plasma comp bug?
+            bottomMargin: 25
+        }
+    }
+
 //   PlasmaCore.Svg {
 //       id: lineSvg
 //       imagePath: "widgets/line"
