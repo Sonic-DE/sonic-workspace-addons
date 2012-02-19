@@ -41,6 +41,20 @@ Item {
 
         highlightMoveDuration: 250
         highlightMoveSpeed: 1
+
+
+    }
+
+    PlasmaComponents.ScrollBar {
+        id: scrollBar
+
+        anchors { top: contentPaneView.top; bottom: contentPaneView.bottom; right: contentPaneView.right; }
+
+        orientation: Qt.Vertical
+        stepSize: contentPaneView.count / 4
+        scrollButtonInterval: contentPaneView.count / 4
+
+        flickableItem: contentPaneView
     }
 
     Component {
@@ -52,7 +66,7 @@ Item {
 
             MouseArea {
                 height: parent.height + 15
-                anchors { left: parent.left; right: parent.right;}
+                anchors { left: parent.left; right: parent.right; }
                 hoverEnabled: true
 
                 onClicked: {

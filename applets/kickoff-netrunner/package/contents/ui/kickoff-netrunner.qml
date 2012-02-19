@@ -107,15 +107,5 @@ Item {
 //        // translated but not used, we just need length/height
 //        text: i18n("Arbitrary String Which Says The Dictionary Type")
 //
-//    PlasmaComponents.ScrollBar {
-//        id: scrollBar
-//
-//        anchors { bottom: parent.bottom; top: separator.top; right: parent.right }
-//
-//        orientation: Qt.Vertical
-//        stepSize: view.count / 4
-//        scrollButtonInterval: view.count / 4
-//
-//        flickableItem: view
-//    }
+
 }
