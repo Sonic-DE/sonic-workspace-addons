@@ -31,19 +31,23 @@ Item {
            icon: "applications-internet"
            text: "Net"
        }
+
        ListElement {
            icon: "preferences-system"
            text: "Settings"
        }
-              ListElement {
+
+        ListElement {
            icon: "folder-documents"
            text: "Files"
-       }
-              ListElement {
+        }
+
+        ListElement {
            icon: "applications-other"
            text: "Apps"
        }
-              ListElement {
+
+        ListElement {
            icon: "favorites"
            text: "Favorites"
        }

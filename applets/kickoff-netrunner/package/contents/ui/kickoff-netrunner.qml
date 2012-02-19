@@ -48,13 +48,25 @@ Item {
         plasmoid.aspectRatioMode = IgnoreAspectRatio;
     }
 
+    PlasmaComponents.TextField {
+        id: searchField
+
+        anchors {
+            left: contextArea.right
+            top: parent.top
+            right: parent.right
+        }
+    }
+
     ContextArea {
-        anchors.fill: parent
-//        anchors {
-//            left: parent.left
-//            top: parent.top
-//            bottom: leaveArea.top
-//        }
+        id: contextArea
+        width: 48
+
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: leaveArea.top
+        }
     }
 
     LeaveArea {
@@ -70,21 +82,6 @@ Item {
         }
     }
 
-//   PlasmaCore.Svg {
-//       id: lineSvg
-//       imagePath: "widgets/line"
-//    }
-//
-//    Row {
-//        id: headerRow
-//        anchors { left: parent.left; right: parent.right}
-//
-//        QIconItem {
-//            icon: QIcon("utilities-terminal")
-//            width: 32
-//            height: 32
-//        }
-//
 //        PlasmaComponents.Label {
 //            id: header
 //            text: i18n("Konsole Profiles")
