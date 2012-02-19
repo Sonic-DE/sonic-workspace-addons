@@ -25,6 +25,8 @@ Item {
    id: contextAreaItem
 
     property int iconSize: 48
+    property alias icon: icon.icon
+    property alias text: text.text
 
     width: iconSize + text.paintedWidth
     height: iconSize + text.paintedHeight * 2
@@ -34,8 +36,6 @@ Item {
 
         width: iconSize
         height: iconSize
-
-        icon: QIcon("system-shutdown")
 
         MouseArea {
             anchors.fill: parent
@@ -59,7 +59,5 @@ Item {
             top: icon.bottom
             horizontalCenter: icon.horizontalCenter
         }
-
-        text: "TEST"
     }
 }

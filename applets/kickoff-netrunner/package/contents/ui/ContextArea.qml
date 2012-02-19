@@ -30,18 +30,43 @@ Item {
             anchors {
                 left: parent.left
             }
+
+            icon: "system-reboot"
+            text: "Net"
         }
 
         ContextAreaItem {
             anchors {
                 left: parent.left
             }
+
+            icon: "system-reboot"
+            text: "Settings"
         }
 
         ContextAreaItem {
             anchors {
                 left: parent.left
             }
+
+            icon: "system-reboot"
+            text: "Files"
+        }
+        ContextAreaItem {
+            anchors {
+                left: parent.left
+            }
+
+            icon: "system-reboot"
+            text: "Apps"
+        }
+        ContextAreaItem {
+            anchors {
+                left: parent.left
+            }
+
+            icon: "system-reboot"
+            text: "Favorites"
         }
    }
 }
