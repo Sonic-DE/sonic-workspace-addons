@@ -63,25 +63,57 @@ Item {
 
         delegate: contextAreaDelegate
 
+   highlight: PlasmaComponents.Highlight {
+       hover: true
+   }
+   
+   highlightMoveDuration: 250
+   highlightMoveSpeed: 1
     }
 
     Component {
         id: contextAreaDelegate
 
-        PlasmaCore.FrameSvgItem {
-
-            width: contextAreaView.width
+        Item {
             height: contextAreaItem.height
+            width: contextAreaView.width
 
-            imagePath: "widgets/viewitem"
-            prefix: "normal"
+        MouseArea {
+            height: parent.height + 15
+            anchors { left: parent.left; right: parent.right;}
+            hoverEnabled: true
+            
+            onClicked: {
+            }
+            
+            onEntered: {
+                contextAreaView.currentIndex = index
+                contextAreaView.highlightItem.opacity = 1
+            }
+            
+            onExited: {
+                contextAreaView.highlightItem.opacity = 0
+            }
+        }
+   
+            PlasmaCore.FrameSvgItem {
+                id: contextAreaSvg
+
+                width: contextAreaView.width
+                height: contextAreaItem.height
+                visible: false
+
+                imagePath: "widgets/viewitem"
+                prefix: "hover"
+            }
 
             ContextAreaItem {
                 id: contextAreaItem
-               anchors {
-                    left: parent.left
-                    horizontalCenter: parent.horizontalCenter
-              }
+
+                anchors {
+                    left: contextAreaSvg.left
+                    horizontalCenter: contextAreaSvg.horizontalCenter
+                }
 
                 icon: model.icon
                 text: model.text

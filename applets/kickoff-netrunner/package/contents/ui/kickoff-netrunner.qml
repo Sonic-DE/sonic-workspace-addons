@@ -56,6 +56,8 @@ Item {
             top: parent.top
             right: parent.right
         }
+
+        clearButtonShown: true
     }
 
     ContextArea {
