@@ -53,7 +53,6 @@ Item {
        }
    }
 
-
    ListView {
         id: contextAreaView
         anchors.fill: parent

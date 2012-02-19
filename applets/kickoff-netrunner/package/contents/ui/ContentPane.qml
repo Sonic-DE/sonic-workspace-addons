@@ -26,99 +26,99 @@ Item {
 
    ListModel {
        id: contentPaneModel
-       
+
        ListElement {
            icon: "applications-internet"
            text: "Net"
        }
-       
+
        ListElement {
            icon: "preferences-system"
            text: "Settings"
        }
-       
+
        ListElement {
            icon: "folder-documents"
            text: "Files"
        }
-       
+
        ListElement {
            icon: "applications-other"
            text: "Apps"
        }
-       
+
        ListElement {
            icon: "favorites"
            text: "Favorites"
        }
    }
-   
+
    ListView {
        id: contentPaneView
        anchors.fill: parent
        spacing: 5
        interactive: false
-       
+       clip: true
+
        model: contentPaneModel
-       
+
        delegate: contentPaneDelegate
-       
+
        highlight: PlasmaComponents.Highlight {
            hover: true
        }
-       
+
        highlightMoveDuration: 250
        highlightMoveSpeed: 1
    }
-   
+
    Component {
        id: contentPaneDelegate
-       
+
        Item {
            height: contentPaneItem.height
            width: contentPaneView.width
-           
+
            MouseArea {
                height: parent.height + 15
                anchors { left: parent.left; right: parent.right;}
                hoverEnabled: true
-               
+
                onClicked: {
                }
-               
+
                onEntered: {
                    contentPaneView.currentIndex = index
                    contentPaneView.highlightItem.opacity = 1
                }
-               
+
                onExited: {
                    contentPaneView.highlightItem.opacity = 0
                }
            }
-           
+
            PlasmaCore.FrameSvgItem {
                id: contentPaneSvg
-               
+
                width: contentPaneView.width
                height: contentPaneItem.height
                visible: false
-               
+
                imagePath: "widgets/viewitem"
                prefix: "hover"
            }
-           
+
            ContextAreaItem {
                id: contentPaneItem
-               
+
                anchors {
                    left: contentPaneSvg.left
                    horizontalCenter: contentPaneSvg.horizontalCenter
                }
-               
+
                icon: model.icon
                text: model.text
            }
        }
    }
-
 }

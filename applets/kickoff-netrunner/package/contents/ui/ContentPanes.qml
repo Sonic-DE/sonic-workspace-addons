@@ -32,19 +32,21 @@ Item {
             id: pane1
 
             width: 100
-            height: 100
+            height: parent.height
         }
 
         ContentPane {
             id: pane2
-            height: 100
+
             width: 100
+            height: parent.height
         }
 
         ContentPane {
             id: pane3
-            height: 100
+
             width: 100
+            height: parent.height
         }
     }
 }
