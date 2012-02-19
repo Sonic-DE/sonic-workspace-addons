@@ -60,7 +60,7 @@ Item {
 
     ContextArea {
         id: contextArea
-        width: 48
+        width: 64
 
         anchors {
             left: parent.left
