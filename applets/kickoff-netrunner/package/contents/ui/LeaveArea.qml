@@ -30,10 +30,14 @@ Item {
 
     }
 
+        width: lock.width + leave.width + switchuser.width
     Row {
+        id: row
         anchors.fill: parent
 
         PlasmaComponents.Button {
+            id: lock
+
             text: i18n("Lock Session")
             iconSource: "system-lock-screen"
 
@@ -45,6 +49,8 @@ Item {
         }
 
         PlasmaComponents.Button {
+            id: leave
+
             text: i18n("Leave...")
             iconSource: "system-shutdown"
 
@@ -56,6 +62,8 @@ Item {
         }
 
         PlasmaComponents.Button {
+            id: switchuser
+
             text: i18n("Switch User")
             iconSource: "system-switch-user"
 

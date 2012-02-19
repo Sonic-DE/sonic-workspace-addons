@@ -54,7 +54,7 @@ Item {
    }
 
    ListView {
-       id: contextAreaView
+        id: contextAreaView
         anchors.fill: parent
         spacing: 5
         interactive: false
@@ -63,39 +63,39 @@ Item {
 
         delegate: contextAreaDelegate
 
-   highlight: PlasmaComponents.Highlight {
-       hover: true
-   }
-   
-   highlightMoveDuration: 250
-   highlightMoveSpeed: 1
+        highlight: PlasmaComponents.Highlight {
+            hover: true
+        }
+
+        highlightMoveDuration: 250
+        highlightMoveSpeed: 1
     }
 
     Component {
         id: contextAreaDelegate
 
         Item {
-            height: contextAreaItem.height
-            width: contextAreaView.width
+                height: contextAreaItem.height
+                width: contextAreaView.width
 
-        MouseArea {
-            height: parent.height + 15
-            anchors { left: parent.left; right: parent.right;}
-            hoverEnabled: true
-            
-            onClicked: {
+            MouseArea {
+                height: parent.height + 15
+                anchors { left: parent.left; right: parent.right;}
+                hoverEnabled: true
+
+                onClicked: {
+                }
+
+                onEntered: {
+                    contextAreaView.currentIndex = index
+                    contextAreaView.highlightItem.opacity = 1
+                }
+
+                onExited: {
+                    contextAreaView.highlightItem.opacity = 0
+                }
             }
-            
-            onEntered: {
-                contextAreaView.currentIndex = index
-                contextAreaView.highlightItem.opacity = 1
-            }
-            
-            onExited: {
-                contextAreaView.highlightItem.opacity = 0
-            }
-        }
-   
+
             PlasmaCore.FrameSvgItem {
                 id: contextAreaSvg
 
