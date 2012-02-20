@@ -100,7 +100,8 @@ Item {
             print ("TOPLEVELMENU: " + sourcesFiltered[i]);
             print( appsSource.data[sourcesFiltered[i]].name);
 
-            model.append(appsSource.data[sourcesFiltered[i]]);
+            model.append({ "mainModel": appsSource.data[sourcesFiltered[i]], "canonicalName": sourcesFiltered[i] });
+            print("CANONICAL NAME: " + model.get(i).canonicalName)
 
             print ("MODEL NAME THING:" + model.get(i).name);
             print ("MODEL ICONNAME THING:" + model.get(i).iconName);
@@ -117,6 +118,7 @@ Item {
   //              model: placesModel
                 iconSource: "icon"
                 textSource: "name"
+                subSource: ""
             }
         },
 
@@ -127,6 +129,7 @@ Item {
                 model: settingsAppsModel
                 iconSource: "iconName"
                 textSource: "name"
+                subSource: ""
             }
         },
 
@@ -137,12 +140,15 @@ Item {
                 model: placesModel
                 iconSource: "icon"
                 textSource: "name"
+                subSource: ""
             }
+
             PropertyChanges {
                 target: pane3
                 model: devicesModel
                 iconSource: "icon"
                 textSource: "text"
+                subSource: ""
             }
         },
 
@@ -153,6 +159,7 @@ Item {
                 model: pane1AppsMenuModel
                 iconSource: "iconName"
                 textSource: "name"
+                subSource: "mainModel"
             }
         },
 
@@ -163,6 +170,7 @@ Item {
 //                model: placesModel
                 iconSource: "icon"
                 textSource: "name"
+                subSource: ""
             }
         }
     ]

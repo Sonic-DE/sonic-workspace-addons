@@ -25,8 +25,10 @@ Item {
     id: contentPane
 
     property alias model: contentPaneView.model
+    property string subSource: ""
     property string iconSource: ""
     property string textSource: ""
+    property string selectedText: ""
 
     ListView {
         id: contentPaneView
@@ -80,6 +82,8 @@ Item {
                 hoverEnabled: true
 
                 onClicked: {
+                   selectedText = model[textSource];
+                   print("SELECTEDITEM: " + selectedText);
                 }
 
                 onEntered: {
@@ -104,7 +108,7 @@ Item {
                 width: 22
                 height: 22
 
-                icon: model[iconSource]
+                icon: subSource == "" ? model[iconSource] : model[subSource][iconSource]
             }
 
             PlasmaComponents.Label {
@@ -117,7 +121,7 @@ Item {
                     bottom: parent.bottom
                 }
 
-                text: model[textSource]
+                text: subSource == "" ? model[textSource] : model[subSource][textSource]
             }
         }
     }
