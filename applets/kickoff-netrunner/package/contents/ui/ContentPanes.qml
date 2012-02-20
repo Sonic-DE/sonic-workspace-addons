@@ -21,6 +21,9 @@ import org.kde.qtextracomponents 0.1
 import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.components 0.1 as PlasmaComponents
 
+//FIXME: i can't get it to find libqzeitgeist, even though it's installed :(
+import org.gnome.zeitgeist 0.1
+
 Item {
     id: contentPanes
 
@@ -70,7 +73,7 @@ Item {
 
         Component.onCompleted: {
             connectedSources = sources
-            timer.running = true;
+            populateMenu("/", menuModel);
         }
     }
 
@@ -82,9 +85,26 @@ Item {
 //        }
 //    }
 
-    function populateMenu() {
+    ListModel {
+        id: menuModel
+    }
+
+    /**
+     * Populates the menu model when needed
+     */
+    function populateMenu(path, model) {
         print("SREICH POPULATE");
-        var sourcesFiltered = appsSource.data["Settingsmenu/"]["entries"]
+        var sourcesFiltered = appsSource.data[path]["entries"]
+
+        for (var i = 0; i < sourcesFiltered.length; ++i) {
+            print ("TOPLEVELMENU: " + sourcesFiltered[i]);
+            print( appsSource.data[sourcesFiltered[i]].name);
+
+            model.append(appsSource.data[sourcesFiltered[i]]);
+
+            print ("MODEL NAME THING:" + model.get(i).name);
+        }
+
         print("SREICH COMPONENT" + sourcesFiltered);
     }
 
