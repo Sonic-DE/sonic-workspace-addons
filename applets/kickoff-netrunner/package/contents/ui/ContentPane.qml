@@ -22,7 +22,11 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.components 0.1 as PlasmaComponents
 
 Item {
-   id: contentPane
+    id: contentPane
+
+    property alias model: contentPaneView.model
+    property string iconSource: ""
+    property string textSource: ""
 
     ListView {
         id: contentPaneView
@@ -72,7 +76,7 @@ Item {
             MouseArea {
 //                height: parent.height + 15
  //               anchors { left: parent.left; right: parent.right; }
- anchors { left: parent.left; right: parent.right; bottom: parent.bottom; top: parent.top }
+                anchors { left: parent.left; right: parent.right; bottom: parent.bottom; top: parent.top }
  //width: 100
 // height: 100
                 hoverEnabled: true
@@ -102,7 +106,7 @@ Item {
                 width: 22
                 height: 22
 
-                icon: QIcon("favorites")
+                icon: model[iconSource]
             }
 
             PlasmaComponents.Label {
@@ -115,7 +119,7 @@ Item {
                     bottom: parent.bottom
                 }
 
-                text: "TEST!!"
+                text: model[textSource]
             }
         }
     }

@@ -31,7 +31,6 @@ Item {
     width: text.paintedWidth + iconSize
     height: iconSize + text.paintedHeight * 2
 
-
     QIconItem {
         id: icon
 

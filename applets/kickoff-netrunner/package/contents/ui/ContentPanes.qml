@@ -24,12 +24,37 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
     id: contentPanes
 
-//    states: [
-//        State {
-//            name: "home"
-//            PropertyChanges { target: panel }
-//        }
-//    ]
+    PlasmaCore.DataSource {
+        id: placesSource
+        engine: "places"
+        onSourceAdded: connectSource(source)
+        onSourceRemoved: disconnectSource(source)
+
+        Component.onCompleted: {
+            connectedSources = sources
+        }
+    }
+
+    PlasmaCore.DataModel {
+        id: placesModel
+        dataSource: placesSource
+
+        Component.onCompleted: {
+            contentPanes.state = "Home"
+        }
+    }
+
+    states: [
+        State {
+            name: "Home"
+            PropertyChanges {
+                target: pane1
+                model: placesModel
+                iconSource: "icon"
+                textSource: "name"
+            }
+        }
+    ]
 
     property int paneWidth;
     ContentPane {
