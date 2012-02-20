@@ -103,8 +103,8 @@ Item {
             model.append({ "mainModel": appsSource.data[sourcesFiltered[i]], "canonicalName": sourcesFiltered[i] });
             print("CANONICAL NAME: " + model.get(i).canonicalName)
 
-            print ("MODEL NAME THING:" + model.get(i).name);
-            print ("MODEL ICONNAME THING:" + model.get(i).iconName);
+            print ("MODEL NAME THING:" + model.get(i).mainModel.name);
+            print ("MODEL ICONNAME THING:" + model.get(i).mainModel.iconName);
         }
 
         print("SREICH COMPONENT" + sourcesFiltered);
