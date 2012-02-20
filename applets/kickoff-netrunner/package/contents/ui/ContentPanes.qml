@@ -22,7 +22,7 @@ import org.kde.plasma.core 0.1 as PlasmaCore
 import org.kde.plasma.components 0.1 as PlasmaComponents
 
 //FIXME: i can't get it to find libqzeitgeist, even though it's installed :(
-import org.gnome.zeitgeist 0.1
+//import org.gnome.zeitgeist 0.1
 
 Item {
     id: contentPanes
