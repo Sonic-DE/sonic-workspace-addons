@@ -70,17 +70,32 @@ Item {
 
         Component.onCompleted: {
             connectedSources = sources
+            timer.running = true;
         }
     }
 
-    PlasmaCore.DataModel {
-        id: settingsAppsModel
-        dataSource: appsSource
+//    PlasmaCore.DataModel {
+//        id: settingsAppsModel
+//        dataSource: appsSource
+//
+//        Component.onCompleted: {
+//        }
+//    }
 
-        sourceFilter: "[Settingsmenu/.]*"
+    function populateMenu() {
+        print("SREICH POPULATE");
+        var sourcesFiltered = appsSource.data["Settingsmenu/"]["entries"]
+        print("SREICH COMPONENT" + sourcesFiltered);
+    }
 
-        Component.onCompleted: {
-            print("SOURCES:" + sources);
+    Timer {
+        id: timer
+        interval: 5000
+        repeat: false
+        running: false
+
+        onTriggered: {
+            populateMenu();
         }
     }
 
