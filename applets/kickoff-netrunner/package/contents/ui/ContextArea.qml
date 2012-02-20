@@ -87,7 +87,6 @@ Item {
 
         function indexChanged() {
             selectedItem = model.get(currentIndex).text;
-            print("SELECTEDITEM: " + selectedItem);
         }
     }
 

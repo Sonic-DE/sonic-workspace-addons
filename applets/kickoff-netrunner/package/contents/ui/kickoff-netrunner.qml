@@ -69,8 +69,6 @@ Item {
             top: parent.top
             bottom: leaveArea.top
         }
-        Component.onCompleted: {
-        }
     }
 
     ContentPanes {
@@ -87,7 +85,7 @@ Item {
             right: parent.right
         }
 
-//        state:
+        state: contextArea.selectedItem
     }
 
     LeaveArea {
