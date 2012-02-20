@@ -62,6 +62,28 @@ Item {
         }
     }
 
+    PlasmaCore.DataSource {
+        id: appsSource
+        engine: "apps"
+        onSourceAdded: connectSource(source)
+        onSourceRemoved: disconnectSource(source)
+
+        Component.onCompleted: {
+            connectedSources = sources
+        }
+    }
+
+    PlasmaCore.DataModel {
+        id: settingsAppsModel
+        dataSource: appsSource
+
+        sourceFilter: "[Settingsmenu/.]*"
+
+        Component.onCompleted: {
+            print("SOURCES:" + sources);
+        }
+    }
+
     states: [
         State {
             name: "Net"
@@ -73,13 +95,12 @@ Item {
             }
         },
 
-
         State {
             name: "Settings"
             PropertyChanges {
                 target: pane1
- //               model: placesModel
-                iconSource: "icon"
+                model: settingsAppsModel
+                iconSource: "iconName"
                 textSource: "name"
             }
         },
