@@ -24,6 +24,8 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
    id: contextArea
 
+   property string selectedItem: "NULL"
+
    ListModel {
        id: contextAreaModel
 
@@ -75,10 +77,17 @@ Item {
 
         Keys.onDownPressed: {
             contextAreaView.incrementCurrentIndex();
+            indexChanged();
         }
 
         Keys.onUpPressed: {
             contextAreaView.decrementCurrentIndex();
+            indexChanged();
+        }
+
+        function indexChanged() {
+            selectedItem = model.get(currentIndex).text;
+            print("SELECTEDITEM: " + selectedItem);
         }
     }
 

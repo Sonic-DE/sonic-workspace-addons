@@ -40,13 +40,52 @@ Item {
         dataSource: placesSource
 
         Component.onCompleted: {
-            contentPanes.state = "Home"
         }
     }
 
     states: [
         State {
             name: "Home"
+            PropertyChanges {
+                target: pane1
+//                model: placesModel
+                iconSource: "icon"
+                textSource: "name"
+            }
+        },
+
+        State {
+            name: "Apps"
+            PropertyChanges {
+                target: pane1
+   //             model: placesModel
+                iconSource: "icon"
+                textSource: "name"
+            }
+        },
+
+        State {
+            name: "Net"
+            PropertyChanges {
+                target: pane1
+  //              model: placesModel
+                iconSource: "icon"
+                textSource: "name"
+            }
+        },
+
+        State {
+            name: "Settings"
+            PropertyChanges {
+                target: pane1
+ //               model: placesModel
+                iconSource: "icon"
+                textSource: "name"
+            }
+        },
+
+        State {
+            name: "Files"
             PropertyChanges {
                 target: pane1
                 model: placesModel
