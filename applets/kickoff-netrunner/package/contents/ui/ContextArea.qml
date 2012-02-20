@@ -77,17 +77,18 @@ Item {
 
         Keys.onDownPressed: {
             contextAreaView.incrementCurrentIndex();
-            indexChanged();
+            indexHasChanged();
         }
 
         Keys.onUpPressed: {
             contextAreaView.decrementCurrentIndex();
-            indexChanged();
+            indexHasChanged();
         }
+    }
 
-        function indexChanged() {
-            selectedItem = model.get(currentIndex).text;
-        }
+    function indexHasChanged() {
+        selectedItem = contextAreaModel.get(contextAreaView.currentIndex).text;
+        print("INDEXCHANGED: " + selectedItem);
     }
 
     Component {
@@ -102,12 +103,10 @@ Item {
                 anchors { left: parent.left; right: parent.right;}
                 hoverEnabled: true
 
-                onClicked: {
-                }
-
                 onEntered: {
                     contextAreaView.currentIndex = index
                     contextAreaView.highlightItem.opacity = 1
+                    indexHasChanged();
                 }
 
                 onExited: {
