@@ -42,8 +42,6 @@ Item {
         interactive: true
         clip: true
 
-        model: 50
-
         delegate: contentPaneDelegate
 
         highlight: PlasmaComponents.Highlight {
