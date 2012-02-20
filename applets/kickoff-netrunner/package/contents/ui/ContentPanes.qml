@@ -109,17 +109,6 @@ Item {
         print("SREICH COMPONENT" + sourcesFiltered);
     }
 
-    Timer {
-        id: timer
-        interval: 5000
-        repeat: false
-        running: false
-
-        onTriggered: {
-            populateMenu();
-        }
-    }
-
     states: [
         State {
             name: "Net"
