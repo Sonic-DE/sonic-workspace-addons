@@ -45,26 +45,6 @@ Item {
 
     states: [
         State {
-            name: "Home"
-            PropertyChanges {
-                target: pane1
-//                model: placesModel
-                iconSource: "icon"
-                textSource: "name"
-            }
-        },
-
-        State {
-            name: "Apps"
-            PropertyChanges {
-                target: pane1
-   //             model: placesModel
-                iconSource: "icon"
-                textSource: "name"
-            }
-        },
-
-        State {
             name: "Net"
             PropertyChanges {
                 target: pane1
@@ -73,6 +53,7 @@ Item {
                 textSource: "name"
             }
         },
+
 
         State {
             name: "Settings"
@@ -89,6 +70,26 @@ Item {
             PropertyChanges {
                 target: pane1
                 model: placesModel
+                iconSource: "icon"
+                textSource: "name"
+            }
+        },
+
+        State {
+            name: "Apps"
+            PropertyChanges {
+                target: pane1
+   //             model: placesModel
+                iconSource: "icon"
+                textSource: "name"
+            }
+        },
+
+        State {
+            name: "Home"
+            PropertyChanges {
+                target: pane1
+//                model: placesModel
                 iconSource: "icon"
                 textSource: "name"
             }
