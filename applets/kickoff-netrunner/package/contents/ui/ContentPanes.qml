@@ -73,7 +73,7 @@ Item {
 
         Component.onCompleted: {
             connectedSources = sources
-            populateMenu("/", menuModel);
+            populateMenu("/", pane1AppsMenuModel);
         }
     }
 
@@ -86,7 +86,7 @@ Item {
 //    }
 
     ListModel {
-        id: menuModel
+        id: pane1AppsMenuModel
     }
 
     /**
@@ -103,6 +103,7 @@ Item {
             model.append(appsSource.data[sourcesFiltered[i]]);
 
             print ("MODEL NAME THING:" + model.get(i).name);
+            print ("MODEL ICONNAME THING:" + model.get(i).iconName);
         }
 
         print("SREICH COMPONENT" + sourcesFiltered);
@@ -160,8 +161,8 @@ Item {
             name: "Apps"
             PropertyChanges {
                 target: pane1
-   //             model: placesModel
-                iconSource: "icon"
+                model: pane1AppsMenuModel
+                iconSource: "iconName"
                 textSource: "name"
             }
         },
