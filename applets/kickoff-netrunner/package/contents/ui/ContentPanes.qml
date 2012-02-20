@@ -43,6 +43,25 @@ Item {
         }
     }
 
+    PlasmaCore.DataSource {
+        id: devicesSource
+        engine: "hotplug"
+        onSourceAdded: connectSource(source)
+        onSourceRemoved: disconnectSource(source)
+
+        Component.onCompleted: {
+            connectedSources = sources
+        }
+    }
+
+    PlasmaCore.DataModel {
+        id: devicesModel
+        dataSource: devicesSource
+
+        Component.onCompleted: {
+        }
+    }
+
     states: [
         State {
             name: "Net"
@@ -72,6 +91,12 @@ Item {
                 model: placesModel
                 iconSource: "icon"
                 textSource: "name"
+            }
+            PropertyChanges {
+                target: pane3
+                model: devicesModel
+                iconSource: "icon"
+                textSource: "text"
             }
         },
 
