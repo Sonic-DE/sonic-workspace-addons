@@ -27,6 +27,10 @@ import org.kde.plasma.components 0.1 as PlasmaComponents
 Item {
     id: contentPanes
 
+    property string pane1CurrentSelection;
+    property string pane2CurrentSelection;
+    property string pane3CurrentSelection;
+
     PlasmaCore.DataSource {
         id: placesSource
         engine: "places"
@@ -89,25 +93,33 @@ Item {
         id: pane1AppsMenuModel
     }
 
+    ListModel {
+        id: pane2AppsMenuModel
+    }
+
+    ListModel {
+        id: pane3AppsMenuModel
+    }
+
     /**
      * Populates the menu model when needed
      */
     function populateMenu(path, model) {
-        print("SREICH POPULATE");
+        print("SREICH POPULATE, looking up path: " + path);
         var sourcesFiltered = appsSource.data[path]["entries"]
 
         for (var i = 0; i < sourcesFiltered.length; ++i) {
-            print ("TOPLEVELMENU: " + sourcesFiltered[i]);
+//            print ("TOPLEVELMENU: " + sourcesFiltered[i]);
             print( appsSource.data[sourcesFiltered[i]].name);
 
             model.append({ "mainModel": appsSource.data[sourcesFiltered[i]], "canonicalName": sourcesFiltered[i] });
-            print("CANONICAL NAME: " + model.get(i).canonicalName)
+ //           print("CANONICAL NAME: " + model.get(i).canonicalName)
 
-            print ("MODEL NAME THING:" + model.get(i).mainModel.name);
-            print ("MODEL ICONNAME THING:" + model.get(i).mainModel.iconName);
+  //          print ("MODEL NAME THING:" + model.get(i).mainModel.name);
+   //         print ("MODEL ICONNAME THING:" + model.get(i).mainModel.iconName);
         }
 
-        print("SREICH COMPONENT" + sourcesFiltered);
+    //    print("SREICH COMPONENT" + sourcesFiltered);
     }
 
     states: [
@@ -162,6 +174,15 @@ Item {
                 subSource: "mainModel"
                 subSubSource: "canonicalName"
             }
+
+            PropertyChanges {
+                target: pane2
+                model: pane2AppsMenuModel
+                iconSource: "iconName"
+                textSource: "name"
+                subSource: "mainModel"
+                subSubSource: "canonicalName"
+            }
         },
 
         State {
@@ -184,6 +205,11 @@ Item {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
+        }
+
+        onSelectedTextChanged: {
+            pane2AppsMenuModel.clear();
+            populateMenu(selectedText, pane2AppsMenuModel);
         }
 
         width: paneWidth
