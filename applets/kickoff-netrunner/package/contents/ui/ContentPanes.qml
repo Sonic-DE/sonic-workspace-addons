@@ -77,6 +77,16 @@ Item {
 
         Component.onCompleted: {
             connectedSources = sources
+            startupTimer.running = true
+        }
+    }
+
+    Timer {
+        id: startupTimer
+        running: false
+        repeat: false
+        interval: 500
+        onTriggered: {
             populateMenu("/", pane1AppsMenuModel);
         }
     }
