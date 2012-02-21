@@ -197,6 +197,15 @@ Item {
                 subSource: "mainModel"
                 subSubSource: "canonicalName"
             }
+
+            PropertyChanges {
+                target: pane3
+                model: pane3AppsMenuModel
+                iconSource: "iconName"
+                textSource: "name"
+                subSource: "mainModel"
+                subSubSource: "canonicalName"
+            }
         },
 
         State {
@@ -242,6 +251,15 @@ Item {
             left: pane1.right
             top: parent.top
             bottom: parent.bottom
+        }
+
+        onSelectedTextChanged: {
+            if (selectedText.toString().substring(selectedText.length - 1, selectedText.length) == "/") {
+                pane3AppsMenuModel.clear();
+                populateMenu(selectedText, pane3AppsMenuModel);
+            } else {
+                appToRun = selectedText;
+            }
         }
 
         width: paneWidth

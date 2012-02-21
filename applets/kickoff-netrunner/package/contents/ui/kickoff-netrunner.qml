@@ -46,8 +46,8 @@ Item {
     Component.onCompleted: {
         plasmoid.popupIcon = "start-here-kde";
         plasmoid.aspectRatioMode = IgnoreAspectRatio;
-        plasmoid.runApplication("dolphin");
-//       plasmoid.runCommand("kdebugdialog", [""]);
+//        plasmoid.runApplication("dolphin");
+       plasmoid.runCommand("kdebugdialog", [""]);
     }
 
     PlasmaComponents.TextField {
