@@ -160,6 +160,7 @@ Item {
                 iconSource: "iconName"
                 textSource: "name"
                 subSource: "mainModel"
+                subSubSource: "canonicalName"
             }
         },
 

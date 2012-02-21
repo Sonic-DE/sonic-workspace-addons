@@ -26,6 +26,7 @@ Item {
 
     property alias model: contentPaneView.model
     property string subSource: ""
+    property string subSubSource: ""
     property string iconSource: ""
     property string textSource: ""
     property string selectedText: ""
@@ -82,7 +83,11 @@ Item {
                 hoverEnabled: true
 
                 onClicked: {
-                   selectedText = model[textSource];
+                    if (subSource == "") {
+                        selectedText = model[textSource];
+                    } else {
+                        selectedText = model[subSubSource]//.canonicalName
+                    }
                    print("SELECTEDITEM: " + selectedText);
                 }
 
@@ -94,6 +99,31 @@ Item {
                 onExited: {
                     contentPaneView.highlightItem.opacity = 1
                 }
+            }
+
+            QIconItem {
+                id: contentPaneDirectoryIcon
+
+                visible: {
+                    //if canonicalNAme is a dir, (/) display arrow)
+                    var canonicalName = model[subSubSource]
+                    if (canonicalName.toString().substring(canonicalName.length - 1, canonicalName.length) == '/') {
+                        true;
+                    } else {
+                        false;
+                    }
+                }
+
+                anchors {
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                }
+
+                width: 22
+                height: 22
+
+                icon: "arrow-right"
             }
 
             QIconItem {
