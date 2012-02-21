@@ -107,9 +107,11 @@ Item {
     function populateMenu(path, model) {
         print("SREICH POPULATE, looking up path: " + path);
         var sourcesFiltered = appsSource.data[path]["entries"]
+        print("SREICH SOURCESFILTERED: " + sourcesFiltered);
 
         for (var i = 0; i < sourcesFiltered.length; ++i) {
 //            print ("TOPLEVELMENU: " + sourcesFiltered[i]);
+            if (sourcesFiltered[i] != "---") {
             print( appsSource.data[sourcesFiltered[i]].name);
 
             model.append({ "mainModel": appsSource.data[sourcesFiltered[i]], "canonicalName": sourcesFiltered[i] });
@@ -117,6 +119,7 @@ Item {
 
   //          print ("MODEL NAME THING:" + model.get(i).mainModel.name);
    //         print ("MODEL ICONNAME THING:" + model.get(i).mainModel.iconName);
+            }
         }
 
     //    print("SREICH COMPONENT" + sourcesFiltered);
