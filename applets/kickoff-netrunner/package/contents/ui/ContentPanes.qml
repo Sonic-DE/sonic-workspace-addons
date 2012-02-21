@@ -30,6 +30,7 @@ Item {
     property string pane1CurrentSelection;
     property string pane2CurrentSelection;
     property string pane3CurrentSelection;
+    property string appToRun: "";
 
     PlasmaCore.DataSource {
         id: placesSource
@@ -210,6 +211,7 @@ Item {
         }
     ]
 
+
     property int paneWidth;
     ContentPane {
         id: pane1
@@ -221,8 +223,12 @@ Item {
         }
 
         onSelectedTextChanged: {
-            pane2AppsMenuModel.clear();
-            populateMenu(selectedText, pane2AppsMenuModel);
+            if (selectedText.toString().substring(selectedText.length - 1, selectedText.length) == "/") {
+                pane2AppsMenuModel.clear();
+                populateMenu(selectedText, pane2AppsMenuModel);
+            } else {
+                appToRun = selectedText;
+            }
         }
 
         width: paneWidth

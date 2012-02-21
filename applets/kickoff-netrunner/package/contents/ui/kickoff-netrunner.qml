@@ -46,6 +46,8 @@ Item {
     Component.onCompleted: {
         plasmoid.popupIcon = "start-here-kde";
         plasmoid.aspectRatioMode = IgnoreAspectRatio;
+        plasmoid.runApplication("dolphin");
+//       plasmoid.runCommand("kdebugdialog", [""]);
     }
 
     PlasmaComponents.TextField {
@@ -83,6 +85,10 @@ Item {
             top: searchField.bottom
             bottom: leaveArea.top
             right: parent.right
+        }
+
+        onAppToRunChanged: {
+            plasmoid.runApplication(appToRun);
         }
 
         state: contextArea.selectedItem
