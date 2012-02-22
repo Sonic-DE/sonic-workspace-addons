@@ -1,0 +1,25 @@
+[Desktop Entry]
+Name=Kickoff Netrunner QML
+Comment=A more unity-like application launcher menu
+
+Icon=start-here-kde
+Type=Service
+X-KDE-ServiceTypes=Plasma/Applet,Plasma/PopupApplet
+
+X-Plasma-API=declarativeappletscript
+X-Plasma-MainScript=ui/kickoff-netrunner.qml
+X-Plasma-DefaultSize=290,340
+X-Plasma-RequiredExtensions=LaunchApp
+
+X-KDE-PluginInfo-Author=Shaun Reich
+X-KDE-PluginInfo-Email=shaun.reich@kdemail.net
+X-KDE-PluginInfo-Name=kickoff-netrunner
+X-KDE-PluginInfo-Version=0.1
+X-KDE-PluginInfo-Website=http://userbase.kde.org/Plasma
+X-KDE-PluginInfo-Category=Utilities
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+
+#X-Plasma-Requires-FileDialog=Unused
+#X-Plasma-NotificationArea=true
