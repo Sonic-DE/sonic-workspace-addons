@@ -9,7 +9,6 @@ X-KDE-ServiceTypes=Plasma/Applet,Plasma/PopupApplet
 X-Plasma-API=declarativeappletscript
 X-Plasma-MainScript=ui/kickoff-netrunner.qml
 X-Plasma-DefaultSize=290,340
-X-Plasma-RequiredExtensions=LaunchApp
 
 X-KDE-PluginInfo-Author=Shaun Reich
 X-KDE-PluginInfo-Email=shaun.reich@kdemail.net
@@ -21,5 +20,7 @@ X-KDE-PluginInfo-Depends=
 X-KDE-PluginInfo-License=GPL
 X-KDE-PluginInfo-EnabledByDefault=true
 
+X-Plasma-RequiredExtensions=LaunchApp
+#X-Plasma-RequiredExtensions=LaunchApp
 #X-Plasma-Requires-FileDialog=Unused
 #X-Plasma-NotificationArea=true

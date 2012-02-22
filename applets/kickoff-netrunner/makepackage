@@ -5,9 +5,16 @@ read -n1 -p "WARNING: this will wipe all *.tar files and copy the metadata.deskt
 echo
 
 if [ $REPLY == "y" ]; then
-    command cp -v package/metadata.desktop .
 
     rm *.tar
+    rm -Rv ./temp
+    cp -Rv . ./temp
+    cd ./temp
+    command cp -v package/metadata.desktop .
+    mv ./package/contents .
+    rm -Rv ./package
+
+
     tar -cf kickoff-netrunner-$(date +%Y-%d-%h-%H-%M).tar .
 
     rsync *.tar   kdebuildgitvm@files.kde.org:Downloads -v
