@@ -6,13 +6,13 @@ echo
 
 if [ $REPLY == "y" ]; then
 
-    rm *.tar
-    rm -Rv ./temp
-    cp -Rv . ./temp
-    cd ./temp
-    command cp -v package/metadata.desktop .
-    mv ./package/contents .
-    rm -Rv ./package
+    command rm *.tar
+    command rm -Rfv ../temp
+    command cp -Rv . ../temp
+    command cd ../temp
+#    command cp -v package/metadata.desktop .
+    command mv ./package/contents .
+    command rm -Rv ./package
 
 
     tar -cf kickoff-netrunner-$(date +%Y-%d-%h-%H-%M).tar .
