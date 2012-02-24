@@ -121,19 +121,14 @@ Item {
         print("SREICH SOURCESFILTERED: " + sourcesFiltered);
 
         for (var i = 0; i < sourcesFiltered.length; ++i) {
-//            print ("TOPLEVELMENU: " + sourcesFiltered[i]);
             if (sourcesFiltered[i] != "---") {
-            print( appsSource.data[sourcesFiltered[i]].name);
+                if (sourcesFiltered[i].name != ".hidden") {
+                    print( appsSource.data[sourcesFiltered[i]].name);
 
-            model.append({ "mainModel": appsSource.data[sourcesFiltered[i]], "canonicalName": sourcesFiltered[i] });
- //           print("CANONICAL NAME: " + model.get(i).canonicalName)
-
-  //          print ("MODEL NAME THING:" + model.get(i).mainModel.name);
-   //         print ("MODEL ICONNAME THING:" + model.get(i).mainModel.iconName);
+                    model.append({ "mainModel": appsSource.data[sourcesFiltered[i]], "canonicalName": sourcesFiltered[i] });
+                }
             }
         }
-
-    //    print("SREICH COMPONENT" + sourcesFiltered);
     }
 
     states: [
