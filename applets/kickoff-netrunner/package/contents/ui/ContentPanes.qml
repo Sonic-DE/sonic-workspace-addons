@@ -271,6 +271,14 @@ Item {
             bottom: parent.bottom
         }
 
+        onSelectedTextChanged: {
+            if (selectedText.toString().substring(selectedText.length - 1, selectedText.length) == "/") {
+                //FIXME: undefined handling of 3rd submenu pane
+            } else {
+                appToRun = selectedText;
+            }
+        }
+
         width: paneWidth
         height: parent.height
     }
