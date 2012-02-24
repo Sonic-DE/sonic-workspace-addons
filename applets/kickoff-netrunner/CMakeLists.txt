@@ -1,5 +1,7 @@
 project(kickoff-netrunner)
 
+add_subdirectory(apps)
+
 install(DIRECTORY package/
         DESTINATION ${DATA_INSTALL_DIR}/plasma/plasmoids/kickoff-netrunner)
 
