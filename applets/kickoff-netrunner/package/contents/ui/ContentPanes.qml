@@ -229,6 +229,7 @@ Item {
         onSelectedTextChanged: {
             if (selectedText.toString().substring(selectedText.length - 1, selectedText.length) == "/") {
                 pane2AppsMenuModel.clear();
+                pane3AppsMenuModel.clear();
                 populateMenu(selectedText, pane2AppsMenuModel);
             } else {
                 appToRun = selectedText;
