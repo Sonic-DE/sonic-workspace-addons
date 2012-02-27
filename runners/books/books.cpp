@@ -72,7 +72,7 @@ void Books::match(Plasma::RunnerContext &context)
     connect(&booksJob, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 
-    parseJson(booksjob.data(), context);
+    parseJson(booksJob.data(), context);
 }
 
 void Books::run(const Plasma::RunnerContext &context, const Plasma::QueryMatch &match)
