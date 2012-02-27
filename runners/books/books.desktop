@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Books (Goodreads)
+
+Comment=Matches book queries via Goodreads
+
+Icon=
+
+X-KDE-ServiceTypes=Plasma/Runner
+Type=Service
+X-KDE-Library=krunner_books
+X-KDE-PluginInfo-Author=Shaun M. Reich
+X-KDE-PluginInfo-Email=shaun.reich@blue-systems.com
+X-KDE-PluginInfo-Name=books
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-License=LGPL
+X-KDE-PluginInfo-EnabledByDefault=true

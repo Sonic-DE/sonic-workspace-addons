@@ -1,5 +1,6 @@
 add_subdirectory(audioplayercontrol)
 add_subdirectory(browserhistory)
+add_subdirectory(books)
 add_subdirectory(bing)
 add_subdirectory(converter)
 add_subdirectory(datetime)
