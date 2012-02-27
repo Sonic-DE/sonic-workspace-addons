@@ -36,14 +36,14 @@ Books::Books(QObject *parent, const QVariantList& args)
     : Plasma::AbstractRunner(parent, args)
 {
     Q_UNUSED(args);
-    setObjectName(QLatin1String("Bing"));
+    setObjectName(QLatin1String("Books"));
     setIgnoredTypes(Plasma::RunnerContext::FileSystem | Plasma::RunnerContext::Directory | Plasma::RunnerContext::NetworkLocation);
 
-    Plasma::RunnerSyntax s(QLatin1String( ":q:" ), i18n("Finds Bing images search matching :q:."));
-    s.addExampleQuery(QLatin1String("image :q:"));
+    Plasma::RunnerSyntax s(QLatin1String( ":q:" ), i18n("Uses Goodreads to find books matching :q:."));
+    s.addExampleQuery(QLatin1String("book :q:"));
     addSyntax(s);
 
-    addSyntax(Plasma::RunnerSyntax(QLatin1String( "image" ), i18n("Lists the search entries matching the query, using Bing search")));
+    addSyntax(Plasma::RunnerSyntax(QLatin1String( "image" ), i18n("Lists the books matching the query, using Goodreads search")));
     setSpeed(SlowSpeed);
     setPriority(LowPriority);
 }
@@ -54,7 +54,7 @@ Books::~Books()
 
 void Books::match(Plasma::RunnerContext &context)
 {
-    kDebug() << "Bing Runner, MATCH MADE";
+    kDebug() << "Books Runner, MATCH MADE";
 
     const QString term = context.query();
 
