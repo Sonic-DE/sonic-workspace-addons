@@ -26,6 +26,8 @@
 #include <KUrl>
 #include <QByteArray>
 
+class QXmlStreamReader;
+
 class Books : public Plasma::AbstractRunner {
     Q_OBJECT
 
@@ -40,7 +42,8 @@ Q_SIGNALS:
     void matchMade(Plasma::RunnerContext *context);
 
 private:
-    void parseJson(const QByteArray& data, Plasma::RunnerContext &context);
+    void parseXML(QByteArray data);
+    void parseBook(QXmlStreamReader& xml);
 
     QNetworkAccessManager *m_thumbnailDownloader;
 };

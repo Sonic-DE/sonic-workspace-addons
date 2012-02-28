@@ -30,7 +30,8 @@
 #include <QtCore/QWaitCondition>
 #include <QtCore/QEventLoop>
 #include <QtCore/QMap>
-#include <qjson/parser.h>
+#include <QXmlStreamReader>
+#include <QDomDocument>
 
 Books::Books(QObject *parent, const QVariantList& args)
     : Plasma::AbstractRunner(parent, args)
@@ -72,7 +73,7 @@ void Books::match(Plasma::RunnerContext &context)
     connect(&booksJob, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 
-    parseJson(booksJob.data(), context);
+    parseXML(booksJob.data());//, context);
 }
 
 void Books::run(const Plasma::RunnerContext &context, const Plasma::QueryMatch &match)
@@ -81,9 +82,96 @@ void Books::run(const Plasma::RunnerContext &context, const Plasma::QueryMatch &
     opener->setRunExecutables(false);
 }
 
-void Books::parseJson(const QByteArray& data, Plasma::RunnerContext &context)
+void Books::parseXML(QByteArray data)
 {
-    kDebug() << "XML PARSER ONLINE" << data;
+//    QXmlStreamReader xml(data);
+//    
+//    if (xml.hasError()) {
+//        kError() << "Books Runner xml parse failure";
+//        return;
+//    }
+//    
+//    while (!xml.atEnd()) {
+//        QXmlStreamReader::TokenType token = xml.readNext();
+//        
+//        if (token == QXmlStreamReader::StartDocument) {
+//            continue;
+//        }
+//        
+//        if (token == QXmlStreamReader::StartElement) {
+//            kDebug() << "NAME!" << xml.name() ;
+//           // if (xml.name() == "results") {
+//                parseBook(xml);
+//          //      return;
+//         //   }
+//                xml.readNext();
+//        }
+//    }
+
+
+    QXmlStreamReader xml(data);
+
+    while (!xml.atEnd()) {
+        QXmlStreamReader::TokenType token = xml.readNext();
+
+        if (token == QXmlStreamReader::StartDocument) {
+            continue;
+        }
+
+            kDebug() << "TEXT!" << xml.name();
+ /////       xml.readNext();
+    }
 }
+
+void Books::parseBook(QXmlStreamReader& xml)
+{
+    QStringRef name = xml.name();
+    QString currentElement;
+    
+    QStringList videoTitles;
+    QStringList videoLinks;
+    
+    kDebug() << "NAME: " << name;
+    
+    QXmlStreamAttributes attributes = xml.attributes();
+    while (!xml.atEnd()) {// && xml.tokenType() != QXmlStreamReader::EndDocument) {
+        kDebug() << "WHILE LOOP(((((((((((((((((()))))))))))))))))), name: " << xml.name();
+        kDebug() << "ELEMTN: " << xml.readElementText();
+        kDebug() << "CURRENTELEMENT: " << currentElement;
+
+        if (xml.name() == "title") {
+            kDebug() << attributes.value("plain").toString();
+        }
+
+        if (xml.name() == "thumbnail") {
+            QStringRef attribute = attributes.value("url");
+            kDebug() << "ATTRIBUTE: " << attribute;
+        }
+        //            if (name == "title") {
+            //                kDebug() << "GOT TITLE: " << name;
+            //                videoTitles.append(xml.readElementText());
+            //
+            //            } else if (name == "link") {
+                //
+                //                if (xml.attributes().value("rel").toString() == "alternate") {
+                    //                    kDebug() << "ATTRIBUTES: " << xml.attributes().value("href");
+                    //                    const QString& link = xml.attributes().value("href").toString();
+                    //                    if (link != "http://www.youtube.com") {
+                        //                        videoLinks.append(link);
+                        //                    }
+                        //                }
+                        //            }
+                        
+                        xml.readNext();
+                        attributes = xml.attributes();
+                        currentElement = xml.readElementText();
+                        kDebug() << currentElement;
+        }
+        
+        if (!videoTitles.isEmpty() && !videoLinks.isEmpty()) {
+            kDebug() << "TITLE WAS: " << videoTitles;
+            kDebug() << "LINK WAS: " << videoLinks;
+        }
+    }
 
 #include "books.moc"
