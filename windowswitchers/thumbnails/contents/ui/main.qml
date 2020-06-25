@@ -177,6 +177,8 @@ KWin.Switcher {
                     thumbnailListView.decrementCurrentIndex();
                 } else if (event.key == Qt.Key_Right) {
                     thumbnailListView.incrementCurrentIndex();
+                } else if (event.matches(StandardKey.Close)) {
+                    model.close(currentIndex)
                 }
             }
         }

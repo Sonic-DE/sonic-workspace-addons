@@ -91,6 +91,8 @@ KWin.Switcher {
                     icons.decrementCurrentIndex();
                 } else if (event.key == Qt.Key_Right) {
                     icons.incrementCurrentIndex();
+                } else if (event.matches(StandardKey.Close)) {
+                    model.close(currentIndex)
                 }
             }
         }

@@ -196,6 +196,8 @@ KWin.Switcher {
                     listView.decrementCurrentIndex();
                 } else if (event.key == Qt.Key_Down) {
                     listView.incrementCurrentIndex();
+                } else if (event.matches(StandardKey.Close)) {
+                    model.close(currentIndex)
                 }
             }
         }

@@ -181,6 +181,8 @@ KWin.Switcher {
                     compactListView.decrementCurrentIndex();
                 } else if (event.key == Qt.Key_Down) {
                     compactListView.incrementCurrentIndex();
+                } else if (event.matches(StandardKey.Close)) {
+                    model.close(currentIndex)
                 }
             }
         }
