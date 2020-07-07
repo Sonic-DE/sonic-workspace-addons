@@ -4,18 +4,14 @@
 
 K_PLUGIN_CLASS_WITH_JSON(PotdModule, "kded_potd.json")
 
-PotdModule::PotdModule(QObject* parent, const QList<QVariant>&): KDEDModule(parent)
+PotdModule::PotdModule(QObject* parent, const QList<QVariant>&)
+    : KDEDModule(parent)
+    , configPath(QStandardPaths::locate(QStandardPaths::ConfigLocation,  QStringLiteral("kscreenlockerrc")))
 {
-    consumer = new Plasma::DataEngineConsumer();
-    engine = consumer->dataEngine(QStringLiteral("potd"));
-    configPath = QStandardPaths::locate(QStandardPaths::ConfigLocation,  QStringLiteral("kscreenlockerrc"));
-
-    previousSource = getSource();
-    engine->connectSource(previousSource, this); // trigger caching, no need to handle data
-
     connect(&watcher, &KDirWatch::dirty,
             this, &PotdModule::fileChanged);
     watcher.addFile(configPath);
+    fileChanged(configPath);
 }
 
 PotdModule::~PotdModule()
@@ -26,9 +22,21 @@ PotdModule::~PotdModule()
 void PotdModule::fileChanged(const QString &path)
 {
     Q_UNUSED(path);
-    engine->disconnectSource(previousSource, this);
+
+    if (engine) {
+        engine->disconnectSource(previousSource, this);
+    }
+
     previousSource = getSource();
-    engine->connectSource(previousSource, this);
+    if (!previousSource.isEmpty()) {
+        if (!consumer) {
+            consumer = new Plasma::DataEngineConsumer;
+            engine = consumer->dataEngine(QStringLiteral("potd"));
+            engine->connectSource(previousSource, this); // trigger caching, no need to handle data
+        }
+
+        engine->connectSource(previousSource, this);
+    }
 
     // For some reason, Qt *rc files are always recreated instead of modified.
     // Recreated files were removed from watchers and have to be added again.
