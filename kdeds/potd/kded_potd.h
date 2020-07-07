@@ -3,13 +3,15 @@
 
 #include <QObject>
 #include <QString>
-#include <QFileSystemWatcher>
 
 #include <KConfig>
 #include <KConfigGroup>
 #include <KDEDModule>
+#include <KDirWatch>
 #include <Plasma/DataEngine>
 #include <Plasma/DataEngineConsumer>
+
+class KDirWatch;
 
 class PotdModule: public KDEDModule
 {
@@ -27,7 +29,7 @@ private:
 
     Plasma::DataEngineConsumer *consumer;
     Plasma::DataEngine *engine;
-    QFileSystemWatcher *watcher;
+    KDirWatch watcher;
     QString configPath;
     QString previousSource;
 };
