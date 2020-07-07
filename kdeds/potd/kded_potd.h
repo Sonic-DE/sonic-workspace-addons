@@ -27,8 +27,8 @@ private Q_SLOTS:
 private:
     QString getSource();
 
-    Plasma::DataEngineConsumer *consumer;
-    Plasma::DataEngine *engine;
+    Plasma::DataEngineConsumer *consumer = nullptr;
+    Plasma::DataEngine *engine = nullptr;
     KDirWatch watcher;
     QString configPath;
     QString previousSource;
