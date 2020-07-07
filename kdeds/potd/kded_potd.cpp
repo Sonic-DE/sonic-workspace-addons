@@ -13,9 +13,9 @@ PotdModule::PotdModule(QObject* parent, const QList<QVariant>&): KDEDModule(pare
     previousSource = getSource();
     engine->connectSource(previousSource, this); // trigger caching, no need to handle data
 
-    watcher = new QFileSystemWatcher(this);
-    watcher->addPath(configPath);
-    connect(watcher, &QFileSystemWatcher::fileChanged, this, &PotdModule::fileChanged);
+    connect(&watcher, &KDirWatch::dirty,
+            this, &PotdModule::fileChanged);
+    watcher.addFile(configPath);
 }
 
 PotdModule::~PotdModule()
@@ -32,7 +32,7 @@ void PotdModule::fileChanged(const QString &path)
 
     // For some reason, Qt *rc files are always recreated instead of modified.
     // Recreated files were removed from watchers and have to be added again.
-    watcher->addPath(configPath);
+    watcher.addFile(configPath);
 }
 
 QString PotdModule::getSource()
