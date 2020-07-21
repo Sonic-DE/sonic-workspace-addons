@@ -20,6 +20,7 @@
 #include "timer.h"
 
 #include <QProcess>
+#include <KShell>
 
 Timer::Timer(QObject *parent) : QObject(parent)
 {
@@ -28,6 +29,8 @@ Timer::Timer(QObject *parent) : QObject(parent)
 
 void Timer::runCommand(const QString &command)
 {
-    QProcess::startDetached(command, QStringList());
+    QStringList split = KShell::splitArgs(command);
+    const QString program = split.takeFirst();
+    QProcess::startDetached(program, split);
 }
 
