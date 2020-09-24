@@ -33,7 +33,7 @@ Item {
         x:       0
         y:       main.dotSize
         width:   main.dotSize
-        height:  units.smallSpacing
+        height:  PlasmaCore.Units.smallSpacing
         color:   main.gridColor
     }
 
@@ -42,8 +42,8 @@ Item {
         visible: main.showGrid
         x:       main.dotSize
         y:       0
-        width:   units.smallSpacing
-        height:  main.dotSize+units.smallSpacing
+        width:   PlasmaCore.Units.smallSpacing
+        height:  main.dotSize+PlasmaCore.Units.smallSpacing
         color:   main.gridColor
     }
 }
