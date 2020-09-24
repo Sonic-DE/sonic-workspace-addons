@@ -113,6 +113,14 @@ void SpellCheckRunner::reloadConfiguration()
         s.addExampleQuery(QStringLiteral(":q:"));
     }
 
+    if (m_requireTriggerWord) {
+        setTriggerWords({m_triggerWord});
+        setMinLetterCount(minLetterCount() + 2); // We want at least two letters after the trigger word
+    } else {
+        setMinLetterCount(2);
+        setMatchRegex(QRegularExpression());
+    }
+
     setSyntaxes({s});
 }
 
@@ -167,11 +175,7 @@ void SpellCheckRunner::match(Plasma::RunnerContext &context)
     QString query = term;
 
     if (m_requireTriggerWord) {
-        int len = m_triggerWord.length();
-        if (query.left(len) != m_triggerWord) {
-            return;
-        }
-        query = query.mid(len).trimmed();
+        query = query.mid(m_triggerWord.length()).trimmed();
     }
 
     //Pointer to speller object with our chosen language
@@ -200,10 +204,6 @@ void SpellCheckRunner::match(Plasma::RunnerContext &context)
             //Rejoin the strings
             query = terms.join(QLatin1Char(' '));
         }
-    }
-
-    if (query.size() < 2) {
-        return;
     }
 
     if (speller->isValid()) {
