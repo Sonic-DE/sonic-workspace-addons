@@ -65,6 +65,7 @@ void KonsoleProfiles::init()
     connect(m_profileFilesWatch, &KDirWatch::deleted, this, &KonsoleProfiles::loadProfiles);
 
     loadProfiles();
+    setMinLetterCount(3);
 }
 
 void KonsoleProfiles::loadProfiles()
@@ -102,10 +103,6 @@ void KonsoleProfiles::loadProfiles()
 void KonsoleProfiles::match(Plasma::RunnerContext &context)
 {
     QString term = context.query();
-    if (term.length() < 3 || !context.isValid()) {
-        return;
-    }
-
     term = term.remove(m_triggerWord).simplified();
     for (const KonsoleProfileData &data: qAsConst(m_profiles)) {
         if (data.displayName.contains(term, Qt::CaseInsensitive)) {
