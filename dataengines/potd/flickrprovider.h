@@ -50,11 +50,13 @@ public:
     QImage image() const override;
 
 private:
-    void pageRequestFinished(KJob *job);
+    void keyRequestFinished(KJob *job);
+    void xmlRequestFinished(KJob *job);
     void imageRequestFinished(KJob *job);
 
 private:
     QDate mActualDate;
+    QString mApiKey;
     QImage mImage;
 
     QXmlStreamReader xml;

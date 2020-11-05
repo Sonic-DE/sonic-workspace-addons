@@ -1,10 +1,9 @@
-/*
- *   SPDX-FileCopyrightText: 2007 Tobias Koenig <tokoe@kde.org>
- *   SPDX-FileCopyrightText: 2008 Anne-Marie Mahfouf <annma@kde.org>
- *   SPDX-FileCopyrightText: 2008 Georges Toth <gtoth@trypill.org>
- *
- *   SPDX-License-Identifier: GPL-2.0-or-later
- */
+// SPDX-FileCopyrightText: 2007 Tobias Koenig <tokoe@kde.org>
+// SPDX-FileCopyrightText: 2008 Anne-Marie Mahfouf <annma@kde.org>
+// SPDX-FileCopyrightText: 2008 Georges Toth <gtoth@trypill.org>
+// SPDX-FileCopyrightText: 2021 Guo Yunhe <i@guoyunhe.me>
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "flickrprovider.h"
 
@@ -12,15 +11,17 @@
 #include <KPluginFactory>
 #include <QDebug>
 #include <QRandomGenerator>
+#include <QRegularExpression>
 #include <QUrlQuery>
 
-#define FLICKR_API_KEY QStringLiteral("65a0b7386726804b1af4f30dcf69adaf")
+#include <KPluginFactory>
+#include <KIO/Job>
 
-static QUrl buildUrl(const QDate &date)
+static QUrl buildUrl(const QDate &date, const QString apiKey)
 {
     QUrl url(QLatin1String("https://api.flickr.com/services/rest/"));
     QUrlQuery urlQuery(url);
-    urlQuery.addQueryItem(QStringLiteral("api_key"), FLICKR_API_KEY);
+    urlQuery.addQueryItem(QStringLiteral("api_key"), apiKey);
     urlQuery.addQueryItem(QStringLiteral("method"), QStringLiteral("flickr.interestingness.getList"));
     urlQuery.addQueryItem(QStringLiteral("date"), date.toString(Qt::ISODate));
     // url_o might be either too small or too large.
@@ -33,12 +34,38 @@ static QUrl buildUrl(const QDate &date)
 FlickrProvider::FlickrProvider(QObject *parent, const QVariantList &args)
     : PotdProvider(parent, args)
 {
+    const QUrl keyUrl(QStringLiteral("https://invent.kde.org/plasma/kdeplasma-addons/-/raw/master/dataengines/potd/flickrprovider.conf"));
+
+    KIO::StoredTransferJob *keyJob = KIO::storedGet(keyUrl, KIO::NoReload, KIO::HideProgressInfo);
+    connect(keyJob, &KIO::StoredTransferJob::finished, this, &FlickrProvider::keyRequestFinished);
+}
+
+void FlickrProvider::keyRequestFinished(KJob *_job)
+{
+    KIO::StoredTransferJob *keyJob = static_cast<KIO::StoredTransferJob *>( _job );
+    if (keyJob->error()) {
+        emit error(this);
+        qDebug() << "keyRequestFinished error: failed to fetch data";
+        return;
+    }
+
+    const QString keyData = QString::fromUtf8( keyJob->data() );
+
+    QRegularExpression re( QStringLiteral("API_KEY=(.*)" ) );
+    QRegularExpressionMatch match = re.match(keyData);
+    if ( !match.hasMatch() ) {
+        emit error(this);
+        qDebug() << "keyRequestFinished error: failed to parse data";
+        return;
+    }
+    mApiKey = match.captured(1);
+
     mActualDate = date();
 
-    const QUrl url = buildUrl(mActualDate);
+    const QUrl xmlUrl = buildUrl(mActualDate, mApiKey);
 
-    KIO::StoredTransferJob *job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
-    connect(job, &KIO::StoredTransferJob::finished, this, &FlickrProvider::pageRequestFinished);
+    KIO::StoredTransferJob *xmlJob = KIO::storedGet(xmlUrl, KIO::NoReload, KIO::HideProgressInfo);
+    connect(xmlJob, &KIO::StoredTransferJob::finished, this, &FlickrProvider::xmlRequestFinished);
 }
 
 FlickrProvider::~FlickrProvider() = default;
@@ -48,12 +75,12 @@ QImage FlickrProvider::image() const
     return mImage;
 }
 
-void FlickrProvider::pageRequestFinished(KJob *_job)
+void FlickrProvider::xmlRequestFinished(KJob *_job)
 {
     KIO::StoredTransferJob *job = static_cast<KIO::StoredTransferJob *>(_job);
     if (job->error()) {
         Q_EMIT error(this);
-        qDebug() << "pageRequestFinished error";
+        qDebug() << "xmlRequestFinished error";
         return;
     }
 
@@ -77,14 +104,14 @@ void FlickrProvider::pageRequestFinished(KJob *_job)
                     if (mFailureNumber < maxFailure) {
                         /* To be sure, decrement the date to two days earlier... @TODO */
                         mActualDate = mActualDate.addDays(-2);
-                        QUrl url = buildUrl(mActualDate);
+                        QUrl url = buildUrl(mActualDate, mApiKey);
                         KIO::StoredTransferJob *pageJob = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
-                        connect(pageJob, &KIO::StoredTransferJob::finished, this, &FlickrProvider::pageRequestFinished);
+                        connect(pageJob, &KIO::StoredTransferJob::finished, this, &FlickrProvider::xmlRequestFinished);
                         mFailureNumber++;
                         return;
                     } else {
                         Q_EMIT error(this);
-                        qDebug() << "pageRequestFinished error";
+                        qDebug() << "xmlRequestFinished error";
                         return;
                     }
                 }
