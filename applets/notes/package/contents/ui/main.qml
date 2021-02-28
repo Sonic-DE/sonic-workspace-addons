@@ -154,6 +154,7 @@ PlasmaCore.SvgItem {
                 color: textIconColor
                 persistentSelection: true
                 wrapMode: TextEdit.Wrap
+                font.pointSize: plasmoid.configuration.fontSize
 
                 Keys.onPressed: {
                     if(event.key === Qt.Key_Escape) {
@@ -207,6 +208,12 @@ PlasmaCore.SvgItem {
                         contextMenu.popup();
                         mainTextArea.forceActiveFocus();
                     }
+                }
+
+                Component.onCompleted: {
+                    if (!plasmoid.configuration.fontSize)
+                        // Set fontSize to default if it is not set
+                        plasmoid.configuration.fontSize = mainTextArea.font.pointSize
                 }
 
                 QQC2.Menu {
