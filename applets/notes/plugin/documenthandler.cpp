@@ -262,6 +262,22 @@ void DocumentHandler::setFontSize(int arg)
     Q_EMIT fontSizeChanged();
 }
 
+int DocumentHandler::defaultFontSize() const
+{
+    return m_doc ? m_doc->defaultFont().pointSize() : 0;
+}
+
+void DocumentHandler::setDefaultFontSize(int arg)
+{
+    if (!m_doc)
+        return;
+
+    auto font = m_doc->defaultFont();
+    font.setPointSize(arg);
+    m_doc->setDefaultFont(font);
+    Q_EMIT defaultFontSizeChanged();
+}
+
 QColor DocumentHandler::textColor() const
 {
     QTextCursor cursor = textCursor();
