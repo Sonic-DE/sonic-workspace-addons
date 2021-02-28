@@ -11,6 +11,10 @@
       <default>yellow</default>
     </entry>
 
+    <entry name="fontSize" type="int">
+        <default>12</default>
+    </entry>
+
     <entry name="noteId" type="String">
       <default></default>
     </entry>

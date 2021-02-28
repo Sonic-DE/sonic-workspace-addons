@@ -154,6 +154,7 @@ PlasmaCore.SvgItem {
                 color: textIconColor
                 persistentSelection: true
                 wrapMode: TextEdit.Wrap
+                font.pointSize: plasmoid.configuration.fontSize
 
                 Keys.onPressed: {
                     if(event.key === Qt.Key_Escape) {
