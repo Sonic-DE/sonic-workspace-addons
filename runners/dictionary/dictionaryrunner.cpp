@@ -13,9 +13,8 @@ static const char CONFIG_TRIGGERWORD[] = "triggerWord";
 DictionaryRunner::DictionaryRunner(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
     : AbstractRunner(parent, metaData, args)
 {
-    m_engine = new DictionaryMatchEngine(dataEngine(QStringLiteral("dict")), this);
+    m_engine = new DictionaryMatchEngine(m_consumer.dataEngine(QStringLiteral("dict")), this);
 
-    setSpeed(SlowSpeed);
     setPriority(LowPriority);
     setObjectName(QLatin1String("Dictionary"));
 }
@@ -47,7 +46,15 @@ void DictionaryRunner::match(Plasma::RunnerContext &context)
     if (query.isEmpty()) {
         return;
     }
+
+    QMutexLocker locker(&m_mutex);
+    if (!context.isValid()) {
+        return;
+    }
     QString returnedQuery = m_engine->lookupWord(query);
+    if (!context.isValid()) {
+        return;
+    }
 
     static const QRegExp removeHtml(QLatin1String("<[^>]*>"));
     QString definitions(returnedQuery);

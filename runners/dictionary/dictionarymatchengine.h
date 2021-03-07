@@ -31,7 +31,6 @@ private:
         QString definition;
     };
     QMultiMap<QString, ThreadData *> m_lockers;
-    QReadWriteLock m_wordLock;
     Plasma::DataEngine *m_dictionaryEngine;
 
 private Q_SLOTS:

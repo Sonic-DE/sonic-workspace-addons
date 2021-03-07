@@ -28,16 +28,10 @@ QString DictionaryMatchEngine::lookupWord(const QString &word)
         qDebug() << "Could not find dictionary data engine.";
         return QString();
     }
-    if (thread() == QThread::currentThread()) {
-        qDebug() << "DictionaryMatchEngine::lookupWord is only meant to be called from non-primary threads.";
-        return QString();
-    }
 
     ThreadData data;
 
-    m_wordLock.lockForWrite();
     m_lockers.insert(word, &data);
-    m_wordLock.unlock();
 
     QMetaObject::invokeMethod(this, "sourceAdded", Qt::QueuedConnection, Q_ARG(const QString &, word));
     QMutexLocker locker(&data.mutex);
@@ -49,9 +43,7 @@ QString DictionaryMatchEngine::lookupWord(const QString &word)
     QMetaObject::invokeMethod(this, "sourceRemoved", Qt::QueuedConnection, Q_ARG(const QString &, word));
     // after a timeout, if dataUpdated gets m_wordLock here, it can lock data->mutex successfully.
 
-    m_wordLock.lockForWrite();
     m_lockers.remove(word, &data);
-    m_wordLock.unlock();
 
     // after a timeout, if dataUpdated gets m_wordLock here, it won't see this data instance anymore.
 
@@ -77,7 +69,6 @@ void DictionaryMatchEngine::dataUpdated(const QString &source, const Plasma::Dat
 
     QString definition(result[QLatin1String("text")].toString());
 
-    m_wordLock.lockForRead();
     for (ThreadData *data : qAsConst(m_lockers)) {
         QMutexLocker locker(&data->mutex);
         /* Because of QString's CoW semantics, we don't have to worry about
@@ -85,5 +76,4 @@ void DictionaryMatchEngine::dataUpdated(const QString &source, const Plasma::Dat
         data->definition = definition;
         data->waitCondition.wakeOne();
     }
-    m_wordLock.unlock();
 }
