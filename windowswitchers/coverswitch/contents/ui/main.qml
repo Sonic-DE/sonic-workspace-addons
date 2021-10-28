@@ -42,6 +42,7 @@ KWin.Switcher {
                 preferredHighlightBegin: 0.5
                 preferredHighlightEnd: 0.5
                 highlightRangeMode: PathView.StrictlyEnforceRange
+                highlightMoveDuration: Kirigami.Units.longDuration
 
                 path: Path {
                     startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.45
@@ -54,9 +55,9 @@ KWin.Switcher {
                     PathAttribute { name: "z"; value: 90 }
                     PathAttribute { name: "scale"; value: 0.75 }
                     PathAttribute { name: "rotation"; value: 70 }
-                    PathPercent { value: 0.495 }
+                    PathPercent { value: 0.4 }
 
-                    //Center Item
+                    // Center Item
                     PathLine { x: thumbnailView.width * 0.5 ; y: thumbnailView.height * 0.65 }
                     PathAttribute { name: "z"; value: 100 }
                     PathAttribute { name: "scale"; value: 1 }
@@ -67,7 +68,7 @@ KWin.Switcher {
                     PathAttribute { name: "z"; value: 90 }
                     PathAttribute { name: "scale"; value: 0.75 }
                     PathAttribute { name: "rotation"; value: -70 }
-                    PathPercent { value: 0.505 }
+                    PathPercent { value: 0.6 }
 
                     PathLine { x: thumbnailView.width * 0.9 ; y: thumbnailView.height * 0.45 }
                     PathAttribute { name: "z"; value: 0 }
