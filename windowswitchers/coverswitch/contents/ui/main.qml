@@ -45,15 +45,15 @@ KWin.Switcher {
                 highlightMoveDuration: Kirigami.Units.longDuration
 
                 path: Path {
-                    startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.45
+                    startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.55
                     PathAttribute { name: "z"; value: 0 }
-                    PathAttribute { name: "scale"; value: 0.75 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: 70 }
                     PathPercent { value: 0 }
 
-                    PathLine { x: thumbnailView.width * 0.25 ; y: thumbnailView.height * 0.45 }
+                    PathLine { x: thumbnailView.width * 0.25 ; y: thumbnailView.height * 0.55 }
                     PathAttribute { name: "z"; value: 90 }
-                    PathAttribute { name: "scale"; value: 0.75 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: 70 }
                     PathPercent { value: 0.4 }
 
@@ -64,15 +64,15 @@ KWin.Switcher {
                     PathAttribute { name: "rotation"; value: 0 }
                     PathPercent { value: 0.5 }
 
-                    PathLine { x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.45 }
+                    PathLine { x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.55 }
                     PathAttribute { name: "z"; value: 90 }
-                    PathAttribute { name: "scale"; value: 0.75 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: -70 }
                     PathPercent { value: 0.6 }
 
-                    PathLine { x: thumbnailView.width * 0.9 ; y: thumbnailView.height * 0.45 }
+                    PathLine { x: thumbnailView.width * 0.9 ; y: thumbnailView.height * 0.55 }
                     PathAttribute { name: "z"; value: 0 }
-                    PathAttribute { name: "scale"; value: 0.75 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: -70 }
                     PathPercent { value: 1 }
                 }
