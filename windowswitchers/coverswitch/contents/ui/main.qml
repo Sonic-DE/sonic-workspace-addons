@@ -42,36 +42,43 @@ KWin.Switcher {
                 preferredHighlightBegin: 0.5
                 preferredHighlightEnd: 0.5
                 highlightRangeMode: PathView.StrictlyEnforceRange
+                highlightMoveDuration: PlasmaCore.Units.longDuration * 2.5
 
                 path: Path {
-                    startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.45
+                    startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.55
                     PathAttribute { name: "z"; value: 0 }
-                    PathAttribute { name: "scale"; value: 0.75 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: 70 }
                     PathPercent { value: 0 }
 
-                    PathLine { x: thumbnailView.width * 0.25 ; y: thumbnailView.height * 0.45 }
+                    PathLine { x: thumbnailView.width * 0.25 ; y: thumbnailView.height * 0.55 }
                     PathAttribute { name: "z"; value: 90 }
-                    PathAttribute { name: "scale"; value: 0.75 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: 70 }
-                    PathPercent { value: 0.495 }
+                    PathPercent { value: 0.4 }
 
-                    //Center Item
-                    PathLine { x: thumbnailView.width * 0.5 ; y: thumbnailView.height * 0.65 }
+                    // Center Item
+                    PathQuad {
+                        x: thumbnailView.width * 0.5 ; y: thumbnailView.height * 0.65
+                        controlX: thumbnailView.width * 0.45; controlY: thumbnailView.height * 0.6
+                    }
                     PathAttribute { name: "z"; value: 100 }
                     PathAttribute { name: "scale"; value: 1 }
                     PathAttribute { name: "rotation"; value: 0 }
                     PathPercent { value: 0.5 }
 
-                    PathLine { x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.45 }
+                    PathQuad {
+                        x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.55
+                        controlX: thumbnailView.width * 0.55; controlY: thumbnailView.height * 0.6
+                    }
                     PathAttribute { name: "z"; value: 90 }
-                    PathAttribute { name: "scale"; value: 0.75 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: -70 }
-                    PathPercent { value: 0.505 }
+                    PathPercent { value: 0.6 }
 
-                    PathLine { x: thumbnailView.width * 0.9 ; y: thumbnailView.height * 0.45 }
+                    PathLine { x: thumbnailView.width * 0.9 ; y: thumbnailView.height * 0.55 }
                     PathAttribute { name: "z"; value: 0 }
-                    PathAttribute { name: "scale"; value: 0.75 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: -70 }
                     PathPercent { value: 1 }
                 }
