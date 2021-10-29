@@ -42,28 +42,40 @@ KWin.Switcher {
 
                 movementDirection: PathView.Positive
 
+                // Make thumbnails slightly smaller the more there are, so it doesn't feel too crowded
+                // The sizeFactor curve parameters have been calculated experimentally
+                //readonly property real sizeFactor: 1.4 / Math.sqrt(count + 2)
+                readonly property real sizeFactor: 0.3 + (0.5 / Math.log(thumbnailView.count + 0.5))
                 path: Path {
-                    startX: thumbnailView.width * 0.8; startY: thumbnailView.height * 0.8
+                    startX: thumbnailView.width * (1 - thumbnailView.sizeFactor/3); startY: thumbnailView.height * (1 - thumbnailView.sizeFactor/3)
                     PathAttribute { name: "z"; value: 100 }
                     PathAttribute { name: "scale"; value: 1 }
-                    PathLine { x: thumbnailView.width * 0.25 ; y: thumbnailView.height * 0.25  }
+                    PathLine { x: thumbnailView.width * (thumbnailView.sizeFactor/3); y: thumbnailView.height * (thumbnailView.sizeFactor/3) }
                     PathAttribute { name: "z"; value: 0 }
-                    PathAttribute { name: "scale"; value: 0.8 }
+                    PathAttribute { name: "scale"; value: 0.7 }
                 }
 
                 model: tabBox.model
 
                 delegate: Item {
-                    width: thumbnailView.width / 1.7
-                    height: thumbnailView.height / 1.7
+                    width: Math.round(thumbnailView.width * thumbnailView.sizeFactor)
+                    height: Math.round(thumbnailView.height * thumbnailView.sizeFactor)
+
                     scale: PathView.scale
                     z: PathView.z
+                    //opacity: 0.8
 
                     KWin.ThumbnailItem {
                         id: thumbnail
                         wId: windowId
                         anchors.fill: parent
                     }
+                }
+
+                transform: Rotation {
+                    origin { x: width/2; y: height/2 }
+                    axis { x: 0; y: 1; z: 0 }
+                    angle: 10
                 }
 
                 // FIXME: How to get thumbnail actual size?
@@ -76,12 +88,6 @@ KWin.Switcher {
                     z:99
                 }
                 */
-
-                transform: Rotation {
-                    origin { x: width/2; y: height/2 }
-                    axis { x: 0; y: 1; z: 0 }
-                    angle: 10
-                }
 
                 Keys.onUpPressed: decrementCurrentIndex()
                 Keys.onLeftPressed: decrementCurrentIndex()
