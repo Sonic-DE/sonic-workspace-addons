@@ -61,6 +61,17 @@ KWin.Switcher {
                 model: tabBox.model
 
                 delegate: Item {
+                    // TODO: Expose this in the ThumbnailItem API, to avoid the warning
+                    // QQmlExpression: depends on non-NOTIFYable properties: KWin::X11Client::frameGeometry
+                    readonly property size thumbnailSize: {
+                        let thumbnailRatio = thumbnail.client.frameGeometry.width / thumbnail.client.frameGeometry.height;
+                        let boxRatio = width / height;
+                        if (thumbnailRatio > boxRatio) {
+                            return Qt.size(width, width / thumbnailRatio);
+                        } else {
+                            return Qt.size(height * thumbnailRatio, height);
+                        }
+                    }
 
                     // Make thumbnails slightly smaller the more there are, so it doesn't feel too crowded
                     // The sizeFactor curve parameters have been calculated experimentally
@@ -84,16 +95,18 @@ KWin.Switcher {
                     angle: 10
                 }
 
-                // FIXME: How to get thumbnail actual size?
-                /*
                 highlight: PlasmaCore.FrameSvgItem {
                     imagePath: "widgets/viewitem"
                     prefix: "hover"
-                    width: 1000 //delegateItem.width
-                    height: 600 // delegateItem.height
-                    z:99
+
+                    anchors.centerIn: thumbnailView.currentItem
+                    width: thumbnailView.currentItem.thumbnailSize.width + PlasmaCore.Units.largeSpacing
+                    height: thumbnailView.currentItem.thumbnailSize.height + PlasmaCore.Units.largeSpacing
+
+                    scale: thumbnailView.currentItem.scale
+                    z: thumbnailView.currentItem.z - 1
+                    opacity: Math.max(0, (thumbnailView.currentItem.z - 80) / 20)
                 }
-                */
 
                 Keys.onUpPressed: decrementCurrentIndex()
                 Keys.onLeftPressed: decrementCurrentIndex()
