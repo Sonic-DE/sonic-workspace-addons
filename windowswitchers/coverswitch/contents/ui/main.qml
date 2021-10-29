@@ -88,6 +88,18 @@ KWin.Switcher {
                 delegate: Item {
                     id: delegateItem
 
+                    // TODO: Expose this in the ThumbnailItem API, to avoid the warning
+                    // QQmlExpression: depends on non-NOTIFYable properties: KWin::X11Client::frameGeometry
+                    readonly property size thumbnailSize: {
+                        let thumbnailRatio = thumbnail.client.frameGeometry.width / thumbnail.client.frameGeometry.height;
+                        let boxRatio = width / height;
+                        if (thumbnailRatio > boxRatio) {
+                            return Qt.size(width, width / thumbnailRatio);
+                        } else {
+                            return Qt.size(height * thumbnailRatio, height);
+                        }
+                    }
+
                     width: tabBox.screenGeometry.width / 2
                     height: tabBox.screenGeometry.height / 2
                     scale: PathView.scale
@@ -104,6 +116,21 @@ KWin.Switcher {
                         axis { x: 0; y: 1; z: 0 }
                         angle: delegateItem.PathView.rotation
                     }
+                }
+
+                highlight: PlasmaCore.FrameSvgItem {
+                    imagePath: "widgets/viewitem"
+                    prefix: "hover"
+                    visible: thumbnailView.currentItem
+
+                    anchors.centerIn: thumbnailView.currentItem
+                    width: thumbnailView.currentItem.thumbnailSize.width + PlasmaCore.Units.largeSpacing
+                    height: thumbnailView.currentItem.thumbnailSize.height + PlasmaCore.Units.largeSpacing
+
+                    transform: thumbnailView.currentItem.transform
+                    scale: thumbnailView.currentItem.scale
+                    z: thumbnailView.currentItem.z - 1
+                    opacity: Math.max(0, (thumbnailView.currentItem.z - 90) / 10)
                 }
 
                 Keys.onUpPressed: decrementCurrentIndex()
