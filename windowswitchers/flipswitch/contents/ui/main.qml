@@ -44,13 +44,19 @@ KWin.Switcher {
 
                 // Make thumbnails slightly smaller the more there are, so it doesn't feel too crowded
                 // The sizeFactor curve parameters have been calculated experimentally
-                //readonly property real sizeFactor: 1.4 / Math.sqrt(count + 2)
-                readonly property real sizeFactor: 0.3 + (0.5 / Math.log(thumbnailView.count + 0.5))
+                readonly property real sizeFactor: 0.2 + (0.5 / Math.log(thumbnailView.count + 0.5))
                 path: Path {
-                    startX: thumbnailView.width * (1 - thumbnailView.sizeFactor/3); startY: thumbnailView.height * (1 - thumbnailView.sizeFactor/3)
+                    // Selected thumbnail. Center it a little bit and reserve space for the Y rotation
+                    startX: Math.round(thumbnailView.width * 0.65)
+                    startY: Math.round(thumbnailView.height * 0.65)
                     PathAttribute { name: "z"; value: 100 }
                     PathAttribute { name: "scale"; value: 1 }
-                    PathLine { x: thumbnailView.width * (thumbnailView.sizeFactor/3); y: thumbnailView.height * (thumbnailView.sizeFactor/3) }
+
+                    // Last item on top-left corner
+                    PathLine {
+                        x: Math.round(thumbnailView.width * 0.2)
+                        y: Math.round(thumbnailView.height * 0.2)
+                    }
                     PathAttribute { name: "z"; value: 0 }
                     PathAttribute { name: "scale"; value: 0.7 }
                 }
@@ -58,12 +64,11 @@ KWin.Switcher {
                 model: tabBox.model
 
                 delegate: Item {
-                    width: Math.round(thumbnailView.width * thumbnailView.sizeFactor)
-                    height: Math.round(thumbnailView.height * thumbnailView.sizeFactor)
 
+                    width: Math.round(tabBox.screenGeometry.width * thumbnailView.sizeFactor)
+                    height: Math.round(tabBox.screenGeometry.height * thumbnailView.sizeFactor)
                     scale: PathView.scale
                     z: PathView.z
-                    //opacity: 0.8
 
                     KWin.ThumbnailItem {
                         id: thumbnail
@@ -73,7 +78,7 @@ KWin.Switcher {
                 }
 
                 transform: Rotation {
-                    origin { x: width/2; y: height/2 }
+                    origin { x: thumbnailView.width/2; y: thumbnailView.height/2 }
                     axis { x: 0; y: 1; z: 0 }
                     angle: 10
                 }
