@@ -88,8 +88,8 @@ KWin.Switcher {
                 delegate: Item {
                     id: delegateItem
 
-                    width: thumbnailView.width / 2
-                    height: thumbnailView.height / 2
+                    width: tabBox.screenGeometry.width / 2
+                    height: tabBox.screenGeometry.height / 2
                     scale: PathView.scale
                     z: PathView.z
 
@@ -100,7 +100,7 @@ KWin.Switcher {
                     }
 
                     transform: Rotation {
-                        origin { x: width/2; y: height/2 }
+                        origin { x: delegateItem.width/2; y: delegateItem.height/2 }
                         axis { x: 0; y: 1; z: 0 }
                         angle: delegateItem.PathView.rotation
                     }
