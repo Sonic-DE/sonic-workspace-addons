@@ -40,7 +40,9 @@ KWin.Switcher {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                movementDirection: PathView.Positive
+                // HACK: With 3 thumbnails, the shortest path is not always the expected one
+                // This breaks the reverse tabbing in that case, but keeps normal tabbing consistent
+                movementDirection: (count !== 3) ? PathView.Shortest : PathView.Positive
 
                 path: Path {
                     // Selected thumbnail. Center it a little bit and reserve space for the Y rotation

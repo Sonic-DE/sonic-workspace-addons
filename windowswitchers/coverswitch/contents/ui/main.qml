@@ -44,6 +44,10 @@ KWin.Switcher {
                 highlightRangeMode: PathView.StrictlyEnforceRange
                 highlightMoveDuration: PlasmaCore.Units.longDuration * 2.5
 
+                // HACK: With 3 thumbnails, the shortest path is not always the expected one
+                // This breaks the reverse tabbing in that case, but keeps normal tabbing consistent
+                movementDirection: (count > 3) ? PathView.Shortest : PathView.Positive
+
                 path: Path {
                     startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.55
                     PathAttribute { name: "z"; value: 0 }
