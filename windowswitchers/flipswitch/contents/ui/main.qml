@@ -40,7 +40,7 @@ KWin.Switcher {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                movementDirection: PathView.Positive
+                movementDirection: (count == 2) ? PathView.Positive : PathView.Shortest
 
                 path: Path {
                     // Selected thumbnail. Center it a little bit and reserve space for the Y rotation
@@ -136,6 +136,23 @@ KWin.Switcher {
     }
 
     onCurrentIndexChanged: {
+        if (currentIndex === thumbnailView.currentIndex) {
+            return
+        }
+
+        // HACK: With 3 thumbnails, the shortest path is not always the expected one
+        // BUG https://bugreports.qt.io/browse/QTBUG-15314 (marked as resolved but not really)
+        if (thumbnailView.count === 3) {
+            if ((thumbnailView.currentIndex === 0 && currentIndex === 1)
+                 || (thumbnailView.currentIndex === 1 && currentIndex === 2)
+                 || (thumbnailView.currentIndex === 2 && currentIndex === 0)) {
+                thumbnailView.incrementCurrentIndex()
+            } else {
+                thumbnailView.decrementCurrentIndex()
+            }
+            return
+        }
+
         thumbnailView.currentIndex = tabBox.currentIndex
     }
 }
