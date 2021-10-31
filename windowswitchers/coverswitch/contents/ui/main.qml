@@ -39,8 +39,8 @@ KWin.Switcher {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                preferredHighlightBegin: 0.5
-                preferredHighlightEnd: 0.5
+                preferredHighlightBegin: 0.49
+                preferredHighlightEnd: 0.49
                 highlightRangeMode: PathView.StrictlyEnforceRange
                 highlightMoveDuration: PlasmaCore.Units.longDuration * 2.5
 
@@ -67,7 +67,7 @@ KWin.Switcher {
                     PathAttribute { name: "z"; value: 100 }
                     PathAttribute { name: "scale"; value: 1 }
                     PathAttribute { name: "rotation"; value: 0 }
-                    PathPercent { value: 0.5 }
+                    PathPercent { value: 0.49 } // A bit less than 50% so items preferrably stack on the right side
 
                     PathQuad {
                         x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.55
