@@ -9,6 +9,7 @@ import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Layouts 1.15
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 3.0 as PC3
 
 import org.kde.kwin 2.0 as KWin
 
@@ -151,7 +152,7 @@ KWin.Switcher {
                     Layout.alignment: Qt.AlignCenter
                 }
 
-                QQC2.Label {
+                PC3.Label {
                     font.bold: true
                     font.pointSize: 16
                     text: tabBox.model.data(tabBox.model.index(tabBox.currentIndex, 0), Qt.UserRole + 1) // CaptionRole
