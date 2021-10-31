@@ -9,9 +9,7 @@ import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Layouts 1.15
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.kquickcontrolsaddons 2.0
 
-//TODO: import fails with latest version 3.0
 import org.kde.kwin 2.0 as KWin
 
 
