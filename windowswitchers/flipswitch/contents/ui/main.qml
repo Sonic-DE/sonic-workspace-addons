@@ -128,6 +128,9 @@ KWin.Switcher {
                     font.bold: true
                     font.pointSize: 16
                     text: tabBox.model.data(tabBox.model.index(tabBox.currentIndex, 0), Qt.UserRole + 1) // CaptionRole
+                    maximumLineCount: 1
+                    elide: Text.ElideMiddle
+                    Layout.maximumWidth: tabBox.screenGeometry.width * 0.8
                     Layout.alignment: Qt.AlignCenter
                 }
             }
