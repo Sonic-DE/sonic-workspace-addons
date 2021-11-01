@@ -28,9 +28,8 @@ KWin.Switcher {
         y: 0
 
         mainItem: ColumnLayout {
-            id: dialogMainItem
-            width: tabBox.screenGeometry.width
-            height: tabBox.screenGeometry.height
+            width: tabBox.screenGeometry.width - dialog.margins.left - dialog.margins.right
+            height: tabBox.screenGeometry.height - dialog.margins.top - dialog.margins.bottom
 
             PathView {
                 id: thumbnailView
