@@ -59,6 +59,8 @@ KWin.Switcher {
                 model: tabBox.model
 
                 delegate: Item {
+                    readonly property string caption: thumbnail.client.caption
+                    readonly property var icon: thumbnail.client.icon
                     // TODO: Expose this in the ThumbnailItem API, to avoid the warning
                     // QQmlExpression: depends on non-NOTIFYable properties: KWin::X11Client::frameGeometry
                     readonly property size thumbnailSize: {
@@ -119,14 +121,16 @@ KWin.Switcher {
                 spacing: PlasmaCore.Units.largeSpacing
 
                 PlasmaCore.IconItem {
-                    source: tabBox.model.data(tabBox.model.index(tabBox.currentIndex, 0), Qt.UserRole + 3) // IconRole
+                    source: thumbnailView.currentItem.icon
+                    width: PlasmaCore.Units.iconSizes.large
+                    height: width
                     Layout.alignment: Qt.AlignCenter
                 }
 
                 PC3.Label {
                     font.bold: true
                     font.pointSize: 16
-                    text: tabBox.model.data(tabBox.model.index(tabBox.currentIndex, 0), Qt.UserRole + 1) // CaptionRole
+                    text: thumbnailView.currentItem.caption
                     maximumLineCount: 1
                     elide: Text.ElideMiddle
                     Layout.maximumWidth: tabBox.screenGeometry.width * 0.8
