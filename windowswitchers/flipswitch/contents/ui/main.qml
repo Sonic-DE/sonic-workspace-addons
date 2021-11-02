@@ -81,6 +81,7 @@ KWin.Switcher {
                     height: Math.round(tabBox.screenGeometry.height * sizeFactor)
                     scale: PathView.scale
                     z: PathView.z
+                    opacity: Math.min(1, z/20)  // So items appear from the back more naturally
 
                     KWin.ThumbnailItem {
                         id: thumbnail

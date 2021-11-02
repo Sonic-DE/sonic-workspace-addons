@@ -108,6 +108,11 @@ KWin.Switcher {
                     scale: PathView.scale
                     z: PathView.z
 
+                    // TODO: Reduce opacity at the ends of the path, so items appear and dissapear from the back more naturally
+                    // It doesn't work well for even items as the last one is positioned at the right end of the path
+                    // It would be nice to do it only when items are moving, but I don't see how to get that information from PathView
+                    // opacity: Math.min(1, z/20)
+
                     KWin.ThumbnailItem {
                         id: thumbnail
                         wId: windowId
@@ -133,7 +138,7 @@ KWin.Switcher {
                     transform: thumbnailView.currentItem.transform
                     scale: thumbnailView.currentItem.scale
                     z: thumbnailView.currentItem.z - 1
-                    opacity: Math.max(0, (thumbnailView.currentItem.z - 90) / 10)
+                    opacity: Math.max(0, (thumbnailView.currentItem.z - 80) / 20)
                 }
 
                 Keys.onUpPressed: decrementCurrentIndex()
