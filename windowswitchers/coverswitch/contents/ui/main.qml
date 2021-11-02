@@ -43,9 +43,8 @@ KWin.Switcher {
                 highlightRangeMode: PathView.StrictlyEnforceRange
                 highlightMoveDuration: PlasmaCore.Units.longDuration * 2.5
 
-                movementDirection: (count == 2) ? PathView.Positive : PathView.Shortest
-
                 path: Path {
+                    // Left stack
                     startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.55
                     PathAttribute { name: "z"; value: 0 }
                     PathAttribute { name: "scale"; value: 0.7 }
@@ -68,6 +67,7 @@ KWin.Switcher {
                     PathAttribute { name: "rotation"; value: 0 }
                     PathPercent { value: 0.49 } // A bit less than 50% so items preferrably stack on the right side
 
+                    // Right stack
                     PathQuad {
                         x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.55
                         controlX: thumbnailView.width * 0.55; controlY: thumbnailView.height * 0.6
@@ -124,6 +124,16 @@ KWin.Switcher {
                         axis { x: 0; y: 1; z: 0 }
                         angle: delegateItem.PathView.rotation
                     }
+
+                    TapHandler {
+                        grabPermissions: PointerHandler.TakeOverForbidden
+                        gesturePolicy: TapHandler.WithinBounds
+                        onSingleTapped: {
+                            thumbnailView.movementDirection = (delegateItem.PathView.rotation < 0) ? PathView.Positive : PathView.Negative
+                            thumbnailView.currentIndex = index
+                            thumbnailView.movementDirection = PathView.Shortest
+                        }
+                    }
                 }
 
                 highlight: PlasmaCore.FrameSvgItem {
@@ -175,6 +185,12 @@ KWin.Switcher {
 
     onCurrentIndexChanged: {
         if (currentIndex === thumbnailView.currentIndex) {
+            return
+        }
+
+        // If there are only two items prefer the Positive direction
+        if (thumbnailView.count === 2) {
+            thumbnailView.incrementCurrentIndex()
             return
         }
 
