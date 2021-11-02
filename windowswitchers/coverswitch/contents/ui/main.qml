@@ -124,6 +124,14 @@ KWin.Switcher {
                         axis { x: 0; y: 1; z: 0 }
                         angle: delegateItem.PathView.rotation
                     }
+
+                    TapHandler {
+                        grabPermissions: PointerHandler.TakeOverForbidden
+                        gesturePolicy: TapHandler.WithinBounds
+                        onSingleTapped: {
+                            thumbnailView.currentIndex = index
+                        }
+                    }
                 }
 
                 highlight: PlasmaCore.FrameSvgItem {

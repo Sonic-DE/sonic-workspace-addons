@@ -38,8 +38,6 @@ KWin.Switcher {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                movementDirection: (count == 2) ? PathView.Positive : PathView.Shortest
-
                 path: Path {
                     // Selected thumbnail. Center it a little bit and reserve space for the Y rotation
                     startX: Math.round(thumbnailView.width * 0.65)
@@ -87,6 +85,16 @@ KWin.Switcher {
                         id: thumbnail
                         wId: windowId
                         anchors.fill: parent
+                    }
+
+                    TapHandler {
+                        grabPermissions: PointerHandler.TakeOverForbidden
+                        gesturePolicy: TapHandler.WithinBounds
+                        onSingleTapped: {
+                            thumbnailView.movementDirection = PathView.Positive
+                            thumbnailView.currentIndex = index
+                            thumbnailView.movementDirection = PathView.Shortest
+                        }
                     }
                 }
 
@@ -143,6 +151,12 @@ KWin.Switcher {
 
     onCurrentIndexChanged: {
         if (currentIndex === thumbnailView.currentIndex) {
+            return
+        }
+
+        // If there are only two items prefer the Positive direction
+        if (thumbnailView.count === 2) {
+            thumbnailView.incrementCurrentIndex()
             return
         }
 
