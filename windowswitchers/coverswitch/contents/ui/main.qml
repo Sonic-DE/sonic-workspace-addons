@@ -135,18 +135,27 @@ KWin.Switcher {
                 }
 
                 highlight: PlasmaCore.FrameSvgItem {
+                    id: highlightItem
+
+                    readonly property Item target: thumbnailView.currentItem
+                    visible: target != null
+
                     imagePath: "widgets/viewitem"
                     prefix: "hover"
-                    visible: thumbnailView.currentItem
 
-                    anchors.centerIn: thumbnailView.currentItem
-                    width: thumbnailView.currentItem.thumbnailSize.width + PlasmaCore.Units.largeSpacing
-                    height: thumbnailView.currentItem.thumbnailSize.height + PlasmaCore.Units.largeSpacing
+                    anchors.centerIn: target
+                    width: target.thumbnailSize.width + PlasmaCore.Units.largeSpacing
+                    height: target.thumbnailSize.height + PlasmaCore.Units.largeSpacing
+                    scale: target.scale
+                    z: target.z - 1
+                    // The transform cannot be directly assigned as the transform origin is different
+                    transform: Rotation {
+                        origin { x: highlightItem.width/2; y: highlightItem.height/2 }
+                        axis { x: 0; y: 1; z: 0 }
+                        angle: target.PathView.rotation
+                    }
 
-                    transform: thumbnailView.currentItem.transform
-                    scale: thumbnailView.currentItem.scale
-                    z: thumbnailView.currentItem.z - 1
-                    opacity: Math.max(0, (thumbnailView.currentItem.z - 80) / 20)
+                    opacity: Math.max(0, (target.z - 80) / 20)
                 }
 
                 Keys.onUpPressed: decrementCurrentIndex()
