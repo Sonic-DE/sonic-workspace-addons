@@ -42,15 +42,15 @@ KWin.Switcher {
 
                 path: Path {
                     // Selected thumbnail. Center it a little bit and reserve space for the Y rotation
-                    startX: Math.round(thumbnailView.width * 0.65)
-                    startY: Math.round(thumbnailView.height * 0.65)
+                    startX: Math.round(thumbnailView.width * 0.7)
+                    startY: Math.round(thumbnailView.height * 0.7)
                     PathAttribute { name: "z"; value: 100 }
                     PathAttribute { name: "scale"; value: 1 }
 
                     // Last item on top-left corner
                     PathLine {
                         x: Math.round(thumbnailView.width * 0.2)
-                        y: Math.round(thumbnailView.height * 0.2)
+                        y: Math.round(thumbnailView.height * 0.25)
                     }
                     PathAttribute { name: "z"; value: 0 }
                     PathAttribute { name: "scale"; value: 0.7 }
@@ -102,7 +102,7 @@ KWin.Switcher {
 
                 transform: Rotation {
                     origin { x: thumbnailView.width/2; y: thumbnailView.height/2 }
-                    axis { x: 0; y: 1; z: 0 }
+                    axis { x: 0; y: 1; z: -0.15 }
                     angle: 10
                 }
 
