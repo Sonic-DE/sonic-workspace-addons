@@ -43,6 +43,8 @@ KWin.Switcher {
                 highlightRangeMode: PathView.StrictlyEnforceRange
                 highlightMoveDuration: PlasmaCore.Units.longDuration * 2.5
 
+                pathItemCount: 13
+
                 path: Path {
                     // Left stack
                     startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.55

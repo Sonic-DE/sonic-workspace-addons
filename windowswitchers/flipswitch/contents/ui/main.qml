@@ -38,6 +38,8 @@ KWin.Switcher {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
+                pathItemCount: 12
+
                 path: Path {
                     // Selected thumbnail. Center it a little bit and reserve space for the Y rotation
                     startX: Math.round(thumbnailView.width * 0.65)
