@@ -8,6 +8,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Layouts 1.15
 
+import org.kde.kirigami 2.15 as Kirigami
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PC3
 
@@ -119,6 +120,17 @@ KWin.Switcher {
                         id: thumbnail
                         wId: windowId
                         anchors.fill: parent
+                    }
+
+                    Kirigami.ShadowedRectangle {
+                        anchors.centerIn: parent
+                        width: thumbnailSize.width
+                        height: thumbnailSize.height
+                        z: -1
+
+                        color: "transparent"
+                        shadow.size: 30
+                        shadow.color: "#202020" // TODO: Select shadow color (is it themable?)
                     }
 
                     transform: Rotation {
