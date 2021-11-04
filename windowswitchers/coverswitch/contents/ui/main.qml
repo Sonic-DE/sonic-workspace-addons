@@ -45,6 +45,8 @@ KWin.Switcher {
 
                 movementDirection: (count == 2) ? PathView.Positive : PathView.Shortest
 
+                pathItemCount: 13
+
                 path: Path {
                     startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.55
                     PathAttribute { name: "z"; value: 0 }
