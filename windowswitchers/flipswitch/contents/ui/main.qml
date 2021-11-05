@@ -144,7 +144,7 @@ KWin.Switcher {
             }
 
             RowLayout {
-                Layout.preferredHeight: PlasmaCore.Units.iconSizes.huge
+                Layout.preferredHeight: PlasmaCore.Units.iconSizes.large
                 Layout.margins: PlasmaCore.Units.gridUnit
                 Layout.alignment: Qt.AlignCenter
                 spacing: PlasmaCore.Units.largeSpacing
