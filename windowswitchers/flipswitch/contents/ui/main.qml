@@ -39,18 +39,23 @@ KWin.Switcher {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
+                preferredHighlightBegin: 1/(count + 1)
+                preferredHighlightEnd: preferredHighlightBegin
+                highlightRangeMode: PathView.StrictlyEnforceRange
+                highlightMoveDuration: PlasmaCore.Units.longDuration * 2
+
                 pathItemCount: 12
 
                 path: Path {
-                    // Selected thumbnail. Center it a little bit and reserve space for the Y rotation
-                    startX: Math.round(thumbnailView.width * 0.7)
-                    startY: Math.round(thumbnailView.height * 0.7)
+                    // Nearest point of the path
+                    startX: Math.round(thumbnailView.width * 0.75)
+                    startY: Math.round(thumbnailView.height * 0.85)
                     PathAttribute { name: "z"; value: 100 }
                     PathAttribute { name: "scale"; value: 1 }
 
-                    // Last item on top-left corner
+                    // Back point of the path on top-left corner
                     PathLine {
-                        x: Math.round(thumbnailView.width * 0.2)
+                        x: Math.round(thumbnailView.width * 0.25)
                         y: Math.round(thumbnailView.height * 0.25)
                     }
                     PathAttribute { name: "z"; value: 0 }
@@ -76,13 +81,12 @@ KWin.Switcher {
 
                     // Make thumbnails slightly smaller the more there are, so it doesn't feel too crowded
                     // The sizeFactor curve parameters have been calculated experimentally
-                    readonly property real sizeFactor: 0.4 + (0.5 / (thumbnailView.count + 3))
+                    readonly property real sizeFactor: 0.35 + (0.5 / (thumbnailView.count + 1))
 
                     width: Math.round(tabBox.screenGeometry.width * sizeFactor)
                     height: Math.round(tabBox.screenGeometry.height * sizeFactor)
                     scale: PathView.scale
                     z: PathView.z
-                    opacity: Math.min(1, z/20)  // So items appear from the back more naturally
 
                     KWin.ThumbnailItem {
                         id: thumbnail
@@ -133,8 +137,6 @@ KWin.Switcher {
                     height: target.thumbnailSize.height + PlasmaCore.Units.largeSpacing
                     scale: target.scale
                     z: target.z - 1
-
-                    opacity: Math.max(0, (target.z - 80) / 20)
                 }
 
                 Keys.onUpPressed: decrementCurrentIndex()
