@@ -154,7 +154,7 @@ KWin.Switcher {
                     id: highlightItem
 
                     readonly property Item target: thumbnailView.currentItem
-                    visible: target != null
+                    visible: target != null && target.z > 80
 
                     imagePath: "widgets/viewitem"
                     prefix: "hover"
@@ -170,8 +170,6 @@ KWin.Switcher {
                         axis { x: 0; y: 1; z: 0 }
                         angle: target.PathView.rotation
                     }
-
-                    opacity: Math.max(0, (target.z - 80) / 20)
                 }
 
                 Keys.onUpPressed: decrementCurrentIndex()
