@@ -200,4 +200,11 @@ KWin.Switcher {
 
         thumbnailView.currentIndex = tabBox.currentIndex
     }
+
+    onVisibleChanged: {
+        // Reset the PathView index when hiding to avoid unwanted animations on relaunch
+        if (!visible) {
+            thumbnailView.currentIndex = 0;
+        }
+    }
 }
