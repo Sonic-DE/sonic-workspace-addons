@@ -143,6 +143,10 @@ KWin.Switcher {
                         grabPermissions: PointerHandler.TakeOverForbidden
                         gesturePolicy: TapHandler.WithinBounds
                         onSingleTapped: {
+                            if (index === thumbnailView.currentIndex) {
+                                thumbnailView.model.activate(index);
+                                return;
+                            }
                             thumbnailView.movementDirection = (delegateItem.PathView.rotation < 0) ? PathView.Positive : PathView.Negative
                             thumbnailView.currentIndex = index
                             thumbnailView.movementDirection = PathView.Shortest
