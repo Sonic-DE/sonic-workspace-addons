@@ -67,24 +67,14 @@ KWin.Switcher {
                 delegate: Item {
                     readonly property string caption: thumbnail.client.caption
                     readonly property var icon: thumbnail.client.icon
-                    // TODO: Expose this in the ThumbnailItem API, to avoid the warning
-                    // QQmlExpression: depends on non-NOTIFYable properties: KWin::X11Client::frameGeometry
-                    readonly property size thumbnailSize: {
-                        let thumbnailRatio = thumbnail.client.frameGeometry.width / thumbnail.client.frameGeometry.height;
-                        let boxRatio = width / height;
-                        if (thumbnailRatio > boxRatio) {
-                            return Qt.size(width, width / thumbnailRatio);
-                        } else {
-                            return Qt.size(height * thumbnailRatio, height);
-                        }
-                    }
 
                     // Make thumbnails slightly smaller the more there are, so it doesn't feel too crowded
                     // The sizeFactor curve parameters have been calculated experimentally
                     readonly property real sizeFactor: 0.35 + (0.5 / (thumbnailView.count + 1))
+                    readonly property bool isWider: thumbnail.ratio > tabBox.screenGeometry.width / tabBox.screenGeometry.height
 
-                    width: Math.round(tabBox.screenGeometry.width * sizeFactor)
-                    height: Math.round(tabBox.screenGeometry.height * sizeFactor)
+                    width: Math.round((isWider ? tabBox.screenGeometry.width : tabBox.screenGeometry.height * thumbnail.ratio) * sizeFactor)
+                    height: Math.round((isWider ? tabBox.screenGeometry.width / thumbnail.ratio : tabBox.screenGeometry.height) * sizeFactor)
                     scale: PathView.scale
                     z: PathView.z
 
@@ -95,12 +85,14 @@ KWin.Switcher {
                         id: thumbnail
                         wId: windowId
                         anchors.fill: parent
+
+                        // TODO: Expose this property in the ThumbnailItem API, to avoid the warning
+                        // QQmlExpression: depends on non-NOTIFYable properties: KWin::X11Client::frameGeometry
+                        readonly property double ratio: thumbnail.client.frameGeometry.width / thumbnail.client.frameGeometry.height
                     }
 
                     Kirigami.ShadowedRectangle {
-                        anchors.centerIn: parent
-                        width: thumbnailSize.width
-                        height: thumbnailSize.height
+                        anchors.fill: parent
                         z: -1
 
                         color: "transparent"
@@ -140,8 +132,8 @@ KWin.Switcher {
                     prefix: "hover"
 
                     anchors.centerIn: target
-                    width: target.thumbnailSize.width + PlasmaCore.Units.largeSpacing
-                    height: target.thumbnailSize.height + PlasmaCore.Units.largeSpacing
+                    width: target.width + PlasmaCore.Units.largeSpacing
+                    height: target.height + PlasmaCore.Units.largeSpacing
                     scale: target.scale
                     z: target.z - 1
                 }
