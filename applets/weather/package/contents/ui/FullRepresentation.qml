@@ -60,6 +60,13 @@ ColumnLayout {
 
         Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
 
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.NoButton
+            cursorShape: Qt.PointingHandCursor
+        }
+
         wrapMode: Text.WordWrap
         horizontalAlignment: Text.AlignRight
         font {
