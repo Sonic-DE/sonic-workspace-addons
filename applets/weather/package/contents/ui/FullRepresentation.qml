@@ -64,7 +64,7 @@ ColumnLayout {
             anchors.fill: parent
             hoverEnabled: true
             acceptedButtons: Qt.NoButton
-            cursorShape: Qt.PointingHandCursor
+            cursorShape: !!creditUrl ? Qt.PointingHandCursor : Qt.ArrowCursor
         }
 
         wrapMode: Text.WordWrap
