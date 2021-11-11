@@ -8,6 +8,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.2
 import org.kde.kirigami 2.5 as Kirigami
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.private.dict 1.0
 
 ColumnLayout {
@@ -35,26 +36,11 @@ ColumnLayout {
             id: listView
             model: dictionariesModel
 
-            delegate: Control {
-
-                background: Rectangle {
-                    id: highlight
-                    implicitWidth: root.width - Kirigami.Units.largeSpacing
-                    visible: model.id == root.cfg_dictionary
-                    color: Kirigami.Theme.highlightColor
-                }
-
-                contentItem: Label {
-                    id: pathText
-                    Layout.fillWidth: true
-                    text: model.description
-                    color: model.id == root.cfg_dictionary ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: root.cfg_dictionary = model.id
-                }
+            delegate: PlasmaComponents3.ItemDelegate {
+                text: model.description
+                highlighted: model.id == root.cfg_dictionary
+                implicitWidth: root.width - Kirigami.Units.largeSpacing
+                onClicked: root.cfg_dictionary = model.id
             }
         }
     }
