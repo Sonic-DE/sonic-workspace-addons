@@ -122,7 +122,7 @@ KWin.Switcher {
 
                         color: "transparent"
                         shadow.size: 30
-                        shadow.color: "#202020" // TODO: Select shadow color (is it themable?)
+                        shadow.color: "#202020"
                     }
 
                     transform: Rotation {
