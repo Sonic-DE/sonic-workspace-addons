@@ -141,7 +141,6 @@ KWin.Switcher {
                             }
                             thumbnailView.movementDirection = (delegateItem.PathView.rotation < 0) ? PathView.Positive : PathView.Negative
                             thumbnailView.currentIndex = index
-                            thumbnailView.movementDirection = PathView.Shortest
                         }
                     }
                 }
@@ -205,23 +204,15 @@ KWin.Switcher {
             return
         }
 
-        // If there are only two items prefer the Positive direction
-        if (thumbnailView.count === 2) {
-            thumbnailView.incrementCurrentIndex()
-            return
-        }
-
-        // HACK: With 3 thumbnails, the shortest path is not always the expected one
-        // BUG https://bugreports.qt.io/browse/QTBUG-15314 (marked as resolved but not really)
-        if (thumbnailView.count === 3) {
-            if ((thumbnailView.currentIndex === 0 && currentIndex === 1)
-                  || (thumbnailView.currentIndex === 1 && currentIndex === 2)
-                  || (thumbnailView.currentIndex === 2 && currentIndex === 0)) {
-                thumbnailView.incrementCurrentIndex()
-            } else {
-                thumbnailView.decrementCurrentIndex()
-            }
-            return
+        // WindowSwitcher always changes currentIndex in increments of 1.
+        // Detect the change direction and set the PathView movement accordingly, so fast changes
+        // in the same direction don't result into a combination of forward and backward movements.
+        if (thumbnailView.count === 2 || (currentIndex === 0 && thumbnailView.currentIndex === thumbnailView.count - 1)) {
+            thumbnailView.movementDirection = PathView.Positive
+        } else if (currentIndex === (thumbnailView.count - 1) && thumbnailView.currentIndex === 0) {
+            thumbnailView.movementDirection = PathView.Negative
+        } else {
+            thumbnailView.movementDirection = (currentIndex > thumbnailView.currentIndex) ? PathView.Positive : PathView.Negative
         }
 
         thumbnailView.currentIndex = tabBox.currentIndex
