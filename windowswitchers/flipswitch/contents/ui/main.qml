@@ -159,7 +159,7 @@ KWin.Switcher {
 
                 PC3.Label {
                     font.bold: true
-                    font.pointSize: 16
+                    font.pointSize: Math.round(PlasmaCore.Theme.defaultFont.pointSize * 1.6)
                     text: thumbnailView.currentItem.caption
                     maximumLineCount: 1
                     elide: Text.ElideMiddle
