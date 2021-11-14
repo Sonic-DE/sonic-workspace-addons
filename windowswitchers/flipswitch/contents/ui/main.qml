@@ -128,16 +128,16 @@ KWin.Switcher {
                     id: highlightItem
 
                     readonly property Item target: thumbnailView.currentItem
-                    visible: target != null && target.z > 20
+                    visible: target && target.z > 20
 
                     imagePath: "widgets/viewitem"
                     prefix: "hover"
 
                     anchors.centerIn: target
-                    width: target.width + PlasmaCore.Units.largeSpacing
-                    height: target.height + PlasmaCore.Units.largeSpacing
-                    scale: target.scale
-                    z: target.z - 1
+                    width: target ? target.width + PlasmaCore.Units.largeSpacing : 0
+                    height: target ? target.height + PlasmaCore.Units.largeSpacing : 0
+                    scale: target ? target.scale : 1
+                    z: target ? target.z - 1 : -1
                 }
 
                 Keys.onUpPressed: decrementCurrentIndex()
@@ -153,7 +153,7 @@ KWin.Switcher {
                 spacing: PlasmaCore.Units.largeSpacing
 
                 PlasmaCore.IconItem {
-                    source: thumbnailView.currentItem.icon
+                    source: thumbnailView.currentItem ? thumbnailView.currentItem.icon : ""
                     width: PlasmaCore.Units.iconSizes.large
                     height: width
                     Layout.alignment: Qt.AlignCenter
@@ -162,7 +162,7 @@ KWin.Switcher {
                 PC3.Label {
                     font.bold: true
                     font.pointSize: Math.round(PlasmaCore.Theme.defaultFont.pointSize * 1.6)
-                    text: thumbnailView.currentItem.caption
+                    text: thumbnailView.currentItem ? thumbnailView.currentItem.caption : ""
                     maximumLineCount: 1
                     elide: Text.ElideMiddle
                     Layout.maximumWidth: tabBox.screenGeometry.width * 0.8
