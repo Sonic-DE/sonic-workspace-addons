@@ -109,6 +109,8 @@ KWin.Switcher {
                     KWin.ThumbnailItem {
                         id: thumbnail
                         wId: windowId
+                        sourceSize: Qt.size(tabBox.screenGeometry.width / 2, tabBox.screenGeometry.height / 2)
+
                         anchors.fill: parent
 
                         // KWin::AbstractClient::frameGeometry is non-NOTIFYable, so we capture the ratio at creation
