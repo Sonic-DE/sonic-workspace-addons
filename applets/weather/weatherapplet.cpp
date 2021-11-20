@@ -193,7 +193,7 @@ QVariantMap WeatherApplet::configValues() const
 
     return QVariantMap{
         // UI settings
-        {AppletConfigKeys::services(), cfg.readEntry(StorageConfigKeys::weatherServiceProviders, m_defaultProviders)},
+        {AppletConfigKeys::services(), m_defaultProviders},
         {AppletConfigKeys::showTemperatureInTooltip(), cfg.readEntry(StorageConfigKeys::showTemperatureInTooltip, true)},
         {AppletConfigKeys::showWindInTooltip(), cfg.readEntry(StorageConfigKeys::showWindInTooltip, false)},
         {AppletConfigKeys::showPressureInTooltip(), cfg.readEntry(StorageConfigKeys::showPressureInTooltip, false)},
