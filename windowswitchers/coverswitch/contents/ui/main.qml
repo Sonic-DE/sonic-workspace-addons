@@ -108,17 +108,11 @@ KWin.Switcher {
 
                     KWin.ThumbnailItem {
                         id: thumbnail
+                        readonly property double ratio: frameSize.width / frameSize.height
+
                         wId: windowId
                         sourceSize: Qt.size(tabBox.screenGeometry.width / 2, tabBox.screenGeometry.height / 2)
-
                         anchors.fill: parent
-
-                        // KWin::AbstractClient::frameGeometry is non-NOTIFYable, so we capture the ratio at creation
-                        // to avoid warnings with a direct binding: `QQmlExpression: depends on non-NOTIFYable properties`
-                        property double ratio : tabBox.screenGeometry.width / tabBox.screenGeometry.height
-                        Component.onCompleted: {
-                            ratio = client.frameGeometry.width / client.frameGeometry.height
-                        }
                     }
 
                     Kirigami.ShadowedRectangle {
