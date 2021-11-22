@@ -123,7 +123,7 @@ QString LocationListModel::nameForListIndex(int listIndex) const
         const LocationItem &item = m_locations.at(listIndex);
         if (!item.weatherService.isEmpty()) {
             return i18nc("A weather station location and the weather service it comes from",
-                         "%1 <i>(%2)</i>",
+                         "%1 (%2)",
                          item.weatherStation,
                          m_serviceCodeToDisplayName.value(item.weatherService, item.weatherService));
         }

@@ -64,7 +64,7 @@ Kirigami.FormLayout {
                 var sourceDetails = source.split('|');
                 if (sourceDetails.length > 2) {
                     return i18nc("A weather station location and the weather service it comes from",
-                                    "%1 <i>(%2)</i>", sourceDetails[2], plasmoid.nativeInterface.providers[sourceDetails[0]]);
+                                    "%1 (%2)", sourceDetails[2], plasmoid.nativeInterface.providers[sourceDetails[0]]);
                 }
                 return ""
             }
