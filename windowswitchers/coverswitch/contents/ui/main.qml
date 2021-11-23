@@ -49,13 +49,13 @@ KWin.Switcher {
                 path: Path {
                     // Left stack
                     startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.55
-                    PathAttribute { name: "z"; value: 0 }
+                    PathAttribute { name: "progress"; value: 0 }
                     PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: 70 }
                     PathPercent { value: 0 }
 
                     PathLine { x: thumbnailView.width * 0.25 ; y: thumbnailView.height * 0.55 }
-                    PathAttribute { name: "z"; value: 90 }
+                    PathAttribute { name: "progress"; value: 0.9 }
                     PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: 70 }
                     PathPercent { value: 0.4 }
@@ -65,7 +65,7 @@ KWin.Switcher {
                         x: thumbnailView.width * 0.5 ; y: thumbnailView.height * 0.65
                         controlX: thumbnailView.width * 0.45; controlY: thumbnailView.height * 0.6
                     }
-                    PathAttribute { name: "z"; value: 100 }
+                    PathAttribute { name: "progress"; value: 1 }
                     PathAttribute { name: "scale"; value: 1 }
                     PathAttribute { name: "rotation"; value: 0 }
                     PathPercent { value: 0.49 } // A bit less than 50% so items preferrably stack on the right side
@@ -75,13 +75,13 @@ KWin.Switcher {
                         x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.55
                         controlX: thumbnailView.width * 0.55; controlY: thumbnailView.height * 0.6
                     }
-                    PathAttribute { name: "z"; value: 90 }
+                    PathAttribute { name: "progress"; value: 0.9 }
                     PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: -70 }
                     PathPercent { value: 0.6 }
 
                     PathLine { x: thumbnailView.width * 0.9 ; y: thumbnailView.height * 0.55 }
-                    PathAttribute { name: "z"; value: 0 }
+                    PathAttribute { name: "progress"; value: 0 }
                     PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: -70 }
                     PathPercent { value: 1 }
@@ -99,7 +99,7 @@ KWin.Switcher {
                     width: (isWider ? tabBox.screenGeometry.width : tabBox.screenGeometry.height * thumbnail.ratio) / 2
                     height: (isWider ? tabBox.screenGeometry.width / thumbnail.ratio : tabBox.screenGeometry.height) / 2
                     scale: PathView.scale
-                    z: PathView.z
+                    z: Math.floor(PathView.progress * thumbnailView.count)
 
                     // TODO: Reduce opacity at the ends of the path, so items appear and dissapear from the back more naturally
                     // It doesn't work well for even items as the last one is positioned at the right end of the path

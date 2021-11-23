@@ -50,7 +50,7 @@ KWin.Switcher {
                     // Nearest point of the path
                     startX: Math.round(thumbnailView.width * 0.75)
                     startY: Math.round(thumbnailView.height * 0.85)
-                    PathAttribute { name: "z"; value: 100 }
+                    PathAttribute { name: "progress"; value: 1 }
                     PathAttribute { name: "scale"; value: 1 }
 
                     // Back point of the path on top-left corner
@@ -58,7 +58,7 @@ KWin.Switcher {
                         x: Math.round(thumbnailView.width * 0.25)
                         y: Math.round(thumbnailView.height * 0.25)
                     }
-                    PathAttribute { name: "z"; value: 0 }
+                    PathAttribute { name: "progress"; value: 0 }
                     PathAttribute { name: "scale"; value: 0.7 }
                 }
 
@@ -76,10 +76,10 @@ KWin.Switcher {
                     width: Math.round((isWider ? tabBox.screenGeometry.width : tabBox.screenGeometry.height * thumbnail.ratio) * sizeFactor)
                     height: Math.round((isWider ? tabBox.screenGeometry.width / thumbnail.ratio : tabBox.screenGeometry.height) * sizeFactor)
                     scale: PathView.scale
-                    z: PathView.z
+                    z: Math.floor(PathView.progress * thumbnailView.count * 2)
 
                     // Reduce opacity on the end so items dissapear more naturally
-                    opacity: Math.min(1, (1 - z/100) / thumbnailView.preferredHighlightBegin);
+                    opacity: Math.min(1, (1 - PathView.progress) / thumbnailView.preferredHighlightBegin);
 
                     KWin.ThumbnailItem {
                         id: thumbnail
