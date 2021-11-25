@@ -133,6 +133,8 @@ KWin.Switcher {
                     z: target ? target.z - 0.5 : -0.5
                 }
 
+                onMovementStarted: movementDirection = PathView.Shortest
+
                 Keys.onUpPressed: decrementCurrentIndex()
                 Keys.onLeftPressed: decrementCurrentIndex()
                 Keys.onDownPressed: incrementCurrentIndex()

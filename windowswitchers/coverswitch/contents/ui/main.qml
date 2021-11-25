@@ -164,6 +164,8 @@ KWin.Switcher {
                     }
                 }
 
+                onMovementStarted: movementDirection = PathView.Shortest
+
                 Keys.onUpPressed: decrementCurrentIndex()
                 Keys.onLeftPressed: decrementCurrentIndex()
                 Keys.onDownPressed: incrementCurrentIndex()
