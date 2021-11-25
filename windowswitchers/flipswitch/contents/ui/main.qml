@@ -59,7 +59,7 @@ KWin.Switcher {
                         y: Math.round(thumbnailView.height * 0.25)
                     }
                     PathAttribute { name: "progress"; value: 0 }
-                    PathAttribute { name: "scale"; value: 0.7 }
+                    PathAttribute { name: "scale"; value: 0.6 }
                 }
 
                 model: tabBox.model
@@ -125,13 +125,15 @@ KWin.Switcher {
 
                     readonly property Item target: thumbnailView.currentItem
 
-                    visible: target
+                    visible: !!target
                     anchors.centerIn: target
                     width: target ? target.width + PlasmaCore.Units.largeSpacing : 0
                     height: target ? target.height + PlasmaCore.Units.largeSpacing : 0
                     scale: target ? target.scale : 1
                     z: target ? target.z - 0.5 : -0.5
                 }
+
+                onMovementStarted: movementDirection = PathView.Shortest
 
                 Keys.onUpPressed: decrementCurrentIndex()
                 Keys.onLeftPressed: decrementCurrentIndex()
@@ -149,6 +151,8 @@ KWin.Switcher {
                     source: thumbnailView.currentItem ? thumbnailView.currentItem.icon : ""
                     width: PlasmaCore.Units.iconSizes.large
                     height: width
+                    implicitWidth: width
+                    implicitHeight: height
                     Layout.alignment: Qt.AlignCenter
                 }
 

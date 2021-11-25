@@ -150,7 +150,7 @@ KWin.Switcher {
 
                     readonly property Item target: thumbnailView.currentItem
 
-                    visible: target
+                    visible: !!target
                     anchors.centerIn: target
                     width: target ? target.width + PlasmaCore.Units.largeSpacing : 0
                     height: target ? target.height + PlasmaCore.Units.largeSpacing : 0
@@ -163,6 +163,8 @@ KWin.Switcher {
                         angle: target ? target.PathView.rotation : 0
                     }
                 }
+
+                onMovementStarted: movementDirection = PathView.Shortest
 
                 Keys.onUpPressed: decrementCurrentIndex()
                 Keys.onLeftPressed: decrementCurrentIndex()
@@ -180,6 +182,8 @@ KWin.Switcher {
                     source: thumbnailView.currentItem ? thumbnailView.currentItem.icon : ""
                     width: PlasmaCore.Units.iconSizes.large
                     height: width
+                    implicitWidth: width
+                    implicitHeight: height
                     Layout.alignment: Qt.AlignCenter
                 }
 
