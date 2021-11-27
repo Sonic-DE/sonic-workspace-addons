@@ -143,10 +143,14 @@ KWin.Switcher {
                     }
                 }
 
-                highlight: PlasmaCore.FrameSvgItem {
+                // Using a FrameSvgItem as the highligthitem presents aliasing problems on rotation
+                highlight: Rectangle {
                     id: highlightItem
-                    imagePath: "widgets/viewitem"
-                    prefix: "hover"
+
+                    color: Qt.rgba(PlasmaCore.Theme.highlightColor.r, PlasmaCore.Theme.highlightColor.g, PlasmaCore.Theme.highlightColor.b, 0.33)
+                    border.width: PlasmaCore.Units.devicePixelRatio
+                    border.color: PlasmaCore.Theme.highlightColor
+                    radius: PlasmaCore.Units.devicePixelRatio * 3
 
                     readonly property Item target: thumbnailView.currentItem
 
