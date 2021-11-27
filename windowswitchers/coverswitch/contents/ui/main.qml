@@ -150,7 +150,7 @@ KWin.Switcher {
 
                     readonly property Item target: thumbnailView.currentItem
 
-                    visible: target
+                    visible: !!target
                     anchors.centerIn: target
                     width: target ? target.width + PlasmaCore.Units.largeSpacing : 0
                     height: target ? target.height + PlasmaCore.Units.largeSpacing : 0
