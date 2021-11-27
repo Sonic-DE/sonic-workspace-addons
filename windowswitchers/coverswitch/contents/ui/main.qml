@@ -182,6 +182,8 @@ KWin.Switcher {
                     source: thumbnailView.currentItem ? thumbnailView.currentItem.icon : ""
                     width: PlasmaCore.Units.iconSizes.large
                     height: width
+                    implicitWidth: width
+                    implicitHeight: height
                     Layout.alignment: Qt.AlignCenter
                 }
 
