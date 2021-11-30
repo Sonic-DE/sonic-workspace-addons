@@ -164,6 +164,9 @@ KWin.Switcher {
                     }
                 }
 
+                layer.enabled: true
+                layer.smooth: true
+
                 onMovementStarted: movementDirection = PathView.Shortest
 
                 Keys.onUpPressed: decrementCurrentIndex()

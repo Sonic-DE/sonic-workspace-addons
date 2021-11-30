@@ -119,6 +119,9 @@ KWin.Switcher {
                     angle: 10
                 }
 
+                layer.enabled: true
+                layer.smooth: true
+
                 highlight: PlasmaCore.FrameSvgItem {
                     imagePath: "widgets/viewitem"
                     prefix: "hover"
