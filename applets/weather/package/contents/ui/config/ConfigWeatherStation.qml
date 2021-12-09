@@ -75,7 +75,7 @@ Kirigami.FormLayout {
             id: selectButton
             Layout.fillWidth: true
             icon.name: "find-location"
-            text: i18nc("@action:button", "Choose...")
+            text: i18nc("@action:button", "Choose…")
             onClicked: stationPicker.visible = true;
         }
     }
