@@ -43,7 +43,11 @@ KWin.Switcher {
                 preferredHighlightBegin: 0.49
                 preferredHighlightEnd: 0.49
                 highlightRangeMode: PathView.StrictlyEnforceRange
-                highlightMoveDuration: PlasmaCore.Units.longDuration * 2.5
+                highlightMoveDuration: PlasmaCore.Units.longDuration * 4 / Math.sqrt(visibleCount + 1)
+
+                onHighlightMoveDurationChanged: {
+                    console.log("** highlightMoveDurationChanged: " + highlightMoveDuration + "ms")
+                }
 
                 pathItemCount: 13
 
