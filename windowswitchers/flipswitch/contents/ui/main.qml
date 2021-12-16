@@ -24,8 +24,8 @@ KWin.Switcher {
         location: PlasmaCore.Types.Floating
         visible: tabBox.visible
         flags: Qt.X11BypassWindowManagerHint
-        x: 0
-        y: 0
+        x: screenGeometry.x
+        y: screenGeometry.y
 
         mainItem: ColumnLayout {
             width: tabBox.screenGeometry.width - dialog.margins.left - dialog.margins.right
