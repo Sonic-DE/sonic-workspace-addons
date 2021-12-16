@@ -43,11 +43,12 @@ KWin.Switcher {
                 preferredHighlightBegin: 0.49
                 preferredHighlightEnd: 0.49
                 highlightRangeMode: PathView.StrictlyEnforceRange
-                highlightMoveDuration: PlasmaCore.Units.longDuration * 5 / Math.sqrt(visibleCount + 1)
 
-                onHighlightMoveDurationChanged: {
-                    console.log("** highlightMoveDurationChanged: " + highlightMoveDuration + "ms")
-                }
+                // This property sets the animation duration between the current position to the next one,
+                // without taking into account how much distance the thumbnails travel in that time.
+                // To compensate the speed, we slowly reduce the duration with the number of thumbnails,
+                // starting from `veryLongDuration` when there are 2 of them
+                highlightMoveDuration: PlasmaCore.Units.veryLongDuration * (2 / Math.sqrt(visibleCount + 1))
 
                 pathItemCount: 13
 
