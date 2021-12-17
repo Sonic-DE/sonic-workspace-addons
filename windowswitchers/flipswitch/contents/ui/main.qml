@@ -114,8 +114,9 @@ KWin.Switcher {
                         z: -1
 
                         color: "transparent"
-                        shadow.size: 30
-                        shadow.color: "#202020"
+                        shadow.size: PlasmaCore.Units.gridUnit
+                        shadow.color: "black"
+                        opacity: 0.5
                         shadow.yOffset: 1
                     }
 
