@@ -101,9 +101,24 @@ KWin.Switcher {
                     readonly property string caption: model.caption
                     readonly property var icon: model.icon
 
-                    readonly property bool isWider: thumbnail.ratio > tabBox.screenGeometry.width / tabBox.screenGeometry.height
-                    width: (isWider ? tabBox.screenGeometry.width : tabBox.screenGeometry.height * thumbnail.ratio) / 2
-                    height: (isWider ? tabBox.screenGeometry.width / thumbnail.ratio : tabBox.screenGeometry.height) / 2
+                    readonly property real scaleFactor: {
+                        const boxWidth = tabBox.screenGeometry.width / 2;
+                        const boxHeight = tabBox.screenGeometry.height / 2;
+
+                        if (thumbnail.implicitWidth < boxWidth && thumbnail.implicitHeight < boxHeight) {
+                            // Do not scale up thumbnails smaller than the box frame
+                            return 1;
+                        } else if (thumbnail.ratio > boxWidth / boxHeight) {
+                            // Thumbnail is wider than the box
+                            return boxWidth / thumbnail.implicitWidth;
+                        } else {
+                            // Thumbnail is taller than the box
+                            return boxHeight / thumbnail.implicitHeight;
+                        }
+                    }
+
+                    width: Math.round(thumbnail.implicitWidth * scaleFactor)
+                    height: Math.round(thumbnail.implicitHeight * scaleFactor)
                     scale: PathView.onPath ? PathView.scale : 0
                     z: PathView.onPath ? Math.floor(PathView.progress * thumbnailView.visibleCount) : -1
 
