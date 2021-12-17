@@ -76,11 +76,15 @@ KWin.Switcher {
 
                     // Make thumbnails slightly smaller the more there are, so it doesn't feel too crowded
                     // The sizeFactor curve parameters have been calculated experimentally
-                    readonly property real sizeFactor: 0.35 + (0.5 / (thumbnailView.visibleCount + 1))
-                    readonly property bool isWider: thumbnail.ratio > tabBox.screenGeometry.width / tabBox.screenGeometry.height
+                    readonly property real boxScaleFactor: 0.35 + (0.5 / (thumbnailView.visibleCount + 1))
+                    readonly property int boxWidth: tabBox.screenGeometry.width * boxScaleFactor
+                    readonly property int boxHeight: tabBox.screenGeometry.height * boxScaleFactor
 
-                    width: Math.round((isWider ? tabBox.screenGeometry.width : tabBox.screenGeometry.height * thumbnail.ratio) * sizeFactor)
-                    height: Math.round((isWider ? tabBox.screenGeometry.width / thumbnail.ratio : tabBox.screenGeometry.height) * sizeFactor)
+                    readonly property bool isSmaller: thumbnail.implicitWidth < boxWidth && thumbnail.implicitHeight < boxHeight
+                    readonly property bool isWider: thumbnail.ratio > boxWidth / boxHeight
+
+                    width: Math.round(isSmaller ? thumbnail.implicitWidth : (isWider ? boxWidth: boxHeight * thumbnail.ratio))
+                    height: Math.round(isSmaller ? thumbnail.implicitHeight : (isWider ? boxWidth / thumbnail.ratio : boxHeight))
                     scale: PathView.onPath ? PathView.scale : 0
                     z: PathView.onPath ? Math.floor(PathView.progress * thumbnailView.visibleCount) : -1
 

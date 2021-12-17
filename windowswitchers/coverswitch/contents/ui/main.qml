@@ -101,9 +101,15 @@ KWin.Switcher {
                     readonly property string caption: model.caption
                     readonly property var icon: model.icon
 
-                    readonly property bool isWider: thumbnail.ratio > tabBox.screenGeometry.width / tabBox.screenGeometry.height
-                    width: (isWider ? tabBox.screenGeometry.width : tabBox.screenGeometry.height * thumbnail.ratio) / 2
-                    height: (isWider ? tabBox.screenGeometry.width / thumbnail.ratio : tabBox.screenGeometry.height) / 2
+                    readonly property real boxScaleFactor: 0.5
+                    readonly property int boxWidth: tabBox.screenGeometry.width * boxScaleFactor
+                    readonly property int boxHeight: tabBox.screenGeometry.height * boxScaleFactor
+
+                    readonly property bool isSmaller: thumbnail.implicitWidth < boxWidth && thumbnail.implicitHeight < boxHeight
+                    readonly property bool isWider: thumbnail.ratio > boxWidth / boxHeight
+
+                    width: Math.round(isSmaller ? thumbnail.implicitWidth : (isWider ? boxWidth: boxHeight * thumbnail.ratio))
+                    height: Math.round(isSmaller ? thumbnail.implicitHeight : (isWider ? boxWidth / thumbnail.ratio : boxHeight))
                     scale: PathView.onPath ? PathView.scale : 0
                     z: PathView.onPath ? Math.floor(PathView.progress * thumbnailView.visibleCount) : -1
 
