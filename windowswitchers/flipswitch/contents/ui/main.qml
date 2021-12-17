@@ -136,8 +136,8 @@ KWin.Switcher {
 
                     visible: !!target
                     anchors.centerIn: target
-                    width: target ? target.width + PlasmaCore.Units.largeSpacing : 0
-                    height: target ? target.height + PlasmaCore.Units.largeSpacing : 0
+                    width: target ? target.width + PlasmaCore.Units.gridUnit : 0
+                    height: target ? target.height + PlasmaCore.Units.gridUnit : 0
                     scale: target ? target.scale : 1
                     z: target ? target.z - 0.5 : -0.5
                 }
@@ -154,7 +154,7 @@ KWin.Switcher {
                 Layout.preferredHeight: PlasmaCore.Units.iconSizes.large
                 Layout.margins: PlasmaCore.Units.gridUnit
                 Layout.alignment: Qt.AlignCenter
-                spacing: PlasmaCore.Units.largeSpacing
+                spacing: PlasmaCore.Units.gridUnit
 
                 PlasmaCore.IconItem {
                     source: thumbnailView.currentItem ? thumbnailView.currentItem.icon : ""
