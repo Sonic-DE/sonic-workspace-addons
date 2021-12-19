@@ -166,11 +166,12 @@ KWin.Switcher {
                     prefix: "hover"
 
                     readonly property Item target: thumbnailView.currentItem
+                    readonly property int extraMargins: 2 * PlasmaCore.Units.smallSpacing * Math.round(thumbnailView.boxWidth / 300)
 
                     visible: !!target
                     anchors.centerIn: target
-                    width: target ? target.width + PlasmaCore.Units.gridUnit : 0
-                    height: target ? target.height + PlasmaCore.Units.gridUnit : 0
+                    width: target ? target.width + extraMargins : 0
+                    height: target ? target.height + extraMargins : 0
                     scale: target ? target.scale : 1
                     z: target ? target.z - 0.5 : -0.5
                     // The transform cannot be directly assigned as the transform origin is different
