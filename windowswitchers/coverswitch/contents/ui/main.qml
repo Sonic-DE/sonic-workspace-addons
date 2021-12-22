@@ -168,9 +168,12 @@ KWin.Switcher {
                     readonly property Item target: thumbnailView.currentItem
 
                     visible: !!target
+                    // Make sure the highlight is pixel perfect aligned on both sides even if the target is not
                     anchors.centerIn: target
-                    width: target ? target.width + 6 * PlasmaCore.Units.smallSpacing : 0
-                    height: target ? target.height + 6 * PlasmaCore.Units.smallSpacing : 0
+                    anchors.horizontalCenterOffset: Math.round(target.x) - target.x
+                    anchors.verticalCenterOffset: Math.round(target.y) - target.y
+                    width: target ? Math.round(target.width/2 + 3 * PlasmaCore.Units.smallSpacing) * 2 : 0
+                    height: target ? Math.round(target.height/2 + 3 * PlasmaCore.Units.smallSpacing) * 2 : 0
                     scale: target ? target.scale : 1
                     z: target ? target.z - 0.5 : -0.5
                     // The transform cannot be directly assigned as the transform origin is different
