@@ -84,7 +84,7 @@ class SaveImageThread : public QObject, public QRunnable
     Q_OBJECT
 
 public:
-    SaveImageThread(const QString &identifier, const QImage &image);
+    SaveImageThread(const QString &identifier, const std::map<PotdProvider::RoleType, QVariant> &dataMap);
     void run() override;
 
 Q_SIGNALS:
@@ -93,6 +93,9 @@ Q_SIGNALS:
 private:
     QImage m_image;
     QString m_identifier;
+    QUrl m_wallpaperRemoteUrl;
+    QString m_wallpaperTitle;
+    QString m_wallpaperAuthor;
 };
 
 #endif
