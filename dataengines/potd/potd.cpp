@@ -123,6 +123,9 @@ void PotdEngine::finished(PotdProvider *provider)
     }
 
     QImage img(provider->image());
+    std::optional<QString> title(provider->title());
+    std::optional<QString> author(provider->author());
+    std::optional<QUrl> remoteUrl(provider->remoteUrl());
     // store in cache if it's not the response of a CachedProvider
     if (qobject_cast<CachedProvider *>(provider) == nullptr && !img.isNull()) {
         SaveImageThread *thread = new SaveImageThread(provider->identifier(), img);
@@ -131,6 +134,9 @@ void PotdEngine::finished(PotdProvider *provider)
     } else {
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::ImageRole), img);
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::UrlRole), CachedProvider::identifierToPath(provider->identifier()));
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::TitleRole), title.value_or(QString()));
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::AuthorRole), author.value_or(QString()));
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::RemoteUrlRole), remoteUrl.value_or(QUrl()));
     }
 
     provider->deleteLater();
