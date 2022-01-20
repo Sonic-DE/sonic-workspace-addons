@@ -54,6 +54,9 @@ private:
     const std::map<PotdProvider::RoleType, QString> m_dataKeysMap{
         {PotdProvider::ImageRole, "Image"},
         {PotdProvider::UrlRole, "Url"},
+        {PotdProvider::RemoteUrlRole, "RemoteUrl"},
+        {PotdProvider::TitleRole, "Title"},
+        {PotdProvider::AuthorRole, "Author"},
     };
 };
 
