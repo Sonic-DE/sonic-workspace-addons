@@ -24,6 +24,12 @@ class PLASMA_POTD_EXPORT PotdProvider : public QObject
     Q_OBJECT
 
 public:
+    enum RoleType {
+        ImageRole,
+        UrlRole,
+    };
+    Q_ENUM(RoleType)
+
     /**
      * Creates a new PoTD provider.
      *
