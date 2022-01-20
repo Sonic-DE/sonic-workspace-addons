@@ -36,10 +36,15 @@ class PLASMA_POTD_EXPORT PotdProvider : public QObject
 public:
     /**
      * @see m_dataKeysMap in potd.h
+     * @see PotdEngine::sourceRequestEvent in potd.cpp
      */
     enum RoleType {
         ImageRole,
         UrlRole,
+        InfoUrlRole, /**< Information URL of the image */
+        RemoteUrlRole, /**< Network URL of the image */
+        TitleRole, /**< Title of the image */
+        AuthorRole, /**< Author of the image */
     };
     Q_ENUM(RoleType)
 
