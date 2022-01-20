@@ -29,6 +29,9 @@ public:
     enum RoleType {
         ImageRole,
         UrlRole,
+        RemoteUrlRole, /**< Network URL of the image */
+        TitleRole, /**< Title of the image */
+        AuthorRole, /**< Author of the image */
     };
     Q_ENUM(RoleType)
 
