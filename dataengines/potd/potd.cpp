@@ -130,9 +130,21 @@ void PotdEngine::finished(PotdProvider *provider)
     }
 
     QImage img(provider->image());
+    const QUrl infoUrl(provider->infoUrl().value_or(QUrl()));
+    const QUrl remoteUrl(provider->remoteUrl().value_or(QUrl()));
+    const QString title(provider->title().value_or(QString()));
+    const QString author(provider->author().value_or(QString()));
+
     // store in cache if it's not the response of a CachedProvider
     if (qobject_cast<CachedProvider *>(provider) == nullptr && !img.isNull()) {
-        SaveImageThread *thread = new SaveImageThread(provider->identifier(), img);
+        const std::map<PotdProvider::RoleType, QVariant> dataMap{
+            {PotdProvider::ImageRole, img},
+            {PotdProvider::InfoUrlRole, infoUrl},
+            {PotdProvider::RemoteUrlRole, remoteUrl},
+            {PotdProvider::TitleRole, title},
+            {PotdProvider::AuthorRole, author},
+        };
+        SaveImageThread *thread = new SaveImageThread(provider->identifier(), dataMap);
         connect(thread, &SaveImageThread::done, this, &PotdEngine::cachingFinished);
         QThreadPool::globalInstance()->start(thread);
     } else {
