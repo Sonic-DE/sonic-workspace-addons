@@ -61,7 +61,7 @@ void BingProvider::pageRequestFinished(KJob *_job)
         // Example copyright text: "草丛中的母狮和它的幼崽，南非 (© Andrew Coleman/Getty Images)"
         const QString title = imageObject.value("title").toString();
         const QString copyright = imageObject.value("copyright").toString();
-        const QRegularExpression copyrightRegEx("(.+?)\\(.+?\\)");
+        const QRegularExpression copyrightRegEx("(.+?)\\((.+?)\\)");
         const QRegularExpressionMatch match = copyrightRegEx.match(copyright);
         if (match.hasMatch()) {
             // In some regions "title" is empty, so extract the title from the copyright text.
