@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
+#include <QMetaEnum>
 #include <QRegularExpression>
 #include <QThreadPool>
 #include <QTimer>
@@ -142,10 +143,12 @@ void PotdEngine::finished(PotdProvider *provider)
     provider->deleteLater();
 }
 
-void PotdEngine::cachingFinished(const QString &source, const QString &path, const QImage &img)
+void PotdEngine::cachingFinished(const QString &source, const std::map<PotdProvider::RoleType, QVariant> &dataMap)
 {
-    setData(source, m_dataKeysMap.at(PotdProvider::ImageRole), img);
-    setData(source, m_dataKeysMap.at(PotdProvider::UrlRole), path);
+    QMetaEnum e = QMetaEnum::fromType<PotdProvider::RoleType>();
+    for (int i = 0; i < e.keyCount(); i++) {
+        setData(source, m_dataKeysMap.at(static_cast<PotdProvider::RoleType>(e.value(i))), dataMap.at(static_cast<PotdProvider::RoleType>(e.value(i))));
+    }
 }
 
 void PotdEngine::error(PotdProvider *provider)
