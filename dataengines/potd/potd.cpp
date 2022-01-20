@@ -68,6 +68,8 @@ PotdEngine::PotdEngine(QObject *parent, const QVariantList &args)
         mFactories.insert(provider, metadata);
         setData(QLatin1String("Providers"), provider, metadata.name());
     }
+
+    qRegisterMetaType<PotdProviderData>();
 }
 
 PotdEngine::~PotdEngine()
@@ -166,10 +168,10 @@ void PotdEngine::finished(PotdProvider *provider)
     provider->deleteLater();
 }
 
-void PotdEngine::cachingFinished(const QString &source, const QString &path, const QImage &img)
+void PotdEngine::cachingFinished(const QString &source, const PotdProviderData &data)
 {
-    setData(source, DataKeys::image(), img);
-    setData(source, DataKeys::url(), path);
+    setData(source, DataKeys::image(), data.wallpaperImage);
+    setData(source, DataKeys::url(), data.wallpaperLocalUrl);
 }
 
 void PotdEngine::error(PotdProvider *provider)
