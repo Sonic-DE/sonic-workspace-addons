@@ -27,6 +27,14 @@ static QString dataKeysMap(PotdProvider::RoleType role)
         return "Image";
     case PotdProvider::UrlRole:
         return "Url";
+    case PotdProvider::InfoUrlRole:
+        return "InfoUrl";
+    case PotdProvider::RemoteUrlRole:
+        return "RemoteUrl";
+    case PotdProvider::TitleRole:
+        return "Title";
+    case PotdProvider::AuthorRole:
+        return "Author";
     default:
         return "";
     }
@@ -119,6 +127,10 @@ bool PotdEngine::sourceRequestEvent(const QString &identifier)
     if (updateSource(identifier, true)) {
         setData(identifier, dataKeysMap(PotdProvider::ImageRole), QImage());
         setData(identifier, dataKeysMap(PotdProvider::UrlRole), QUrl());
+        setData(identifier, dataKeysMap(PotdProvider::InfoUrlRole), QUrl());
+        setData(identifier, dataKeysMap(PotdProvider::RemoteUrlRole), QUrl());
+        setData(identifier, dataKeysMap(PotdProvider::TitleRole), QString());
+        setData(identifier, dataKeysMap(PotdProvider::AuthorRole), QString());
         return true;
     }
 
