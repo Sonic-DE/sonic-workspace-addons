@@ -10,12 +10,30 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QThreadPool>
 #include <QTimer>
 
 #include <QDebug>
+
+namespace DataKeys
+{
+auto infoUrl = []() noexcept {
+    return QStringLiteral("InfoUrl"); // The website URL of the image
+};
+auto remoteUrl = []() noexcept {
+    return QStringLiteral("RemoteUrl"); // The remote URL of the image
+};
+auto title = []() noexcept {
+    return QStringLiteral("Title");
+};
+auto author = []() noexcept {
+    return QStringLiteral("Author");
+};
+}
 
 LoadImageThread::LoadImageThread(const QString &filePath)
     : m_filePath(filePath)
@@ -39,6 +57,22 @@ void SaveImageThread::run()
 {
     m_data.wallpaperLocalUrl = CachedProvider::identifierToPath(m_identifier);
     m_data.wallpaperImage.save(m_data.wallpaperLocalUrl, "JPEG");
+
+    const QString infoPath = m_data.wallpaperLocalUrl + ".json";
+    QFile infoFile(infoPath);
+    if (infoFile.open(QIODevice::WriteOnly)) {
+        QJsonObject jsonObject;
+
+        jsonObject.insert(DataKeys::infoUrl(), m_data.wallpaperInfoUrl.url());
+        jsonObject.insert(DataKeys::remoteUrl(), m_data.wallpaperRemoteUrl.url());
+        jsonObject.insert(DataKeys::title(), m_data.wallpaperTitle);
+        jsonObject.insert(DataKeys::author(), m_data.wallpaperAuthor);
+
+        infoFile.write(QJsonDocument(jsonObject).toJson(QJsonDocument::Compact));
+        infoFile.close();
+    } else {
+        qWarning() << "Failed to save the wallpaper information!";
+    }
 
     Q_EMIT done(m_identifier, m_data);
 }
