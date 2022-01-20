@@ -20,19 +20,16 @@
 
 #include "cachedprovider.h"
 
-namespace
+static QString dataKeysMap(PotdProvider::RoleType role)
 {
-namespace DataKeys
-{
-inline QString image()
-{
-    return QStringLiteral("Image");
-}
-inline QString url()
-{
-    return QStringLiteral("Url");
-}
-}
+    switch (role) {
+    case PotdProvider::ImageRole:
+        return "Image";
+    case PotdProvider::UrlRole:
+        return "Url";
+    default:
+        return "";
+    }
 }
 
 PotdEngine::PotdEngine(QObject *parent, const QVariantList &args)
@@ -120,7 +117,7 @@ bool PotdEngine::updateSource(const QString &identifier, bool loadCachedAlways)
 bool PotdEngine::sourceRequestEvent(const QString &identifier)
 {
     if (updateSource(identifier, true)) {
-        setData(identifier, DataKeys::image(), QImage());
+        setData(identifier, dataKeysMap(PotdProvider::ImageRole), QImage());
         return true;
     }
 
@@ -131,7 +128,7 @@ void PotdEngine::finished(PotdProvider *provider)
 {
     if (m_canDiscardCache && qobject_cast<CachedProvider *>(provider)) {
         Plasma::DataContainer *source = containerForSource(provider->identifier());
-        if (source && !source->data().value(DataKeys::image()).value<QImage>().isNull()) {
+        if (source && !source->data().value(dataKeysMap(PotdProvider::ImageRole)).value<QImage>().isNull()) {
             provider->deleteLater();
             return;
         }
@@ -144,8 +141,8 @@ void PotdEngine::finished(PotdProvider *provider)
         connect(thread, &SaveImageThread::done, this, &PotdEngine::cachingFinished);
         QThreadPool::globalInstance()->start(thread);
     } else {
-        setData(provider->identifier(), DataKeys::image(), img);
-        setData(provider->identifier(), DataKeys::url(), CachedProvider::identifierToPath(provider->identifier()));
+        setData(provider->identifier(), dataKeysMap(PotdProvider::ImageRole), img);
+        setData(provider->identifier(), dataKeysMap(PotdProvider::UrlRole), CachedProvider::identifierToPath(provider->identifier()));
     }
 
     provider->deleteLater();
@@ -153,8 +150,8 @@ void PotdEngine::finished(PotdProvider *provider)
 
 void PotdEngine::cachingFinished(const QString &source, const QString &path, const QImage &img)
 {
-    setData(source, DataKeys::image(), img);
-    setData(source, DataKeys::url(), path);
+    setData(source, dataKeysMap(PotdProvider::ImageRole), img);
+    setData(source, dataKeysMap(PotdProvider::UrlRole), path);
 }
 
 void PotdEngine::error(PotdProvider *provider)
