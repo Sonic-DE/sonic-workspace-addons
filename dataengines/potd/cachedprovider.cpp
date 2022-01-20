@@ -28,7 +28,39 @@ void LoadImageThread::run()
 {
     QImage image;
     image.load(m_filePath);
-    Q_EMIT done(image);
+
+    QUrl wallpaperRemoteUrl;
+    QString wallpaperTitle;
+    QString wallpaperAuthor;
+
+    const QString infoPath = m_filePath + ".json";
+    QFile infoFile(infoPath);
+    if (infoFile.exists()) {
+        if (infoFile.open(QIODevice::ReadOnly)) {
+            QJsonParseError jsonParseError;
+            const QJsonDocument jsonDoc = QJsonDocument::fromJson(infoFile.readAll(), &jsonParseError);
+            infoFile.close();
+
+            if (jsonParseError.error == QJsonParseError::NoError && jsonDoc.isObject()) {
+                const QJsonObject jsonObject = jsonDoc.object();
+                wallpaperRemoteUrl = QUrl(jsonObject.value(QString(PotdProvider::RemoteUrlRole)).toString());
+                wallpaperTitle = jsonObject.value(QString(PotdProvider::TitleRole)).toString();
+                wallpaperAuthor = jsonObject.value(QString(PotdProvider::AuthorRole)).toString();
+            } else {
+                qWarning() << "Failed to read the wallpaper information!";
+            }
+        } else {
+            qWarning() << "Failed to open the wallpaper information file!";
+        }
+    }
+
+    const std::map<PotdProvider::RoleType, QVariant> dataMap{
+        {PotdProvider::ImageRole, image},
+        {PotdProvider::RemoteUrlRole, wallpaperRemoteUrl},
+        {PotdProvider::TitleRole, wallpaperTitle},
+        {PotdProvider::AuthorRole, wallpaperAuthor},
+    };
+    Q_EMIT done(dataMap);
 }
 
 SaveImageThread::SaveImageThread(const QString &identifier, const std::map<PotdProvider::RoleType, QVariant> &dataMap)
@@ -100,9 +132,12 @@ QString CachedProvider::identifier() const
     return mIdentifier;
 }
 
-void CachedProvider::triggerFinished(const QImage &image)
+void CachedProvider::triggerFinished(const std::map<PotdProvider::RoleType, QVariant> &dataMap)
 {
-    mImage = image;
+    mImage = dataMap.at(PotdProvider::ImageRole).value<QImage>();
+    m_wallpaperRemoteUrl = dataMap.at(PotdProvider::RemoteUrlRole).toUrl();
+    m_wallpaperTitle = dataMap.at(PotdProvider::TitleRole).toString();
+    m_wallpaperAuthor = dataMap.at(PotdProvider::AuthorRole).toString();
     Q_EMIT finished(this);
 }
 
