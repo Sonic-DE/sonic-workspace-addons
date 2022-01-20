@@ -30,6 +30,18 @@ auto image = []() noexcept {
 auto url = []() noexcept {
     return QStringLiteral("Url");
 };
+auto infoUrl = []() noexcept {
+    return QStringLiteral("InfoUrl"); // The website URL of the image
+};
+auto remoteUrl = []() noexcept {
+    return QStringLiteral("RemoteUrl"); // The remote URL of the image
+};
+auto title = []() noexcept {
+    return QStringLiteral("Title");
+};
+auto author = []() noexcept {
+    return QStringLiteral("Author");
+};
 }
 }
 
@@ -120,6 +132,10 @@ bool PotdEngine::sourceRequestEvent(const QString &identifier)
     if (updateSource(identifier, true)) {
         setData(identifier, DataKeys::image(), QImage());
         setData(identifier, DataKeys::url(), QUrl());
+        setData(identifier, DataKeys::infoUrl(), QUrl());
+        setData(identifier, DataKeys::remoteUrl(), QUrl());
+        setData(identifier, DataKeys::title(), QString());
+        setData(identifier, DataKeys::author(), QString());
         return true;
     }
 
