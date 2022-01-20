@@ -44,7 +44,34 @@ void LoadImageThread::run()
 {
     QImage image;
     image.load(m_filePath);
-    Q_EMIT done(image);
+
+    PotdProviderData data;
+    data.wallpaperImage = image;
+
+    const QString infoPath = m_filePath + ".json";
+    QFile infoFile(infoPath);
+
+    if (infoFile.exists()) {
+        if (infoFile.open(QIODevice::ReadOnly)) {
+            QJsonParseError jsonParseError;
+            const QJsonDocument jsonDoc = QJsonDocument::fromJson(infoFile.readAll(), &jsonParseError);
+            infoFile.close();
+
+            if (jsonParseError.error == QJsonParseError::NoError && jsonDoc.isObject()) {
+                const QJsonObject jsonObject = jsonDoc.object();
+                data.wallpaperInfoUrl = QUrl(jsonObject.value(DataKeys::infoUrl()).toString());
+                data.wallpaperRemoteUrl = QUrl(jsonObject.value(DataKeys::remoteUrl()).toString());
+                data.wallpaperTitle = jsonObject.value(DataKeys::title()).toString();
+                data.wallpaperAuthor = jsonObject.value(DataKeys::author()).toString();
+            } else {
+                qWarning() << "Failed to read the wallpaper information!";
+            }
+        } else {
+            qWarning() << "Failed to open the wallpaper information file!";
+        }
+    }
+
+    Q_EMIT done(data);
 }
 
 SaveImageThread::SaveImageThread(const QString &identifier, const PotdProviderData &data)
@@ -103,9 +130,15 @@ QString CachedProvider::identifier() const
     return mIdentifier;
 }
 
-void CachedProvider::triggerFinished(const QImage &image)
+void CachedProvider::triggerFinished(const PotdProviderData &data)
 {
-    potdProviderData()->wallpaperImage = image;
+    potdProviderData()->wallpaperImage = data.wallpaperImage;
+    potdProviderData()->wallpaperLocalUrl = data.wallpaperLocalUrl;
+    potdProviderData()->wallpaperInfoUrl = data.wallpaperInfoUrl;
+    potdProviderData()->wallpaperRemoteUrl = data.wallpaperRemoteUrl;
+    potdProviderData()->wallpaperTitle = data.wallpaperTitle;
+    potdProviderData()->wallpaperAuthor = data.wallpaperAuthor;
+
     Q_EMIT finished(this);
 }
 

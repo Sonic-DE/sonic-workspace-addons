@@ -175,6 +175,10 @@ void PotdEngine::finished(PotdProvider *provider)
     } else {
         setData(provider->identifier(), DataKeys::image(), img);
         setData(provider->identifier(), DataKeys::url(), CachedProvider::identifierToPath(provider->identifier()));
+        setData(provider->identifier(), DataKeys::infoUrl(), infoUrl);
+        setData(provider->identifier(), DataKeys::remoteUrl(), remoteUrl);
+        setData(provider->identifier(), DataKeys::title(), title);
+        setData(provider->identifier(), DataKeys::author(), author);
     }
 
     provider->deleteLater();
