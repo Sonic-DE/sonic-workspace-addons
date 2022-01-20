@@ -88,7 +88,7 @@ public:
     void run() override;
 
 Q_SIGNALS:
-    void done(const QString &source, const QString &path, const QImage &img);
+    void done(const QString &source, const std::vector<std::pair<PotdProvider::RoleType, QVariant>> &data);
 
 private:
     QImage m_image;
