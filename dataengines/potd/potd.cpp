@@ -170,6 +170,10 @@ void PotdEngine::finished(PotdProvider *provider)
     } else {
         setData(provider->identifier(), dataKeysMap(PotdProvider::ImageRole), img);
         setData(provider->identifier(), dataKeysMap(PotdProvider::UrlRole), CachedProvider::identifierToPath(provider->identifier()));
+        setData(provider->identifier(), dataKeysMap(PotdProvider::InfoUrlRole), infoUrl);
+        setData(provider->identifier(), dataKeysMap(PotdProvider::RemoteUrlRole), remoteUrl);
+        setData(provider->identifier(), dataKeysMap(PotdProvider::TitleRole), title);
+        setData(provider->identifier(), dataKeysMap(PotdProvider::AuthorRole), author);
     }
 
     provider->deleteLater();
