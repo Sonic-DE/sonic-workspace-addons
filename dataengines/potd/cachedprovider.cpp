@@ -39,7 +39,11 @@ void SaveImageThread::run()
 {
     const QString path = CachedProvider::identifierToPath(m_identifier);
     m_image.save(path, "JPEG");
-    Q_EMIT done(m_identifier, path, m_image);
+    const std::vector<std::pair<PotdProvider::RoleType, QVariant>> data{
+        {PotdProvider::ImageRole, m_image},
+        {PotdProvider::UrlRole, path},
+    };
+    Q_EMIT done(m_identifier, data);
 }
 
 QString CachedProvider::identifierToPath(const QString &identifier)
