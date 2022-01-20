@@ -64,6 +64,21 @@ QDate PotdProvider::date() const
     return d->date.isNull() ? QDate::currentDate() : d->date;
 }
 
+std::optional<QString> PotdProvider::title() const
+{
+    return std::nullopt;
+}
+
+std::optional<QString> PotdProvider::author() const
+{
+    return std::nullopt;
+}
+
+std::optional<QUrl> PotdProvider::remoteUrl() const
+{
+    return std::nullopt;
+}
+
 bool PotdProvider::isFixedDate() const
 {
     return !d->date.isNull();

@@ -5,6 +5,8 @@
 #ifndef POTDPROVIDER_H
 #define POTDPROVIDER_H
 
+#include <optional>
+
 #include <QObject>
 #include <QUrl>
 #include <QVariantList>
@@ -67,6 +69,30 @@ public:
     QDate date() const;
 
     /**
+     * Returns the title of the image from the provider, if any.
+     *
+     * @return the title of the image, if any
+     * @since 5.25
+     */
+    virtual std::optional<QString> title() const;
+
+    /**
+     * Returns the author of the image from the provider
+     *
+     * @return the title of the image, if any
+     * @since 5.25
+     */
+    virtual std::optional<QString> author() const;
+
+    /**
+     * Returns the remote URL of the image from the provider
+     *
+     * @return the remote URL of the image, if any
+     * @since 5.25
+     */
+    virtual std::optional<QUrl> remoteUrl() const;
+
+    /**
      * @return if the date is fixed, or if it should always be "today"
      */
     bool isFixedDate() const;
@@ -102,6 +128,10 @@ private:
     QUrl configLocalUrl;
     QString configLocalPath;
     bool refreshed = false;
+
+    // Wallpaper information
+    std::optional<QString> m_wallpaperTitle;
+    std::optional<QString> m_wallpaperAuthor;
 };
 
 #endif
