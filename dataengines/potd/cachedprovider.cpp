@@ -29,9 +29,12 @@ void LoadImageThread::run()
     Q_EMIT done(image);
 }
 
-SaveImageThread::SaveImageThread(const QString &identifier, const QImage &image)
-    : m_image(image)
+SaveImageThread::SaveImageThread(const QString &identifier, const std::map<PotdProvider::RoleType, QVariant> &dataMap)
+    : m_image(dataMap.at(PotdProvider::ImageRole).value<QImage>())
     , m_identifier(identifier)
+    , m_wallpaperRemoteUrl(dataMap.at(PotdProvider::RemoteUrlRole).toUrl())
+    , m_wallpaperTitle(dataMap.at(PotdProvider::TitleRole).toString())
+    , m_wallpaperAuthor(dataMap.at(PotdProvider::AuthorRole).toString())
 {
 }
 
@@ -39,9 +42,12 @@ void SaveImageThread::run()
 {
     const QString path = CachedProvider::identifierToPath(m_identifier);
     m_image.save(path, "JPEG");
-    std::vector<std::pair<PotdProvider::RoleType, QVariant>> data{
+    const std::vector<std::pair<PotdProvider::RoleType, QVariant>> data{
         {PotdProvider::ImageRole, m_image},
         {PotdProvider::UrlRole, path},
+        {PotdProvider::RemoteUrlRole, m_wallpaperRemoteUrl},
+        {PotdProvider::TitleRole, m_wallpaperTitle},
+        {PotdProvider::AuthorRole, m_wallpaperAuthor},
     };
     Q_EMIT done(m_identifier, data);
 }
