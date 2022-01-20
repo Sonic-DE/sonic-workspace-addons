@@ -123,17 +123,27 @@ void PotdEngine::finished(PotdProvider *provider)
     }
 
     QImage img(provider->image());
+    const QUrl remoteUrl(provider->remoteUrl().value_or(QUrl()));
+    const QString title(provider->title().value_or(QString()));
+    const QString author(provider->author().value_or(QString()));
+
     // store in cache if it's not the response of a CachedProvider
     if (qobject_cast<CachedProvider *>(provider) == nullptr && !img.isNull()) {
-        SaveImageThread *thread = new SaveImageThread(provider->identifier(), img);
+        const std::map<PotdProvider::RoleType, QVariant> dataMap{
+            {PotdProvider::ImageRole, img},
+            {PotdProvider::RemoteUrlRole, remoteUrl},
+            {PotdProvider::TitleRole, title},
+            {PotdProvider::AuthorRole, author},
+        };
+        SaveImageThread *thread = new SaveImageThread(provider->identifier(), dataMap);
         connect(thread, &SaveImageThread::done, this, &PotdEngine::cachingFinished);
         QThreadPool::globalInstance()->start(thread);
     } else {
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::ImageRole), img);
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::UrlRole), CachedProvider::identifierToPath(provider->identifier()));
-        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::RemoteUrlRole), provider->remoteUrl().value_or(QUrl()));
-        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::TitleRole), provider->title().value_or(QString()));
-        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::AuthorRole), provider->author().value_or(QString()));
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::RemoteUrlRole), remoteUrl);
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::TitleRole), title);
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::AuthorRole), author);
     }
 
     provider->deleteLater();
