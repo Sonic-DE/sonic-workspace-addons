@@ -107,6 +107,10 @@ bool PotdEngine::sourceRequestEvent(const QString &identifier)
     if (updateSource(identifier, true)) {
         setData(identifier, m_dataKeysMap.at(PotdProvider::ImageRole), QImage());
         setData(identifier, m_dataKeysMap.at(PotdProvider::UrlRole), QUrl());
+        setData(identifier, m_dataKeysMap.at(PotdProvider::InfoUrlRole), QUrl());
+        setData(identifier, m_dataKeysMap.at(PotdProvider::RemoteUrlRole), QUrl());
+        setData(identifier, m_dataKeysMap.at(PotdProvider::TitleRole), QString());
+        setData(identifier, m_dataKeysMap.at(PotdProvider::AuthorRole), QString());
         return true;
     }
 
