@@ -10,7 +10,7 @@
 #include <KPluginMetaData>
 #include <Plasma/DataEngine>
 
-class PotdProvider;
+#include "potdprovider.h"
 
 class QTimer;
 
@@ -50,6 +50,11 @@ private:
     QMap<QString, KPluginMetaData> mFactories;
     QTimer *m_checkDatesTimer;
     bool m_canDiscardCache;
+
+    const std::map<PotdProvider::RoleType, QString> m_dataKeysMap{
+        {PotdProvider::ImageRole, "Image"},
+        {PotdProvider::UrlRole, "Url"},
+    };
 };
 
 #endif
