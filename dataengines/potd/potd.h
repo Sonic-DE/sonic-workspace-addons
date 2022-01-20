@@ -42,7 +42,7 @@ private Q_SLOTS:
     void finished(PotdProvider *);
     void error(PotdProvider *);
     void checkDayChanged();
-    void cachingFinished(const QString &source, const QString &path, const QImage &img);
+    void cachingFinished(const QString &source, const PotdProviderData &data);
 
 private:
     bool updateSource(const QString &identifier, bool loadCachedAlways);
