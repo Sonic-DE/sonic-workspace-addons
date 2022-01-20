@@ -10,7 +10,7 @@
 #include <KPluginMetaData>
 #include <Plasma/DataEngine>
 
-class PotdProvider;
+#include "potdprovider.h"
 
 class QTimer;
 
