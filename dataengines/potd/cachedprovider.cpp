@@ -10,6 +10,8 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QThreadPool>
@@ -39,6 +41,22 @@ void SaveImageThread::run()
 {
     m_data.wallpaperLocalUrl = CachedProvider::identifierToPath(m_identifier);
     m_data.wallpaperImage.save(m_data.wallpaperLocalUrl, "JPEG");
+
+    const QString infoPath = m_data.wallpaperLocalUrl + ".json";
+    QFile infoFile(infoPath);
+    if (infoFile.open(QIODevice::WriteOnly)) {
+        QJsonObject jsonObject;
+
+        jsonObject.insert(QString(PotdProvider::InfoUrlRole), m_data.wallpaperInfoUrl.url());
+        jsonObject.insert(QString(PotdProvider::RemoteUrlRole), m_data.wallpaperRemoteUrl.url());
+        jsonObject.insert(QString(PotdProvider::TitleRole), m_data.wallpaperTitle);
+        jsonObject.insert(QString(PotdProvider::AuthorRole), m_data.wallpaperAuthor);
+
+        infoFile.write(QJsonDocument(jsonObject).toJson(QJsonDocument::Compact));
+        infoFile.close();
+    } else {
+        qWarning() << "Failed to save the wallpaper information!";
+    }
 
     Q_EMIT done(m_identifier, m_data);
 }
