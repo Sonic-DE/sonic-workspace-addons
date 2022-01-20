@@ -5,6 +5,8 @@
 #ifndef POTDPROVIDER_H
 #define POTDPROVIDER_H
 
+#include <optional>
+
 #include <QObject>
 #include <QUrl>
 #include <QVariantList>
@@ -70,6 +72,38 @@ public:
     QDate date() const;
 
     /**
+     * Returns the remote URL of the image from the provider
+     *
+     * @return the remote URL of the image, if any
+     * @since 5.25
+     */
+    std::optional<QUrl> remoteUrl() const;
+
+    /**
+     * Returns the information URL of the image from the provider
+     *
+     * @return the information URL of the image, if any
+     * @since 5.25
+     */
+    std::optional<QUrl> infoUrl() const;
+
+    /**
+     * Returns the title of the image from the provider, if any.
+     *
+     * @return the title of the image, if any
+     * @since 5.25
+     */
+    std::optional<QString> title() const;
+
+    /**
+     * Returns the author of the image from the provider
+     *
+     * @return the title of the image, if any
+     * @since 5.25
+     */
+    std::optional<QString> author() const;
+
+    /**
      * @return if the date is fixed, or if it should always be "today"
      */
     bool isFixedDate() const;
@@ -94,6 +128,13 @@ Q_SIGNALS:
     void error(PotdProvider *provider);
 
     void configLoaded(QString apiKey, QString apiSecret);
+
+protected:
+    // Wallpaper information
+    std::optional<QUrl> m_wallpaperRemoteUrl;
+    std::optional<QUrl> m_wallpaperInfoUrl;
+    std::optional<QString> m_wallpaperTitle;
+    std::optional<QString> m_wallpaperAuthor;
 
 private:
     void configRequestFinished(KJob *job);

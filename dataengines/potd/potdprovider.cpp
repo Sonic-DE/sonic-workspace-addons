@@ -64,6 +64,26 @@ QDate PotdProvider::date() const
     return d->date.isNull() ? QDate::currentDate() : d->date;
 }
 
+std::optional<QUrl> PotdProvider::remoteUrl() const
+{
+    return m_wallpaperRemoteUrl;
+}
+
+std::optional<QUrl> PotdProvider::infoUrl() const
+{
+    return m_wallpaperInfoUrl;
+}
+
+std::optional<QString> PotdProvider::title() const
+{
+    return m_wallpaperTitle;
+}
+
+std::optional<QString> PotdProvider::author() const
+{
+    return m_wallpaperAuthor;
+}
+
 bool PotdProvider::isFixedDate() const
 {
     return !d->date.isNull();
