@@ -45,6 +45,7 @@ PotdEngine::PotdEngine(QObject *parent, const QVariantList &args)
     }
 
     qRegisterMetaType<std::vector<std::pair<PotdProvider::RoleType, QVariant>>>();
+    qRegisterMetaType<std::map<PotdProvider::RoleType, QVariant>>();
 }
 
 PotdEngine::~PotdEngine()
@@ -147,6 +148,9 @@ void PotdEngine::finished(PotdProvider *provider)
     } else {
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::ImageRole), img);
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::UrlRole), CachedProvider::identifierToPath(provider->identifier()));
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::RemoteUrlRole), remoteUrl);
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::TitleRole), title);
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::AuthorRole), author);
     }
 
     provider->deleteLater();
