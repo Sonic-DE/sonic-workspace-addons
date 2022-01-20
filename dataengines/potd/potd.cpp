@@ -139,10 +139,11 @@ void PotdEngine::finished(PotdProvider *provider)
     provider->deleteLater();
 }
 
-void PotdEngine::cachingFinished(const QString &source, const QString &path, const QImage &img)
+void PotdEngine::cachingFinished(const QString &source, const std::vector<std::pair<PotdProvider::RoleType, QVariant>> &data)
 {
-    setData(source, m_dataKeysMap.at(PotdProvider::ImageRole), img);
-    setData(source, m_dataKeysMap.at(PotdProvider::UrlRole), path);
+    for (auto item : data) {
+        setData(source, m_dataKeysMap.at(item.first), item.second);
+    }
 }
 
 void PotdEngine::error(PotdProvider *provider)

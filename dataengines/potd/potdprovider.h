@@ -26,6 +26,9 @@ class PLASMA_POTD_EXPORT PotdProvider : public QObject
     Q_OBJECT
 
 public:
+    /**
+     * @note Remember to update m_dataKeysMap in potd.h when adding new values.
+     */
     enum RoleType {
         ImageRole,
         UrlRole,
