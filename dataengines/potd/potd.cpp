@@ -150,9 +150,21 @@ void PotdEngine::finished(PotdProvider *provider)
     }
 
     QImage img(provider->image());
+    const QUrl infoUrl(provider->infoUrl());
+    const QUrl remoteUrl(provider->remoteUrl());
+    const QString title(provider->title());
+    const QString author(provider->author());
+
     // store in cache if it's not the response of a CachedProvider
     if (qobject_cast<CachedProvider *>(provider) == nullptr && !img.isNull()) {
-        SaveImageThread *thread = new SaveImageThread(provider->identifier(), img);
+        PotdProviderData data;
+        data.wallpaperImage = img;
+        data.wallpaperInfoUrl = infoUrl;
+        data.wallpaperRemoteUrl = remoteUrl;
+        data.wallpaperTitle = title;
+        data.wallpaperAuthor = author;
+
+        SaveImageThread *thread = new SaveImageThread(provider->identifier(), data);
         connect(thread, &SaveImageThread::done, this, &PotdEngine::cachingFinished);
         QThreadPool::globalInstance()->start(thread);
     } else {
@@ -167,6 +179,10 @@ void PotdEngine::cachingFinished(const QString &source, const PotdProviderData &
 {
     setData(source, dataKeysMap(PotdProvider::ImageRole), data.wallpaperImage);
     setData(source, dataKeysMap(PotdProvider::UrlRole), data.wallpaperLocalUrl);
+    setData(source, dataKeysMap(PotdProvider::InfoUrlRole), data.wallpaperInfoUrl);
+    setData(source, dataKeysMap(PotdProvider::RemoteUrlRole), data.wallpaperRemoteUrl);
+    setData(source, dataKeysMap(PotdProvider::TitleRole), data.wallpaperTitle);
+    setData(source, dataKeysMap(PotdProvider::AuthorRole), data.wallpaperAuthor);
 }
 
 void PotdEngine::error(PotdProvider *provider)
