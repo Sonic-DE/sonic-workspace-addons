@@ -6,9 +6,12 @@
 
 import QtQuick 2.5
 import QtQuick.Controls 2.8 as QQC2
+import QtQuick.Layouts 1.15
 import org.kde.kquickcontrols 2.0 as KQC2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.5 as Kirigami
+
+import org.kde.potd.private 0.1 as PotdPlugin
 
 Kirigami.FormLayout {
     id: root
@@ -40,6 +43,10 @@ Kirigami.FormLayout {
         engine: "potd"
         connectedSources: ["Providers"]
         onDataChanged: populateProviders()
+    }
+
+    PotdPlugin.Backend {
+        id: backend
     }
 
     Component.onCompleted: {
@@ -182,10 +189,10 @@ Kirigami.FormLayout {
             listModel = listModel.sort((a, b) => {
                 // Sort items by name but keep the 'All' entry at the top
                 if (b["value"] === allSectionValue) {
-                   return 1; 
+                   return 1;
                 }
                 if (a["value"] === allSectionValue) {
-                   return -1; 
+                   return -1;
                 }
                 return a["label"].localeCompare(b["label"]);
             })
@@ -242,4 +249,99 @@ Kirigami.FormLayout {
         Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label:chooser", "Background color:")
         dialogTitle: i18ndc("plasma_wallpaper_org.kde.potd", "@title:window", "Select Background Color")
     }
+
+    Kirigami.Separator {
+        id: previewSeparator
+        Kirigami.FormData.isSection: true
+    }
+
+    WallpaperPreview {
+        id: wallpaperPreview
+        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Today's picture:")
+        fullProviderName: engine.data["Providers"][wallpaper.configuration.Provider]
+    }
+
+    Item {
+        Layout.fillWidth: true
+    }
+
+    SelectableLabel {
+        id: titleLabel
+        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Title:")
+        Layout.preferredWidth: wallpaperPreview.implicitWidth * 1.5
+        visible: text.length > 0
+        text: wallpaperPreview.title
+        bold: true
+    }
+
+    Item {
+        Layout.fillWidth: true
+    }
+
+    SelectableLabel {
+        id: authorLabel
+        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Author:")
+        Layout.preferredWidth: titleLabel.Layout.preferredWidth
+        visible: text.length > 0
+        text: wallpaperPreview.author
+        bold: false
+    }
+
+    Kirigami.InlineMessage {
+        id: saveMessage
+
+        Kirigami.FormData.isSection: true
+        anchors.left: previewSeparator.left
+        anchors.right: previewSeparator.right
+
+        property string savedUrl
+
+        showCloseButton: true
+
+        actions: [
+            Kirigami.Action {
+                iconName: "document-open-folder"
+                text: i18ndc("plasma_wallpaper_org.kde.potd", "@action:button after the wallpaper image is saved successfully", "Open Containing Folder")
+                visible: saveMessage.savedUrl.length > 0
+                onTriggered: Qt.openUrlExternally(`file://${saveMessage.savedUrl.slice(0, saveMessage.savedUrl.lastIndexOf("/") + 1)}`)
+            }
+        ]
+
+        QQC2.ToolTip {
+            id: linkTooltip
+            text: saveMessage.savedUrl
+            timeout: Kirigami.Units.veryLongDuration * 10
+        }
+
+        onLinkActivated: Qt.openUrlExternally(saveMessage.savedUrl)
+        onLinkHovered: linkTooltip.show()
+
+        Connections {
+            target: backend
+
+            function onSaveStatusChanged() {
+                let message;
+
+                switch (backend.saveStatus) {
+                case PotdPlugin.Global.Succeeded:
+                    const filename = saveMessage.savedUrl.slice(saveMessage.savedUrl.lastIndexOf("/") + 1);
+                    const trimmed = `${filename.slice(0, 25)}${filename.length > 50 ? "…" : ""}${filename.slice(-25)}`;
+                    message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action %1 file path %2 basename", "The image was saved as <a href=\"%1\">%2</a>", saveMessage.savedUrl, trimmed);
+                    saveMessage.type = Kirigami.MessageType.Positive;
+                    break;
+                case PotdPlugin.Global.Failed:
+                    saveMessage.savedUrl = "";
+                    message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action ", "Failed to save the image!");
+                    saveMessage.type = Kirigami.MessageType.Error;
+                    break;
+                default:
+                    return;
+                }
+
+                saveMessage.text = message;
+                saveMessage.visible = true;
+            }
+        }
+    }
+
 }
