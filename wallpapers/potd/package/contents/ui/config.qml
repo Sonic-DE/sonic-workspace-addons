@@ -6,8 +6,9 @@
 
 import QtQuick 2.5
 import QtQuick.Controls 2.8 as QQC2
+import QtQuick.Layouts 1.15
+
 import org.kde.kquickcontrols 2.0 as KQC2
-import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.5 as Kirigami
 
 import org.kde.plasma.wallpapers.potd 1.0
@@ -26,9 +27,7 @@ Kirigami.FormLayout {
     QQC2.ComboBox {
         id: providerComboBox
         Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label:listbox", "Provider:")
-        model: PotdProviderModel {
-            id: providerModel
-        }
+        model: PotdProviderModelInstance
         currentIndex: model.indexOfProvider(wallpaper.configuration.Provider)
         textRole: "display"
         valueRole: "id"
@@ -219,5 +218,88 @@ Kirigami.FormLayout {
         id: colorButton
         Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label:chooser", "Background color:")
         dialogTitle: i18ndc("plasma_wallpaper_org.kde.potd", "@title:window", "Select Background Color")
+    }
+
+    Kirigami.Separator {
+        id: previewSeparator
+        Kirigami.FormData.isSection: true
+        visible: wallpaperPreview.visible
+    }
+
+    WallpaperPreview {
+        id: wallpaperPreview
+        Kirigami.FormData.label: i18nc("@label", "Today's picture:")
+        backgroundColor: root.cfg_Color
+        visible: !!wallpaper.configuration.Provider
+    }
+
+    Item {
+        Layout.fillWidth: true
+    }
+
+    SelectableLabel {
+        id: titleLabel
+        Kirigami.FormData.label: i18nc("@label", "Title:")
+        contentWidth: wallpaperPreview.implicitWidth * 1.5
+        visible: text.length > 0
+        text: PotdProviderModelInstance.title
+        bold: true
+    }
+
+    Item {
+        Layout.fillWidth: true
+    }
+
+    SelectableLabel {
+        id: authorLabel
+        Kirigami.FormData.label: i18nc("@label", "Author:")
+        contentWidth: titleLabel.contentWidth
+        visible: text.length > 0
+        text: PotdProviderModelInstance.author
+        bold: false
+    }
+
+    Kirigami.InlineMessage {
+        id: saveMessage
+
+        Kirigami.FormData.isSection: true
+        anchors.left: previewSeparator.left
+        anchors.right: previewSeparator.right
+
+        showCloseButton: true
+
+        actions: [
+            Kirigami.Action {
+                icon.name: "document-open-folder"
+                text: i18nc("@action:button", "Open Containing Folder")
+                visible: PotdProviderModelInstance.saveStatus === Global.Successful
+                onTriggered: Qt.openUrlExternally(PotdProviderModelInstance.savedFolder)
+
+                Accessible.description: i18nc("@info:whatsthis for a button", "Open the destination folder where the wallpaper image was saved.")
+            }
+        ]
+
+        onLinkActivated: Qt.openUrlExternally(PotdProviderModelInstance.savedUrl)
+
+        Connections {
+            target: PotdProviderModelInstance
+
+            function onSaveStatusChanged() {
+                switch (PotdProviderModelInstance.saveStatus) {
+                case Global.Successful:
+                    saveMessage.text = PotdProviderModelInstance.saveStatusMessage;
+                    saveMessage.type = Kirigami.MessageType.Positive;
+                    break;
+                case Global.Failed:
+                    saveMessage.text = PotdProviderModelInstance.saveStatusMessage;
+                    saveMessage.type = Kirigami.MessageType.Error;
+                    break;
+                default:
+                    return;
+                }
+
+                saveMessage.visible = true;
+            }
+        }
     }
 }
