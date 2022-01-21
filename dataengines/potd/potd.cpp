@@ -118,6 +118,7 @@ bool PotdEngine::sourceRequestEvent(const QString &identifier)
 {
     if (updateSource(identifier, true)) {
         setData(identifier, dataKeysMap(PotdProvider::ImageRole), QImage());
+        setData(identifier, dataKeysMap(PotdProvider::UrlRole), QUrl());
         return true;
     }
 
