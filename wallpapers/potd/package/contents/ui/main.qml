@@ -13,14 +13,6 @@ import org.kde.plasma.wallpapers.potd 1.0
 Rectangle {
     id: root
 
-    PotdProviderModel {
-        id: engine
-        identifier: wallpaper.configuration.Provider
-        // Needs to specify category for unsplash provider
-        arguments: identifier === "unsplash" ? [wallpaper.configuration.Category] : []
-        running: true
-    }
-
     Rectangle {
         id: backgroundColor
         anchors.fill: parent
@@ -32,8 +24,15 @@ Rectangle {
 
     QImageItem {
         anchors.fill: parent
-        image: engine.image
+        image: PotdProviderModelInstance.image
         fillMode: wallpaper.configuration.FillMode
         smooth: true
+    }
+
+    Component.onCompleted: {
+        PotdProviderModelInstance.identifier = Qt.binding(() => wallpaper.configuration.Provider);
+        // Needs to specify category for unsplash provider
+        PotdProviderModelInstance.arguments = Qt.binding(() => wallpaper.configuration.Provider === "unsplash" ? [wallpaper.configuration.Category] : []);
+        PotdProviderModelInstance.running = true;
     }
 }
