@@ -6,6 +6,7 @@
 
 import QtQuick 2.5
 import QtQuick.Controls 2.8 as QQC2
+import QtQuick.Layouts 1.15
 import org.kde.kquickcontrols 2.0 as KQC2
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.5 as Kirigami
@@ -182,10 +183,10 @@ Kirigami.FormLayout {
             listModel = listModel.sort((a, b) => {
                 // Sort items by name but keep the 'All' entry at the top
                 if (b["value"] === allSectionValue) {
-                   return 1; 
+                   return 1;
                 }
                 if (a["value"] === allSectionValue) {
-                   return -1; 
+                   return -1;
                 }
                 return a["label"].localeCompare(b["label"]);
             })
@@ -241,5 +242,41 @@ Kirigami.FormLayout {
         id: colorButton
         Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label:chooser", "Background color:")
         dialogTitle: i18ndc("plasma_wallpaper_org.kde.potd", "@title:window", "Select Background Color")
+    }
+
+    Kirigami.Separator {
+        Kirigami.FormData.isSection: true
+    }
+
+    WallpaperPreview {
+        id: wallpaperPreview
+        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Today's picture:")
+        fullProviderName: engine.data["Providers"][wallpaper.configuration.Provider]
+    }
+
+    Item {
+        Layout.fillWidth: true
+    }
+
+    SelectableLabel {
+        id: titleLabel
+        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Title:")
+        Layout.maximumWidth: wallpaperPreview.implicitWidth * 1.5
+        visible: text.length > 0
+        text: wallpaperPreview.title
+        bold: true
+    }
+
+    Item {
+        Layout.fillWidth: true
+    }
+
+    SelectableLabel {
+        id: authorLabel
+        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Author:")
+        Layout.maximumWidth: titleLabel.Layout.maximumWidth
+        visible: text.length > 0
+        text: wallpaperPreview.author
+        bold: false
     }
 }
