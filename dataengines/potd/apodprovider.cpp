@@ -8,7 +8,8 @@
 #include "apodprovider.h"
 
 #include <QDebug>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QTextDocumentFragment>
 
 #include <KIO/Job>
 #include <KPluginFactory>
@@ -16,9 +17,9 @@
 ApodProvider::ApodProvider(QObject *parent, const QVariantList &args)
     : PotdProvider(parent, args)
 {
-    const QUrl url(QStringLiteral("http://antwrp.gsfc.nasa.gov/apod/"));
+    m_data->wallpaperInfoUrl = QUrl(QStringLiteral("http://antwrp.gsfc.nasa.gov/apod/"));
 
-    KIO::StoredTransferJob *job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
+    KIO::StoredTransferJob *job = KIO::storedGet(m_data->wallpaperInfoUrl, KIO::NoReload, KIO::HideProgressInfo);
     connect(job, &KIO::StoredTransferJob::finished, this, &ApodProvider::pageRequestFinished);
 }
 
@@ -32,15 +33,34 @@ void ApodProvider::pageRequestFinished(KJob *_job)
         return;
     }
 
-    const QString data = QString::fromUtf8(job->data());
+    const QString data = QString::fromUtf8(job->data()).simplified(); // Join lines so title match can work
 
     const QString pattern = QStringLiteral("<a href=\"(image/.*)\"");
     QRegExp exp(pattern);
     exp.setMinimal(true);
     if (exp.indexIn(data) != -1) {
         const QString sub = exp.cap(1);
-        const QUrl url(QLatin1String("http://antwrp.gsfc.nasa.gov/apod/") + sub);
-        KIO::StoredTransferJob *imageJob = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
+        m_data->wallpaperRemoteUrl = QUrl(QLatin1String("http://antwrp.gsfc.nasa.gov/apod/") + sub);
+
+        /**
+         * Match title and author
+         * Example:
+         * <b> The Full Moon and the Dancer </b> <br>
+         *
+         * <b>Image Credit &
+         * <a href="lib/about_apod.html#srapply">Copyright</a>:</b>
+         *
+         * <a href="https://www.instagram.com/through_my_lens_84/">Elena Pinna</a>
+         */
+        const QRegularExpression infoRegEx("<center>.*?<b>(.+?)</b>.*?Credit.*?:.*?</b>(.+?)</center>");
+        const QRegularExpressionMatch match = infoRegEx.match(data);
+
+        if (match.hasMatch()) {
+            m_data->wallpaperTitle = QTextDocumentFragment::fromHtml(match.captured(1).trimmed()).toPlainText();
+            m_data->wallpaperAuthor = QTextDocumentFragment::fromHtml(match.captured(2).trimmed()).toPlainText();
+        }
+
+        KIO::StoredTransferJob *imageJob = KIO::storedGet(m_data->wallpaperRemoteUrl, KIO::NoReload, KIO::HideProgressInfo);
         connect(imageJob, &KIO::StoredTransferJob::finished, this, &ApodProvider::imageRequestFinished);
     } else {
         Q_EMIT error(this);
