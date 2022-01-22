@@ -8,7 +8,8 @@
 #include "apodprovider.h"
 
 #include <QDebug>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QTextDocumentFragment>
 
 #include <KIO/Job>
 #include <KPluginFactory>
@@ -37,15 +38,34 @@ void ApodProvider::pageRequestFinished(KJob *_job)
         return;
     }
 
-    const QString data = QString::fromUtf8(job->data());
+    const QString data = QString::fromUtf8(job->data()).simplified(); // Join lines so title match can work
 
     const QString pattern = QStringLiteral("<a href=\"(image/.*)\"");
     QRegExp exp(pattern);
     exp.setMinimal(true);
     if (exp.indexIn(data) != -1) {
         const QString sub = exp.cap(1);
-        const QUrl url(QLatin1String("http://antwrp.gsfc.nasa.gov/apod/") + sub);
-        KIO::StoredTransferJob *imageJob = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
+        m_wallpaperRemoteUrl = QUrl(QLatin1String("http://antwrp.gsfc.nasa.gov/apod/") + sub);
+
+        /**
+         * Match title and author
+         * Example:
+         * <b> The Full Moon and the Dancer </b> <br>
+         *
+         * <b>Image Credit &
+         * <a href="lib/about_apod.html#srapply">Copyright</a>:</b>
+         *
+         * <a href="https://www.instagram.com/through_my_lens_84/">Elena Pinna</a>
+         */
+        const QRegularExpression infoRegEx("<b>(.+?)</b>.*?<br>.*?Copyright.*?<a.+?>(.+?)</a>");
+        const QRegularExpressionMatch match = infoRegEx.match(data);
+
+        if (match.hasMatch()) {
+            m_wallpaperTitle = QTextDocumentFragment::fromHtml(match.captured(1).trimmed()).toPlainText();
+            m_wallpaperAuthor = QTextDocumentFragment::fromHtml(match.captured(2).trimmed()).toPlainText();
+        }
+
+        KIO::StoredTransferJob *imageJob = KIO::storedGet(m_wallpaperRemoteUrl.value(), KIO::NoReload, KIO::HideProgressInfo);
         connect(imageJob, &KIO::StoredTransferJob::finished, this, &ApodProvider::imageRequestFinished);
     } else {
         Q_EMIT error(this);
