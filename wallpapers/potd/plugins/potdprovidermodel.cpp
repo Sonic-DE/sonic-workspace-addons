@@ -196,6 +196,21 @@ void PotdProviderModel::setImage(const QImage &image)
     Q_EMIT imageChanged();
 }
 
+bool PotdProviderModel::loading() const
+{
+    return m_loading;
+}
+
+void PotdProviderModel::setLoading(bool status)
+{
+    if (m_loading == status) {
+        return;
+    }
+
+    m_loading = status;
+    Q_EMIT loadingChanged();
+}
+
 QString PotdProviderModel::localUrl() const
 {
     return m_data.wallpaperLocalUrl;
@@ -283,6 +298,8 @@ void PotdProviderModel::resetData()
 
 bool PotdProviderModel::updateSource(bool refresh)
 {
+    setLoading(true);
+
     // Check whether it is cached already...
     if (!refresh && CachedProvider::isCached(m_identifier, false)) {
         CachedProvider *provider = new CachedProvider(m_identifier, this);
@@ -324,6 +341,7 @@ void PotdProviderModel::slotFinished(PotdProvider *provider)
     setRemoteUrl(provider->remoteUrl());
     setTitle(provider->title());
     setAuthor(provider->author());
+    setLoading(false);
 
     // Store in cache if it's not the response of a CachedProvider
     if (qobject_cast<CachedProvider *>(provider) == nullptr && !m_data.wallpaperImage.isNull()) {
@@ -358,6 +376,8 @@ void PotdProviderModel::slotError(PotdProvider *provider)
 {
     provider->disconnect(this);
     provider->deleteLater();
+
+    setLoading(false);
 
     // Retry 10min later
     if (running()) {
