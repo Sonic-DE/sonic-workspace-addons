@@ -109,6 +109,7 @@ bool PotdEngine::sourceRequestEvent(const QString &identifier)
 {
     if (updateSource(identifier, true)) {
         setData(identifier, m_dataKeysMap.at(PotdProvider::ImageRole), QImage());
+        setData(identifier, m_dataKeysMap.at(PotdProvider::ImageLoadingStatusRole), true); // is fetching
         setData(identifier, m_dataKeysMap.at(PotdProvider::UrlRole), QUrl());
         setData(identifier, m_dataKeysMap.at(PotdProvider::RemoteUrlRole), QUrl());
         setData(identifier, m_dataKeysMap.at(PotdProvider::TitleRole), QString());
@@ -147,6 +148,7 @@ void PotdEngine::finished(PotdProvider *provider)
         QThreadPool::globalInstance()->start(thread);
     } else {
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::ImageRole), img);
+        setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::ImageLoadingStatusRole), false);
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::UrlRole), CachedProvider::identifierToPath(provider->identifier()));
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::RemoteUrlRole), remoteUrl);
         setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::TitleRole), title);
@@ -161,10 +163,13 @@ void PotdEngine::cachingFinished(const QString &source, const std::vector<std::p
     for (const auto &item : data) {
         setData(source, m_dataKeysMap.at(item.first), item.second);
     }
+
+    setData(source, m_dataKeysMap.at(PotdProvider::ImageLoadingStatusRole), false);
 }
 
 void PotdEngine::error(PotdProvider *provider)
 {
+    setData(provider->identifier(), m_dataKeysMap.at(PotdProvider::ImageLoadingStatusRole), false);
     provider->disconnect(this);
     provider->deleteLater();
 }
