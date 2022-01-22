@@ -9,6 +9,7 @@
 
 #include <QDebug>
 #include <QRegularExpression>
+#include <QTextDocumentFragment> // For parsing title from HTML source
 
 #include <KIO/Job>
 #include <KPluginFactory>
@@ -45,18 +46,17 @@ void NOAAProvider::listPageRequestFinished(KJob *_job)
     // to use heavy weight QtWebkit. So we use QRegularExpression to capture
     // the wanted url here.
     // Example: <a href="/news/hunga-tonga-hunga-haapai-erupts-again" hreflang="en">Hunga Tonga-Hunga Ha&#039;apai Erupts Again</a>
-    QUrl url;
     const QRegularExpression re("<div class=\"item-list\">.*?<li>.*?<a href=\"(.+?)\".*?>");
     auto result = re.match(data);
     if (result.hasMatch()) {
-        url = QUrl(QStringLiteral("https://www.nesdis.noaa.gov") + result.captured(1));
+        m_wallpaperInfoUrl = QUrl(QStringLiteral("https://www.nesdis.noaa.gov") + result.captured(1));
     }
-    if (!url.isValid()) {
+    if (!m_wallpaperInfoUrl.has_value() || !m_wallpaperInfoUrl->isValid()) {
         Q_EMIT error(this);
         return;
     }
 
-    KIO::StoredTransferJob *pageJob = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
+    KIO::StoredTransferJob *pageJob = KIO::storedGet(m_wallpaperInfoUrl.value(), KIO::NoReload, KIO::HideProgressInfo);
     connect(pageJob, &KIO::StoredTransferJob::finished, this, &NOAAProvider::pageRequestFinished);
 }
 
@@ -84,6 +84,17 @@ void NOAAProvider::pageRequestFinished(KJob *_job)
     if (!m_wallpaperRemoteUrl.has_value() || !m_wallpaperRemoteUrl->isValid()) {
         Q_EMIT error(this);
         return;
+    }
+
+    /**
+     * Match title
+     * Example:
+     * <meta property="og:title" content="Hunga Tonga-Hunga Ha&#039;apai Erupts Again" />
+     */
+    const QRegularExpression titleRegEx("<meta property=\"og:title\" content=\"(.+?)\"");
+    const QRegularExpressionMatch titleMatch = titleRegEx.match(data);
+    if (titleMatch.hasMatch()) {
+        m_wallpaperTitle = QTextDocumentFragment::fromHtml(titleMatch.captured(1).trimmed()).toPlainText();
     }
 
     KIO::StoredTransferJob *imageJob = KIO::storedGet(m_wallpaperRemoteUrl.value(), KIO::NoReload, KIO::HideProgressInfo);
