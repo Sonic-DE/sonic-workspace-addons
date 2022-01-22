@@ -76,8 +76,15 @@ void SimonStalenhagProvider::metaDataRequestFinished(KJob *_job)
         Q_EMIT error(this);
         return;
     }
-    QUrl picUrl(urlStr);
-    KIO::StoredTransferJob *imageJob = KIO::storedGet(picUrl, KIO::NoReload, KIO::HideProgressInfo);
+    potdProviderData()->wallpaperRemoteUrl = QUrl(urlStr);
+
+    auto titleStr = imageObj.toObject().value(QLatin1String("name")).toString();
+    auto sectionStr = imageObj.toObject().value(QLatin1String("section")).toString();
+    if (!titleStr.isEmpty() && !sectionStr.isEmpty()) {
+        potdProviderData()->wallpaperTitle = sectionStr + " - " + titleStr;
+    }
+
+    KIO::StoredTransferJob *imageJob = KIO::storedGet(potdProviderData()->wallpaperRemoteUrl, KIO::NoReload, KIO::HideProgressInfo);
     connect(imageJob, &KIO::StoredTransferJob::finished, this, &SimonStalenhagProvider::imageRequestFinished);
 }
 
