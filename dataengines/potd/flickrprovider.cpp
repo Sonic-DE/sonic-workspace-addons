@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QRandomGenerator>
 #include <QRegularExpression>
+#include <QTextDocumentFragment>
 #include <QUrlQuery>
 
 #include <KIO/Job>
@@ -75,6 +76,7 @@ void FlickrProvider::xmlRequestFinished(KJob *_job)
 
     // Clear the list
     m_photoList.clear();
+    m_photoList.reserve(100);
 
     xml.clear();
     xml.addData(data);
@@ -103,7 +105,22 @@ void FlickrProvider::xmlRequestFinished(KJob *_job)
                     // Get the best url.
                     QLatin1String urlAttrString(urlAttr);
                     if (attributes.hasAttribute(urlAttrString)) {
-                        m_photoList.append(attributes.value(urlAttrString).toString());
+                        QString title, userId, photoId;
+                        if (attributes.hasAttribute("title")) {
+                            title = QTextDocumentFragment::fromHtml(attributes.value("title").toString().trimmed()).toPlainText();
+                            ;
+                        }
+                        if (attributes.hasAttribute("owner") && attributes.hasAttribute("id")) {
+                            userId = attributes.value("owner").toString();
+                            photoId = attributes.value("id").toString();
+                        }
+                        m_photoList.emplace(m_photoList.end(),
+                                            PhotoEntry{
+                                                attributes.value(urlAttrString).toString(),
+                                                title,
+                                                userId,
+                                                photoId,
+                                            });
                         found = true;
                         break;
                     }
@@ -115,7 +132,7 @@ void FlickrProvider::xmlRequestFinished(KJob *_job)
                 if (found) {
                     QLatin1String originAttr("url_o");
                     if (attributes.hasAttribute(originAttr)) {
-                        m_photoList.back() = attributes.value(QLatin1String(originAttr)).toString();
+                        m_photoList.back().urlString = attributes.value(QLatin1String(originAttr)).toString();
                     }
                 }
             }
@@ -127,8 +144,21 @@ void FlickrProvider::xmlRequestFinished(KJob *_job)
     }
 
     if (m_photoList.begin() != m_photoList.end()) {
-        QUrl url(m_photoList.at(QRandomGenerator::global()->bounded(m_photoList.size())));
-        KIO::StoredTransferJob *imageJob = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
+        const auto randomNumber = QRandomGenerator::global()->bounded(static_cast<unsigned int>(m_photoList.size()));
+        const auto &randomPhotoEntry = m_photoList.at(randomNumber);
+        m_wallpaperRemoteUrl = QUrl(randomPhotoEntry.urlString);
+        m_wallpaperTitle = randomPhotoEntry.title;
+
+        /**
+         * Visit the photo page to get the author
+         * API document: https://www.flickr.com/services/api/misc.urls.html
+         * https://www.flickr.com/photos/{user-id}/{photo-id}
+         */
+        if (!(randomPhotoEntry.userId.isEmpty() || randomPhotoEntry.photoId.isEmpty())) {
+            m_infoPageUrl = QUrl(QStringLiteral("https://www.flickr.com/photos/%1/%2").arg(randomPhotoEntry.userId).arg(randomPhotoEntry.photoId));
+        }
+
+        KIO::StoredTransferJob *imageJob = KIO::storedGet(m_wallpaperRemoteUrl.value(), KIO::NoReload, KIO::HideProgressInfo);
         connect(imageJob, &KIO::StoredTransferJob::finished, this, &FlickrProvider::imageRequestFinished);
     } else {
         qDebug() << "empty list";
@@ -143,7 +173,34 @@ void FlickrProvider::imageRequestFinished(KJob *_job)
         return;
     }
 
+    // Visit the photo page to get the author
+    if (m_infoPageUrl.has_value()) {
+        KIO::StoredTransferJob *pageJob = KIO::storedGet(m_infoPageUrl.value(), KIO::NoReload, KIO::HideProgressInfo);
+        connect(pageJob, &KIO::StoredTransferJob::finished, this, &FlickrProvider::pageRequestFinished);
+    }
+
     mImage = QImage::fromData(job->data());
+}
+
+void FlickrProvider::pageRequestFinished(KJob *_job)
+{
+    KIO::StoredTransferJob *job = static_cast<KIO::StoredTransferJob *>(_job);
+    if (job->error()) {
+        Q_EMIT finished(this); // No author is fine
+        return;
+    }
+
+    const QString data = QString::fromUtf8(job->data()).simplified();
+
+    // Example: <a href="/photos/jellybeanzgallery/" class="owner-name truncate" title="Go to Hammerchewer&#x27;s photostream"
+    // data-track="attributionNameClick">Hammerchewer</a>
+    QRegularExpression authorRegEx("<a.*?class=\"owner-name truncate\".*?>(.+?)</a>");
+    QRegularExpressionMatch match = authorRegEx.match(data);
+
+    if (match.hasMatch()) {
+        m_wallpaperAuthor = QTextDocumentFragment::fromHtml(match.captured(1).trimmed()).toPlainText();
+    }
+
     Q_EMIT finished(this);
 }
 
