@@ -8,7 +8,8 @@
 #include "epodprovider.h"
 
 #include <QDebug>
-#include <QRegExp>
+#include <QRegularExpression>
+#include <QTextDocumentFragment>
 
 #include <KIO/Job>
 #include <KPluginFactory>
@@ -32,16 +33,47 @@ void EpodProvider::pageRequestFinished(KJob *_job)
         return;
     }
 
-    const QString data = QString::fromUtf8(job->data());
+    const QString data = QString::fromUtf8(job->data()).simplified();
 
     const QString pattern = QStringLiteral("://epod.usra.edu/.a/*-pi");
     QRegExp exp(pattern);
     exp.setPatternSyntax(QRegExp::Wildcard);
 
+    if (exp.indexIn(data) != -1) {
+        /**
+         * Match link and title
+         * Example:
+         * <h3 class="entry-header">
+         * <a href="https://epod.usra.edu/blog/2022/01/archive-panamint-delta-.html">Archive - Panamint Delta </a>
+         * </h3><!-- .entry-header -->
+         */
+        const QRegularExpression titleRegEx("<h3 class=\"entry-header\">.*?<a href=\"(.+?)\">(.+?)</a>.*?</h3>");
+        const QRegularExpressionMatch titleMatch = titleRegEx.match(data);
+        if (titleMatch.hasMatch()) {
+            m_data->wallpaperInfoUrl = QUrl(titleMatch.captured(1).trimmed());
+            m_data->wallpaperTitle = QTextDocumentFragment::fromHtml(titleMatch.captured(2).trimmed()).toPlainText();
+        }
+
+        /**
+         * Match author
+         * Example:
+         * <strong>Photographer</strong>: <a href="...">Wendy Van Norden</a>
+         */
+        const QRegularExpression authorRegEx("<strong>Photographer.*?</strong>.*?<a.+?>(.+?)</a>");
+        const QRegularExpressionMatch authorMatch = authorRegEx.match(data);
+        if (authorMatch.hasMatch()) {
+            m_data->wallpaperAuthor = QTextDocumentFragment::fromHtml(authorMatch.captured(1).trimmed()).toPlainText();
+        }
+    } else {
+        Q_EMIT error(this);
+        return;
+    }
+
     int pos = exp.indexIn(data) + pattern.length();
     const QString sub = data.mid(pos - 4, pattern.length() + 10);
-    const QUrl url(QStringLiteral("https://epod.usra.edu/.a/%1-pi").arg(sub));
-    KIO::StoredTransferJob *imageJob = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
+    m_data->wallpaperRemoteUrl = QUrl(QStringLiteral("https://epod.usra.edu/.a/%1-pi").arg(sub));
+
+    KIO::StoredTransferJob *imageJob = KIO::storedGet(m_data->wallpaperRemoteUrl, KIO::NoReload, KIO::HideProgressInfo);
     connect(imageJob, &KIO::StoredTransferJob::finished, this, &EpodProvider::imageRequestFinished);
 }
 
