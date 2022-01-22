@@ -40,6 +40,8 @@ public:
      */
     enum RoleType {
         ImageRole,
+        ImageLoadingStatusRole, /**< The loading status of the image, true if the provider is fetching the image,
+                                     otherwise false */
         UrlRole,
         InfoUrlRole, /**< Information URL of the image */
         RemoteUrlRole, /**< Network URL of the image */
