@@ -25,6 +25,8 @@ static QString dataKeysMap(PotdProvider::RoleType role)
     switch (role) {
     case PotdProvider::ImageRole:
         return "Image";
+    case PotdProvider::ImageLoadingStatusRole:
+        return "ImageLoadingStatus";
     case PotdProvider::UrlRole:
         return "Url";
     case PotdProvider::InfoUrlRole:
@@ -128,6 +130,7 @@ bool PotdEngine::sourceRequestEvent(const QString &identifier)
 {
     if (updateSource(identifier, true)) {
         setData(identifier, dataKeysMap(PotdProvider::ImageRole), QImage());
+        setData(identifier, dataKeysMap(PotdProvider::ImageLoadingStatusRole), true); // is fetching
         setData(identifier, dataKeysMap(PotdProvider::UrlRole), QUrl());
         setData(identifier, dataKeysMap(PotdProvider::InfoUrlRole), QUrl());
         setData(identifier, dataKeysMap(PotdProvider::RemoteUrlRole), QUrl());
@@ -169,6 +172,7 @@ void PotdEngine::finished(PotdProvider *provider)
         QThreadPool::globalInstance()->start(thread);
     } else {
         setData(provider->identifier(), dataKeysMap(PotdProvider::ImageRole), img);
+        // Don't set ImageLoadingStatusRole for CachedProvider, as we would like to show the real loading status.
         setData(provider->identifier(), dataKeysMap(PotdProvider::UrlRole), CachedProvider::identifierToPath(provider->identifier()));
         setData(provider->identifier(), dataKeysMap(PotdProvider::InfoUrlRole), infoUrl);
         setData(provider->identifier(), dataKeysMap(PotdProvider::RemoteUrlRole), remoteUrl);
@@ -187,10 +191,13 @@ void PotdEngine::cachingFinished(const QString &source, const PotdProviderData &
     setData(source, dataKeysMap(PotdProvider::RemoteUrlRole), data.wallpaperRemoteUrl);
     setData(source, dataKeysMap(PotdProvider::TitleRole), data.wallpaperTitle);
     setData(source, dataKeysMap(PotdProvider::AuthorRole), data.wallpaperAuthor);
+
+    setData(source, dataKeysMap(PotdProvider::ImageLoadingStatusRole), false);
 }
 
 void PotdEngine::error(PotdProvider *provider)
 {
+    setData(provider->identifier(), dataKeysMap(PotdProvider::ImageLoadingStatusRole), false);
     provider->disconnect(this);
     provider->deleteLater();
 }
