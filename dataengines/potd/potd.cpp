@@ -27,6 +27,9 @@ namespace DataKeys
 auto image = []() noexcept {
     return QStringLiteral("Image");
 };
+auto loading = []() noexcept {
+    return QStringLiteral("ImageLoadingStatus");
+};
 auto url = []() noexcept {
     return QStringLiteral("Url");
 };
@@ -133,6 +136,7 @@ bool PotdEngine::sourceRequestEvent(const QString &identifier)
 {
     if (updateSource(identifier, true)) {
         setData(identifier, DataKeys::image(), QImage());
+        setData(identifier, DataKeys::loading(), true); // is fetching
         setData(identifier, DataKeys::url(), QUrl());
         setData(identifier, DataKeys::infoUrl(), QUrl());
         setData(identifier, DataKeys::remoteUrl(), QUrl());
@@ -174,6 +178,7 @@ void PotdEngine::finished(PotdProvider *provider)
         QThreadPool::globalInstance()->start(thread);
     } else {
         setData(provider->identifier(), DataKeys::image(), img);
+        // Don't set ImageLoadingStatusRole for CachedProvider, as we would like to show the real loading status.
         setData(provider->identifier(), DataKeys::url(), CachedProvider::identifierToPath(provider->identifier()));
         setData(provider->identifier(), DataKeys::infoUrl(), infoUrl);
         setData(provider->identifier(), DataKeys::remoteUrl(), remoteUrl);
@@ -192,10 +197,13 @@ void PotdEngine::cachingFinished(const QString &source, const PotdProviderData &
     setData(source, DataKeys::remoteUrl(), data.wallpaperRemoteUrl);
     setData(source, DataKeys::title(), data.wallpaperTitle);
     setData(source, DataKeys::author(), data.wallpaperAuthor);
+
+    setData(source, DataKeys::loading(), false);
 }
 
 void PotdEngine::error(PotdProvider *provider)
 {
+    setData(provider->identifier(), DataKeys::loading(), false);
     provider->disconnect(this);
     provider->deleteLater();
 }
