@@ -9,6 +9,7 @@
 
 #include <QDebug>
 #include <QRegularExpression>
+#include <QTextDocumentFragment> // For parsing title from HTML source
 
 #include <KIO/Job>
 #include <KPluginFactory>
@@ -84,6 +85,17 @@ void NOAAProvider::pageRequestFinished(KJob *_job)
     if (!m_wallpaperRemoteUrl.has_value() || !m_wallpaperRemoteUrl->isValid()) {
         Q_EMIT error(this);
         return;
+    }
+
+    /**
+     * Match title
+     * Example:
+     * <meta property="og:title" content="Hunga Tonga-Hunga Ha&#039;apai Erupts Again" />
+     */
+    const QRegularExpression titleRegEx("<meta property=\"og:title\" content=\"(.+?)\"");
+    const QRegularExpressionMatch titleMatch = titleRegEx.match(data);
+    if (titleMatch.hasMatch()) {
+        m_wallpaperTitle = QTextDocumentFragment::fromHtml(titleMatch.captured(1).trimmed()).toPlainText();
     }
 
     KIO::StoredTransferJob *imageJob = KIO::storedGet(m_wallpaperRemoteUrl.value(), KIO::NoReload, KIO::HideProgressInfo);
