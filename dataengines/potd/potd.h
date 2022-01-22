@@ -53,6 +53,7 @@ private:
 
     const std::map<PotdProvider::RoleType, QString> m_dataKeysMap{
         {PotdProvider::ImageRole, "Image"},
+        {PotdProvider::ImageLoadingStatusRole, "ImageLoadingStatus"},
         {PotdProvider::UrlRole, "Url"},
         {PotdProvider::InfoUrlRole, "InfoUrl"},
         {PotdProvider::RemoteUrlRole, "RemoteUrl"},
