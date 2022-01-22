@@ -118,6 +118,22 @@ void FlickrProvider::xmlRequestFinished(KJob *_job)
                         m_photoList.back() = attributes.value(QLatin1String(originAttr)).toString();
                     }
                 }
+
+                // Parse title from XML tag
+                if (attributes.hasAttribute("title")) {
+                    m_wallpaperTitle = attributes.value("title").toString();
+                }
+
+                /**
+                 * Visit the photo page to get the author
+                 * API document: https://www.flickr.com/services/api/misc.urls.html
+                 * https://www.flickr.com/photos/{user-id}/{photo-id}
+                 */
+                if (attributes.hasAttribute("id") && attributes.hasAttribute("owner")) {
+                    const QString userId = attributes.value("owner").toString();
+                    const QString photoId = attributes.value("id").toString();
+                    m_infoPageUrl = QUrl(QStringLiteral("https://www.flickr.com/photos/%1/%2").arg(userId).arg(photoId));
+                }
             }
         }
     }
@@ -127,8 +143,8 @@ void FlickrProvider::xmlRequestFinished(KJob *_job)
     }
 
     if (m_photoList.begin() != m_photoList.end()) {
-        QUrl url(m_photoList.at(QRandomGenerator::global()->bounded(m_photoList.size())));
-        KIO::StoredTransferJob *imageJob = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
+        m_wallpaperRemoteUrl = QUrl(m_photoList.at(QRandomGenerator::global()->bounded(m_photoList.size())));
+        KIO::StoredTransferJob *imageJob = KIO::storedGet(m_wallpaperRemoteUrl.value(), KIO::NoReload, KIO::HideProgressInfo);
         connect(imageJob, &KIO::StoredTransferJob::finished, this, &FlickrProvider::imageRequestFinished);
     } else {
         qDebug() << "empty list";
@@ -143,7 +159,34 @@ void FlickrProvider::imageRequestFinished(KJob *_job)
         return;
     }
 
+    // Visit the photo page to get the author
+    if (m_infoPageUrl.has_value()) {
+        KIO::StoredTransferJob *pageJob = KIO::storedGet(m_infoPageUrl.value(), KIO::NoReload, KIO::HideProgressInfo);
+        connect(pageJob, &KIO::StoredTransferJob::finished, this, &FlickrProvider::pageRequestFinished);
+    }
+
     mImage = QImage::fromData(job->data());
+}
+
+void FlickrProvider::pageRequestFinished(KJob *_job)
+{
+    KIO::StoredTransferJob *job = static_cast<KIO::StoredTransferJob *>(_job);
+    if (job->error()) {
+        Q_EMIT finished(this); // No author is fine
+        return;
+    }
+
+    const QString data = QString::fromUtf8(job->data()).simplified();
+
+    // Example: <a href="/photos/jellybeanzgallery/" class="owner-name truncate" title="Go to Hammerchewer&#x27;s photostream"
+    // data-track="attributionNameClick">Hammerchewer</a>
+    QRegularExpression authorRegEx("<a.*?class=\"owner-name truncate\".*?>(.+?)</a>");
+    QRegularExpressionMatch match = authorRegEx.match(data);
+
+    if (match.hasMatch()) {
+        m_wallpaperAuthor = match.captured(1);
+    }
+
     Q_EMIT finished(this);
 }
 
