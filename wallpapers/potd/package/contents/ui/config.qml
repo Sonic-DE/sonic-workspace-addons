@@ -253,38 +253,52 @@ Kirigami.FormLayout {
     Kirigami.Separator {
         id: previewSeparator
         Kirigami.FormData.isSection: true
+        Kirigami.FormData.label: "Today's Picture"
     }
 
-    WallpaperPreview {
-        id: wallpaperPreview
-        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Today's picture:")
-        fullProviderName: engine.data["Providers"][wallpaper.configuration.Provider]
-    }
+    ColumnLayout {
+        anchors.horizontalCenter: root.horizontalCenter
+        spacing: 0
 
-    Item {
-        Layout.fillWidth: true
-    }
+        WallpaperPreview {
+            id: wallpaperPreview
+            Layout.alignment: Qt.AlignHCenter
+            fullProviderName: engine.data["Providers"][wallpaper.configuration.Provider]
+        }
 
-    SelectableLabel {
-        id: titleLabel
-        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Title:")
-        Layout.maximumWidth: wallpaperPreview.implicitWidth * 1.5
-        visible: text.length > 0
-        text: wallpaperPreview.title
-        bold: true
-    }
+        SelectableLabel {
+            id: titleLabel
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: wallpaperPreview.implicitWidth * 1.5
+            Layout.topMargin: Kirigami.Units.largeSpacing
+            visible: text.length > 0
+            horizontalAlignment: TextEdit.AlignHCenter
+            text: wallpaperPreview.title
+            bold: true
 
-    Item {
-        Layout.fillWidth: true
-    }
+            // HACK: Force rearrange the Layout
+            onVisibleChanged: parent.height = undefined
+        }
 
-    SelectableLabel {
-        id: authorLabel
-        Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label", "Author:")
-        Layout.maximumWidth: titleLabel.Layout.maximumWidth
-        visible: text.length > 0
-        text: wallpaperPreview.author
-        bold: false
+        SelectableLabel {
+            id: authorLabel
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: wallpaperPreview.implicitWidth * 1.5
+            opacity: 0.6
+            visible: text.length > 0
+            text: wallpaperPreview.author
+            horizontalAlignment: TextEdit.AlignHCenter
+            bold: false
+            fontPointSize: Kirigami.Theme.smallFont.pointSize
+        }
+
+        QQC2.Button {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: Kirigami.Units.smallSpacing
+            icon.name: "document-save"
+            text: i18ndc("plasma_wallpaper_org.kde.potd", "@action:button", "Save Image as…")
+            onClicked: saveMessage.savedUrl = wallpaperPreview.saveImage()
+        }
     }
 
     Kirigami.InlineMessage {
