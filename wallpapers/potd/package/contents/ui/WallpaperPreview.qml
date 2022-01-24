@@ -39,6 +39,7 @@ ColumnLayout {
     // Wallpaper preview (including save button)
     WallpaperDelegate {
         id: delegate
+        Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: Screen.width / 10 + Kirigami.Units.smallSpacing * 2
         Layout.minimumHeight: Screen.height / 10 + Kirigami.Units.smallSpacing * 2
 
@@ -51,7 +52,7 @@ ColumnLayout {
             Kirigami.Action {
                 iconName: "document-save"
                 enabled: delegate.status === Image.Ready
-                visible: enabled && hoverHandler.showActions
+                visible: false
                 tooltip: i18ndc("plasma_wallpaper_org.kde.potd", "@action:inmenu wallpaper preview menu", "Save Image as…")
                 onTriggered: saveMessage.savedUrl = wallpaperPreview.saveImage()
             },
@@ -63,11 +64,6 @@ ColumnLayout {
                 onTriggered: Qt.openUrlExternally(wallpaperPreview.infoUrl)
             }
         ]
-
-        HoverHandler {
-            id: hoverHandler
-            readonly property bool showActions: Kirigami.Settings.isMobile || hovered || delegate.activeFocus
-        }
     }
 
     // Reload the image when a new one is provided
