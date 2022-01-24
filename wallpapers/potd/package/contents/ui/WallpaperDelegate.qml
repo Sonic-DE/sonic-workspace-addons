@@ -16,7 +16,6 @@ FocusScope {
     // FocusScope can pass Tab to inlined buttons
     id: delegate
 
-    readonly property int shadowOffset: thumbnail.shadow.size - thumbnail.shadow.yOffset
     property alias status: wallpaperImage.status
 
     /**
