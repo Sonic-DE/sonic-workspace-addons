@@ -123,6 +123,7 @@ DropArea {
             case Qt.Key_Space:
             case Qt.Key_Enter:
             case Qt.Key_Return:
+            case Qt.Key_Select:
                 activate();
                 break;
             }

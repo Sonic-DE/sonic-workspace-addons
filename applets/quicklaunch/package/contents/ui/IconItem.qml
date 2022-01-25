@@ -63,6 +63,7 @@ Item {
                 case Qt.Key_Space:
                 case Qt.Key_Enter:
                 case Qt.Key_Return:
+                case Qt.Key_Select:
                     logic.openUrl(url);
                     break;
                 case Qt.Key_Menu:
