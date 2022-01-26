@@ -293,31 +293,8 @@ Kirigami.FormLayout {
             Layout.topMargin: Kirigami.Units.smallSpacing
             icon.name: "document-save"
             text: i18ndc("plasma_wallpaper_org.kde.potd", "@action:button", "Save Image as…")
-            onClicked: saveMessage.savedUrl = wallpaperPreview.saveImage()
+            onClicked: wallpaperPreview.saveImage()
         }
-    }
-
-    Kirigami.InlineMessage {
-        id: saveMessage
-
-        Kirigami.FormData.isSection: true
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        property string savedUrl
-
-        showCloseButton: true
-
-        actions: [
-            Kirigami.Action {
-                iconName: "document-open-folder"
-                text: i18ndc("plasma_wallpaper_org.kde.potd", "@action:button after the wallpaper image is saved successfully", "Open Containing Folder")
-                visible: saveMessage.savedUrl.length > 0
-                onTriggered: Qt.openUrlExternally(`file://${saveMessage.savedUrl.slice(0, saveMessage.savedUrl.lastIndexOf("/") + 1)}`)
-            }
-        ]
-
-        onLinkActivated: Qt.openUrlExternally(saveMessage.savedUrl)
     }
 
     Connections {
@@ -327,20 +304,16 @@ Kirigami.FormLayout {
             let message;
             switch (backend.saveStatus) {
             case PotdPlugin.Global.Succeeded:
-                message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action %1 file path %2 basename", "The image was saved as <a href=\"%1\">%2</a>", saveMessage.savedUrl, saveMessage.savedUrl.slice(saveMessage.savedUrl.lastIndexOf("/") + 1));
-                saveMessage.type = Kirigami.MessageType.Positive;
+                message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action", "The image was saved.");
                 break;
             case PotdPlugin.Global.Failed:
-                saveMessage.savedUrl = "";
-                message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action ", "Failed to save the image!");
-                saveMessage.type = Kirigami.MessageType.Error;
+                message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action", "Failed to save the image!");
                 break;
             default:
                 return;
             }
 
-            saveMessage.text = message;
-            saveMessage.visible = true;
+            showPassiveNotification(message);
         }
     }
 }
