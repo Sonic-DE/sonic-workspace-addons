@@ -293,35 +293,22 @@ Kirigami.FormLayout {
         }
 
         QQC2.Button {
+            id: saveButton
+            property string savedUrl
+
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: Kirigami.Units.smallSpacing
+            Layout.topMargin: titleLabel.visible || authorLabel.visible ? Kirigami.Units.smallSpacing
+                                                                        : Kirigami.Units.largeSpacing
+
+            enabled: wallpaperPreview.isReady
             icon.name: "document-save"
             text: i18ndc("plasma_wallpaper_org.kde.potd", "@action:button", "Save Image as…")
-            onClicked: saveMessage.savedUrl = wallpaperPreview.saveImage()
-        }
-    }
+            onClicked: saveButton.savedUrl = wallpaperPreview.saveImage()
 
-    Kirigami.InlineMessage {
-        id: saveMessage
-
-        Kirigami.FormData.isSection: true
-        anchors.left: previewSeparator.left
-        anchors.right: previewSeparator.right
-
-        property string savedUrl
-
-        showCloseButton: true
-
-        actions: [
-            Kirigami.Action {
-                iconName: "document-open-folder"
-                text: i18ndc("plasma_wallpaper_org.kde.potd", "@action:button after the wallpaper image is saved successfully", "Open Containing Folder")
-                visible: saveMessage.savedUrl.length > 0
-                onTriggered: Qt.openUrlExternally(`file://${saveMessage.savedUrl.slice(0, saveMessage.savedUrl.lastIndexOf("/") + 1)}`)
+            function callback() {
+                Qt.openUrlExternally(`file://${saveButton.savedUrl.slice(0, saveButton.savedUrl.lastIndexOf("/") + 1)}`);
             }
-        ]
-
-        onLinkActivated: Qt.openUrlExternally(saveMessage.savedUrl)
+        }
     }
 
     Connections {
@@ -331,20 +318,16 @@ Kirigami.FormLayout {
             let message;
             switch (backend.saveStatus) {
             case PotdPlugin.Global.Succeeded:
-                message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action %1 file path %2 basename", "The image was saved as <a href=\"%1\">%2</a>", saveMessage.savedUrl, saveMessage.savedUrl.slice(saveMessage.savedUrl.lastIndexOf("/") + 1));
-                saveMessage.type = Kirigami.MessageType.Positive;
+                message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action", "Image saved");
+                showPassiveNotification(message, "long", i18ndc("plasma_wallpaper_org.kde.potd", "@action:button after the wallpaper image is saved successfully", "Open Containing Folder"), saveButton.callback);
                 break;
             case PotdPlugin.Global.Failed:
-                saveMessage.savedUrl = "";
-                message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action ", "Failed to save the image!");
-                saveMessage.type = Kirigami.MessageType.Error;
+                message = i18ndc("plasma_wallpaper_org.kde.potd", "@info:status after a save action", "Failed to save the image!");
+                showPassiveNotification(message, "short");
                 break;
             default:
                 return;
             }
-
-            saveMessage.text = message;
-            saveMessage.visible = true;
         }
     }
 }
