@@ -54,7 +54,7 @@ ColumnLayout {
                 enabled: delegate.status === Image.Ready
                 visible: false
                 tooltip: i18ndc("plasma_wallpaper_org.kde.potd", "@action:inmenu wallpaper preview menu", "Save Image as…")
-                onTriggered: saveMessage.savedUrl = wallpaperPreview.saveImage()
+                onTriggered: saveButton.savedUrl = wallpaperPreview.saveImage()
             },
             Kirigami.Action {
                 iconName: "internet-services"
