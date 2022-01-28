@@ -306,6 +306,8 @@ Kirigami.FormLayout {
                 text: i18ndc("plasma_wallpaper_org.kde.potd", "@action:button after the wallpaper image is saved successfully", "Open Containing Folder")
                 visible: saveMessage.savedUrl.length > 0
                 onTriggered: Qt.openUrlExternally(`file://${saveMessage.savedUrl.slice(0, saveMessage.savedUrl.lastIndexOf("/") + 1)}`)
+
+                Accessible.description: i18nc("@info:whatsthis for a button", "Open the destination folder where the wallpaper image was saved.")
             }
         ]
 
