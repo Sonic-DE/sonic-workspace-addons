@@ -69,7 +69,6 @@ FocusScope {
         actions: delegate.actions
     }
 
-    activeFocusOnTab: true
     Keys.onMenuPressed: contextMenu.popup(delegate, thumbnail.x, thumbnail.y + thumbnail.height)
     Keys.onSpacePressed: contextMenu.popup(delegate, thumbnail.x, thumbnail.y + thumbnail.height)
 
@@ -123,6 +122,14 @@ FocusScope {
             }
 
             color: Kirigami.Theme.backgroundColor
+
+            activeFocusOnTab: true
+            Accessible.name: delegate.thumbnailAvailable ? i18nc("@info:whatsthis", "Today's picture")
+                           : delegate.thumbnailLoading ? i18nc("@info:whatsthis", "Loading")
+                                                       : i18nc("@info:whatsthis", "Unavailable")
+            Accessible.description: delegate.thumbnailAvailable ? i18nc("@info:whatsthis for an image %1 title %2 author", "%1 Author: %2. Right-click on the image to see more actions.", delegate.title, delegate.author)
+                                  : delegate.thumbnailLoading ? i18nc("@info:whatsthis", "The wallpaper is being fetched from the Internet.")
+                                                              : i18nc("@info:whatsthis", "Failed to fetch the wallpaper from the Internet.")
 
             KQCAddons.QImageItem {
                 id: wallpaperImage
@@ -202,6 +209,9 @@ FocusScope {
                         onClicked: modelData.trigger()
                         enabled: modelData.enabled
                         visible: modelData.visible
+
+                        Accessible.name: modelData.tooltip
+                        Accessible.description: modelData.Accessible.description
 
                         QQC2.ToolTip {
                             visible: modelData.tooltip.length > 0
