@@ -30,6 +30,8 @@ QQC2.Menu {
             onTriggered: modelData.trigger()
             enabled: modelData.enabled
             visible: modelData.visible || contextMenu.showAllActions
+
+            Accessible.description: modelData.Accessible.description
         }
     }
 
