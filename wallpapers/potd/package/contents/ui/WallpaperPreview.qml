@@ -44,6 +44,8 @@ ColumnLayout {
 
         image: engine.data[identifier] && engine.data[identifier].Image || undefined
         infoUrl: wallpaperPreview.infoUrl
+        title: wallpaperPreview.title
+        author: wallpaperPreview.author
 
         thumbnailAvailable: !delegate.isNull
         thumbnailLoading: wallpaperPreview.isLoading
@@ -55,6 +57,8 @@ ColumnLayout {
                 visible: enabled
                 tooltip: i18ndc("plasma_wallpaper_org.kde.potd", "@action:inmenu wallpaper preview menu", "Save Image as…")
                 onTriggered: wallpaperPreview.saveImage()
+
+                Accessible.description: i18ndc("plasma_wallpaper_org.kde.potd", "@info:whatsthis for a button and a menu item", "Save today's picture to local disk")
             },
             Kirigami.Action {
                 icon.name: "internet-services"
@@ -62,6 +66,8 @@ ColumnLayout {
                 visible: false
                 tooltip: i18ndc("plasma_wallpaper_org.kde.potd", "@action:inmenu wallpaper preview menu, will open the website of the wallpaper", "Open Link in Browser…")
                 onTriggered: Qt.openUrlExternally(wallpaperPreview.infoUrl)
+
+                Accessible.description: i18ndc("plasma_wallpaper_org.kde.potd", "@info:whatsthis for a menu item", "Open the website of today's picture in the default browser")
             }
         ]
     }
