@@ -17,6 +17,9 @@ QQC2.ScrollView {
     property alias bold: bodyText.font.bold
     property alias fontPointSize: bodyText.font.pointSize
 
+    Accessible.description: bodyText.text
+    Accessible.selectableText: true
+
     // Eliminate binding loop warnings
     contentHeight: Math.min(bodyText.implicitHeight, Kirigami.Units.gridUnit * 5)
 

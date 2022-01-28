@@ -26,6 +26,18 @@ FocusScope {
     property alias source: wallpaperImage.source
 
     /**
+     * title: string
+     * The title of the wallpaper
+     */
+    property string title
+
+    /**
+     * author: string
+     * The author of the wallpaper
+     */
+    property string author
+
+    /**
      * thumbnailAvailable: bool
      * Set it to true when a thumbnail is actually available: when false,
      * only an icon ("edit-none") will be shown instead of the actual thumbnail.
@@ -105,6 +117,9 @@ FocusScope {
                     anchors.fill: source
                     radius: 4
                 }
+
+                Accessible.name: i18nc("@info:whatsthis", "Today's picture")
+                Accessible.description: i18nc("@info:whatsthis for an image %1 title %2 author", "%1 Author: %2. Right-click on the image to see more actions.", delegate.title, delegate.author)
             }
 
             QQC2.BusyIndicator {
@@ -114,6 +129,9 @@ FocusScope {
                 width: Kirigami.Units.iconSizes.large
                 height: width
                 opacity: 0.5
+
+                Accessible.name: i18nc("@info:whatsthis", "Loading")
+                Accessible.description: i18nc("@info:whatsthis", "The wallpaper is being fetched from the Internet.")
             }
 
             // "None/There's nothing here" indicator
@@ -124,6 +142,9 @@ FocusScope {
                 height: width
                 source: "edit-none"
                 opacity: 0.5
+
+                Accessible.name: i18nc("@info:whatsthis", "Unavailable")
+                Accessible.description: i18nc("@info:whatsthis", "Failed to fetch the wallpaper from the Internet.")
             }
 
             RowLayout {
@@ -145,6 +166,10 @@ FocusScope {
                         onClicked: modelData.trigger()
                         enabled: modelData.enabled
                         visible: modelData.visible && !contextMenu.activeFocus
+
+                        Accessible.name: modelData.tooltip
+                        Accessible.description: modelData.Accessible.description
+
                         //NOTE: there aren't any global settings where to take "official" tooltip timeouts
                         QQC2.ToolTip.delay: 1000
                         QQC2.ToolTip.timeout: 5000
