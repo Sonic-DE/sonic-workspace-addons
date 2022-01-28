@@ -45,6 +45,8 @@ ColumnLayout {
 
         source: wallpaperPreview.localUrl
         infoUrl: wallpaperPreview.infoUrl
+        title: wallpaperPreview.title
+        author: wallpaperPreview.author
 
         thumbnailAvailable: delegate.status === Image.Ready || delegate.status === Image.Loading
         thumbnailLoading: wallpaperPreview.isLoading
@@ -55,6 +57,7 @@ ColumnLayout {
                 enabled: delegate.status === Image.Ready
                 visible: enabled
                 tooltip: i18ndc("plasma_wallpaper_org.kde.potd", "@action:inmenu wallpaper preview menu", "Save Image as…")
+                Accessible.description: i18ndc("plasma_wallpaper_org.kde.potd", "@info:whatsthis for a button and a menu item", "Save today's picture to local disk")
                 onTriggered: saveMessage.savedUrl = wallpaperPreview.saveImage()
             },
             Kirigami.Action {
@@ -62,6 +65,7 @@ ColumnLayout {
                 enabled: wallpaperPreview.infoUrl.toString().length > 0
                 visible: false
                 tooltip: i18ndc("plasma_wallpaper_org.kde.potd", "@action:inmenu wallpaper preview menu, will open the information page of the wallpaper", "Open Link in Browser…")
+                Accessible.description: i18ndc("plasma_wallpaper_org.kde.potd", "@info:whatsthis for a menu item", "Open the website of today's picture in the default browser")
                 onTriggered: Qt.openUrlExternally(wallpaperPreview.infoUrl)
             }
         ]
