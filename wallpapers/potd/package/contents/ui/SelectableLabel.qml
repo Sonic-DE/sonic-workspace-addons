@@ -32,6 +32,10 @@ QQC2.ScrollView {
         wrapMode: Text.Wrap
         textFormat: TextEdit.PlainText
 
+        // Orca will automatically read the text, so no need to set the text in description
+        Accessible.name: bodyTextContainer.Kirigami.FormData.label || ""
+        Accessible.selectableText: true
+
         HoverHandler {
             cursorShape: Qt.IBeamCursor
         }
