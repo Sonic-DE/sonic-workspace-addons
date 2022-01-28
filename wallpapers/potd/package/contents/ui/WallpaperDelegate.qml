@@ -143,6 +143,23 @@ FocusScope {
                 // Reduce memory usage
                 sourceSize: Qt.size(implicitWidth, implicitHeight)
 
+                Drag.active: dragHandler.active
+                Drag.dragType: Drag.Automatic
+                Drag.supportedActions: Qt.CopyAction
+                Drag.mimeData: {
+                    "text/uri-list" : wallpaperImage.source,
+                    "text/plain": delegate.title,
+                }
+
+                DragHandler {
+                    id: dragHandler
+                    onActiveChanged: if (active) {
+                        parent.grabToImage(function(result) {
+                            parent.Drag.imageSource = result.url;
+                        });
+                    }
+                }
+
                 layer.enabled: true
                 layer.effect: FastBlur {
                     source: wallpaperImage
