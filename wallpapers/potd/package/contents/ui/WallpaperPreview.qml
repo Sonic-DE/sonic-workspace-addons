@@ -43,6 +43,7 @@ ColumnLayout {
         Layout.minimumHeight: Math.round(Screen.height / 10 + Kirigami.Units.smallSpacing * 2)
 
         image: engine.data[identifier] && engine.data[identifier].Image || undefined
+        localUrl: wallpaperPreview.localUrl
         infoUrl: wallpaperPreview.infoUrl
         title: wallpaperPreview.title
         author: wallpaperPreview.author

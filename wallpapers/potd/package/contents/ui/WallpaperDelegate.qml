@@ -26,6 +26,11 @@ FocusScope {
     property alias image: wallpaperImage.image
 
     /**
+     * The local path of the wallpaper
+     */
+    property url localUrl
+
+    /**
      * The website of the wallpaper
      */
     property url infoUrl
@@ -132,6 +137,18 @@ FocusScope {
                 anchors.fill: parent
                 fillMode: wallpaper.configuration.FillMode || Image.PreserveAspectCrop
                 smooth: true
+
+                Drag.active: dragHandler.active
+                Drag.dragType: Drag.Automatic
+                Drag.supportedActions: Qt.CopyAction
+                Drag.mimeData: {
+                    "text/uri-list" : delegate.localUrl,
+                    "text/plain": delegate.title,
+                }
+
+                DragHandler {
+                    id: dragHandler
+                }
 
                 // CachedProvider will load the image from cache, but we would like to show the real loading status.
                 layer.enabled: delegate.thumbnailLoading
