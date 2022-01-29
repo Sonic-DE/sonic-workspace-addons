@@ -322,7 +322,11 @@ PlasmaCore.SvgItem {
             }
 
             PersistentScrollManager {
-                target: scrollview
+                // ScrollView::contentItem is always a Flickable, but just to be on a safe side
+                flickable: {
+                    const content = scrollview.contentItem;
+                    return content instanceof Flickable ? content : null;
+                }
 
                 onSave: {
                     plasmoid.configuration.scrollX = x;

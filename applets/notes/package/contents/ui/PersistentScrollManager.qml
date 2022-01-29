@@ -4,7 +4,7 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQml 2.15
+import QtQuick 2.15
 import QtQuick.Controls 2.15 as QQC2
 
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -12,7 +12,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 QtObject {
     id: manager
 
-    property QQC2.ScrollView target
+    property Flickable flickable
 
     property real x: 0.0
     property real y: 0.0
@@ -31,18 +31,18 @@ QtObject {
     signal restore()
 
     function forceSave() {
-        if (target !== null) {
-            x = target.QQC2.ScrollBar.horizontal.position;
-            y = target.QQC2.ScrollBar.vertical.position;
+        if (flickable !== null) {
+            x = flickable.contentX;
+            y = flickable.contentY;
             save();
         }
     }
 
     function forceRestore() {
-        if (target !== null) {
+        if (flickable !== null) {
             restore();
-            target.QQC2.ScrollBar.horizontal.position = x;
-            target.QQC2.ScrollBar.vertical.position = y;
+            flickable.contentX = x;
+            flickable.contentY = y;
         }
     }
 
@@ -56,27 +56,20 @@ QtObject {
             running: false
             onTriggered: manager.forceSave()
         },
-
         Connections {
-            target: manager.target ? manager.target.QQC2.ScrollBar.horizontal : null
-            function onPositionChanged() {
+            target: manager.flickable
+
+            function onContentXChanged() {
                 throttle.restart();
             }
-        },
-
-        Connections {
-            target: manager.target ? manager.target.QQC2.ScrollBar.vertical : null
-            function onPositionChanged() {
+            function onContentYChanged() {
                 throttle.restart();
             }
         }
     ]
 
-    Component.onCompleted: {
-        // Give it some time to lay out the text, because at this
-        // point in time content size is not reliable yet.
-        Qt.callLater(forceRestore);
-    }
-
+    // Give it some time to lay out the text, because at this
+    // point in time content size is not reliable yet.
+    Component.onCompleted: Qt.callLater(forceRestore)
     Component.onDestruction: forceSave()
 }
