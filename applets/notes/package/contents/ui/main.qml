@@ -322,7 +322,7 @@ PlasmaCore.SvgItem {
             }
 
             PersistentScrollManager {
-                target: scrollview
+                scrollView: scrollview
 
                 onSave: {
                     plasmoid.configuration.scrollX = x;
