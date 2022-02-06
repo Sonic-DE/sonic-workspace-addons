@@ -1,0 +1,3 @@
+module org.kde.plasmacalendar.alternatecalendarconfig
+
+plugin plasmacalendaralternatecalendarconfig
