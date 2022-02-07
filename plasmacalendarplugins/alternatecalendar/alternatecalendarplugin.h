@@ -21,6 +21,8 @@ namespace AlternateCalendarPlugin
 {
 
 class AlternateCalendarPlugin;
+class AbstractCalendarProvider;
+
 class AlternateCalendarPluginPrivate
 {
 public:
@@ -28,10 +30,12 @@ public:
     ~AlternateCalendarPluginPrivate() = default;
 
     void init();
+    AbstractCalendarProvider *calendarProvider() const;
     CalendarSystem::System calendarSystem() const;
 
 private:
     CalendarSystem::System m_calendarSystem;
+    std::unique_ptr<AbstractCalendarProvider> m_calendarProvider;
 
     AlternateCalendarPlugin *p;
 };

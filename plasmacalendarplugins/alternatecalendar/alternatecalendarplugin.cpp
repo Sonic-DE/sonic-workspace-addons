@@ -21,6 +21,16 @@ AlternateCalendarPluginPrivate::AlternateCalendarPluginPrivate(AlternateCalendar
 
 void AlternateCalendarPluginPrivate::init()
 {
+    // Load/Reload the calendar provider
+    switch (m_calendarSystem) {
+    default:
+        m_calendarProvider.reset(new AbstractCalendarProvider(m_calendarSystem));
+    }
+}
+
+AbstractCalendarProvider *AlternateCalendarPluginPrivate::calendarProvider() const
+{
+    return m_calendarProvider.get();
 }
 
 CalendarSystem::System AlternateCalendarPluginPrivate::calendarSystem() const
@@ -44,6 +54,10 @@ void AlternateCalendarPlugin::loadEventsForDateRange(const QDate &startDate, con
     }
 
     for (QDate date = startDate; date <= endDate && date.isValid(); date = date.addDays(1)) {
+        if (const QDate alt = d->calendarProvider()->fromGregorian(date); alt != date) {
+            alternateDatesData.insert(date, alt);
+        }
+        subLabelsData.insert(date, d->calendarProvider()->subLabels(date));
     }
 
     if (alternateDatesData.size() > 0) {
