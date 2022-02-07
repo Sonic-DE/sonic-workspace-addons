@@ -17,10 +17,16 @@ namespace AlternateCalendarPlugin
 AlternateCalendarPluginPrivate::AlternateCalendarPluginPrivate(AlternateCalendarPlugin *parent)
     : p(parent)
 {
+    auto config = KSharedConfig::openConfig(QStringLiteral("plasma_calendar_alternatecalendar"));
+    m_generalConfigGroup = config->group("General");
+    init();
 }
 
 void AlternateCalendarPluginPrivate::init()
 {
+    m_calendarSystem = static_cast<CalendarSystem::System>(m_generalConfigGroup.readEntry("calendarSystem", static_cast<int>(CalendarSystem::Gregorian)));
+    m_dateOffset = m_generalConfigGroup.readEntry("dateOffset", 0);
+
     // Load/Reload the calendar provider
     switch (m_calendarSystem) {
 #ifndef QT_BOOTSTRAPPED
