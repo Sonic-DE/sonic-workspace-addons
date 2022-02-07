@@ -23,6 +23,7 @@ CalendarSystemModel::CalendarSystemModel(QObject *parent)
         {CalendarSystem::Milankovic, i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "Milankovic")},
         {CalendarSystem::Jalali, i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "The Solar Hijri calendar (Persian)")},
         {CalendarSystem::IslamicCivil, i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "The Islamic Civil calendar")},
+        {CalendarSystem::Chinese, i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "Chinese Lunar Calendar")},
     };
     const QMetaEnum e = QMetaEnum::fromType<CalendarSystem::System>();
 
