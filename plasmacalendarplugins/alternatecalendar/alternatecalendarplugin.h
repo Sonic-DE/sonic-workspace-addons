@@ -17,6 +17,7 @@ namespace AlternateCalendarPlugin
 {
 
 class AlternateCalendarPluginPrivate;
+class AbstractCalendarProvider;
 
 class AlternateCalendarPlugin : public CalendarEvents::CalendarEventsPlugin
 {
