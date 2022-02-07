@@ -14,6 +14,7 @@
 #include "provider/qtcalendar.h"
 #ifdef HAVE_ICU
 #include "provider/chinesecalendar.h"
+#include "provider/indiancalendar.h"
 #endif
 
 namespace AlternateCalendarPlugin
@@ -39,6 +40,9 @@ void AlternateCalendarPluginPrivate::init()
 #ifdef HAVE_ICU
     case CalendarSystem::Chinese:
         m_calendarProvider.reset(new ChineseCalendarProvider(m_calendarSystem));
+        break;
+    case CalendarSystem::Indian:
+        m_calendarProvider.reset(new IndianCalendarProvider(m_calendarSystem));
         break;
 #endif
 #ifndef QT_BOOTSTRAPPED
