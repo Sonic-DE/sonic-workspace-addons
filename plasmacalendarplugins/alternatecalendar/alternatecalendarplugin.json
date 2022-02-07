@@ -1,0 +1,13 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "qydwhotmail@gmail.com",
+                "Name": "Fushan Wen"
+            }
+        ],
+        "Description": "Calendar plugin for displaying dates from the alternate calendar system",
+        "Icon": "office-calendar",
+        "Name": "Alternate Calendar"
+    }
+}
