@@ -9,6 +9,8 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
+#include "provider/qtcalendar.h"
+
 namespace AlternateCalendarPlugin
 {
 
