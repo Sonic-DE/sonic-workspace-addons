@@ -19,6 +19,8 @@ AlternateCalendarPluginPrivate::AlternateCalendarPluginPrivate(AlternateCalendar
 {
     auto config = KSharedConfig::openConfig(QStringLiteral("plasma_calendar_alternatecalendar"));
     m_generalConfigGroup = config->group("General");
+    m_configWatcher = KConfigWatcher::create(config);
+    QObject::connect(m_configWatcher.get(), &KConfigWatcher::configChanged, p, &AlternateCalendarPlugin::updateSettings);
     init();
 }
 
@@ -59,6 +61,9 @@ AlternateCalendarPlugin::AlternateCalendarPlugin()
 
 void AlternateCalendarPlugin::loadEventsForDateRange(const QDate &startDate, const QDate &endDate)
 {
+    m_lastStartDate = startDate;
+    m_lastEndDate = endDate;
+
     QHash<QDate, QDate> alternateDatesData;
     QHash<QDate, SubLabel> subLabelsData;
 
@@ -80,6 +85,12 @@ void AlternateCalendarPlugin::loadEventsForDateRange(const QDate &startDate, con
         Q_EMIT alternateDateReady(alternateDatesData);
     }
     Q_EMIT subLabelReady(subLabelsData);
+}
+
+void AlternateCalendarPlugin::updateSettings()
+{
+    d->init();
+    loadEventsForDateRange(m_lastStartDate, m_lastEndDate);
 }
 
 }
