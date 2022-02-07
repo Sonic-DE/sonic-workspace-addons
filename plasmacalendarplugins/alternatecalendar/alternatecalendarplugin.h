@@ -13,6 +13,8 @@
 
 #include "calendarsystem.h"
 
+class KConfigGroup;
+
 namespace AlternateCalendarPlugin
 {
 
@@ -34,6 +36,7 @@ public:
 private:
     std::unique_ptr<AbstractCalendarProvider> m_calendarProvider;
 
+    KConfigGroup m_generalConfigGroup;
     AlternateCalendarPlugin *p;
 };
 
