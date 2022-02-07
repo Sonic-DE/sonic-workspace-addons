@@ -30,7 +30,13 @@ public:
 
     void loadEventsForDateRange(const QDate &startDate, const QDate &endDate) override;
 
+public Q_SLOTS:
+    void updateSettings();
+
 private:
+    QDate m_lastStartDate;
+    QDate m_lastEndDate;
+
     std::unique_ptr<AlternateCalendarPluginPrivate> d;
 };
 
