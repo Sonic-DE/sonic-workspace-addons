@@ -28,11 +28,10 @@ public:
     ~AlternateCalendarPluginPrivate() = default;
 
     void init();
-    CalendarSystem::System calendarSystem() const;
 
-private:
     CalendarSystem::System m_calendarSystem;
 
+private:
     AlternateCalendarPlugin *p;
 };
 

@@ -21,11 +21,6 @@ void AlternateCalendarPluginPrivate::init()
 {
 }
 
-CalendarSystem::System AlternateCalendarPluginPrivate::calendarSystem() const
-{
-    return m_calendarSystem;
-}
-
 AlternateCalendarPlugin::AlternateCalendarPlugin()
     : CalendarEvents::CalendarEventsPlugin()
     , d(new AlternateCalendarPluginPrivate(this))
@@ -37,7 +32,7 @@ void AlternateCalendarPlugin::loadEventsForDateRange(const QDate &startDate, con
     QHash<QDate, QDate> alternateDatesData;
     QHash<QDate, SubLabel> subLabelsData;
 
-    if (!endDate.isValid() || d->calendarSystem() == CalendarSystem::Gregorian) {
+    if (!endDate.isValid() || d->m_calendarSystem == CalendarSystem::Gregorian) {
         return;
     }
 
