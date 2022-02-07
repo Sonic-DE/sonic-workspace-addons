@@ -6,6 +6,9 @@
 
 #include "alternatecalendarplugin.h"
 
+#include <KConfigGroup>
+#include <KSharedConfig>
+
 #include "provider/qtcalendar.h"
 
 namespace AlternateCalendarPlugin
@@ -26,12 +29,16 @@ public:
 private:
     std::unique_ptr<AbstractCalendarProvider> m_calendarProvider;
 
+    KConfigGroup m_generalConfigGroup;
     AlternateCalendarPlugin *q;
 };
 
 AlternateCalendarPluginPrivate::AlternateCalendarPluginPrivate(AlternateCalendarPlugin *parent)
     : q(parent)
 {
+    auto config = KSharedConfig::openConfig(QStringLiteral("plasma_calendar_alternatecalendar"));
+    m_generalConfigGroup = config->group("General");
+    init();
 }
 
 AlternateCalendarPluginPrivate::~AlternateCalendarPluginPrivate()
@@ -40,6 +47,9 @@ AlternateCalendarPluginPrivate::~AlternateCalendarPluginPrivate()
 
 void AlternateCalendarPluginPrivate::init()
 {
+    m_calendarSystem = static_cast<CalendarSystem::System>(m_generalConfigGroup.readEntry("calendarSystem", static_cast<int>(CalendarSystem::Gregorian)));
+    m_dateOffset = m_generalConfigGroup.readEntry("dateOffset", 0);
+
     // Load/Reload the calendar provider
     switch (m_calendarSystem) {
 #ifndef QT_BOOTSTRAPPED
