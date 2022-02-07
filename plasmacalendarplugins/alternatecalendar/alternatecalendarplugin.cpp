@@ -50,6 +50,11 @@ CalendarSystem::System AlternateCalendarPluginPrivate::calendarSystem() const
     return m_calendarSystem;
 }
 
+int AlternateCalendarPluginPrivate::dateOffset() const
+{
+    return m_dateOffset;
+}
+
 AlternateCalendarPlugin::AlternateCalendarPlugin()
     : CalendarEvents::CalendarEventsPlugin()
     , d(new AlternateCalendarPluginPrivate(this))
@@ -65,11 +70,14 @@ void AlternateCalendarPlugin::loadEventsForDateRange(const QDate &startDate, con
         return;
     }
 
+    const int dateOffset = d->dateOffset();
+
     for (QDate date = startDate; date <= endDate && date.isValid(); date = date.addDays(1)) {
-        if (const QDate alt = d->calendarProvider()->fromGregorian(date); alt != date) {
+        const QDate offsetDate = date.addDays(dateOffset);
+        if (const QDate alt = d->calendarProvider()->fromGregorian(offsetDate); alt != date) {
             alternateDatesData.insert(date, alt);
         }
-        subLabelsData.insert(date, d->calendarProvider()->subLabels(date));
+        subLabelsData.insert(date, d->calendarProvider()->subLabels(offsetDate));
     }
 
     if (alternateDatesData.size() > 0) {
