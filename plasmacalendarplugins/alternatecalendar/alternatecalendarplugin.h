@@ -29,6 +29,7 @@ public:
     AbstractCalendarProvider *calendarProvider() const;
 
     CalendarSystem::System m_calendarSystem;
+    int m_dateOffset; // For the (tabular) Islamic Civil calendar
 
 private:
     std::unique_ptr<AbstractCalendarProvider> m_calendarProvider;
