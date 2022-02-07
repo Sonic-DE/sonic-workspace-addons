@@ -40,6 +40,7 @@ private:
     std::unique_ptr<AbstractCalendarProvider> m_calendarProvider;
     int m_dateOffset; // For the (tabular) Islamic Civil calendar
 
+    KConfigGroup m_generalConfigGroup;
     AlternateCalendarPlugin *p;
 };
 
