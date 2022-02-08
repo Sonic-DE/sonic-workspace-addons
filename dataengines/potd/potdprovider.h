@@ -5,6 +5,7 @@
 #ifndef POTDPROVIDER_H
 #define POTDPROVIDER_H
 
+#include <QImage>
 #include <QObject>
 #include <QUrl>
 #include <QVariantList>
@@ -13,8 +14,13 @@
 
 #include "plasma_potd_export.h"
 
-class QImage;
 class QDate;
+
+struct PotdProviderData {
+    QImage wallpaperImage;
+    QString wallpaperLocalUrl;
+};
+Q_DECLARE_METATYPE(PotdProviderData)
 
 /**
  * This class is an interface for PoTD providers.
@@ -52,7 +58,7 @@ public:
      * Note: This method returns only a valid image after the
      *       finished() signal has been emitted.
      */
-    virtual QImage image() const = 0;
+    virtual QImage image() const;
 
     /**
      * Returns the identifier of the PoTD request (name + date).
@@ -94,6 +100,9 @@ Q_SIGNALS:
     void error(PotdProvider *provider);
 
     void configLoaded(QString apiKey, QString apiSecret);
+
+protected:
+    PotdProviderData *potdProviderData() const;
 
 private:
     void configRequestFinished(KJob *job);
