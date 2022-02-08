@@ -23,6 +23,7 @@ public:
 
 PotdProvider::PotdProvider(QObject *parent, const QVariantList &args)
     : QObject(parent)
+    , m_data(new PotdProviderData)
     , d(new PotdProviderPrivate)
 {
     if (args.count() > 0) {
@@ -72,6 +73,11 @@ bool PotdProvider::isFixedDate() const
 QString PotdProvider::identifier() const
 {
     return d->identifier;
+}
+
+QImage PotdProvider::image() const
+{
+    return m_data->wallpaperImage;
 }
 
 void PotdProvider::refreshConfig()
