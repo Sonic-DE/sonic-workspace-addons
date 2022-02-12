@@ -39,10 +39,6 @@ void ConverterRunner::init()
     }
     conversionRegex.append(QStringLiteral(" ?> ?"));
     unitSeperatorRegex = QRegularExpression(conversionRegex);
-    valueRegex.optimize();
-    unitSeperatorRegex.optimize();
-
-    insertCompatibleUnits();
 
     actionList = {new QAction(QIcon::fromTheme(QStringLiteral("edit-copy")), i18n("Copy unit and number"), this)};
     setMinLetterCount(2);
@@ -57,6 +53,7 @@ void ConverterRunner::match(RunnerContext &context)
     if (!valueRegexMatch.hasMatch()) {
         return;
     }
+
     const QString inputValueString = valueRegexMatch.captured(1);
 
     // Get the different units by splitting up the query with the regex
@@ -64,12 +61,19 @@ void ConverterRunner::match(RunnerContext &context)
     if (unitStrings.isEmpty() || unitStrings.at(0).isEmpty()) {
         return;
     }
+
+    // Initialize if not done already
+    if (!converter) {
+        converter = std::make_unique<KUnitConversion::Converter>();
+        insertCompatibleUnits();
+    }
+
     // Check if unit is valid, otherwise check for the value in the compatibleUnits map
     QString inputUnitString = unitStrings.first().simplified();
-    KUnitConversion::UnitCategory inputCategory = converter.categoryForUnit(inputUnitString);
+    KUnitConversion::UnitCategory inputCategory = converter->categoryForUnit(inputUnitString);
     if (inputCategory.id() == KUnitConversion::InvalidCategory) {
         inputUnitString = compatibleUnits.value(inputUnitString.toUpper());
-        inputCategory = converter.categoryForUnit(inputUnitString);
+        inputCategory = converter->categoryForUnit(inputUnitString);
         if (inputCategory.id() == KUnitConversion::InvalidCategory) {
             return;
         }
@@ -197,14 +201,14 @@ QList<KUnitConversion::Unit> ConverterRunner::createResultUnits(QString &outputU
 
     return units;
 }
+
 void ConverterRunner::insertCompatibleUnits()
 {
     // Add all currency symbols to the map, if their ISO code is supported by backend
     const QList<QLocale> allLocales = QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
-    KUnitConversion::UnitCategory currencyCategory = converter.category(QStringLiteral("Currency"));
+    KUnitConversion::UnitCategory currencyCategory = converter->category(QStringLiteral("Currency"));
     const QStringList availableISOCodes = currencyCategory.allUnits();
-    QRegularExpression hasCurrencyRegex = QRegularExpression(QStringLiteral("\\p{Sc}"));
-    hasCurrencyRegex.optimize();
+    static const QRegularExpression hasCurrencyRegex = QRegularExpression(QStringLiteral("\\p{Sc}"));
     for (const auto &currencyLocale : allLocales) {
         const QString symbol = currencyLocale.currencySymbol(QLocale::CurrencySymbol);
         const QString isoCode = currencyLocale.currencySymbol(QLocale::CurrencyIsoCode);
@@ -218,7 +222,7 @@ void ConverterRunner::insertCompatibleUnits()
     }
 
     // Add all units as uppercase in the map
-    const auto categories = converter.categories();
+    const auto categories = converter->categories();
     for (const auto &category : categories) {
         const auto allUnits = category.allUnits();
         for (const auto &unit : allUnits) {
