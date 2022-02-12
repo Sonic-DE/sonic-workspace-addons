@@ -15,8 +15,6 @@ static const char CONFIG_TRIGGERWORD[] = "triggerWord";
 DictionaryRunner::DictionaryRunner(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
     : AbstractRunner(parent, metaData, args)
 {
-    m_engine = new DictionaryMatchEngine(m_consumer.dataEngine(QStringLiteral("dict")), this);
-
     setPriority(LowPriority);
     setObjectName(QLatin1String("Dictionary"));
 }
@@ -48,6 +46,18 @@ void DictionaryRunner::match(RunnerContext &context)
     if (query.isEmpty()) {
         return;
     }
+
+    // Initialize engine
+    if (!m_engine) {
+        QMetaObject::invokeMethod(
+            this,
+            [this] {
+                m_consumer = std::make_unique<Plasma::DataEngineConsumer>();
+                m_engine = std::make_unique<DictionaryMatchEngine>(m_consumer->dataEngine(QStringLiteral("dict")));
+            },
+            Qt::BlockingQueuedConnection);
+    }
+
     QEventLoop loop;
     QTimer::singleShot(400, &loop, [&loop]() {
         loop.quit();
