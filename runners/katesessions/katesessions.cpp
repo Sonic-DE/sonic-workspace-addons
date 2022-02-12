@@ -14,6 +14,7 @@
 #include <QStandardPaths>
 
 #include <KDirWatch>
+#include <KFuzzyMatcher>
 #include <KLocalizedString>
 #include <KNotificationJobUiDelegate>
 
@@ -31,13 +32,6 @@ KateSessions::KateSessions(QObject *parent, const KPluginMetaData &metaData, con
 
     m_sessionsFolderPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/kate/sessions");
 
-    // Initialize watchers and sessions
-    m_sessionWatch = new KDirWatch(this);
-    m_sessionWatch->addDir(m_sessionsFolderPath);
-    connect(m_sessionWatch, &KDirWatch::dirty, this, &KateSessions::loadSessions);
-    connect(m_sessionWatch, &KDirWatch::created, this, &KateSessions::loadSessions);
-    connect(m_sessionWatch, &KDirWatch::deleted, this, &KateSessions::loadSessions);
-    loadSessions();
     setTriggerWords({m_triggerWord});
 }
 
@@ -45,18 +39,18 @@ KateSessions::~KateSessions()
 {
 }
 
-void KateSessions::loadSessions()
+QStringList KateSessions::loadSessions()
 {
-    QStringList sessions;
     const QDir sessionsDir(m_sessionsFolderPath);
 
-    const auto &sessionFiles = sessionsDir.entryInfoList({QStringLiteral("*.katesession")}, QDir::Files, QDir::Name);
+    QStringList sessions;
+    const auto sessionFiles = sessionsDir.entryInfoList({QStringLiteral("*.katesession")}, QDir::Files, QDir::Name);
+    sessions.reserve(sessionFiles.size());
     for (const QFileInfo &sessionFile : sessionFiles) {
         sessions.append(QUrl::fromPercentEncoding(sessionFile.baseName().toLocal8Bit()));
     }
 
-    m_sessions = sessions;
-    suspendMatching(m_sessions.isEmpty());
+    return sessions;
 }
 
 void KateSessions::match(RunnerContext &context)
@@ -73,8 +67,20 @@ void KateSessions::match(RunnerContext &context)
         return;
     }
 
-    for (const QString &session : std::as_const(m_sessions)) {
-        if (listAll || session.contains(term, Qt::CaseInsensitive)) {
+    // we got here, load sessions now
+    const auto sessions = loadSessions();
+    if (sessions.isEmpty()) {
+        suspendMatching(true);
+        return;
+    }
+
+    QList<QueryMatch> matches;
+    int maxScore = 0;
+
+    for (const QString &session : std::as_const(sessions)) {
+        // Does the query match exactly?
+        // no query = perfect match => list everything
+        if (listAll || session.compare(term, Qt::CaseInsensitive) == 0) {
             QueryMatch match(this);
             match.setType(QueryMatch::ExactMatch);
             match.setRelevance(session.compare(term, Qt::CaseInsensitive) == 0 ? 1 : 0.8);
@@ -83,8 +89,29 @@ void KateSessions::match(RunnerContext &context)
             match.setText(session);
             match.setSubtext(i18n("Open Kate Session"));
             context.addMatch(match);
+        } else {
+            // Do fuzzy matching
+            const auto res = KFuzzyMatcher::match(term, session);
+            if (res.matched) {
+                QueryMatch match(this);
+                match.setRelevance(res.score); // store the score here for now
+                match.setIconName(m_triggerWord);
+                match.setData(session);
+                match.setText(session);
+                match.setSubtext(i18n("Open Kate Session"));
+                matches.push_back(match);
+                maxScore = std::max(res.score, maxScore);
+            }
         }
     }
+
+    auto calculate_relevance = [maxScore](double score) {
+        return score / maxScore;
+    };
+    for (auto &match : matches) {
+        match.setRelevance(calculate_relevance(match.relevance()));
+    }
+    context.addMatches(matches);
 }
 
 void KateSessions::run(const RunnerContext &context, const QueryMatch &match)
