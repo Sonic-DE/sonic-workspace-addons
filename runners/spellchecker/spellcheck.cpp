@@ -206,26 +206,53 @@ void SpellCheckRunner::match(RunnerContext &context)
     }
 
     if (speller->isValid()) {
-        QStringList suggestions;
-        const bool correct = speller->checkAndSuggest(query, suggestions);
-        if (correct) {
-            QueryMatch match(this);
-            match.setType(QueryMatch::ExactMatch);
-            match.setIconName(QStringLiteral("checkbox"));
-            match.setText(query);
-            match.setSubtext(i18nc("Term is spelled correctly", "Correct"));
-            match.setData(query);
-            context.addMatch(match);
-        } else {
-            for (const auto &suggestion : std::as_const(suggestions)) {
+        const auto fillMatch = [this, &context, &query, &speller](const QString &langCode = QString()) {
+            if (!langCode.isEmpty()) {
+                speller->setLanguage(langCode);
+            }
+
+            QStringList suggestions;
+            const bool correct = speller->checkAndSuggest(query, suggestions);
+
+            if (correct) {
                 QueryMatch match(this);
                 match.setType(QueryMatch::ExactMatch);
-                match.setIconName(QStringLiteral("edit-rename"));
-                match.setText(suggestion);
-                match.setSubtext(i18n("Suggested term"));
-                match.setData(suggestion);
+                match.setIconName(QStringLiteral("checkbox"));
+                match.setText(query);
+                match.setSubtext(i18nc("Term is spelled correctly", "Correct"));
+                match.setData(query);
                 context.addMatch(match);
+            } else if (!suggestions.isEmpty()) {
+                for (const auto &suggestion : std::as_const(suggestions)) {
+                    QueryMatch match(this);
+                    match.setType(QueryMatch::ExactMatch);
+                    match.setIconName(QStringLiteral("edit-rename"));
+                    match.setText(suggestion);
+                    match.setSubtext(i18n("Suggested term"));
+                    match.setData(suggestion);
+                    context.addMatch(match);
+                }
+            } else {
+                return false;
             }
+
+            return true;
+        };
+
+        if (!fillMatch() && m_availableLangCodes.count() >= 2) {
+            // Perhaps the term is not in the default dictionary, try other dictionaries.
+            const QString defaultLangCode = speller->language();
+            for (const QString &langCode : std::as_const(m_availableLangCodes)) {
+                if (langCode == defaultLangCode) {
+                    continue;
+                }
+
+                if (fillMatch(langCode)) {
+                    // The dictionary returns valid results
+                    break;
+                }
+            }
+            // No need to reset the default language as the speller will be reset in destroydata()
         }
     } else {
         QueryMatch match(this);
