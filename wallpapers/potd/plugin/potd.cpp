@@ -1,196 +1,289 @@
 /*
- *   SPDX-FileCopyrightText: 2007 Tobias Koenig <tokoe@kde.org>
- *
- *   SPDX-License-Identifier: GPL-2.0-or-later
- */
+    SPDX-FileCopyrightText: 2007 Tobias Koenig <tokoe@kde.org>
+    SPDX-FileCopyrightText: 2022 Fushan Wen <qydwhotmail@gmail.com>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
 #include "potd.h"
+
+#include <chrono>
 
 #include <QDate>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
-#include <QRegularExpression>
 #include <QThreadPool>
 #include <QTimer>
 
-#include <KPluginLoader>
+#include <KPluginFactory>
 #include <KPluginMetaData>
-#include <Plasma/DataContainer>
 
 #include "cachedprovider.h"
 
-namespace
-{
-namespace DataKeys
-{
-auto image = []() noexcept {
-    return QStringLiteral("Image");
-};
-auto url = []() noexcept {
-    return QStringLiteral("Url");
-};
-}
-}
+using namespace std::chrono_literals;
 
-PotdEngine::PotdEngine(QObject *parent, const QVariantList &args)
-    : Plasma::DataEngine(parent, args)
+PotdProviderModel::PotdProviderModel(QObject* parent)
+    : QAbstractListModel(parent)
+    , m_identifier(QString())
+    , m_currentIndex(-1)
+    , m_args(QVariantList())
+    , m_data(PotdProviderData())
+    , m_checkDatesTimer(new QTimer(this)) // Change picture after 24 hours
 {
-    // set polling to every 5 minutes
-    setMinimumPollingInterval(5 * 60 * 1000);
-    m_checkDatesTimer = new QTimer(this); // change picture after 24 hours
-    connect(m_checkDatesTimer, &QTimer::timeout, this, &PotdEngine::checkDayChanged);
+    loadPluginMetaData();
+
+    connect(m_checkDatesTimer, &QTimer::timeout, this, &PotdProviderModel::slotCheckDayChanged);
     // FIXME: would be nice to stop and start this timer ONLY as needed, e.g. only when there are
     // time insensitive sources to serve; still, this is better than how i found it, checking
     // every 2 seconds (!)
-    m_checkDatesTimer->setInterval(10 * 60 * 1000); // check every 10 minutes
-    m_checkDatesTimer->start();
+    m_checkDatesTimer->setInterval(10min); // check every 10 minutes
+}
 
-    const QVector<KPluginMetaData> plugins = KPluginLoader::findPlugins(QStringLiteral("potd"));
+PotdProviderModel::~PotdProviderModel() noexcept
+{
+}
 
-    for (const auto &metadata : plugins) {
-        QString provider = metadata.value(QLatin1String("X-KDE-PlasmaPoTDProvider-Identifier"));
-        if (provider.isEmpty()) {
-            continue;
-        }
-        mFactories.insert(provider, metadata);
-        setData(QLatin1String("Providers"), provider, metadata.name());
+int PotdProviderModel::rowCount(const QModelIndex &parent) const
+{
+    if (parent.isValid()) {
+        return 0;
+    }
+
+    return m_providers.size();
+}
+
+QVariant PotdProviderModel::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid() || index.row() >= static_cast<int>(m_providers.size())) {
+        return QVariant();
+    }
+
+    const KPluginMetaData &item = m_providers.at(index.row());
+
+    switch (role) {
+    case Qt::DisplayRole:
+        return item.name();
+    case Qt::DecorationRole:
+        return item.iconName();
+    case Roles::Id:
+        return item.value(QLatin1String("X-KDE-PlasmaPoTDProvider-Identifier"));
+    default:
+        return QVariant();
     }
 }
 
-PotdEngine::~PotdEngine()
+QHash<int, QByteArray> PotdProviderModel::roleNames() const
 {
+    return {
+        {Qt::DisplayRole, "display"},
+        {Qt::DecorationRole, "decoration"},
+        {Roles::Id, "id"},
+    };
 }
 
-bool PotdEngine::updateSourceEvent(const QString &identifier)
+void PotdProviderModel::loadPluginMetaData()
 {
-    return updateSource(identifier, false);
+    const QVector<KPluginMetaData> plugins = KPluginMetaData::findPlugins(QStringLiteral("potd"));
+
+    beginResetModel();
+
+    m_providers.clear();
+    m_providers.reserve(10);
+
+    std::copy_if(plugins.cbegin(), plugins.cend(), std::back_inserter(m_providers), [](const KPluginMetaData &metadata) {
+        return !metadata.value(QLatin1String("X-KDE-PlasmaPoTDProvider-Identifier")).isEmpty();
+    });
+
+    endResetModel();
 }
 
-bool PotdEngine::updateSource(const QString &identifier, bool loadCachedAlways)
+const KPluginMetaData &PotdProviderModel::metadata(int index) const
 {
-    // check whether it is cached already...
-    if (CachedProvider::isCached(identifier, loadCachedAlways)) {
-        QVariantList args;
-        args << QLatin1String("String") << identifier;
-
-        CachedProvider *provider = new CachedProvider(identifier, this);
-        connect(provider, &PotdProvider::finished, this, &PotdEngine::finished);
-        connect(provider, &PotdProvider::error, this, &PotdEngine::error);
-
-        m_canDiscardCache = loadCachedAlways;
-        if (!loadCachedAlways) {
-            return true;
-        }
+    if (index >= static_cast<int>(m_providers.size()) || index < 0) {
+        return m_providers.at(0);
     }
 
-    const QStringList parts = identifier.split(QLatin1Char(':'), Qt::SkipEmptyParts);
-    if (parts.empty()) {
-        qDebug() << "invalid identifier";
+    return m_providers.at(index);
+}
+
+int PotdProviderModel::indexOfProvider(const QString &identifier) const
+{
+    const auto it = std::find_if(m_providers.cbegin(), m_providers.cend(), [&identifier](const KPluginMetaData &metadata) {
+        return metadata.value(QLatin1String("X-KDE-PlasmaPoTDProvider-Identifier")) == identifier;
+    });
+
+    if (it == m_providers.cend()) {
+        return -1;
+    }
+
+    return std::distance(m_providers.cbegin(), it);
+}
+
+bool PotdProviderModel::running() const
+{
+    return m_checkDatesTimer->isActive();
+}
+
+void PotdProviderModel::setRunning(bool flag)
+{
+    if (m_checkDatesTimer->isActive() == flag) {
+        return;
+    }
+
+    if (flag) {
+        m_checkDatesTimer->start();
+    } else {
+        m_checkDatesTimer->stop();
+    }
+
+    Q_EMIT runningChanged();
+}
+
+QString PotdProviderModel::identifier() const
+{
+    return m_identifier;
+}
+
+void PotdProviderModel::setIdentifier(const QString& identifier)
+{
+    if (m_identifier == identifier) {
+        return;
+    }
+
+    m_identifier = identifier;
+    m_currentIndex = indexOfProvider(identifier);
+
+    resetData();
+    updateSource();
+
+    Q_EMIT identifierChanged();
+}
+
+QVariantList PotdProviderModel::arguments() const
+{
+    return m_args;
+}
+
+void PotdProviderModel::setArguments(const QVariantList& args)
+{
+    if (m_args == args) {
+        return;
+    }
+
+    m_args = args;
+
+    resetData();
+    forceUpdateSource();
+
+    Q_EMIT argumentsChanged();
+}
+
+QImage PotdProviderModel::image() const
+{
+    return m_data.wallpaperImage;
+}
+
+void PotdProviderModel::setImage(const QImage& image)
+{
+    m_data.wallpaperImage = image;
+    Q_EMIT imageChanged();
+}
+
+QString PotdProviderModel::localUrl() const
+{
+    return m_data.wallpaperLocalUrl;
+}
+
+void PotdProviderModel::setLocalUrl(const QString &urlString)
+{
+    if (m_data.wallpaperLocalUrl == urlString) {
+        return;
+    }
+
+    m_data.wallpaperLocalUrl = urlString;
+    Q_EMIT localUrlChanged();
+}
+
+void PotdProviderModel::resetData()
+{
+    setImage(QImage());
+    setLocalUrl(QString());
+}
+
+bool PotdProviderModel::updateSource(bool refresh)
+{
+    // Check whether it is cached already...
+    if (!refresh && CachedProvider::isCached(m_identifier, false)) {
+        CachedProvider *provider = new CachedProvider(m_identifier, this);
+        connect(provider, &PotdProvider::finished, this, &PotdProviderModel::slotFinished);
+        connect(provider, &PotdProvider::error, this, &PotdProviderModel::slotError);
+        return true;
+    }
+
+    if (m_currentIndex < 0) {
+        qWarning() << "Invalid provider: " << m_identifier;
         return false;
     }
-    const QString providerName = parts[0];
-    if (!mFactories.contains(providerName)) {
-        qDebug() << "invalid provider: " << parts[0];
-        return false;
-    }
 
-    QVariantList args;
-
-    for (int i = 0; i < parts.count(); i++) {
-        args << parts[i];
-    }
-
-    auto factory = KPluginLoader(mFactories[providerName].fileName()).factory();
+    const auto pluginResult = KPluginFactory::instantiatePlugin<PotdProvider>(metadata(m_currentIndex), this, m_args);
     PotdProvider *provider = nullptr;
-    if (factory) {
-        provider = factory->create<PotdProvider>(this, args);
-    }
-    if (provider) {
-        connect(provider, &PotdProvider::finished, this, &PotdEngine::finished);
-        connect(provider, &PotdProvider::error, this, &PotdEngine::error);
+
+    if (pluginResult) {
+        provider = pluginResult.plugin;
+        connect(provider, &PotdProvider::finished, this, &PotdProviderModel::slotFinished);
+        connect(provider, &PotdProvider::error, this, &PotdProviderModel::slotError);
         return true;
     }
 
+    qWarning() << "Error loading PoTD plugin:" << pluginResult.errorString;
     return false;
 }
 
-bool PotdEngine::sourceRequestEvent(const QString &identifier)
+bool PotdProviderModel::forceUpdateSource()
 {
-    if (updateSource(identifier, true)) {
-        setData(identifier, DataKeys::image(), QImage());
-        setData(identifier, DataKeys::url(), QUrl());
-        return true;
-    }
-
-    return false;
+    return updateSource(true);
 }
 
-void PotdEngine::finished(PotdProvider *provider)
+void PotdProviderModel::slotFinished(PotdProvider *provider)
 {
-    if (m_canDiscardCache && qobject_cast<CachedProvider *>(provider)) {
-        Plasma::DataContainer *source = containerForSource(provider->identifier());
-        if (source && !source->data().value(DataKeys::image()).value<QImage>().isNull()) {
-            provider->deleteLater();
-            return;
-        }
-    }
+    setImage(provider->image());
 
-    QImage img(provider->image());
-    // store in cache if it's not the response of a CachedProvider
-    if (qobject_cast<CachedProvider *>(provider) == nullptr && !img.isNull()) {
-        SaveImageThread *thread = new SaveImageThread(provider->identifier(), img);
-        connect(thread, &SaveImageThread::done, this, &PotdEngine::cachingFinished);
+    // Store in cache if it's not the response of a CachedProvider
+    if (qobject_cast<CachedProvider *>(provider) == nullptr && !m_data.wallpaperImage.isNull()) {
+        SaveImageThread *thread = new SaveImageThread(m_identifier, m_data.wallpaperImage);
+        connect(thread, &SaveImageThread::done, this, &PotdProviderModel::slotCachingFinished);
         QThreadPool::globalInstance()->start(thread);
     } else {
-        setData(provider->identifier(), DataKeys::image(), img);
-        setData(provider->identifier(), DataKeys::url(), CachedProvider::identifierToPath(provider->identifier()));
+        setLocalUrl(CachedProvider::identifierToPath(m_identifier));
     }
 
     provider->deleteLater();
 }
 
-void PotdEngine::cachingFinished(const QString &source, const QString &path, const QImage &img)
+void PotdProviderModel::slotCachingFinished(const QString &source, const QString &path, const QImage &img)
 {
-    setData(source, DataKeys::image(), img);
-    setData(source, DataKeys::url(), path);
+    Q_UNUSED(source)
+    setImage(img);
+    setLocalUrl(path);
 }
 
-void PotdEngine::error(PotdProvider *provider)
+void PotdProviderModel::slotError(PotdProvider *provider)
 {
     provider->disconnect(this);
     provider->deleteLater();
 }
 
-void PotdEngine::checkDayChanged()
+void PotdProviderModel::slotCheckDayChanged()
 {
-    SourceDict dict = containerDict();
-    QHashIterator<QString, Plasma::DataContainer *> it(dict);
-    QRegularExpression re(QLatin1String(":\\d{4}-\\d{2}-\\d{2}"));
+    const QString path = CachedProvider::identifierToPath(m_identifier);
 
-    while (it.hasNext()) {
-        it.next();
-
-        if (it.key() == QLatin1String("Providers")) {
-            continue;
-        }
-
-        // Check if the identifier contains ISO date string, like 2019-01-09.
-        // If so, don't update the picture. Otherwise, update the picture.
-        if (!re.match(it.key()).hasMatch()) {
-            const QString path = CachedProvider::identifierToPath(it.key());
-            if (!QFile::exists(path)) {
-                updateSourceEvent(it.key());
-            } else {
-                QFileInfo info(path);
-                if (info.lastModified().daysTo(QDateTime::currentDateTime()) >= 1) {
-                    updateSourceEvent(it.key());
-                }
-            }
+    if (!QFile::exists(path)) {
+        updateSource();
+    } else {
+        const QFileInfo info(path);
+        if (info.lastModified().daysTo(QDateTime::currentDateTime()) >= 1) {
+            updateSource();
         }
     }
 }
-
-K_PLUGIN_CLASS_WITH_JSON(PotdEngine, "plasma-dataengine-potd.json")
-
-#include "potd.moc"
