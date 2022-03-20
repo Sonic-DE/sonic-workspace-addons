@@ -11,8 +11,6 @@
 
 #include <QDate>
 #include <QDebug>
-#include <QFile>
-#include <QFileInfo>
 #include <QThreadPool>
 #include <QTimer>
 
@@ -118,10 +116,7 @@ PotdEngine::PotdEngine(QObject *parent)
     , m_data(PotdProviderData())
     , m_checkDatesTimer(new QTimer(this)) // Change picture after 24 hours
 {
-    connect(m_checkDatesTimer, &QTimer::timeout, this, &PotdEngine::slotCheckDayChanged);
-    // FIXME: would be nice to stop and start this timer ONLY as needed, e.g. only when there are
-    // time insensitive sources to serve; still, this is better than how i found it, checking
-    // every 2 seconds (!)
+    connect(m_checkDatesTimer, &QTimer::timeout, this, std::bind(&PotdEngine::forceUpdateSource, this));
     m_checkDatesTimer->setInterval(10min); // check every 10 minutes
 }
 
@@ -267,6 +262,12 @@ void PotdEngine::slotFinished(PotdProvider *provider)
         setLocalUrl(CachedProvider::identifierToPath(m_identifier));
     }
 
+    // Do not update until next day, and delay 1s to make sure last modified condition is satisfied.
+    if (m_checkDatesTimer->isActive()) {
+        m_checkDatesTimer->setInterval(QDateTime::currentDateTime().msecsTo(QDateTime(QDate::currentDate()).addDays(1)) + 1000);
+        m_checkDatesTimer->start();
+    }
+
     provider->deleteLater();
 }
 
@@ -281,18 +282,10 @@ void PotdEngine::slotError(PotdProvider *provider)
 {
     provider->disconnect(this);
     provider->deleteLater();
-}
 
-void PotdEngine::slotCheckDayChanged()
-{
-    const QString path = CachedProvider::identifierToPath(m_identifier);
-
-    if (!QFile::exists(path)) {
-        updateSource();
-    } else {
-        const QFileInfo info(path);
-        if (info.lastModified().daysTo(QDateTime::currentDateTime()) >= 1) {
-            updateSource();
-        }
+    // Retry 10min later
+    if (m_checkDatesTimer->isActive()) {
+        m_checkDatesTimer->setInterval(10min);
+        m_checkDatesTimer->start();
     }
 }
