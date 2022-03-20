@@ -28,7 +28,7 @@ public:
      * @param parent The parent object.
      * @param args The arguments.
      */
-    EpodProvider(QObject *parent, const QVariantList &args);
+    EpodProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
 
     /**
      * Destroys the EPOD provider.
