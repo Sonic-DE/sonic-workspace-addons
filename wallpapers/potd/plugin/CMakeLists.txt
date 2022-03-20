@@ -8,6 +8,7 @@ add_library(plasma_wallpaper_potdplugin SHARED ${potd_engine_SRCS})
 target_link_libraries(plasma_wallpaper_potdplugin plasmapotdprovidercore
     KF5::Plasma
     KF5::KIOCore
+    Qt::DBus
     Qt::Qml
 )
 install(TARGETS plasma_wallpaper_potdplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/plasma/wallpapers/potd)
