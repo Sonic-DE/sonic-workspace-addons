@@ -94,7 +94,6 @@ private Q_SLOTS:
      void slotFinished(PotdProvider *);
      void slotCachingFinished(const QString &source, const QString &path, const QImage &img);
      void slotError(PotdProvider *);
-     void slotCheckDayChanged();
 
 private:
     void resetData();
