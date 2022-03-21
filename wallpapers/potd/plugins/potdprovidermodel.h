@@ -10,6 +10,7 @@
 
 #include <QAbstractListModel>
 #include <QImage>
+#include <QQmlEngine>
 #include <QTimer>
 #include <QUrl>
 
@@ -31,6 +32,8 @@ class PotdProviderModel : public QAbstractListModel
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(QString identifier READ identifier WRITE setIdentifier NOTIFY identifierChanged)
     Q_PROPERTY(QVariantList arguments READ arguments WRITE setArguments NOTIFY argumentsChanged)
+
+    Q_PROPERTY(int currentIndex READ currentIndex NOTIFY currentIndexChanged)
 
     /**
      * Read-only properties that expose data from the provider.
@@ -82,14 +85,14 @@ public:
     };
 
     explicit PotdProviderModel(QObject *parent = nullptr);
+    static PotdProviderModel *self(QQmlEngine *engine, QJSEngine *scriptEngine);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
     void loadPluginMetaData();
-    KPluginMetaData metadata(int index) const;
-    Q_INVOKABLE int indexOfProvider(const QString &identifier) const;
+    int currentIndex() const;
 
     bool running() const;
     void setRunning(bool flag);
@@ -115,6 +118,7 @@ public:
     Q_INVOKABLE void saveImage();
 
 Q_SIGNALS:
+    void currentIndexChanged();
     void runningChanged();
     void identifierChanged();
     void argumentsChanged();
