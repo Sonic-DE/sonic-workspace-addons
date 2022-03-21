@@ -13,5 +13,6 @@ void PotdPlugin::registerTypes(const char *uri)
     Q_ASSERT(uri == QByteArrayLiteral("org.kde.plasma.wallpapers.potd"));
 
     qmlRegisterType<PotdProviderModel>(uri, 1, 0, "PotdProviderModel");
+    qmlRegisterSingletonType<PotdProviderModel>(uri, 1, 0, "PotdProviderModelInstance", PotdProviderModel::self);
     qmlRegisterUncreatableType<PotdProviderModel>(uri, 1, 0, "Global", QStringLiteral("Error: only enums"));
 }
