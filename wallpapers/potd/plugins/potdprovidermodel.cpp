@@ -38,6 +38,18 @@ PotdProviderModel::PotdProviderModel(QObject *parent)
     qRegisterMetaType<PotdProviderData>();
 }
 
+PotdProviderModel *PotdProviderModel::self(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    static PotdProviderModel *instance = new PotdProviderModel();
+
+    QQmlEngine::setObjectOwnership(instance, QQmlEngine::CppOwnership);
+
+    return instance;
+}
+
 int PotdProviderModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid()) {
