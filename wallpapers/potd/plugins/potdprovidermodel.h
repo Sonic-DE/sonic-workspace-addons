@@ -10,6 +10,7 @@
 
 #include <QAbstractListModel>
 #include <QImage>
+#include <QQmlContext>
 #include <QTimer>
 #include <QUrl>
 
@@ -82,6 +83,7 @@ public:
     };
 
     explicit PotdProviderModel(QObject *parent = nullptr);
+    static PotdProviderModel *self(QQmlEngine *engine, QJSEngine *scriptEngine);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
