@@ -17,6 +17,7 @@
 
 BingProvider::BingProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args)
     : PotdProvider(parent, data, args)
+    , m_screenModel(!args.isEmpty() ? args[0].toString() : QString())
 {
     const QUrl url(QStringLiteral("https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1"));
 
@@ -55,7 +56,19 @@ void BingProvider::pageRequestFinished(KJob *_job)
 
         urlString = QStringLiteral("https://www.bing.com/") + urlString;
 
-        if (const QSize size = qGuiApp->primaryScreen()->size(); size.width() > 1920 || size.height() > 1080) {
+        const auto screenList = qGuiApp->screens();
+
+        const auto screenIt = std::find_if(screenList.cbegin(), screenList.cend(), [this](QScreen *s) {
+            return s->model() == m_screenModel;
+        });
+
+        qCritical() << m_screenModel << *screenIt;
+        qCritical() << m_screenModel << *screenIt;
+        qCritical() << m_screenModel << *screenIt;
+        qCritical() << m_screenModel << *screenIt;
+        qCritical() << m_screenModel << *screenIt;
+
+        if (screenIt != screenList.cend() && ((*screenIt)->size().width() > 1920 || (*screenIt)->size().height() > 1080)) {
             // Use 4k wallpaper
             urlString += QStringLiteral("_UHD.jpg");
         } else {
