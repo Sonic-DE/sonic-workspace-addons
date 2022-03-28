@@ -30,6 +30,8 @@ public:
 private:
     void pageRequestFinished(KJob *job);
     void imageRequestFinished(KJob *job);
+
+    QString m_screenModel;
 };
 
 #endif
