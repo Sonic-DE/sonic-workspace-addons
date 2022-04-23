@@ -114,10 +114,12 @@ public:
     enum DateType {
         TextDate = Qt::TextDate,
         ISODate = Qt::ISODate,
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         SystemLocaleShortDate = Qt::SystemLocaleShortDate,
         SystemLocaleLongDate = Qt::SystemLocaleLongDate,
         DefaultLocaleShortDate = Qt::DefaultLocaleShortDate,
         DefaultLocaleLongDate = Qt::DefaultLocaleLongDate,
+#endif
     };
     Q_ENUM(DateType)
 
