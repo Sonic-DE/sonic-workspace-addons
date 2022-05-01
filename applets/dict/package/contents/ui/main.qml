@@ -12,7 +12,8 @@ import QtWebEngine 1.1
 
 import org.kde.plasma.private.dict 1.0
 
-ColumnLayout {
+Item {
+    id: root
 
     DictObject {
         id: dict
@@ -21,12 +22,34 @@ ColumnLayout {
         onDefinitionFound: web.loadHtml(html);
     }
 
+    WebEngineView {
+        id: web
+        visible: false
+        anchors {
+            top: parent.top
+            bottom: buttonsRow.top
+            left: parent.left
+            right: parent.right
+            margins: PlasmaCore.Units.smallSpacing
+        }
+        zoomFactor: PlasmaCore.Units.devicePixelRatio
+        profile: dict.webProfile
+    }
+
     RowLayout {
-        Layout.fillWidth: true
+        id: buttonsRow
+        anchors {
+            bottom: root.bottom
+            left: root.left
+            right: root.right
+            margins: PlasmaCore.Units.smallSpacing
+        }
+
         PlasmaComponents3.TextField {
             id: input
             placeholderText: i18nc("@info:placeholder", "Enter word to define here")
-            implicitWidth: PlasmaCore.Units.gridUnit * 40
+            clearButtonShown: true
+            Layout.fillWidth: true
             onAccepted: {
                 if (input.text === "") {
                     web.visible = false;
@@ -36,20 +59,10 @@ ColumnLayout {
                 }
             }
         }
+
         PlasmaComponents3.Button {
-            icon.name: "configure"
-            onClicked: plasmoid.action("configure").trigger();
+            icon.name: "search"
+            onClicked: input.accepted();
         }
     }
-
-    WebEngineView {
-        id: web
-        visible: false
-        Layout.fillWidth: true
-        //Layout.fillHeight: true
-        Layout.preferredHeight: 400
-        zoomFactor: PlasmaCore.Units.devicePixelRatio
-        profile: dict.webProfile
-    }
-
 }
