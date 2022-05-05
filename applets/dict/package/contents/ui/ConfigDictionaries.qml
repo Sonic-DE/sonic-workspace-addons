@@ -32,6 +32,7 @@ Page {
         ListView {
             id: listView
             model: dictionariesModel
+            reuseItems: true
 
             delegate: Kirigami.BasicListItem {
                 width: listView.width
