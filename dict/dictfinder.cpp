@@ -24,6 +24,10 @@ void DictFinder::run()
     QEventLoop loop;
 
     loop.connect(&m_tcpSocket, &QTcpSocket::disconnected, &loop, &QEventLoop::quit);
+    loop.connect(&m_tcpSocket, &QTcpSocket::errorOccurred, this, [this, &loop](QAbstractSocket::SocketError error) {
+        Q_EMIT errorOccurred(error, m_tcpSocket.errorString());
+        loop.quit();
+    });
     loop.connect(&m_tcpSocket, &QTcpSocket::readyRead, this, [this, &loop] {
         m_tcpSocket.readAll();
         QByteArray ret;
