@@ -33,26 +33,18 @@ Page {
             id: listView
             model: dictionariesModel
 
-            delegate: Control {
+            delegate: Kirigami.BasicListItem {
+                width: listView.width
 
-                background: Rectangle {
-                    id: highlight
-                    implicitWidth: root.width - Kirigami.Units.largeSpacing
-                    visible: model.id == root.cfg_dictionary
-                    color: Kirigami.Theme.highlightColor
-                }
+                bold: root.cfg_dictionary == model.id
+                highlighted: root.cfg_dictionary == model.id
 
-                contentItem: Label {
-                    id: pathText
-                    width: listView.availableWidth
-                    text: model.description
-                    color: model.id == root.cfg_dictionary ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
-                }
+                icon: undefined
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: root.cfg_dictionary = model.id
-                }
+                label: model.id
+                subtitle: model.description
+
+                onClicked: root.cfg_dictionary = model.id
             }
         }
     }
