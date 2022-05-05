@@ -36,7 +36,6 @@ public Q_SLOTS:
 private:
     void getDefinition();
     void socketClosed();
-    void getDicts();
     void setDict(const QString &dict);
     void setServer(const QString &server);
 
@@ -46,6 +45,7 @@ private:
     QString m_currentQuery;
     QString m_dictName;
     QString m_serverName;
+    QStringList m_dictJobs;
     QMap<QString, QMap<QString, QString>> m_availableDictsCache;
 
     // https://datatracker.ietf.org/doc/html/rfc2229
