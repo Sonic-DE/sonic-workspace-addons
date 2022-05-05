@@ -12,7 +12,6 @@
 #include <KLocalizedString>
 #include <QDebug>
 #include <QRegularExpression>
-#include <QTcpSocket>
 #include <QThreadPool>
 #include <QUrl>
 
@@ -145,6 +144,7 @@ void DictEngine::requestDicts()
 
     auto finder = new DictFinder(m_serverName);
 
+    connect(finder, &DictFinder::errorOccurred, this, &DictEngine::dictErrorOccurred);
     connect(finder, &DictFinder::dictsRecieved, this, [this](const QMap<QString, QString> &dicts) {
         m_dictJobs.removeOne(m_serverName);
 
