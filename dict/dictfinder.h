@@ -28,6 +28,11 @@ public:
     void run() override;
 
 Q_SIGNALS:
+    /**
+     * @param socketError the type of the last socket error
+     * @param errorString a human-readable description of the last socket error
+     */
+    void errorOccurred(QAbstractSocket::SocketError socketError, const QString &errorString);
     void dictsRecieved(const QMap<QString, QString> &dicts);
 
 private:
