@@ -18,7 +18,8 @@ ColumnLayout {
     DictObject {
         id: dict
         selectedDictionary: plasmoid.configuration.dictionary
-        onSearchInProgress: web.loadHtml(i18n("Looking up definition…"));
+        // Activate the busy indicator, and deactivate it when page is loaded.
+        onSearchInProgress: loadingPlaceholder.active = true;
         onDefinitionFound: web.loadHtml(html);
     }
 
@@ -45,14 +46,42 @@ ColumnLayout {
         }
     }
 
-    WebEngineView {
-        id: web
-        visible: false
+    Item {
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.minimumHeight: input.Layout.minimumWidth
-        zoomFactor: PlasmaCore.Units.devicePixelRatio
-        profile: dict.webProfile
+
+        WebEngineView {
+            id: web
+            anchors.fill: parent
+            visible: false
+
+            zoomFactor: PlasmaCore.Units.devicePixelRatio
+            profile: dict.webProfile
+
+            onLoadingChanged: {
+                if (!loading) {
+                    // Page is loaded
+                    loadingPlaceholder.active = false;
+                }
+            }
+        }
+
+        Loader {
+            id: loadingPlaceholder
+            active: false
+            anchors.fill: parent
+            asynchronous: true
+            visible: active
+            sourceComponent: Rectangle {
+                anchors.fill: parent
+                color: web.backgroundColor
+
+                PlasmaComponents3.BusyIndicator {
+                    anchors.centerIn: parent
+                }
+            }
+        }
     }
 
 }
