@@ -139,6 +139,7 @@ void DictEngine::requestDicts()
     }
 
     if (m_dictJobs.contains(m_serverName)) {
+        // Is loading
         return;
     }
 
@@ -148,13 +149,17 @@ void DictEngine::requestDicts()
         m_dictJobs.removeOne(m_serverName);
 
         if (dicts.empty()) {
+            Q_EMIT dictLoadingChanged(false);
             return;
         }
 
         m_availableDictsCache[m_serverName] = dicts;
 
         Q_EMIT dictsRecieved(dicts);
+        Q_EMIT dictLoadingChanged(false);
     });
+
+    Q_EMIT dictLoadingChanged(true);
 
     QThreadPool::globalInstance()->start(finder);
     m_dictJobs.append(m_serverName);
