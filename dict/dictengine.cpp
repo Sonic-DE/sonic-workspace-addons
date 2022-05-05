@@ -13,7 +13,10 @@
 #include <QDebug>
 #include <QRegularExpression>
 #include <QTcpSocket>
+#include <QThreadPool>
 #include <QUrl>
+
+#include "dictfinder.h"
 
 DictEngine::DictEngine(QObject *parent)
     : QObject(parent)
@@ -128,70 +131,33 @@ void DictEngine::getDefinition()
     Q_EMIT definitionRecieved(html);
 }
 
-void DictEngine::getDicts()
-{
-    m_tcpSocket->readAll();
-    QByteArray ret;
-
-    m_tcpSocket->write(QByteArray("SHOW DB\n"));
-    m_tcpSocket->flush();
-
-    m_tcpSocket->waitForReadyRead();
-    while (!ret.contains("250") && !ret.contains("420") && !ret.contains("421")) {
-        m_tcpSocket->waitForReadyRead();
-        ret += m_tcpSocket->readAll();
-    }
-
-    QMap<QString, QString> availableDicts;
-    const QList<QByteArray> retLines = ret.split('\n');
-    for (const QByteArray &curr : retLines) {
-        if (curr.endsWith("420") || curr.startsWith("421")) {
-            // TODO: what happens if the server is down
-        }
-        if (curr.startsWith("554")) {
-            // TODO: What happens if no DB available?
-            // TODO: Eventually there will be functionality to change the server...
-            break;
-        }
-
-        // ignore status code and empty lines
-        if (curr.startsWith("250") || curr.startsWith("110") || curr.isEmpty()) {
-            continue;
-        }
-
-        if (!curr.startsWith('-') && !curr.startsWith('.')) {
-            const QString line = QString::fromUtf8(curr).trimmed();
-            const QString id = line.section(' ', 0, 0);
-            QString description = line.section(' ', 1);
-            if (description.startsWith('"') && description.endsWith('"')) {
-                description.remove(0, 1);
-                description.chop(1);
-            }
-            availableDicts.insert(id, description);
-        }
-    }
-
-    m_tcpSocket->disconnectFromHost();
-    m_availableDictsCache.insert(m_serverName, availableDicts);
-    Q_EMIT dictsRecieved(availableDicts);
-}
-
 void DictEngine::requestDicts()
 {
     if (m_availableDictsCache.contains(m_serverName)) {
         Q_EMIT dictsRecieved(m_availableDictsCache.value(m_serverName));
         return;
     }
-    if (m_tcpSocket) {
-        m_tcpSocket->abort(); // stop if lookup is in progress and new query is requested
-        m_tcpSocket->deleteLater();
-        m_tcpSocket = nullptr;
+
+    if (m_dictJobs.contains(m_serverName)) {
+        return;
     }
 
-    m_tcpSocket = new QTcpSocket(this);
-    connect(m_tcpSocket, &QTcpSocket::disconnected, this, &DictEngine::socketClosed);
-    connect(m_tcpSocket, &QTcpSocket::readyRead, this, &DictEngine::getDicts);
-    m_tcpSocket->connectToHost(m_serverName, 2628);
+    auto finder = new DictFinder(m_serverName);
+
+    connect(finder, &DictFinder::dictsRecieved, this, [this](const QMap<QString, QString> &dicts) {
+        m_dictJobs.removeOne(m_serverName);
+
+        if (dicts.empty()) {
+            return;
+        }
+
+        m_availableDictsCache[m_serverName] = dicts;
+
+        Q_EMIT dictsRecieved(dicts);
+    });
+
+    QThreadPool::globalInstance()->start(finder);
+    m_dictJobs.append(m_serverName);
 }
 void DictEngine::requestDefinition(const QString &query)
 {
