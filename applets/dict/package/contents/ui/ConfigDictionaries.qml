@@ -6,11 +6,10 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.2
 import org.kde.kirigami 2.5 as Kirigami
 import org.kde.plasma.private.dict 1.0
 
-ColumnLayout {
+Page {
     id: root
     property string cfg_dictionary: ""
 
@@ -18,17 +17,16 @@ ColumnLayout {
         id: dictionariesModel
     }
 
-    Kirigami.Heading {
-        Layout.fillWidth: true
+    header: Kirigami.Heading {
         level: 2
         text: i18nc("@label:listbox", "Available dictionaries:")
     }
 
     ScrollView {
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        contentWidth: listView.implicitWidth
-        contentHeight: listView.implicitHeight
+        anchors {
+            fill: parent
+            topMargin: Kirigami.Units.largeSpacing
+        }
         Component.onCompleted: background.visible = true;
 
         ListView {
@@ -46,7 +44,7 @@ ColumnLayout {
 
                 contentItem: Label {
                     id: pathText
-                    Layout.fillWidth: true
+                    width: listView.availableWidth
                     text: model.description
                     color: model.id == root.cfg_dictionary ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
                 }
