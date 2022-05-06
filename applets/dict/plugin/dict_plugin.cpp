@@ -9,10 +9,13 @@
 #include "dictionariesmodel.h"
 
 // Qt
+#include <QWebEngineUrlScheme>
 
 void DictPlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(QLatin1String(uri) == QLatin1String("org.kde.plasma.private.dict"));
     qmlRegisterType<DictObject>(uri, 1, 0, "DictObject");
     qmlRegisterType<DictionariesModel>(uri, 1, 0, "DictionariesModel");
+
+    QWebEngineUrlScheme::registerScheme(QWebEngineUrlScheme(QByteArrayLiteral("dict")));
 }
