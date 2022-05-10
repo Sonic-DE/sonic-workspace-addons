@@ -14,6 +14,8 @@
 #include <QTimer>
 #include <QVariantMap>
 
+using DictMap = std::map<QString, QString>;
+
 /**
  * This class evaluates the basic expressions given in the interface.
  */
@@ -39,7 +41,7 @@ Q_SIGNALS:
      */
     void dictLoadingChanged(bool loading);
 
-    void dictsRecieved(const QMap<QString, QString> &dicts);
+    void dictsRecieved(const DictMap &dicts);
     void definitionRecieved(const QString &html);
 
 public Q_SLOTS:
@@ -75,7 +77,6 @@ private:
     QString m_currentQuery;
     QString m_dictName;
     QString m_serverName;
-    QMap<QString, QMap<QString, QString>> m_availableDictsCache;
 
     /**
      * Stores temporarily received definition data
