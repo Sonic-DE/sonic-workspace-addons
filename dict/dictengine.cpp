@@ -14,6 +14,9 @@
 #include <QRegularExpression>
 #include <QUrl>
 
+// Keep this around longer, because then we can use it's cache
+static std::map<QString, DictMap> s_availableDictsCache;
+
 DictEngine::DictEngine(QObject *parent)
     : QObject(parent)
     , m_dictName(QStringLiteral("wn")) // In case we need to switch it later
@@ -143,7 +146,7 @@ void DictEngine::getDicts()
         }
     }
 
-    QMap<QString, QString> availableDicts;
+    DictMap availableDicts;
     const QList<QByteArray> retLines = ret.split('\n');
     for (const QByteArray &curr : retLines) {
         if (curr.endsWith("420") || curr.startsWith("421")) {
@@ -168,20 +171,20 @@ void DictEngine::getDicts()
                 description.remove(0, 1);
                 description.chop(1);
             }
-            availableDicts.insert(id, description);
+            availableDicts.emplace(id, description);
         }
     }
 
     m_tcpSocket->disconnectFromHost();
-    m_availableDictsCache.insert(m_serverName, availableDicts);
+    s_availableDictsCache.emplace(m_serverName, availableDicts);
     Q_EMIT dictsRecieved(availableDicts);
     Q_EMIT dictLoadingChanged(false);
 }
 
 void DictEngine::requestDicts()
 {
-    if (m_availableDictsCache.contains(m_serverName)) {
-        Q_EMIT dictsRecieved(m_availableDictsCache.value(m_serverName));
+    if (auto it = s_availableDictsCache.find(m_serverName); it != s_availableDictsCache.end()) {
+        Q_EMIT dictsRecieved(it->second);
         return;
     }
     if (m_tcpSocket) {
