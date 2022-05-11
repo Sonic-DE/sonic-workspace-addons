@@ -90,6 +90,8 @@ private:
      */
     QTimer m_definitionTimer;
 
+    std::map<QString, DictMap> m_availableDictsCache;
+
     // https://datatracker.ietf.org/doc/html/rfc2229
     const std::array<QByteArray, 5> m_definitionResponses;
 };

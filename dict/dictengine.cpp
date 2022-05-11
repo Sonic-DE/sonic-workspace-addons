@@ -16,8 +16,6 @@
 #include <QUrl>
 
 using namespace std::chrono_literals;
-// Keep this around longer, because then we can use it's cache
-static std::map<QString, DictMap> s_availableDictsCache;
 
 DictEngine::DictEngine(QObject *parent)
     : QObject(parent)
@@ -177,14 +175,14 @@ void DictEngine::getDicts()
     }
 
     m_tcpSocket->disconnectFromHost();
-    s_availableDictsCache.emplace(m_serverName, availableDicts);
+    m_availableDictsCache.emplace(m_serverName, availableDicts);
     Q_EMIT dictsRecieved(availableDicts);
     Q_EMIT dictLoadingChanged(false);
 }
 
 void DictEngine::requestDicts()
 {
-    if (auto it = s_availableDictsCache.find(m_serverName); it != s_availableDictsCache.end()) {
+    if (auto it = m_availableDictsCache.find(m_serverName); it != m_availableDictsCache.end()) {
         Q_EMIT dictsRecieved(it->second);
         return;
     }
