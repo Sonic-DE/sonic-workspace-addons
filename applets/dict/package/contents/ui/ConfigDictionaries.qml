@@ -98,7 +98,7 @@ ColumnLayout {
 
         Button {
             enabled: sheet.view.count > 0
-            text: i18n("Add New...")
+            text: i18n("Add More…")
             icon.name: "list-add"
             onClicked: {
                 sheet.open();
