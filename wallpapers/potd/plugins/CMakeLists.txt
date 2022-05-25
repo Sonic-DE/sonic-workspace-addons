@@ -1,5 +1,7 @@
 set(potd_engine_SRCS
+	backend.cpp
 	cachedprovider.cpp
+	potdengine.cpp
 	potdprovidermodel.cpp
 	potdplugin.cpp
 )
