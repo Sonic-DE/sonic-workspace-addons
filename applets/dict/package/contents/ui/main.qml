@@ -18,7 +18,6 @@ import org.kde.plasma.private.dict 1.0
 
 ColumnLayout {
     Keys.forwardTo: input
-    // Wait until the popup animation is done
 
     DictObject {
         id: dict
