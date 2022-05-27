@@ -19,7 +19,6 @@ import org.kde.plasma.private.dict 1.0
 ColumnLayout {
     Keys.forwardTo: input
     // Wait until the popup animation is done
-    Plasmoid.onActivated: Qt.callLater(input.forceActiveFocus)
 
     DictObject {
         id: dict
