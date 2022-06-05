@@ -57,13 +57,13 @@ KWin.TabBoxSwitcher {
 
                 path: Path {
                     // Left stack
-                    startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.55
+                    startX: thumbnailView.width * 0.1; startY: thumbnailView.height * 0.5
                     PathAttribute { name: "progress"; value: 0 }
                     PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: 70 }
                     PathPercent { value: 0 }
 
-                    PathLine { x: thumbnailView.width * 0.25 ; y: thumbnailView.height * 0.55 }
+                    PathLine { x: thumbnailView.width * 0.25 ; y: thumbnailView.height * 0.5 }
                     PathAttribute { name: "progress"; value: 0.8 }
                     PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: 70 }
@@ -71,8 +71,8 @@ KWin.TabBoxSwitcher {
 
                     // Center Item
                     PathQuad {
-                        x: thumbnailView.width * 0.5 ; y: thumbnailView.height * 0.65
-                        controlX: thumbnailView.width * 0.45; controlY: thumbnailView.height * 0.6
+                        x: thumbnailView.width * 0.5 ; y: thumbnailView.height * 0.6
+                        controlX: thumbnailView.width * 0.45; controlY: thumbnailView.height * 0.55
                     }
                     PathAttribute { name: "progress"; value: 1 }
                     PathAttribute { name: "scale"; value: 1 }
@@ -81,15 +81,15 @@ KWin.TabBoxSwitcher {
 
                     // Right stack
                     PathQuad {
-                        x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.55
-                        controlX: thumbnailView.width * 0.55; controlY: thumbnailView.height * 0.6
+                        x: thumbnailView.width * 0.75 ; y: thumbnailView.height * 0.5
+                        controlX: thumbnailView.width * 0.55; controlY: thumbnailView.height * 0.55
                     }
                     PathAttribute { name: "progress"; value: 0.8 }
                     PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: -70 }
                     PathPercent { value: 0.6 }
 
-                    PathLine { x: thumbnailView.width * 0.9 ; y: thumbnailView.height * 0.55 }
+                    PathLine { x: thumbnailView.width * 0.9 ; y: thumbnailView.height * 0.5 }
                     PathAttribute { name: "progress"; value: 0 }
                     PathAttribute { name: "scale"; value: 0.7 }
                     PathAttribute { name: "rotation"; value: -70 }
