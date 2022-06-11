@@ -27,7 +27,7 @@ CalendarSystemModel::CalendarSystemModel(QObject *parent)
 #if QT_CONFIG(islamiccivilcalendar)
         {CalendarSystem::IslamicCivil, i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "The Islamic Civil Calendar")},
 #endif
-#ifdef HAVE_ICU
+#if HAVE_ICU
         {CalendarSystem::Chinese, i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "Chinese Lunar Calendar")},
         {CalendarSystem::Indian, i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "Indian National Calendar")},
 #endif
