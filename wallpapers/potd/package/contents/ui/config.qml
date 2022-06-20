@@ -9,6 +9,7 @@ import QtQuick.Controls 2.8 as QQC2
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 
+import org.kde.kcm 1.6 as KCM
 import org.kde.kquickcontrols 2.0 as KQC2
 import org.kde.kirigami 2.20 as Kirigami
 
@@ -39,18 +40,27 @@ Kirigami.FormLayout {
         }
     }
 
-    QQC2.ComboBox {
-        id: providerComboBox
+    Row {
         Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.potd", "@label:listbox", "Provider:")
-        model: PotdProviderModel { }
-        currentIndex: model.indexOf(cfg_Provider)
-        textRole: "display"
-        valueRole: "id"
-        onCurrentValueChanged: {
-            if (currentIndex < 0) {
-                return;
+
+        QQC2.ComboBox {
+            id: providerComboBox
+            model: PotdProviderModel { }
+            currentIndex: model.indexOf(cfg_Provider)
+            textRole: "display"
+            valueRole: "id"
+            onCurrentValueChanged: {
+                if (currentIndex < 0) {
+                    return;
+                }
+                cfg_Provider = currentValue;
             }
-            cfg_Provider = currentValue;
+        }
+
+        KCM.ContextualHelpButton {
+            anchors.verticalCenter: providerComboBox.verticalCenter
+            visible: providerComboBox.model.isNSFW(providerComboBox.currentIndex)
+            toolTipText: xi18nc("@info:tooltip", "<para>The image provider may contain inappropriate content (nudity, violence) for certain audiences.")
         }
     }
 
