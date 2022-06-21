@@ -64,7 +64,7 @@ Kirigami.FormLayout {
         KCM.ContextualHelpButton {
             anchors.verticalCenter: providerComboBox.verticalCenter
             visible: providerComboBox.model.isNSFW(providerComboBox.currentIndex)
-            toolTipText: i18nc("@info:tooltip", "Source may contain inappropriate content (nudity, violence).")
+            toolTipText: i18nc("@info:tooltip", "This wallpaper provider does not filter out images that may be sensitive or objectionable. Use caution if these images will be displayed in public.")
         }
     }
 
