@@ -320,6 +320,50 @@ PlasmaCore.SvgItem {
                     }
                 }
             }
+
+            // Save scrolling position when it changes, but throttle to avoid
+            // killing a storage disk.
+            Connections {
+                target: scrollview.QQC2.ScrollBar.vertical
+                function onPositionChanged() {
+                    throttedScrollSaver.restart();
+                }
+            }
+
+            Connections {
+                target: scrollview.QQC2.ScrollBar.horizontal
+                function onPositionChanged() {
+                    throttedScrollSaver.restart();
+                }
+            }
+
+            Timer {
+                id: throttedScrollSaver
+                interval: PlasmaCore.Units.humanMoment
+                repeat: false
+                running: false
+                onTriggered: scrollview.saveScroll()
+            }
+
+            function saveScroll() {
+                Plasmoid.configuration.scrollX = QQC2.ScrollBar.horizontal.position;
+                Plasmoid.configuration.scrollY = QQC2.ScrollBar.vertical.position;
+            }
+
+            function restoreScroll() {
+                QQC2.ScrollBar.horizontal.position = Plasmoid.configuration.scrollX;
+                QQC2.ScrollBar.vertical.position = Plasmoid.configuration.scrollY;
+            }
+
+            Component.onCompleted: {
+                // Give it some time to lay out the text, because at this
+                // point in time content size is not reliable yet.
+                Qt.callLater(restoreScroll);
+            }
+
+            Component.onDestruction: {
+                saveScroll();
+            }
         }
 
         DragDrop.DropArea {
