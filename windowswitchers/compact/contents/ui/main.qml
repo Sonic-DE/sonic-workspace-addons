@@ -73,11 +73,17 @@ KWin.Switcher {
                 visible: false
             }
 
-            // delegate
-            Component {
-                id: listDelegate
-                Item {
-                    id: delegateItem
+            ListView {
+                id: compactListView
+
+                // the maximum text width + icon item width (32 + 4 margin) + margins for hover item
+                property int rowHeight: Math.max(PlasmaCore.Units.iconSizes.small, textMetrics.height + hoverItem.margins.top + hoverItem.margins.bottom)
+
+                anchors.fill: parent
+                clip: true
+
+                model: tabBox.model
+                delegate: Item {
                     width: compactListView.width
                     height: compactListView.rowHeight
                     opacity: minimized ? 0.6 : 1.0
@@ -117,18 +123,6 @@ KWin.Switcher {
                         }
                     }
                 }
-            }
-            ListView {
-                id: compactListView
-
-                // the maximum text width + icon item width (32 + 4 margin) + margins for hover item
-                property int rowHeight: Math.max(PlasmaCore.Units.iconSizes.small, textMetrics.height + hoverItem.margins.top + hoverItem.margins.bottom)
-                anchors {
-                    fill: parent
-                }
-                model: tabBox.model
-                clip: true
-                delegate: listDelegate
                 highlight: PlasmaCore.FrameSvgItem {
                     id: highlightItem
                     imagePath: "widgets/viewitem"
