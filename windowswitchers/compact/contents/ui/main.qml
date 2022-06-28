@@ -116,11 +116,15 @@ KWin.Switcher {
                             leftMargin: 2 * dialogMainItem.textMargin
                         }
                     }
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
+                    TapHandler {
+                        onSingleTapped: {
+                            if (index === compactListView.currentIndex) {
+                                compactListView.model.activate(index);
+                                return;
+                            }
                             compactListView.currentIndex = index;
                         }
+                        onDoubleTapped: compactListView.model.activate(index)
                     }
                 }
                 highlight: PlasmaCore.FrameSvgItem {
