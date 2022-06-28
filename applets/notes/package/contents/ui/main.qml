@@ -324,15 +324,17 @@ PlasmaCore.SvgItem {
             // Save scrolling position when it changes, but throttle to avoid
             // killing a storage disk.
             Connections {
-                target: scrollview.QQC2.ScrollBar.vertical
-                function onPositionChanged() {
+                target: scrollview.contentItem
+                function onContentXChanged() {
+                    throttedScrollSaver.restart();
+                }
+                function onContentYChanged() {
                     throttedScrollSaver.restart();
                 }
             }
-
             Connections {
-                target: scrollview.QQC2.ScrollBar.horizontal
-                function onPositionChanged() {
+                target: mainTextArea
+                function onCursorPositionChanged() {
                     throttedScrollSaver.restart();
                 }
             }
@@ -346,24 +348,27 @@ PlasmaCore.SvgItem {
             }
 
             function saveScroll() {
-                Plasmoid.configuration.scrollX = QQC2.ScrollBar.horizontal.position;
-                Plasmoid.configuration.scrollY = QQC2.ScrollBar.vertical.position;
+                const flickable = scrollview.contentItem;
+                if (flickable !== null) {
+                    Plasmoid.configuration.scrollX = flickable.contentX;
+                    Plasmoid.configuration.scrollY = flickable.contentY;
+                    Plasmoid.configuration.cursorPosition = mainTextArea.cursorPosition;
+                }
             }
 
             function restoreScroll() {
-                QQC2.ScrollBar.horizontal.position = Plasmoid.configuration.scrollX;
-                QQC2.ScrollBar.vertical.position = Plasmoid.configuration.scrollY;
+                const flickable = scrollview.contentItem;
+                if (flickable !== null) {
+                    flickable.contentX = Plasmoid.configuration.scrollX;
+                    flickable.contentY = Plasmoid.configuration.scrollY;
+                    mainTextArea.cursorPosition = Plasmoid.configuration.cursorPosition;
+                }
             }
 
-            Component.onCompleted: {
-                // Give it some time to lay out the text, because at this
-                // point in time content size is not reliable yet.
-                Qt.callLater(restoreScroll);
-            }
-
-            Component.onDestruction: {
-                saveScroll();
-            }
+            // Give it some time to lay out the text, because at this
+            // point in time content size is not reliable yet.
+            Component.onCompleted: Qt.callLater(restoreScroll)
+            Component.onDestruction: saveScroll()
         }
 
         DragDrop.DropArea {

@@ -26,5 +26,9 @@
       <default>0</default>
     </entry>
 
+    <entry name="cursorPosition" type="Int">
+      <default>0</default>
+    </entry>
+
   </group>
 </kcfg>
