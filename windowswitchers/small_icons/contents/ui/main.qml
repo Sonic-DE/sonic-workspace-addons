@@ -7,6 +7,7 @@
  SPDX-License-Identifier: GPL-2.0-or-later
  */
 import QtQuick 2.0
+import QtQuick.Layouts 1.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kquickcontrolsaddons 2.0
@@ -24,7 +25,7 @@ KWin.Switcher {
         x: tabBox.screenGeometry.x + tabBox.screenGeometry.width * 0.5 - dialogMainItem.width * 0.5
         y: tabBox.screenGeometry.y + tabBox.screenGeometry.height * 0.5 - dialogMainItem.height * 0.5
 
-        mainItem: Item {
+        mainItem: ColumLayout {
             id: dialogMainItem
             property int optimalWidth: (icons.iconSize + icons.margins.left + icons.margins.right) * icons.count
             property int optimalHeight: icons.iconSize + icons.margins.top + icons.margins.bottom + PlasmaCore.Units.gridUnit * 2
@@ -38,23 +39,12 @@ KWin.Switcher {
                 model: tabBox.model
                 iconSize: PlasmaCore.Units.iconSizes.small
                 height: iconSize + icons.margins.top + icons.margins.bottom
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                }
                 Connections {
                     target: tabBox
                     function onCurrentIndexChanged() {icons.currentIndex = tabBox.currentIndex;}
                 }
             }
-            Item {
-                anchors {
-                    top: icons.bottom
-                    left: parent.left
-                    right: parent.right
-                    bottom: parent.bottom
-                }
+            RowLayout {
                 PlasmaComponents3.Label {
                     id: textItem
                     text: icons.currentItem ? icons.currentItem.caption : ""
@@ -62,11 +52,7 @@ KWin.Switcher {
                     verticalAlignment: Text.AlignVCenter
                     elide: Text.ElideMiddle
                     font.weight: Font.Bold
-                    anchors {
-                        right: parent.right
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                    }
+                    Layout.fullWidth: true
                 }
             }
             /*
