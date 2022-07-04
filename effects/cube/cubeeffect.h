@@ -22,6 +22,7 @@ class CubeEffect : public QuickSceneEffect
     Q_PROPERTY(qreal distanceFactor READ distanceFactor NOTIFY distanceFactorChanged)
     Q_PROPERTY(bool mouseInvertedX READ mouseInvertedX NOTIFY mouseInvertedXChanged)
     Q_PROPERTY(bool mouseInvertedY READ mouseInvertedY NOTIFY mouseInvertedYChanged)
+    Q_PROPERTY(QUrl skybox READ skybox NOTIFY skyboxChanged)
 
 public:
     CubeEffect();
@@ -46,6 +47,9 @@ public:
     bool mouseInvertedY() const;
     void setMouseInvertedY(bool inverted);
 
+    QUrl skybox() const;
+    void setSkybox(const QUrl &url);
+
     // TODO Plasma 6: Switch to quaternion.dotProduct() and quaternion.toEulerAngles()
     Q_INVOKABLE QQuaternion quaternionDotProduct(const QQuaternion &q1, const QQuaternion &q2);
     Q_INVOKABLE QVector3D quaternionToEulerAngles(const QQuaternion &q);
@@ -61,6 +65,7 @@ Q_SIGNALS:
     void mouseInvertedXChanged();
     void mouseInvertedYChanged();
     void animationDurationChanged();
+    void skyboxChanged();
 
 protected:
     QVariantMap initialProperties(EffectScreen *screen) override;
@@ -73,6 +78,7 @@ private:
     QList<QKeySequence> m_toggleShortcut;
     QList<ElectricBorder> m_borderActivate;
     QList<ElectricBorder> m_touchBorderActivate;
+    QUrl m_skybox;
     qreal m_cubeFaceDisplacement = 100;
     qreal m_distanceFactor = 1.5;
     int m_animationDuration = 200;

@@ -39,9 +39,32 @@ Item {
         id: view
         anchors.fill: parent
 
-        environment: SceneEnvironment {
-            clearColor: "black"
-            backgroundMode: SceneEnvironment.Color
+        Loader {
+            id: staticColorSceneEnvironment
+            active: !effect.skybox
+            sourceComponent: SceneEnvironment {
+                clearColor: "black"
+                backgroundMode: SceneEnvironment.Color
+            }
+        }
+
+        Loader {
+            id: skyboxSceneEnvironment
+            active: effect.skybox
+            sourceComponent: SceneEnvironment {
+                backgroundMode: SceneEnvironment.SkyBox
+                lightProbe: Texture {
+                    source: effect.skybox
+                }
+            }
+        }
+
+        environment: {
+            if (skyboxSceneEnvironment.active) {
+                return skyboxSceneEnvironment.item;
+            } else {
+                return staticColorSceneEnvironment.item;
+            }
         }
 
         PerspectiveCamera { id: camera }
