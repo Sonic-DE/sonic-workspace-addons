@@ -54,6 +54,8 @@ void CubeEffect::reconfigure(ReconfigureFlags)
     setDistanceFactor(CubeConfig::distanceFactor() / 100.0);
     setMouseInvertedX(CubeConfig::mouseInvertedX());
     setMouseInvertedY(CubeConfig::mouseInvertedY());
+    setSkyboxEnabled(CubeConfig::skyBoxEnabled());
+    setSkybox(CubeConfig::skyBox());
 
     for (const ElectricBorder &border : qAsConst(m_borderActivate)) {
         effects->unreserveElectricBorder(border, this);
@@ -214,6 +216,32 @@ void CubeEffect::setMouseInvertedY(bool inverted)
     if (m_mouseInvertedY != inverted) {
         m_mouseInvertedY = inverted;
         Q_EMIT mouseInvertedYChanged();
+    }
+}
+
+bool CubeEffect::isSkyboxEnabled() const
+{
+    return m_skyboxEnabled;
+}
+
+void CubeEffect::setSkyboxEnabled(bool enabled)
+{
+    if (m_skyboxEnabled != enabled) {
+        m_skyboxEnabled = enabled;
+        Q_EMIT skyboxEnabledChanged();
+    }
+}
+
+QUrl CubeEffect::skybox() const
+{
+    return m_skybox;
+}
+
+void CubeEffect::setSkybox(const QUrl &url)
+{
+    if (m_skybox != url) {
+        m_skybox = url;
+        Q_EMIT skyboxChanged();
     }
 }
 

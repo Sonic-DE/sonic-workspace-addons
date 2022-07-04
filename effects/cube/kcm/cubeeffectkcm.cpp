@@ -15,6 +15,7 @@
 #include <KPluginFactory>
 
 #include <QAction>
+#include <QFileDialog>
 
 K_PLUGIN_CLASS(CubeEffectConfig)
 
@@ -38,6 +39,13 @@ CubeEffectConfig::CubeEffectConfig(QWidget *parent, const QVariantList &args)
 
     ui.shortcutsEditor->addCollection(actionCollection);
     connect(ui.shortcutsEditor, &KShortcutsEditor::keyChange, this, &CubeEffectConfig::markAsChanged);
+
+    connect(ui.button_SkyBox, &QPushButton::clicked, this, [this]() {
+        auto dialog = new QFileDialog(this);
+        dialog->setFileMode(QFileDialog::ExistingFile);
+        connect(dialog, &QFileDialog::fileSelected, ui.kcfg_SkyBox, &QLineEdit::setText);
+        dialog->open();
+    });
 }
 
 CubeEffectConfig::~CubeEffectConfig()
