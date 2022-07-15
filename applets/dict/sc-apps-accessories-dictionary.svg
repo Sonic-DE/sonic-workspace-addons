@@ -298,23 +298,7 @@
 <g
    id="g13"
    transform="translate(-20,-1)">
-	<defs
-   id="defs15"><path
-     id="path2797_2_"
-     sodipodi:nodetypes="ccccc"
-     d="M 111.992,92.226 C 111.992,92.226 112.508,107.397 110.281,111.767 L 22.479,121.476 C 19.083,121.994 20.838,101.083 24.712,100.743 L 111.992,92.226 z" /></defs>
-	<clipPath
-   id="path2797_3_">
-		<use
-   xlink:href="#path2797_2_"
-   id="use19"
-   x="0"
-   y="0"
-   width="128"
-   height="128" />
-	</clipPath>
 	<g
-   clip-path="url(#path2797_3_)"
    id="g21"
    style="filter:url(#filter4132)"
    transform="translate(20,0)">
