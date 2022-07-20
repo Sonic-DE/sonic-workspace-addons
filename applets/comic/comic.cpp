@@ -101,6 +101,11 @@ void ComicApplet::init()
     mActions.append(mActionGoJump);
     connect(mActionGoJump, &QAction::triggered, this, &ComicApplet::slotGoJump);
 
+    mActionWebsite = new QAction(i18nc("@action", "Visit the Website"), this);
+    mActionWebsite->setEnabled(false);
+    mActions.append(mActionWebsite);
+    connect(mActionWebsite, &QAction::triggered, this, &ComicApplet::slotWebsite);
+
     mActionShop = new QAction(i18nc("@action", "Visit the Shop &Website"), this);
     mActionShop->setEnabled(false);
     mActions.append(mActionShop);
@@ -185,8 +190,6 @@ void ComicApplet::dataUpdated(const ComicMetaData &data)
     }
 
     mCurrent.setData(data);
-
-    setAssociatedApplicationUrls(QList<QUrl>() << mCurrent.websiteUrl());
 
     // looking at the last index, thus not mark it as new
     KConfigGroup cg = config();
@@ -411,6 +414,12 @@ void ComicApplet::slotStorePosition()
     mCurrent.storePosition(mActionStorePosition->isChecked());
 }
 
+void ComicApplet::slotWebsite()
+{
+    auto *job = new KIO::OpenUrlJob(mCurrent.websiteUrl());
+    job->start();
+}
+
 void ComicApplet::slotShop()
 {
     auto *job = new KIO::OpenUrlJob(mCurrent.shopUrl());
@@ -500,6 +509,7 @@ void ComicApplet::updateContextMenu()
         mActionGoFirst->setEnabled(false);
         mActionGoLast->setEnabled(false);
         mActionScaleContent->setEnabled(false);
+        mActionWebsite->setEnabled(false);
         if (mActionShop) {
             mActionShop->setEnabled(false);
         }
@@ -512,6 +522,7 @@ void ComicApplet::updateContextMenu()
         mActionGoFirst->setVisible(mCurrent.hasFirst());
         mActionGoFirst->setEnabled(mCurrent.hasPrev());
         mActionGoLast->setEnabled(true);
+        mActionWebsite->setEnabled(true);
         if (mActionShop) {
             mActionShop->setEnabled(mCurrent.shopUrl().isValid());
         }
