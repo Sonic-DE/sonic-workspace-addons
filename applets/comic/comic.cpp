@@ -107,7 +107,7 @@ void ComicApplet::init()
     KService::Ptr browser = KApplicationTrader::preferredService(QStringLiteral("x-scheme-handler/https"));
 
     if (browser) {
-        mActionWebsite->setText(i18nc("@action", "View in %1", browser->name()));
+        mActionWebsite->setText(i18nc("@action:inmenu %1 is the name of a web browser", "View in %1", browser->name()));
         mActionWebsite->setIcon(QIcon::fromTheme(browser->icon()));
     }
 
