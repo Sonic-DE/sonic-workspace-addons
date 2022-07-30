@@ -11,12 +11,29 @@
 #include <QDBusConnection>
 #include <QThreadPool>
 
+#if HAVE_NetworkManagerQt
+#include <NetworkManagerQt/Manager>
+#endif
 #include <KPluginFactory>
 
 #include "cachedprovider.h"
 #include "debug.h"
 
 using namespace std::chrono_literals;
+
+namespace
+{
+#if HAVE_NetworkManagerQt
+static int s_doesUpdateOverMeteredConnection = 0;
+
+bool isUsingMeteredConnection()
+{
+    return s_doesUpdateOverMeteredConnection == 0
+        && (NetworkManager::metered() == NetworkManager::Device::MeteredStatus::GuessYes
+            || NetworkManager::metered() == NetworkManager::Device::MeteredStatus::Yes);
+}
+#endif
+}
 
 PotdClient::PotdClient(const KPluginMetaData &metadata, const QVariantList &args, QObject *parent)
     : QObject(parent)
@@ -29,6 +46,12 @@ PotdClient::PotdClient(const KPluginMetaData &metadata, const QVariantList &args
 
 void PotdClient::updateSource(bool refresh)
 {
+#if HAVE_NetworkManagerQt
+    if (isUsingMeteredConnection()) {
+        qCDebug(WALLPAPERPOTD, "Skip updating wallpapers due to metered connection.");
+        return;
+    }
+#endif
     setLoading(true);
 
     // Check whether it is cached already...
@@ -240,6 +263,14 @@ void PotdEngine::updateSource(bool refresh)
 {
     m_lastUpdateSuccess = true;
 
+#if HAVE_NetworkManagerQt
+    if (isUsingMeteredConnection()) {
+        qCDebug(WALLPAPERPOTD, "Skip updating wallpapers due to metered connection.");
+        m_checkDatesTimer.setInterval(24h);
+        return;
+    }
+#endif
+
     for (const auto &[_, clientPair] : std::as_const(m_clientMap)) {
         connect(clientPair.client, &PotdClient::done, this, &PotdEngine::slotDone);
         m_updateCount++;
@@ -247,6 +278,22 @@ void PotdEngine::updateSource(bool refresh)
         clientPair.client->updateSource(refresh);
     }
 }
+
+#if HAVE_NetworkManagerQt
+void PotdEngine::setUpdateOverMeteredConnection(int value)
+{
+    if (s_doesUpdateOverMeteredConnection == value) {
+        return;
+    }
+
+    s_doesUpdateOverMeteredConnection = value;
+    if (s_doesUpdateOverMeteredConnection == 1
+        && (NetworkManager::metered() == NetworkManager::Device::MeteredStatus::GuessYes
+            || NetworkManager::metered() == NetworkManager::Device::MeteredStatus::Yes)) {
+        forceUpdateSource();
+    }
+}
+#endif
 
 void PotdEngine::forceUpdateSource()
 {
