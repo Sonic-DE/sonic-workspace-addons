@@ -14,6 +14,7 @@
 
 #include <KPluginMetaData>
 
+#include "config-NetworkManagerQt.h"
 #include "potdprovider.h"
 
 /**
@@ -84,6 +85,9 @@ public:
     void unregisterClient(const QString &identifier, const QVariantList &args);
 
     void updateSource(bool refresh);
+#if HAVE_NetworkManagerQt
+    void setUpdateOverMeteredConnection(int value);
+#endif
 
 private Q_SLOTS:
     void forceUpdateSource();
