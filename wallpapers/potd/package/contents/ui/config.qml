@@ -61,7 +61,7 @@ Kirigami.FormLayout {
         id: updateOverMeteredConnectionCheckBox
 
         checked: root.cfg_UpdateOverMeteredConnection === 1
-        enabled: backend.networkManagerQtAvailable
+        visible: backend.networkManagerQtAvailable
         text: i18nc("@option:check", "Update over metered connections")
 
         onToggled: {
