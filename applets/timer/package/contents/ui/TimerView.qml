@@ -5,55 +5,81 @@
  *   SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import QtQuick 2.2
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.extras 2.0 as PlasmaExtras
+
 import org.kde.kquickcontrolsaddons 2.0 as QtExtra
 
-Item {
+ColumnLayout {
     id: main
-    readonly property int secondsForAlert: 60
 
-    Column {
+    Layout.preferredWidth: Math.max(Plasmoid.compactRepresentationItem.width, PlasmaCore.Units.gridUnit * 10)
+
+    Component {
+        id: popupHeadingComponent
+
+        PlasmaExtras.PlasmoidHeading {
+            leftPadding: PlasmaCore.Units.smallSpacing * 2
+            rightPadding: PlasmaCore.Units.smallSpacing * 2
+
+            contentItem: PlasmaExtras.Heading {
+                level: 3
+                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignHCenter
+                text: root.title
+            }
+        }
+    }
+
+    Component {
+        id: desktopHeadingComponent
 
         Text {
-            id: titleLabel
+            font.pixelSize: 0.3 * timerDigits.height
             text: root.title
-            visible: root.showTitle;
-            horizontalAlignment: Text.AlignHCenter
-            height: 0.25 * main.height
-            font.pixelSize: 0.5 * height
         }
-        
-        TimerEdit {
-            id: timerDigits
-            value: root.seconds
-            editable: !root.running
-            alertMode: root.running && (root.seconds < main.secondsForAlert)
-            width: main.width
-            height: main.height - titleLabel.height
-            onDigitModified: root.seconds += valueDelta
-            SequentialAnimation on opacity {
-                running: root.suspended;
-                loops: Animation.Infinite;
-                NumberAnimation {
-                    duration: PlasmaCore.Units.veryLongDuration * 2;
-                    from: 1.0;
-                    to: 0.2;
-                    easing.type: Easing.InOutQuad;
-                }
-                PauseAnimation {
-                    duration: PlasmaCore.Units.veryLongDuration;
-                }
-                NumberAnimation {
-                    duration: PlasmaCore.Units.veryLongDuration * 2;
-                    from: 0.2;
-                    to: 1.0;
-                    easing.type: Easing.InOutQuad;
-                }
-                PauseAnimation {
-                    duration: PlasmaCore.Units.veryLongDuration;
-                }
+    }
+
+    Loader {
+        Layout.fillWidth: true
+
+        active: root.showTitle
+
+        sourceComponent: root.inPanel ? popupHeadingComponent : desktopHeadingComponent
+    }
+
+    TimerEdit {
+        id: timerDigits
+
+        Layout.fillWidth: true
+
+        value: root.seconds
+        editable: !root.running
+        alertMode: root.alertMode
+        onDigitModified: root.seconds += valueDelta
+        SequentialAnimation on opacity {
+            running: root.suspended;
+            loops: Animation.Infinite;
+            NumberAnimation {
+                duration: PlasmaCore.Units.veryLongDuration * 2;
+                from: 1.0;
+                to: 0.2;
+                easing.type: Easing.InOutQuad;
+            }
+            PauseAnimation {
+                duration: PlasmaCore.Units.veryLongDuration;
+            }
+            NumberAnimation {
+                duration: PlasmaCore.Units.veryLongDuration * 2;
+                from: 0.2;
+                to: 1.0;
+                easing.type: Easing.InOutQuad;
+            }
+            PauseAnimation {
+                duration: PlasmaCore.Units.veryLongDuration;
             }
         }
     }
@@ -71,12 +97,6 @@ Item {
 
     function resetOpacity() {
         timerDigits.opacity = 1.0;
-    }
-
-    PlasmaCore.ToolTipArea {
-        anchors.fill: parent
-        mainText: Plasmoid.toolTipMainText
-        subText: Plasmoid.toolTipSubText;
     }
 
     Component.onCompleted: {
