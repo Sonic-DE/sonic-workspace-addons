@@ -52,7 +52,7 @@ Item {
 
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
     Plasmoid.compactRepresentation: TimerView { }
-    Plasmoid.fullRepresentation: TimerView { }
+    Plasmoid.fullRepresentation: Plasmoid.compactRepresentation
 
     PlasmaCore.DataSource {
         id: notificationSource
