@@ -268,6 +268,23 @@ Item {
             bottom: controlsRow.top
             bottomMargin: PlasmaCore.Units.smallSpacing
         }
+
+        activeFocusOnTab: true
+
+        onActiveFocusChanged: {
+            // Move focus to the first non-empty piece
+            if (activeFocus) {
+                if (main.currentPosition < 0) {
+                    if (main.pieces[0].empty) {
+                        main.pieces[1].forceActiveFocus();
+                    } else {
+                        main.pieces[0].forceActiveFocus();
+                    }
+                } else {
+                    main.pieces[main.currentPosition].forceActiveFocus();
+                }
+            }
+        }
     }
 
     RowLayout {
