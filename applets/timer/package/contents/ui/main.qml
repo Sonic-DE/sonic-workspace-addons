@@ -4,14 +4,20 @@
  *   SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import QtQuick 2.2
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kquickcontrolsaddons 2.0 as QtExtra
 import org.kde.plasma.private.timer 0.1 as TimerPlasmoid
 
 Item {
     id: root;
+
+    Plasmoid.switchWidth: PlasmaCore.Units.gridUnit * 8
+    Plasmoid.switchHeight: PlasmaCore.Units.gridUnit * 8
+
     readonly property variant predefinedTimers: plasmoid.configuration.predefinedTimers;
 
     Plasmoid.backgroundHints: PlasmaCore.Types.ShadowBackground | PlasmaCore.Types.ConfigurableBackground
@@ -50,9 +56,27 @@ Item {
     }
     Plasmoid.toolTipSubText: running ? i18np("Remaining time left: %1 second", "Remaining time left: %1 seconds", seconds) : i18n("Use mouse wheel to change digits or choose from predefined timers in the context menu");
 
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
-    Plasmoid.compactRepresentation: TimerView { }
-    Plasmoid.fullRepresentation: Plasmoid.compactRepresentation
+    Plasmoid.compactRepresentation: RowLayout {
+        PlasmaCore.IconItem {
+            Layout.fillWidth: Plasmoid.formFactor === PlasmaCore.Types.Vertical
+            Layout.fillHeight: !Layout.fillWidth
+            Layout.preferredWidth: Layout.fillHeight ? height : null
+            Layout.preferredHeight: Layout.fillWidth ? width : null
+
+            source: "chronometer"
+        }
+
+        PlasmaComponents3.Label {
+            visible: root.showTitle && root.title !== ""
+            text: root.title
+        }
+
+        TapHandler {
+            acceptedButtons: Qt.LeftButton
+            onTapped: Plasmoid.expanded = !Plasmoid.expanded
+        }
+    }
+    Plasmoid.fullRepresentation: TimerView { }
 
     PlasmaCore.DataSource {
         id: notificationSource
