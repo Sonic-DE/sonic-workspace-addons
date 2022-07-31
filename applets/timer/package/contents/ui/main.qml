@@ -4,7 +4,7 @@
  *   SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import QtQuick 2.2
+import QtQuick 2.15
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kquickcontrolsaddons 2.0 as QtExtra
@@ -12,6 +12,14 @@ import org.kde.plasma.private.timer 0.1 as TimerPlasmoid
 
 Item {
     id: root;
+
+    Plasmoid.switchWidth: PlasmaCore.Units.gridUnit * 8
+    Plasmoid.switchHeight: PlasmaCore.Units.gridUnit * 4
+
+    readonly property bool inPanel: [PlasmaCore.Types.TopEdge, PlasmaCore.Types.RightEdge, PlasmaCore.Types.BottomEdge, PlasmaCore.Types.LeftEdge]
+        .includes(Plasmoid.location)
+    readonly property bool isVertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
+
     readonly property variant predefinedTimers: plasmoid.configuration.predefinedTimers;
 
     Plasmoid.backgroundHints: PlasmaCore.Types.ShadowBackground | PlasmaCore.Types.ConfigurableBackground
@@ -27,6 +35,7 @@ Item {
     // show title (can be customized in the settings dialog, default: disabled)
     readonly property bool showTitle: plasmoid.configuration.showTitle;
     readonly property string title: plasmoid.configuration.title;
+    readonly property bool alertMode: root.running && root.seconds < 60
     property bool running: (plasmoid.configuration.running > 0) ? true : false;
     property bool suspended: false;
 
@@ -50,8 +59,7 @@ Item {
     }
     Plasmoid.toolTipSubText: running ? i18np("Remaining time left: %1 second", "Remaining time left: %1 seconds", seconds) : i18n("Use mouse wheel to change digits or choose from predefined timers in the context menu");
 
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
-    Plasmoid.compactRepresentation: TimerView { }
+    Plasmoid.compactRepresentation: CompactRepresentation { }
     Plasmoid.fullRepresentation: TimerView { }
 
     PlasmaCore.DataSource {
