@@ -39,6 +39,7 @@ Loader {
     GridLayout {
         id: grid
 
+        anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
 
         rowSpacing: PlasmaCore.Units.smallSpacing
