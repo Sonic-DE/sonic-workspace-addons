@@ -111,7 +111,11 @@ ColumnLayout {
 
             ForecastView {
                 id: forecastView
-                anchors.top: parent.top
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                }
             }
         }
 
