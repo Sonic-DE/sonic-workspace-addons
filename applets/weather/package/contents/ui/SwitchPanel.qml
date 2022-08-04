@@ -83,14 +83,14 @@ ColumnLayout {
         id: swipeView
 
         Layout.fillWidth: true
-        Layout.fillHeight: true
+        Layout.fillHeight: false
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
         Layout.minimumWidth: Math.max(forecastView.Layout.minimumWidth,
                                       detailsView.Layout.minimumWidth,
                                       noticesView.Layout.minimumWidth)
         Layout.minimumHeight: Math.max(forecastView.implicitHeight,
                                        detailsView.height,
-                                       noticesView.Layout.minimumHeight)
+                                       noticesView.height)
 
         clip: true // previous/next views are prepared outside of view, do not render them
 
