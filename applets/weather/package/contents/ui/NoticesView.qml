@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import QtQuick 2.9
+import QtQuick 2.15
 
 import QtQuick.Layouts 1.3
 
@@ -12,56 +12,86 @@ import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-ColumnLayout {
+Loader {
     id: root
+
+    Layout.minimumHeight: column.implicitHeight
 
     property alias model: categoryRepeater.model
     readonly property bool hasContent: model && model.length > 0 && (model[0].length > 0 || model[1].length > 0)
 
-    spacing: PlasmaCore.Units.largeSpacing
+    active: activeFocus
+    activeFocusOnTab: isCurrentItem
+    asynchronous: true
 
-    Repeater {
-        id: categoryRepeater
+    sourceComponent: PlasmaExtras.Highlight {
+        hovered: true
+    }
 
-        delegate: ColumnLayout {
-            property var categoryData: modelData
+    Accessible.description: {
+        let description = [];
+        if (model[0].length > 0) {
+            model[0].forEach((data) => {
+                description.push(i18nc("@title:column weather warnings", "Warnings Issued"));
+                description.push(data.description);
+            });
+        }
+        if (model[1].length > 0) {
+            model[1].forEach((data) => {
+                description.push(i18nc("@title:column weather warnings", "Watches Issued"));
+                description.push(data.description);
+            });
+        }
+        return description.join(" ");
+    }
 
-            readonly property bool categoryHasNotices: categoryData.length > 0
-            visible: categoryHasNotices
+    ColumnLayout {
+        id: column
 
-            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
 
-            PlasmaExtras.Heading {
-                level: 4
-                Layout.alignment: Qt.AlignHCenter
+        spacing: PlasmaCore.Units.largeSpacing
 
-                text: index == 0 ? i18nc("@title:column weather warnings", "Warnings Issued") : i18nc("@title:column weather watches" ,"Watches Issued")
-            }
+        Repeater {
+            id: categoryRepeater
 
-            Repeater {
-                id: repeater
+            delegate: ColumnLayout {
+                property var categoryData: modelData
 
-                model: categoryData
+                readonly property bool categoryHasNotices: categoryData.length > 0
+                visible: categoryHasNotices
 
-                delegate: PlasmaComponents.Label {
-                    font.underline: true
-                    color: PlasmaCore.Theme.linkColor
+                Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
 
-                    text: modelData.description
+                PlasmaExtras.Heading {
+                    level: 4
+                    Layout.alignment: Qt.AlignHCenter
 
-                    MouseArea {
-                        anchors.fill: parent
+                    text: index == 0 ? i18nc("@title:column weather warnings", "Warnings Issued") : i18nc("@title:column weather watches" ,"Watches Issued")
+                }
 
-                        onClicked: {
-                            Qt.openUrlExternally(modelData.info);
+                Repeater {
+                    id: repeater
+
+                    model: categoryData
+
+                    delegate: PlasmaComponents.Label {
+                        font.underline: true
+                        color: PlasmaCore.Theme.linkColor
+
+                        text: modelData.description
+
+                        MouseArea {
+                            anchors.fill: parent
+
+                            onClicked: {
+                                Qt.openUrlExternally(modelData.info);
+                            }
                         }
                     }
                 }
             }
         }
-    }
-
-    Item {
-        Layout.fillHeight: true
     }
 }
