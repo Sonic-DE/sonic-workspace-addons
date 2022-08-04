@@ -38,11 +38,29 @@ ColumnLayout {
         }
     }
 
-    TopPanel {
-        id: topPanel
+    Loader {
+        Layout.fillWidth: true
+        Layout.preferredHeight: topPanel.implicitHeight
         visible: !root.needsConfiguration
 
-        Layout.fillWidth: true
+        active: activeFocus
+        activeFocusOnTab: true
+        asynchronous: true
+
+        Accessible.name: topPanel.Accessible.name
+        Accessible.description: topPanel.Accessible.description
+
+        TopPanel {
+            id: topPanel
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
+        }
+
+        sourceComponent: PlasmaExtras.Highlight {
+            hovered: true
+        }
     }
 
     SwitchPanel {
