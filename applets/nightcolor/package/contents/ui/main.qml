@@ -28,21 +28,21 @@ Item {
         return PlasmaCore.Types.PassiveStatus;
     }
 
-    Plasmoid.toolTipMainText: i18n("Night Color Control")
+    Plasmoid.toolTipMainText: i18n("Blue Light Filter Control")
     Plasmoid.toolTipSubText: {
         if (inhibitor.state == Inhibitor.Inhibited) {
-            return i18n("Night Color is inhibited");
+            return i18n("Blue Light Filter is inhibited");
         }
         if (!monitor.available) {
-            return i18n("Night Color is unavailable");
+            return i18n("Blue Light Filter is unavailable");
         }
         if (!monitor.enabled) {
-            return i18n("Night Color is disabled");
+            return i18n("Blue Light Filter is disabled");
         }
         if (!monitor.running) {
-            return i18n("Night Color is not running");
+            return i18n("Blue Light Filter is not running");
         }
-        return i18n("Night Color is active (%1K)", monitor.currentTemperature);
+        return i18n("Blue Light Filter is active (%1K)", monitor.currentTemperature);
     }
 
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
@@ -91,7 +91,7 @@ Item {
 
     Component.onCompleted: {
         if (KCMShell.authorize("kcm_nightcolor.desktop").length > 0) {
-            plasmoid.setAction("KCMNightColor", i18n("Configure Night Color…"), "configure");
+            plasmoid.setAction("KCMNightColor", i18n("Configure Blue Light Filter…"), "configure");
         }
         plasmoid.removeAction("configure");
     }
