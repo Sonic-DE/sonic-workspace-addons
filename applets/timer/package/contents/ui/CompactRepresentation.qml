@@ -170,6 +170,7 @@ Item {
         PlasmaComponents3.Label {
             id: remainingTimeLabel
 
+            Layout.alignment: layoutForm == CompactRepresentation.LayoutType.VerticalPanel || layoutForm === CompactRepresentation.LayoutType.VerticalDesktop ? Qt.AlignHCenter : Qt.AlignLeft
             Layout.fillWidth: false
             Layout.maximumWidth: textMetrics.width
             Layout.minimumWidth: textMetrics.width
