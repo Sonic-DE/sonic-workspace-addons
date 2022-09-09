@@ -221,7 +221,7 @@ Item {
 
             ActionListDelegate {
                 id: leaveButton
-                text: i18nc("Show a dialog with options to logout/shutdown/restart", "Leave…")
+                text: i18nc("Show a dialog with options to logout/shutdown/restart", "Log Out")
                 icon.name: "system-log-out"
                 visible: sm.canLogout
 
