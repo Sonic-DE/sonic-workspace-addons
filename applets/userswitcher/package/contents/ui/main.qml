@@ -126,6 +126,9 @@ Item {
                 service.startOperationCall(operation)
             }
         }
+        Sessions.SessionManagement {
+            id: sm
+        }
 
         Sessions.SessionsModel {
             id: sessionsModel
@@ -231,11 +234,12 @@ Item {
             ActionListDelegate {
                 id: leaveButton
                 text: i18nc("Show a dialog with options to logout/shutdown/restart", "Leave…")
-                icon.name: "system-shutdown"
+                icon.name: "system-log-out"
+                visible: sm.canLogout
 
                 KeyNavigation.up: lockScreenButton
 
-                onClicked: pmEngine.performOperation("requestShutDown")
+                onClicked: sm.requestLogout()
             }
         }
 
