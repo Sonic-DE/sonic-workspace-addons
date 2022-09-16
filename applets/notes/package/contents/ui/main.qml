@@ -220,15 +220,13 @@ PlasmaCore.SvgItem {
                         note.save(mainTextArea.text);
                         if(mainTextArea.activeFocus){
                             fontButtons.height = fontButtons.height +settingsButton.height
+                            // First change height then show result to users
                             fontButtons.visible = true
-                        }
-                        else
-                        {
-                            // hide first then lower the size to overcome bad graphic effect
+                        } else {
+                            // Hiding will update view immediately, thus hide first so height change isn't visible
                             fontButtons.visible = false
                             fontButtons.height = fontButtons.height -settingsButton.height
                         }
-
                     }
                 }
 
