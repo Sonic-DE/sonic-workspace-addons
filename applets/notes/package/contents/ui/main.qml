@@ -224,7 +224,8 @@ PlasmaCore.SvgItem {
                         }
                         else
                         {
-                            fontButtons.visible = false #hide first than lower size to overcome bad graphic effect
+                            // hide first then lower the size to overcome bad graphic effect
+                            fontButtons.visible = false
                             fontButtons.height = fontButtons.height -settingsButton.height
                         }
 
