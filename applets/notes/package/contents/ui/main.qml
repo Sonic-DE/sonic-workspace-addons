@@ -218,6 +218,16 @@ PlasmaCore.SvgItem {
                     } else {
                         Plasmoid.status = PlasmaCore.Types.ActiveStatus
                         note.save(mainTextArea.text);
+                        if(mainTextArea.activeFocus){
+                            fontButtons.height = fontButtons.height +settingsButton.height
+                            fontButtons.visible = true
+                        }
+                        else
+                        {
+                            fontButtons.visible = false #hide first than lower size to overcome bad graphic effect
+                            fontButtons.height = fontButtons.height -settingsButton.height
+                        }
+
                     }
                 }
 
@@ -407,6 +417,7 @@ PlasmaCore.SvgItem {
 
         RowLayout {
             id: fontButtons
+            height: 0
             spacing: PlasmaCore.Units.smallSpacing
             anchors {
                 bottom: parent.bottom
