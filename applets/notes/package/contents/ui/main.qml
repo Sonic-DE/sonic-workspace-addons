@@ -218,15 +218,6 @@ PlasmaCore.SvgItem {
                     } else {
                         Plasmoid.status = PlasmaCore.Types.ActiveStatus
                         note.save(mainTextArea.text);
-                        if(mainTextArea.activeFocus){
-                            fontButtons.height = fontButtons.height +settingsButton.height
-                            // First change height then show result to users
-                            fontButtons.visible = true
-                        } else {
-                            // Hiding will update view immediately, thus hide first so height change isn't visible
-                            fontButtons.visible = false
-                            fontButtons.height = fontButtons.height -settingsButton.height
-                        }
                     }
                 }
 
@@ -287,76 +278,6 @@ PlasmaCore.SvgItem {
                         _enabled: mainTextArea.canPaste
                         _iconName: "edit-paste"
                         _text: i18n("Paste Without Formatting")
-                        onTriggered: contextMenu.retFocus(() => documentHandler.pasteWithoutFormatting())
-                    }
-
-                    ShortcutMenuItem {
-                        _enabled: mainTextArea.canPaste
-                        _text: i18n("Paste")
-                        _iconName: "edit-paste"
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.paste())
-                    }
-
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.Delete
-                        _enabled: mainTextArea.selectedText.length > 0
-                        _iconName: "edit-delete"
-                        _text: i18n("Delete")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.remove(mainTextArea.selectionStart, mainTextArea.selectionEnd))
-                    }
-
-                    ShortcutMenuItem {
-                        _enabled: mainTextArea.text.length > 0
-                        _iconName: "edit-clear"
-                        _text: i18n("Clear")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.clear())
-                    }
-
-                    QQC2.MenuSeparator {}
-
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.SelectAll
-                        _enabled: mainTextArea.text.length > 0
-                        _iconName: "edit-select-all"
-                        _text: i18n("Select All")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.selectAll())
-                    }
-
-                    function retFocus(f) {
-                        f()
-                        documentHandler.reset()
-                        mainTextArea.forceActiveFocus()
-                    }
-                }
-            }
-
-            // Save scrolling position when it changes, but throttle to avoid
-            // killing a storage disk.
-            Connections {
-                target: scrollview.contentItem
-                function onContentXChanged() {
-                    throttedScrollSaver.restart();
-                }
-                function onContentYChanged() {
-                    throttedScrollSaver.restart();
-                }
-            }
-            Connections {
-                target: mainTextArea
-                function onCursorPositionChanged() {
-                    throttedScrollSaver.restart();
-                }
-            }
-
-            Timer {
-                id: throttedScrollSaver
-                interval: PlasmaCore.Units.humanMoment
-                repeat: false
-                running: false
-                onTriggered: scrollview.saveScroll()
-            }
-
-            function saveScroll() {
                 const flickable = scrollview.contentItem;
                 Plasmoid.configuration.scrollX = flickable.contentX;
                 Plasmoid.configuration.scrollY = flickable.contentY;
@@ -416,14 +337,13 @@ PlasmaCore.SvgItem {
 
         RowLayout {
             id: fontButtons
-            height: 0
             spacing: PlasmaCore.Units.smallSpacing
             anchors {
                 bottom: parent.bottom
                 left: parent.left
                 right: parent.right
             }
-
+            height: visible ? implicitHeight : 0
             visible: opacity > 0
             opacity: focusScope.activeFocus ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: PlasmaCore.Units.longDuration } }
