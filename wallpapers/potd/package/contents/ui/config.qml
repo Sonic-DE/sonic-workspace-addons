@@ -357,4 +357,7 @@ Kirigami.FormLayout {
             }
         }
     }
+
+    // Workaround for https://bugreports.qt.io/browse/QTBUG-73388
+    Component.onDestruction: gc()
 }

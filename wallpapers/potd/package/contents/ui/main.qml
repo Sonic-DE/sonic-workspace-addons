@@ -51,6 +51,8 @@ Rectangle {
         onImageChanged: {
             // Update accent color
             wallpaper.repaintNeeded();
+            // Workaround for https://bugreports.qt.io/browse/QTBUG-73388
+            gc();
         }
     }
 }
