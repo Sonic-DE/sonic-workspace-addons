@@ -22,7 +22,7 @@ FocusScope {
     /**
      * The wallpaper image
      */
-    property alias source: wallpaperImage.source
+    required property string source
 
     /**
      * The background color of the preview area when the image is loaded
@@ -75,6 +75,13 @@ FocusScope {
 
     Keys.onMenuPressed: contextMenu.popup(delegate, thumbnail.x, thumbnail.y + thumbnail.height)
     Keys.onSpacePressed: contextMenu.popup(delegate, thumbnail.x, thumbnail.y + thumbnail.height)
+
+    onThumbnailLoadingChanged: {
+        if (!thumbnailLoading) {
+            wallpaperImage.source = "";
+            wallpaperImage.source = Qt.binding(() => delegate.source);
+        }
+    }
 
     TapHandler {
         acceptedButtons: Qt.RightButton
@@ -143,6 +150,7 @@ FocusScope {
                 cache: false
                 fillMode: wallpaper.configuration.FillMode || Image.PreserveAspectCrop
                 smooth: true
+                source: delegate.source
 
                 Drag.dragType: Drag.Automatic
                 Drag.supportedActions: Qt.CopyAction
