@@ -99,15 +99,6 @@ void PotdBackend::setArguments(const QVariantList &args)
     Q_EMIT argumentsChanged();
 }
 
-QImage PotdBackend::image() const
-{
-    if (!m_client) {
-        return {};
-    }
-
-    return m_client->m_data.wallpaperImage;
-}
-
 bool PotdBackend::loading() const
 {
     if (!m_client) {
@@ -273,7 +264,6 @@ void PotdBackend::registerClient()
         return;
     }
 
-    connect(m_client, &PotdClient::imageChanged, this, &PotdBackend::imageChanged);
     connect(m_client, &PotdClient::loadingChanged, this, &PotdBackend::loadingChanged);
     connect(m_client, &PotdClient::localUrlChanged, this, &PotdBackend::localUrlChanged);
     connect(m_client, &PotdClient::infoUrlChanged, this, &PotdBackend::infoUrlChanged);
@@ -282,7 +272,6 @@ void PotdBackend::registerClient()
     connect(m_client, &PotdClient::authorChanged, this, &PotdBackend::authorChanged);
 
     // Refresh the desktop wallpaper and the information in config dialog
-    Q_EMIT imageChanged();
     Q_EMIT loadingChanged();
     Q_EMIT localUrlChanged();
     Q_EMIT infoUrlChanged();
