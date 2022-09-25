@@ -167,11 +167,13 @@ void PotdBackend::setUpdateOverMeteredConnection(int value)
     m_doesUpdateOverMeteredConnection = std::clamp(value, 0, 2);
     Q_EMIT updateOverMeteredConnectionChanged();
 
-#if HAVE_NetworkManagerQt
     if (m_ready && m_client) {
+#if HAVE_NetworkManagerQt
         m_client->setUpdateOverMeteredConnection(m_doesUpdateOverMeteredConnection);
-    }
+#else
+        m_client->updateSource();
 #endif
+    }
 }
 
 void PotdBackend::saveImage()
@@ -279,9 +281,11 @@ void PotdBackend::registerClient()
     Q_EMIT titleChanged();
     Q_EMIT authorChanged();
 
-#if HAVE_NetworkManagerQt
     if (m_client) {
+#if HAVE_NetworkManagerQt
         m_client->setUpdateOverMeteredConnection(m_doesUpdateOverMeteredConnection);
-    }
+#else
+        m_client->updateSource();
 #endif
+    }
 }

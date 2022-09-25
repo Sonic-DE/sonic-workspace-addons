@@ -37,7 +37,6 @@ PotdClient::PotdClient(const KPluginMetaData &metadata, const QVariantList &args
     , m_identifier(metadata.value(QStringLiteral("X-KDE-PlasmaPoTDProvider-Identifier")))
     , m_args(args)
 {
-    updateSource();
 }
 
 void PotdClient::updateSource(bool refresh)
@@ -45,7 +44,6 @@ void PotdClient::updateSource(bool refresh)
     if (m_loading) {
         return;
     }
-
     setLoading(true);
 
     // Check whether it is cached already...
@@ -62,6 +60,11 @@ void PotdClient::updateSource(bool refresh)
         connect(provider, &PotdProvider::finished, this, &PotdClient::slotFinished);
         connect(provider, &PotdProvider::error, this, &PotdClient::slotError);
         return;
+    }
+
+    if (auto url = CachedProvider::identifierToPath(m_identifier, m_args); QFile::exists(url)) {
+        setLocalUrl(url);
+        Q_EMIT loadingChanged();
     }
 
 #if HAVE_NetworkManagerQt
@@ -92,7 +95,7 @@ void PotdClient::setUpdateOverMeteredConnection(int value)
     // the wallpaper.
 
     m_doesUpdateOverMeteredConnection = value;
-    if (m_doesUpdateOverMeteredConnection == 1 && isUsingMeteredConnection()) {
+    if ((m_doesUpdateOverMeteredConnection == 1 && isUsingMeteredConnection()) || (m_doesUpdateOverMeteredConnection == 0 && !isUsingMeteredConnection())) {
         updateSource();
     }
 }
