@@ -126,7 +126,15 @@ Item {
 
             PlasmaCore.ToolTipArea {
                 anchors.fill: parent
-                subText: parent.text
+                mainText: parent.text
+                subText: {
+                    const parts = [];
+
+                    parts.push(i18nc("@info:usagetip", "Drag and drop a color string here to save it"));
+                    parts.push(i18nc("@info:usagetip", "Drag and drop an image file here to get average color"));
+
+                    return parts.join("\n");
+                }
             }
 
             PlasmaCore.IconItem {
