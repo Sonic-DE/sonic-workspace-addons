@@ -56,13 +56,14 @@ Item {
             if (data && data.Locked)
                 return icon(source)
         }
-        return "input-keyboard"
+        return "input-caps-on"
     }
 
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
     Plasmoid.compactRepresentation: PlasmaCore.IconItem {
         source: plasmoid.icon
         active: compactMouse.containsMouse
+        enabled: lockedCount > 0
 
         MouseArea {
             id: compactMouse
