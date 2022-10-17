@@ -63,7 +63,7 @@ Item {
     Plasmoid.compactRepresentation: PlasmaCore.IconItem {
         source: plasmoid.icon
         active: compactMouse.containsMouse
-        enabled: lockedCount > 0
+        enabled: root.lockedCount > 0
 
         MouseArea {
             id: compactMouse
