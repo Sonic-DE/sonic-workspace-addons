@@ -1,0 +1,7 @@
+[Global]
+IconName=accessories-dictionary
+Comment=Dictionary plugin for KRunner
+Name=Dictionary
+
+[Event/copied]
+Action=Popup
