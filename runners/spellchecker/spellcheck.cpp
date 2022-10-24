@@ -20,7 +20,6 @@
 SpellCheckRunner::SpellCheckRunner(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
     : AbstractRunner(parent, metaData, args)
 {
-    setObjectName(QStringLiteral("Spell Checker"));
 }
 
 SpellCheckRunner::~SpellCheckRunner() = default;
