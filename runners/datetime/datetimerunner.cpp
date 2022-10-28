@@ -2,6 +2,7 @@
  *   SPDX-FileCopyrightText: 2006 Aaron Seigo <aseigo@kde.org>
  *   SPDX-FileCopyrightText: 2010 Marco Martin <notmart@gmail.com>
  *   SPDX-FileCopyrightText: 2015 Vishesh Handa <vhanda@kde.org>
+ *   SPDX-FileCopyrightText: 2022 Natalie Clarius <natalie_clarius@yahoo.de>
  *
  *   SPDX-License-Identifier: LGPL-2.0-only
  */
@@ -13,6 +14,8 @@
 #include <QTimeZone>
 
 #include <KLocalizedString>
+
+#include <math.h>
 
 static const QString dateWord = i18nc("Note this is a KRunner keyword", "date");
 static const QString timeWord = i18nc("Note this is a KRunner keyword", "time");
@@ -63,8 +66,18 @@ void DateTimeRunner::match(RunnerContext &context)
 #endif
         const auto times = datetime(tz);
         for (auto it = times.constBegin(), itEnd = times.constEnd(); it != itEnd; ++it) {
+            const QString timeZone = it.key();
             const QString time = QLocale().toString(*it, QLocale::ShortFormat);
-            addMatch(QStringLiteral("%1 - %2").arg(it.key(), time), time, context, QStringLiteral("clock"));
+
+            const int timeDiffInMinutes = round((double)QDateTime::currentDateTime().secsTo(QDateTime(it.value().date(), it.value().time())) / 60);
+            const int timeDiffHours = (double)abs(timeDiffInMinutes) / 60;
+            const int timeDiffMinutes = (double)abs(timeDiffInMinutes) - timeDiffHours * 60;
+            const QString timeDiff = (timeDiffHours ? QString("%1 h ").arg(timeDiffHours) : QString())
+                + (timeDiffMinutes ? QString("%1 min ").arg(timeDiffMinutes) : QString())
+                + ((timeDiffInMinutes > 0       ? i18nc("time zone difference", "later")
+                        : timeDiffInMinutes < 0 ? i18nc("time zone difference", "earlier")
+                                                : i18nc("no time zone difference", "no time difference")));
+            addMatch(QStringLiteral("%1 - %2 (%3)").arg(timeZone, time, timeDiff), time, context, QStringLiteral("clock"));
         }
     }
 }
