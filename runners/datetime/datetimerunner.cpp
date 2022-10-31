@@ -70,13 +70,16 @@ void DateTimeRunner::match(RunnerContext &context)
             const QString time = QLocale().toString(*it, QLocale::ShortFormat);
 
             const int timeDiffInMinutes = round((double)QDateTime::currentDateTime().secsTo(QDateTime(it.value().date(), it.value().time())) / 60);
-            const int timeDiffHours = (double)abs(timeDiffInMinutes) / 60;
-            const int timeDiffMinutes = (double)abs(timeDiffInMinutes) - timeDiffHours * 60;
-            const QString timeDiff = (timeDiffHours ? QString("%1 h ").arg(timeDiffHours) : QString())
-                + (timeDiffMinutes ? QString("%1 min ").arg(timeDiffMinutes) : QString())
-                + ((timeDiffInMinutes > 0       ? i18nc("time zone difference", "later")
-                        : timeDiffInMinutes < 0 ? i18nc("time zone difference", "earlier")
-                                                : i18nc("no time zone difference", "no time difference")));
+            const int timeDiffFullHours = (double)abs(timeDiffInMinutes) / 60;
+            const int timeDiffFullMinutes = (double)abs(timeDiffInMinutes) - timeDiffFullHours * 60;
+            const QString timeDiffNumStr = ((timeDiffFullHours ? QString("%1 h ").arg(timeDiffFullHours) : QString())
+                                            + (timeDiffFullMinutes ? QString("%1 min ").arg(timeDiffFullMinutes) : QString()))
+                                               .trimmed();
+            const QString timeDiff =
+                ((timeDiffInMinutes > 0 ? i18nc("time zone difference, e.g. in Stockholm it's 4 hours later than in Brasilia", "%1 later", timeDiffNumStr)
+                      : timeDiffInMinutes < 0
+                      ? i18nc("time zone difference, e.g. in Brasilia it's 4 hours ealier than in Stockholm", "%1 earlier", timeDiffNumStr)
+                      : i18nc("no time zone difference, e.g. in Stockholm it's the same time as in Berlin", "no time difference")));
             addMatch(QStringLiteral("%1 - %2 (%3)").arg(timeZone, time, timeDiff), time, context, QStringLiteral("clock"));
         }
     }
