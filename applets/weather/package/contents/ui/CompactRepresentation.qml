@@ -10,6 +10,7 @@ import QtQuick.Layouts 1.3
 
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.workspace.components 2.0 as WorkspaceComponents
 
 ColumnLayout {
     id: compactRoot
@@ -18,13 +19,15 @@ ColumnLayout {
     property var observationModel
 
     readonly property bool vertical: (plasmoid.formFactor == PlasmaCore.Types.Vertical)
-    readonly property bool showTemperature: plasmoid.configuration.showTemperatureInCompactMode &&
-                                            !plasmoid.nativeInterface.needsToBeSquare
+    readonly property bool showBadgeTemperature: plasmoid.configuration.showTemperatureInBadge
+    readonly property bool showSideTemperature: plasmoid.configuration.showTemperatureInCompactMode &&
+                                                !showBadgeTemperature &&
+                                                !plasmoid.nativeInterface.needsToBeSquare
 
     Loader {
         id: loader
 
-        sourceComponent: showTemperature ? iconAndTextComponent : iconComponent
+        sourceComponent: showSideTemperature ? iconAndTextComponent : iconComponent
         Layout.fillWidth: compactRoot.vertical
         Layout.fillHeight: !compactRoot.vertical
         Layout.minimumWidth: item.Layout.minimumWidth
@@ -55,6 +58,16 @@ ColumnLayout {
             implicitHeight: PlasmaCore.Units.iconSizes.small
             Layout.minimumWidth: compactRoot.vertical ? PlasmaCore.Units.iconSizes.small : minIconSize
             Layout.minimumHeight: compactRoot.vertical ? minIconSize : PlasmaCore.Units.iconSizes.small
+
+            WorkspaceComponents.BadgeOverlay {
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+
+                visible: showBadgeTemperature && text.length > 0
+
+                text: observationModel.temperature
+                icon: parent
+            }
         }
     }
 
