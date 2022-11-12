@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import QtQuick 2.9
+import QtQuick 2.15
 
-import QtQuick.Controls 2.5 as QQC2
-import QtQuick.Layouts 1.3
-import org.kde.kirigami 2.8 as Kirigami
+import QtQuick.Controls 2.15 as QQC2
+import QtQuick.Layouts 1.15
+import org.kde.kirigami 2.15 as Kirigami
 
 import org.kde.plasma.private.weather 1.0
 
@@ -18,13 +18,16 @@ ColumnLayout {
 
     property var providers
     property string source
+    property bool isNewSetup: true
+
     readonly property bool canSearch: !!searchStringEdit.text && Object.keys(providers).length
+
+    signal accepted
 
     function searchLocation() {
         if (!canSearch) {
             return;
         }
-        noSearchResultReport.visible = false;
         source = "";
         locationListModel.searchLocations(searchStringEdit.text, Object.keys(providers));
     }
@@ -32,57 +35,49 @@ ColumnLayout {
     LocationListModel {
         id: locationListModel
         onLocationSearchDone: {
-            if (!success) {
-                noSearchResultReport.text = i18nc("@info", "No weather stations found for '%1'", searchString);
-                noSearchResultReport.visible = true;
-            } else {
+            if (success) {
                 // If we got any results, pre-select the top item to potentially
                 // save the user a step
                 locationListView.currentIndex = 0;
-                noSearchResultReport.visible = false;
             }
         }
     }
 
-    RowLayout {
+    Kirigami.SearchField {
+        id: searchStringEdit
+
         Layout.fillWidth: true
+        Layout.minimumWidth: implicitWidth
 
+        focus: true
         enabled: Object.keys(root.providers).length > 0
+        placeholderText: i18nc("@info:placeholder", "Enter location")
 
-        Kirigami.SearchField {
-            id: searchStringEdit
-
-            Layout.fillWidth: true
-            Layout.minimumWidth: implicitWidth
-            focus: true
-            placeholderText: i18nc("@info:placeholder", "Enter location")
-
-            Timer {
-                id: searchDelayTimer
-                interval: 500
-                onTriggered: {
-                    searchLocation();
-                }
+        Timer {
+            id: searchDelayTimer
+            interval: 500
+            onTriggered: {
+                searchLocation();
             }
+        }
 
-            onTextChanged: {
-                searchDelayTimer.restart();
-            }
+        onTextChanged: {
+            searchDelayTimer.restart();
+        }
 
-            Keys.onPressed: {
-                if (event.key == Qt.Key_Up) {
-                    if (locationListView.currentIndex != 0) {
-                        locationListView.currentIndex--;
-                    }
-                    event.accepted = true;
-                } else if (event.key == Qt.Key_Down) {
-                    if (locationListView.currentIndex != locationListView.count - 1) {
-                        locationListView.currentIndex++;
-                    }
-                    event.accepted = true;
-                } else {
-                    event.accepted = false;
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Up) {
+                if (locationListView.currentIndex != 0) {
+                    locationListView.currentIndex--;
                 }
+                event.accepted = true;
+            } else if (event.key == Qt.Key_Down) {
+                if (locationListView.currentIndex != locationListView.count - 1) {
+                    locationListView.currentIndex++;
+                }
+                event.accepted = true;
+            } else {
+                event.accepted = false;
             }
         }
     }
@@ -118,17 +113,27 @@ ColumnLayout {
                     locationListView.forceActiveFocus();
                     locationListView.currentIndex = index;
                 }
+
+                onDoubleClicked: {
+                    root.accepted()
+                }
             }
 
-            QQC2.Label {
-                id: noSearchResultReport
+            Kirigami.PlaceholderMessage {
+                id: listViewPlaceholder
+                anchors.centerIn: parent
+                width: parent.width - Kirigami.Units.gridUnit
+                visible: locationListView.count === 0 && !locationListModel.validatingInput
+                text: {
+                    if (canSearch) {    // There is a search text
+                        return i18nc("@info", "No weather stations found for '%1'", searchStringEdit.text);
+                    } else if (isNewSetup) {
+                        return i18nc("@info", "Search for a weather station to set your location");
+                    } else {
+                        return i18nc("@info", "Search for a weather station to change your location");
+                    }
+                }
 
-                anchors.fill: parent
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.WordWrap
-                visible: false
-                enabled: false
             }
 
             QQC2.BusyIndicator {
