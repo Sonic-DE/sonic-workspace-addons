@@ -12,7 +12,7 @@ import org.kde.kirigami 2.5 as Kirigami
 import org.kde.plasma.private.weather 1.0
 
 
-Kirigami.FormLayout {
+ColumnLayout {
     id: weatherStationConfigPage
 
     property string source
@@ -39,62 +39,79 @@ Kirigami.FormLayout {
         updateIntervalSpin.value = config.updateInterval;
     }
 
-    WeatherStationPickerDialog {
-        id: stationPicker
-        providers: plasmoid.nativeInterface.providers
+    Kirigami.FormLayout {
+        id: formLayout
 
-        onAccepted: {
-            weatherStationConfigPage.source = source;
-            weatherStationConfigPage.configurationChanged();
+        QQC2.SpinBox {
+            id: updateIntervalSpin
+
+            Kirigami.FormData.label: i18nc("@label:spinbox", "Update every:")
+
+            textFromValue: function(value) {
+                return (i18np("%1 minute", "%1 minutes", value));
+            }
+            valueFromText: function(text) {
+                return parseInt(text);
+            }
+
+            from: 30
+            to: 3600
+            editable: true
+
+            onValueChanged: weatherStationConfigPage.configurationChanged();
         }
-    }
-
-
-    RowLayout {
-        Kirigami.FormData.label: i18nc("@label", "Location:")
-        Layout.fillWidth: true
 
         QQC2.Label {
-            id: locationDisplay
+            property var sourceDetails: source.split('|')
+
+            Kirigami.FormData.label: i18nc("@label", "Location:")
+
             Layout.fillWidth: true
             elide: Text.ElideRight
-            visible: text != ""
+            opacity: sourceDetails.length > 2 ? 1 : 0.7
 
             text: {
-                var sourceDetails = source.split('|');
                 if (sourceDetails.length > 2) {
                     return i18nc("A weather station location and the weather service it comes from",
                                     "%1 (%2)", sourceDetails[2], plasmoid.nativeInterface.providers[sourceDetails[0]]);
                 }
-                return ""
+                return i18nc("No location is currently selected", "None selected")
             }
         }
 
-        QQC2.Button {
-            id: selectButton
-            Layout.fillWidth: true
-            icon.name: "find-location"
-            text: i18nc("@action:button", "Choose…")
-            onClicked: stationPicker.visible = true;
+        Item {
+            Kirigami.FormData.isSection: true
         }
     }
 
-    QQC2.SpinBox {
-        id: updateIntervalSpin
+    WeatherStationPicker {
+        id: stationPicker
+        providers: plasmoid.nativeInterface.providers
 
-        Kirigami.FormData.label: i18nc("@label:spinbox", "Update every:")
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        Layout.maximumHeight: weatherStationConfigPage.height - selectButtonRow.height - formLayout.height - 4 * Kirigami.Units.smallSpacing
 
-        textFromValue: function(value) {
-            return (i18np("%1 minute", "%1 minutes", value));
+        onAccepted: {
+            weatherStationConfigPage.source = stationPicker.source
+            weatherStationConfigPage.configurationChanged();
         }
-        valueFromText: function(text) {
-            return parseInt(text);
+    }
+
+    RowLayout {
+        id: selectButtonRow
+
+        Layout.fillWidth: true
+
+        Item {
+            Layout.fillWidth: true
         }
 
-        from: 30
-        to: 3600
-        editable: true
-
-        onValueChanged: weatherStationConfigPage.configurationChanged();
+        QQC2.Button {
+            enabled: stationPicker.source.length > 0 && stationPicker.source !== weatherStationConfigPage.source
+            icon.name: "dialog-ok"
+            text: i18nc("@action:button", "Select Location")
+            onClicked: stationPicker.accepted()
+        }
     }
 }

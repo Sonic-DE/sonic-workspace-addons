@@ -20,6 +20,8 @@ ColumnLayout {
     property string source
     readonly property bool canSearch: !!searchStringEdit.text && Object.keys(providers).length
 
+    signal accepted
+
     function searchLocation() {
         if (!canSearch) {
             return;
@@ -117,6 +119,10 @@ ColumnLayout {
                 onClicked: {
                     locationListView.forceActiveFocus();
                     locationListView.currentIndex = index;
+                }
+
+                onDoubleClicked: {
+                    root.accepted()
                 }
             }
 
