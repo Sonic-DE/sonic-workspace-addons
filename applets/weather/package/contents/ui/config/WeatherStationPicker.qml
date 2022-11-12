@@ -1,14 +1,15 @@
 /*
  * SPDX-FileCopyrightText: 2016, 2018 Friedrich W. H. Kossebau <kossebau@kde.org>
+ * SPDX-FileCopyrightText: 2022 Ismael Asensio <isma.af@gmail.com>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import QtQuick 2.9
+import QtQuick 2.15
 
-import QtQuick.Controls 2.5 as QQC2
-import QtQuick.Layouts 1.3
-import org.kde.kirigami 2.8 as Kirigami
+import QtQuick.Controls 2.15 as QQC2
+import QtQuick.Layouts 1.15
+import org.kde.kirigami 2.15 as Kirigami
 
 import org.kde.plasma.private.weather 1.0
 
@@ -18,72 +19,72 @@ ColumnLayout {
 
     property var providers
     property string source
+
+    property bool isNewSetup: true
+
     readonly property bool canSearch: !!searchStringEdit.text && Object.keys(providers).length
+
+    // The model property `isValidatingInput` doesn't account for the timer delay
+    // We use a custom property to provide a more responsive feedback
+    property bool isSearching: false
+
+    signal accepted
 
     function searchLocation() {
         if (!canSearch) {
-            return;
+            locationListModel.clear();
         }
-        noSearchResultReport.visible = false;
-        source = "";
         locationListModel.searchLocations(searchStringEdit.text, Object.keys(providers));
     }
 
     LocationListModel {
         id: locationListModel
         onLocationSearchDone: {
-            if (!success) {
-                noSearchResultReport.text = i18nc("@info", "No weather stations found for '%1'", searchString);
-                noSearchResultReport.visible = true;
-            } else {
-                // If we got any results, pre-select the top item to potentially
-                // save the user a step
-                locationListView.currentIndex = 0;
-                noSearchResultReport.visible = false;
-            }
+            isSearching = false;
         }
     }
 
-    RowLayout {
+    Kirigami.SearchField {
+        id: searchStringEdit
+
         Layout.fillWidth: true
 
+        focus: true
         enabled: Object.keys(root.providers).length > 0
+        placeholderText: isNewSetup ? i18nc("@info:placeholder", "Enter location") : i18nc("@info:placeholder", "Enter new location")
 
-        Kirigami.SearchField {
-            id: searchStringEdit
-
-            Layout.fillWidth: true
-            Layout.minimumWidth: implicitWidth
-            focus: true
-            placeholderText: i18nc("@info:placeholder", "Enter location")
-
-            Timer {
-                id: searchDelayTimer
-                interval: 500
-                onTriggered: {
-                    searchLocation();
-                }
+        Timer {
+            id: searchDelayTimer
+            interval: 500
+            onTriggered: {
+                searchLocation();
             }
+        }
 
-            onTextChanged: {
-                searchDelayTimer.restart();
-            }
+        onTextChanged: {
+            isSearching = text.length > 0
+            searchDelayTimer.restart();
+        }
 
-            Keys.onPressed: {
-                if (event.key == Qt.Key_Up) {
-                    if (locationListView.currentIndex != 0) {
-                        locationListView.currentIndex--;
-                    }
-                    event.accepted = true;
-                } else if (event.key == Qt.Key_Down) {
-                    if (locationListView.currentIndex != locationListView.count - 1) {
-                        locationListView.currentIndex++;
-                    }
-                    event.accepted = true;
-                } else {
-                    event.accepted = false;
-                }
+        Keys.onUpPressed: {
+            if (locationListView.currentIndex != 0) {
+                locationListView.currentIndex--;
             }
+            event.accepted = true;
+        }
+        Keys.onDownPressed: {
+            if (locationListView.currentIndex != locationListView.count - 1) {
+                locationListView.currentIndex++;
+            }
+            event.accepted = true;
+        }
+        Keys.onEscapePressed: {
+            if (searchStringEdit.text.length === 0) {
+                event.accepted = false;
+                return;
+            }
+            searchStringEdit.clear();
+            event.accepted = true;
         }
     }
 
@@ -105,8 +106,11 @@ ColumnLayout {
             activeFocusOnTab: true
             keyNavigationEnabled: true
 
-            onCurrentItemChanged: {
+            onCurrentIndexChanged: {
                 source = locationListModel.valueForListIndex(locationListView.currentIndex);
+                if (source) {
+                    root.accepted();
+                }
             }
 
             delegate: QQC2.ItemDelegate {
@@ -118,25 +122,39 @@ ColumnLayout {
                     locationListView.forceActiveFocus();
                     locationListView.currentIndex = index;
                 }
+
             }
 
-            QQC2.Label {
-                id: noSearchResultReport
+            onCountChanged: {
+                if (count === 0) {
+                    // To avoid start with a highlighted item on the next search
+                    currentIndex = -1;
+                }
+            }
 
-                anchors.fill: parent
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.WordWrap
-                visible: false
-                enabled: false
+            Keys.forwardTo: searchStringEdit
+
+            Kirigami.PlaceholderMessage {
+                id: listViewPlaceholder
+                anchors.centerIn: parent
+                width: parent.width - Kirigami.Units.gridUnit
+                visible: locationListView.count === 0 && !isSearching
+                text: {
+                    if (canSearch) {    // There is a search text
+                        return i18nc("@info", "No weather stations found for '%1'", searchStringEdit.text);
+                    } else if (isNewSetup) {
+                        return i18nc("@info", "Search for a weather station to set your location");
+                    } else {
+                        return i18nc("@info", "Search for a weather station to change your location");
+                    }
+                }
+
             }
 
             QQC2.BusyIndicator {
                 id: busy
-
                 anchors.centerIn: parent
-
-                visible: locationListModel.validatingInput
+                visible: locationListView.count === 0 && isSearching
             }
         }
     }
