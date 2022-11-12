@@ -1,5 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2016, 2018 Friedrich W. H. Kossebau <kossebau@kde.org>
+ * SPDX-FileCopyrightText: 2022 Ismael Asensio <isma.af@gmail.com>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
@@ -13,7 +14,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.private.weather 1.0
 
 
-Kirigami.FormLayout {
+ColumnLayout {
     id: weatherStationConfigPage
 
     property string cfg_source
@@ -21,59 +22,66 @@ Kirigami.FormLayout {
 
     property var providers: Plasmoid.nativeInterface.providers
 
-    WeatherStationPickerDialog {
-        id: stationPicker
-        providers: Plasmoid.nativeInterface.providers
+    readonly property var sourceDetails: cfg_source ? cfg_source.split('|') : ""
+    readonly property bool hasSource: sourceDetails.length > 2
 
-        onAccepted: {
-            weatherStationConfigPage.cfg_source = source;
+    Kirigami.FormLayout {
+        id: formLayout
+
+        QQC2.SpinBox {
+            id: updateIntervalSpin
+
+            Kirigami.FormData.label: i18nc("@label:spinbox", "Update every:")
+
+            textFromValue: function(value) {
+                return (i18np("%1 minute", "%1 minutes", value));
+            }
+            valueFromText: function(text) {
+                return parseInt(text);
+            }
+
+            from: 30
+            to: 3600
+            editable: true
         }
-    }
-
-
-    RowLayout {
-        Kirigami.FormData.label: i18nc("@label", "Location:")
-        Layout.fillWidth: true
 
         QQC2.Label {
-            id: locationDisplay
+            Kirigami.FormData.label: i18nc("@label", "Location:")
+
             Layout.fillWidth: true
             elide: Text.ElideRight
-            visible: text != ""
+            opacity: hasSource ? 1 : 0.7
 
-            text: {
-                const sourceDetails = cfg_source.split('|');
-                if (sourceDetails.length > 2) {
-                    return i18nc("A weather station location and the weather service it comes from",
-                                    "%1 (%2)", sourceDetails[2], Plasmoid.nativeInterface.providers[sourceDetails[0]]);
-                }
-                return ""
-            }
+            text: hasSource ? sourceDetails[2] : i18nc("No location is currently selected", "None selected")
         }
 
-        QQC2.Button {
-            id: selectButton
+        QQC2.Label {
+            Kirigami.FormData.label: hasSource ? i18nc("@label", "Provider:") : ""
+
             Layout.fillWidth: true
-            icon.name: "find-location"
-            text: i18nc("@action:button", "Choose…")
-            onClicked: stationPicker.visible = true;
+            elide: Text.ElideRight
+            // Keep it visible to avoid height changes which can confuse AppletConfigurationPage
+            opacity: hasSource ? 1 : 0
+
+            text: hasSource ? Plasmoid.nativeInterface.providers[sourceDetails[0]] : ""
+        }
+
+        Item {
+            Kirigami.FormData.isSection: true
         }
     }
 
-    QQC2.SpinBox {
-        id: updateIntervalSpin
+    WeatherStationPicker {
+        id: stationPicker
+        providers: Plasmoid.nativeInterface.providers
+        isNewSetup: !hasSource
 
-        Kirigami.FormData.label: i18nc("@label:spinbox", "Update every:")
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        Layout.maximumHeight: weatherStationConfigPage.height - formLayout.height - 4 * Kirigami.Units.smallSpacing
 
-        textFromValue: function(value) {
-            return (i18np("%1 minute", "%1 minutes", value));
+        onAccepted: {
+            weatherStationConfigPage.cfg_source = stationPicker.source
         }
-        valueFromText: function(text) {
-            return parseInt(text);
-        }
-
-        from: 30
-        to: 3600
-        editable: true
     }
 }
