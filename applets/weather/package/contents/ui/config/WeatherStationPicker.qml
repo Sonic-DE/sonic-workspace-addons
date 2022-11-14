@@ -22,6 +22,10 @@ ColumnLayout {
 
     readonly property bool canSearch: !!searchStringEdit.text && Object.keys(providers).length
 
+    // The model property `isValidatingInput` doesn't account for the timer delay
+    // We use a custom property to provide a more responsive feedback
+    property bool isSearching: false
+
     signal accepted
 
     function searchLocation() {
@@ -35,6 +39,7 @@ ColumnLayout {
     LocationListModel {
         id: locationListModel
         onLocationSearchDone: {
+            isSearching = false
             if (success) {
                 // If we got any results, pre-select the top item to potentially
                 // save the user a step
@@ -62,6 +67,7 @@ ColumnLayout {
         }
 
         onTextChanged: {
+            isSearching = text.length > 0
             searchDelayTimer.restart();
         }
 
@@ -123,7 +129,7 @@ ColumnLayout {
                 id: listViewPlaceholder
                 anchors.centerIn: parent
                 width: parent.width - Kirigami.Units.gridUnit
-                visible: locationListView.count === 0 && !locationListModel.validatingInput
+                visible: locationListView.count === 0 && !isSearching
                 text: {
                     if (canSearch) {    // There is a search text
                         return i18nc("@info", "No weather stations found for '%1'", searchStringEdit.text);
@@ -138,10 +144,8 @@ ColumnLayout {
 
             QQC2.BusyIndicator {
                 id: busy
-
                 anchors.centerIn: parent
-
-                visible: locationListModel.validatingInput
+                visible: locationListView.count === 0 && isSearching
             }
         }
     }
