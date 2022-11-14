@@ -26,7 +26,7 @@ ColumnLayout {
 
     function searchLocation() {
         if (!canSearch) {
-            return;
+            locationListModel.clear();
         }
         source = "";
         locationListModel.searchLocations(searchStringEdit.text, Object.keys(providers));
