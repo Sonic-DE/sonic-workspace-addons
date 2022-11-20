@@ -135,7 +135,15 @@ Item {
         model["courtesy"] =  data["Credit"] || "";
         model["creditUrl"] = data["Credit Url"] || "";
 
-        const forecastDayCount = parseInt(data["Total Weather Days"] || "");
+        let forecastDayCount = parseInt(data["Total Weather Days"] || "");
+
+        // We know EnvCan provides 13 items (7 day and 6 night)
+        const hasNightForecasts = weatherSource && weatherSource.split("|")[0] === "envcan" && forecastDayCount > 8;
+        model["forecastNightRow"] = hasNightForecasts;
+        if (hasNightForecasts) {
+            forecastDayCount = Math.ceil((forecastDayCount+1) / 2);
+        }
+
         const forecastTitle = (!isNaN(forecastDayCount) && forecastDayCount > 0) ?
                                 i18ncp("Forecast period timeframe", "1 Day", "%1 Days", forecastDayCount) : ""
         model["forecastTitle"] = forecastTitle;
@@ -238,11 +246,17 @@ Item {
 
             const forecastDayKey = "Short Forecast Day " + i;
             const forecastDayTokens = ((data && data[forecastDayKey]) || "").split("|");
-
             if (forecastDayTokens.length !== 6) {
                 // We don't have the right number of tokens, abort trying
                 continue;
             }
+
+            // If the first item is a night forecast, and we are showing them on second row,
+            // add a placeholder empty item first
+            if (i === 0 && generalModel.forecastNightRow && forecastDayTokens[0].includes("nt")) {
+                model.push(forecastInfo)
+            }
+
             forecastInfo["period"] = forecastDayTokens[0];
 
             // If we see N/U (Not Used) we skip the item
