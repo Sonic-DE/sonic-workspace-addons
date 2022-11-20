@@ -11,14 +11,19 @@ import QtQuick.Layouts 1.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 
-RowLayout {
+GridLayout {
     id: root
 
     property alias model: repeater.model
+    property bool showNightRow: false
     readonly property int preferredIconSize: PlasmaCore.Units.iconSizes.large
     readonly property bool hasContent: model && model.length > 0
 
-    spacing: PlasmaCore.Units.smallSpacing
+    columnSpacing: PlasmaCore.Units.smallSpacing
+    rowSpacing: PlasmaCore.Units.largeSpacing
+
+    rows: showNightRow ? 2 : 1
+    flow: showNightRow ? GridLayout.TopToBottom : GridLayout.LeftToRight
 
     Repeater {
         id: repeater
@@ -55,11 +60,13 @@ RowLayout {
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 horizontalAlignment: Text.AlignHCenter
                 text: modelData.tempHigh || i18nc("Short for no data available", "-")
+                visible: modelData.tempHigh || !showNightRow
             }
             PlasmaComponents.Label {
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 horizontalAlignment: Text.AlignHCenter
                 text: modelData.tempLow || i18nc("Short for no data available", "-")
+                visible: modelData.tempLow || !showNightRow
             }
         }
     }

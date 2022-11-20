@@ -135,7 +135,15 @@ Item {
         model["courtesy"] =  data["Credit"] || "";
         model["creditUrl"] = data["Credit Url"] || "";
 
-        const forecastDayCount = parseInt(data["Total Weather Days"] || "");
+        let forecastDayCount = parseInt(data["Total Weather Days"] || "");
+
+        // We know EnvCan provides 13 items (7 day and 6 night)
+        const hasNightForecasts = weatherSource && weatherSource.split("|")[0] === "envcan" && forecastDayCount > 8;
+        model["forecastNightRow"] = hasNightForecasts;
+        if (hasNightForecasts) {
+            forecastDayCount = Math.ceil(forecastDayCount / 2);
+        }
+
         const forecastTitle = (!isNaN(forecastDayCount) && forecastDayCount > 0) ?
                                 i18ncp("Forecast period timeframe", "1 Day", "%1 Days", forecastDayCount) : ""
         model["forecastTitle"] = forecastTitle;
