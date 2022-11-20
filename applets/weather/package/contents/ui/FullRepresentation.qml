@@ -24,6 +24,7 @@ ColumnLayout {
 
     Layout.minimumWidth: Math.max(PlasmaCore.Units.gridUnit * 10, topPanel.implicitWidth, switchPanel.implicitWidth)
     Layout.minimumHeight: Math.max(PlasmaCore.Units.gridUnit * 10, topPanel.implicitHeight + switchPanel.implicitHeight + sourceLabel.implicitHeight + (spacing * 2))
+    Layout.preferredHeight: Layout.minimumHeight
 
     PlasmaExtras.PlaceholderMessage {
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
@@ -54,6 +55,7 @@ ColumnLayout {
         Layout.fillWidth: true
 
         forecastViewTitle: generalModel.forecastTitle
+        forecastViewNightRow: generalModel.forecastNightRow
         forecastModel: root.forecastModel
         detailsModel: root.detailsModel
         noticesModel: root.noticesModel
