@@ -51,7 +51,6 @@ ColumnLayout {
     SwitchPanel {
         id: switchPanel
         visible: !root.needsConfiguration
-        Layout.fillWidth: true
 
         forecastViewTitle: generalModel.forecastTitle
         forecastModel: root.forecastModel

@@ -9,6 +9,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.2 as QtControls
 
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 
 ColumnLayout {
@@ -18,6 +19,8 @@ ColumnLayout {
     property alias detailsModel: detailsView.model
     property alias noticesModel: noticesView.model
     property alias forecastViewTitle: forecastTabButton.text
+
+    width: fullRoot.width
 
     readonly property bool hasDetailsContent: detailsModel && detailsModel.length > 0
     readonly property alias hasNoticesContent: noticesView.hasContent
@@ -44,9 +47,9 @@ ColumnLayout {
 
     DetailsView {
         id: detailsView
-
-        visible: false;
-
+        visible: false
+        implicitHeight: swipeView.height
+        Layout.fillHeight: true
         model: detailsModel
     }
 
@@ -60,9 +63,9 @@ ColumnLayout {
 
     NoticesView {
         id: noticesView
-
-        visible: false;
-
+        visible: false
+        Layout.fillHeight: true
+        implicitHeight: swipeView.height
         model: noticesModel
     }
 
@@ -84,23 +87,25 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-        Layout.minimumWidth: Math.max(forecastView.Layout.minimumWidth,
-                                      detailsView.Layout.minimumWidth,
-                                      noticesView.Layout.minimumWidth)
-        Layout.minimumHeight: Math.max(forecastView.Layout.minimumHeight,
+        Layout.minimumHeight: Math.max(forecastScrollView.Layout.minimumHeight,
                                        detailsView.Layout.minimumHeight,
                                        noticesView.Layout.minimumHeight)
+        Layout.maximumWidth: fullRoot.width
 
         clip: true // previous/next views are prepared outside of view, do not render them
-
         currentIndex: tabBar.currentIndex
 
-        ColumnLayout {
-            ForecastView {
-                id: forecastView
+        PlasmaComponents.ScrollView {
+            id: forecastScrollView
+            clip: true
+            ColumnLayout {
+                width: fullRoot.width
+                ForecastView {
+                    id: forecastView
 
-                Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-                Layout.fillWidth: false
+                    Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+                    Layout.fillWidth: false
+                }
             }
         }
 
