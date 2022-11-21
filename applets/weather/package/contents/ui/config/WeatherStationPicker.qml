@@ -73,21 +73,36 @@ ColumnLayout {
             searchDelayTimer.restart();
         }
 
-        Keys.onPressed: {
-            if (event.key == Qt.Key_Up) {
-                if (locationListView.currentIndex != 0) {
-                    locationListView.currentIndex--;
-                }
-                event.accepted = true;
-            } else if (event.key == Qt.Key_Down) {
-                if (locationListView.currentIndex != locationListView.count - 1) {
-                    locationListView.currentIndex++;
-                }
-                event.accepted = true;
-            } else {
-                event.accepted = false;
+        Keys.onUpPressed: {
+            if (locationListView.currentIndex != 0) {
+                locationListView.currentIndex--;
             }
+            event.accepted = true;
         }
+        Keys.onDownPressed: {
+            if (locationListView.currentIndex != locationListView.count - 1) {
+                locationListView.currentIndex++;
+            }
+            event.accepted = true;
+        }
+        Keys.onReturnPressed: {
+            if (!selectButton.enabled) {
+                event.accepted = false;
+                return;
+            }
+            root.accepted();
+            event.accepted = true;
+        }
+        Keys.onEscapePressed: {
+            if (searchStringEdit.text.length === 0) {
+                event.accepted = false;
+                return;
+            }
+            searchStringEdit.clear();
+            event.accepted = true;
+        }
+
+        Keys.priority: Keys.BeforeItem
     }
 
     QQC2.ScrollView {
@@ -122,6 +137,8 @@ ColumnLayout {
                     root.accepted()
                 }
             }
+
+            Keys.forwardTo: searchStringEdit
 
             Kirigami.PlaceholderMessage {
                 id: listViewPlaceholder
