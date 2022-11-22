@@ -78,7 +78,7 @@ Item {
         }
     }
 
-    function action_KCMNightColor() {
+    function action_configure() {
         KCMShell.openSystemSettings("kcm_nightcolor");
     }
 
@@ -90,9 +90,9 @@ Item {
     }
 
     Component.onCompleted: {
-        if (KCMShell.authorize("kcm_nightcolor.desktop").length > 0) {
-            plasmoid.setAction("KCMNightColor", i18n("Configure Night Color…"), "configure");
-        }
         plasmoid.removeAction("configure");
+        if (KCMShell.authorize("kcm_nightcolor.desktop").length > 0) {
+            plasmoid.setAction("configure", i18n("&Configure Night Color…"), "configure", "alt+d, s");
+        }
     }
 }
