@@ -13,6 +13,7 @@
 #include <QDBusPendingCallWatcher>
 #include <QDBusPendingReply>
 #include <QDBusServiceWatcher>
+#include <QTimer>
 
 Backoff::Backoff()
     : m_current(0)
@@ -72,6 +73,14 @@ void MonitorPrivate::handleServiceRegistered()
         return;
     }
 
+    m_retry.reset();
+    sendGetAllWithRetry();
+}
+
+void MonitorPrivate::sendGetAllWithRetry()
+{
+    QDBusConnection bus = QDBusConnection::sessionBus();
+
     QDBusMessage message = QDBusMessage::createMethodCall(s_serviceName, s_nightColorPath, s_propertiesInterface, QStringLiteral("GetAll"));
     message.setArguments({s_nightColorInterface});
 
@@ -83,8 +92,21 @@ void MonitorPrivate::handleServiceRegistered()
 
         const QDBusPendingReply<QVariantMap> properties = *self;
         if (properties.isError()) {
+            // Object may not be available at this moment just yes, if this
+            // method was called in a response to serviceRegistered signal.
+            // So if failed, just try again. Unfortunately there doesn't seem
+            // to be a way to get notified when an object is available except
+            // through ObjectManager interface which KWin doesn't implement.
+
+            const std::optional<int> timeout = m_retry.next();
+            if (timeout.has_value()) {
+                QTimer::singleShot(timeout.value(), this, &MonitorPrivate::sendGetAllWithRetry);
+            } else {
+                m_retry.reset();
+            }
             return;
         }
+        m_retry.reset();
 
         updateProperties(properties.value());
     });

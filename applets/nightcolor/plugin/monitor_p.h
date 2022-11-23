@@ -46,6 +46,7 @@ private Q_SLOTS:
     void handleServiceRegistered();
     void handleServiceUnregistered();
     void handlePropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
+    void sendGetAllWithRetry();
 
 private:
     void updateProperties(const QVariantMap &properties);
@@ -60,4 +61,5 @@ private:
     bool m_isAvailable = false;
     bool m_isEnabled = false;
     bool m_isRunning = false;
+    Backoff m_retry;
 };
