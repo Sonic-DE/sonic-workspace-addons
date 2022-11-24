@@ -1,5 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2019 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+ * SPDX-FileCopyrightText: 2022 ivan tkachenko <me@ratijas.tk>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
@@ -7,6 +8,18 @@
 #pragma once
 
 #include <QObject>
+#include <cstdint>
+#include <optional>
+
+class Backoff
+{
+    uint8_t m_current;
+
+public:
+    explicit Backoff();
+    std::optional<int> next();
+    void reset();
+};
 
 class MonitorPrivate : public QObject
 {

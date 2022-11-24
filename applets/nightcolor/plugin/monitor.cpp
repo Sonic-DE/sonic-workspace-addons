@@ -1,5 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2019 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+ * SPDX-FileCopyrightText: 2022 ivan tkachenko <me@ratijas.tk>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
@@ -12,6 +13,29 @@
 #include <QDBusPendingCallWatcher>
 #include <QDBusPendingReply>
 #include <QDBusServiceWatcher>
+
+Backoff::Backoff()
+    : m_current(0)
+{
+}
+
+std::optional<int> Backoff::next()
+{
+    constexpr const int backoff[] = {0, 100, 100, 200, 300, 500, 800, 1300, 2100, 3400};
+
+    if (m_current < std::size(backoff)) {
+        const int timeout = backoff[m_current];
+        m_current += 1;
+        return std::optional(timeout);
+    } else {
+        return std::nullopt;
+    }
+}
+
+void Backoff::reset()
+{
+    m_current = 0;
+}
 
 static const QString s_serviceName = QStringLiteral("org.kde.KWin");
 static const QString s_nightColorPath = QStringLiteral("/ColorCorrect");
