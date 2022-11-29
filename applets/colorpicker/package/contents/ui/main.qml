@@ -127,7 +127,7 @@ Item {
             PlasmaCore.ToolTipArea {
                 anchors.fill: parent
                 mainText: parent.text
-                subText: xi18nc("@info:usagetip", "Drag a color code here to save it<nl/>Drag an image file here to get its average color"));
+                subText: xi18nc("@info:usagetip", "Drag a color code here to save it<nl/>Drag an image file here to get its average color");
             }
 
             PlasmaCore.IconItem {
