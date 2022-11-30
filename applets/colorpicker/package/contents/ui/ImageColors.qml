@@ -11,10 +11,13 @@ import org.kde.kirigami 2.20 as Kirigami
 Kirigami.ImageColors {
     id: imageColors
 
+    required property Item indicator
+
     property Timer selfDestructionTimer: Timer {
         interval: 60000
         running: true
         onTriggered: {
+            indicator.jobDone();
             imageColors.destroy();
         }
     }
@@ -23,6 +26,7 @@ Kirigami.ImageColors {
         if (imageColors.palette.length > 0) {
             root.addColorToHistory(imageColors.average);
         }
+        indicator.jobDone();
         imageColors.destroy();
     }
 }
