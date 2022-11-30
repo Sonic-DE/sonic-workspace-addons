@@ -29,15 +29,38 @@ DropArea {
         } else if (ColorPicker.Utils.isValidColor(drop.text)) {
             addColorToHistory(drop.text)
         } else if (drop.hasUrls) {
+            const indicator = loadingIndicator.createObject(dropArea, {
+                "jobRemaining": drop.urls.length,
+            });
             const component = Qt.createComponent("ImageColors.qml");
             drop.urls.forEach(path => {
                 component.incubateObject(dropArea, {
                     "source": path,
+                    "indicator": indicator,
                 }, Qt.Asynchronous);
             });
             component.destroy();
         }
         containsAcceptableDrag = false
+    }
+
+    Component {
+        id: loadingIndicator
+
+        PlasmaComponents3.BusyIndicator {
+            anchors.fill: parent
+
+            property int jobRemaining: 0
+
+            signal jobDone
+
+            onJobDone: {
+                jobRemaining -= 1;
+                if (!jobRemaining) {
+                    destroy();
+                }
+            }
+        }
     }
 
     PlasmaComponents3.ToolButton {
