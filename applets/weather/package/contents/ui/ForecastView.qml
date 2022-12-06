@@ -12,6 +12,7 @@ import QtQuick.Layouts
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.workspace.components as WorkspaceComponents
 
 GridLayout {
     id: root
@@ -64,7 +65,26 @@ GridLayout {
                 PlasmaCore.ToolTipArea {
                     id: iconToolTip
                     anchors.fill: parent
-                    mainText: isPlaceHolder ? "" : modelData.condition
+                    mainText: {
+                        if (isPlaceHolder) {
+                            return "";
+                        }
+                        if (!modelData.probability) {
+                            return modelData.condition;
+                        }
+                        return i18nc("certain weather condition (probability percentage)",
+                                     "%1 (%2 %)", modelData.condition, modelData.probability);
+                    }
+                }
+
+                WorkspaceComponents.BadgeOverlay {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    visible: text.length > 0
+                    opacity: 0.7
+                    // i18n: \ufe0e forces the text representation of the umbrella emoji
+                    text: modelData.probability ? i18nc("Probability of precipitation in percentage", "\ufe0e☂%1%", modelData.probability) : ""
+                    icon: parent
                 }
             }
 
