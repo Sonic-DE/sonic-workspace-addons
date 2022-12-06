@@ -108,6 +108,7 @@ ColumnLayout {
         }
 
         onLinkActivated: link => {
+            console.log(link)
             Qt.openUrlExternally(link);
         }
     }
