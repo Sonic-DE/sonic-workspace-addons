@@ -101,9 +101,14 @@ Item {
         colorDialog.open()
     }
 
+    function action_expand() {
+        Plasmoid.expanded = true;
+    }
+
     Component.onCompleted: {
         plasmoid.setAction("colordialog", i18nc("@action", "Open Color Dialog"), "color-management")
         plasmoid.setAction("clear", i18nc("@action", "Clear History"), "edit-clear-history")
+        plasmoid.setAction("expand", i18nc("@action", "View History"), "color-management")
         Plasmoid.configuration.history.forEach(item => historyModel.append({"color": item}));
     }
 
