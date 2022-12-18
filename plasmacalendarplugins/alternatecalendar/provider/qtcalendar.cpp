@@ -16,11 +16,15 @@ public:
     CalendarEvents::CalendarEventsPlugin::SubLabel subLabels(const QDate &date) const;
 
 private:
+    QString persianCalendarSubLabels(const QDate &altDate) const;
+
     const QCalendar m_calendar;
+    const QCalendar::System m_system;
 };
 
 QtCalendarProviderPrivate::QtCalendarProviderPrivate(QCalendar::System system)
     : m_calendar(QCalendar(system))
+    , m_system(system)
 {
 }
 
@@ -47,9 +51,39 @@ CalendarEvents::CalendarEventsPlugin::SubLabel QtCalendarProviderPrivate::subLab
     }
 
     const QDate altDate = fromGregorian(date);
-    sublabel.label = QLocale::system().toString(altDate);
+
+    if (m_system == QCalendar::System::Jalali) {
+        sublabel.label = persianCalendarSubLabels(altDate);
+    } else {
+        sublabel.label = QLocale::system().toString(altDate);
+    }
 
     return sublabel;
+}
+
+QString QtCalendarProviderPrivate::persianCalendarSubLabels(const QDate &altDate) const
+{
+    static const std::array<QString, 12> persianMonths{
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Farvardin"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Ordibehesht"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Khordad"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Tir"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Mordad"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Shahrivar"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Mehr"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Aban"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Azar"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Dei"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Bahman"),
+        i18ndc("plasma_calendar_alternatecalendar", "Persian month", "Esfand"),
+    };
+
+    return i18ndc("plasma_calendar_alternatecalendar",
+                  "%1 Persian day %2 Persian month %3 Persian year",
+                  "%1 %2, %3",
+                  QString::number(altDate.day()),
+                  persianMonths[altDate.month() - 1],
+                  QString::number(altDate.year()));
 }
 
 QtCalendarProvider::QtCalendarProvider(QObject *parent, CalendarSystem::System calendarSystem)
