@@ -9,8 +9,11 @@
 
 #include "datetimerunner.h"
 
+#include <QFile>
 #include <QIcon>
 #include <QLocale>
+#include <QStandardPaths>
+#include <QTextStream>
 #include <QTimeZone>
 
 #include <KLocalizedString>
@@ -32,6 +35,7 @@ DateTimeRunner::DateTimeRunner(QObject *parent, const KPluginMetaData &metaData,
     addSyntax(RunnerSyntax(timeWord + i18nc("The <> and space are part of the example query", " <timezone>"), //
                            i18n("Displays the current time in a given timezone")));
     setTriggerWords({timeWord, dateWord});
+    parseCityTZData();
 }
 
 DateTimeRunner::~DateTimeRunner()
@@ -95,16 +99,26 @@ QHash<QString, QDateTime> DateTimeRunner::datetime(const QStringView &tz)
 #endif
 {
     QHash<QString, QDateTime> ret;
-    //
-    // KTimeZone gives us the actual timezone names such as "Asia/Kolkatta" and does
-    // not give us country info. QTimeZone does not give us the actual timezone name
-    // This is why we are using both for now.
-    //
+
+    QByteArrayList doneZones;
+    for (const City &city : cityTZData) {
+        if (city.name.contains(tz, Qt::CaseInsensitive) || city.nameAscii.contains(tz, Qt::CaseInsensitive)) {
+            ret[city.name] = QDateTime::currentDateTimeUtc().toTimeZone(QTimeZone({city.timeZoneId}));
+            doneZones << city.timeZoneId;
+        }
+    }
+
     const QList<QByteArray> timeZoneIds = QTimeZone::availableTimeZoneIds();
     for (const QByteArray &zoneId : timeZoneIds) {
         QTimeZone timeZone(zoneId);
 
+        if (doneZones.contains(zoneId)) {
+            // avoid things like "Berlin" (from city data) and "Europe/Berlin" (from zone IDs) both showing up
+            continue;
+        }
+
         const QString zoneName = QString::fromUtf8(zoneId);
+
         if (zoneName.contains(tz, Qt::CaseInsensitive)) {
             ret[zoneName] = QDateTime::currentDateTimeUtc().toTimeZone(timeZone);
             continue;
@@ -144,6 +158,25 @@ void DateTimeRunner::addMatch(const QString &text, const QString &clipboardText,
     match.setIconName(iconName);
 
     context.addMatch(match);
+}
+
+void DateTimeRunner::parseCityTZData()
+{
+    const QString databaseFilePath =
+        QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("plasma/datetimerunner/majorcities.tsv"), QStandardPaths::LocateFile);
+    QFile databaseFile;
+    databaseFile.setFileName(databaseFilePath);
+    if (databaseFile.open(QFile::ReadOnly)) {
+        QTextStream in(&databaseFile);
+        QString line;
+        while (in.readLineInto(&line)) {
+            line = line.trimmed();
+            if (!line.isEmpty() && !line.startsWith(QLatin1Char('#'))) {
+                QStringList fields = line.split(QLatin1Char('\t'));
+                cityTZData.append({fields[0], fields[1], fields[2].toUtf8()});
+            }
+        }
+    }
 }
 
 K_PLUGIN_CLASS_WITH_JSON(DateTimeRunner, "plasma-runner-datetime.json")
