@@ -51,11 +51,18 @@ ColumnLayout {
                 }
             }
         }
+
         PlasmaComponents3.Button {
+            id: configureButton
+
             display: PlasmaComponents3.AbstractButton.IconOnly
             icon.name: "configure"
             text: Plasmoid.action("configure").text
-            onClicked: plasmoid.action("configure").trigger();
+            onClicked: Plasmoid.action("configure").trigger();
+
+            PlasmaComponents3.ToolTip {
+                text: configureButton.text
+            }
         }
     }
 
