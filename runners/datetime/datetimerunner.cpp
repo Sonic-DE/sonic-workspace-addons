@@ -9,17 +9,17 @@
 
 #include "datetimerunner.h"
 
+#include <KFormat>
+#include <KLocalizedString>
+
 #include <QDateTime>
 #include <QIcon>
 #include <QLocale>
 #include <QTimeZone>
-
-#include <KFormat>
-#include <KLocalizedString>
+#include <QRegularExpression>
 
 #include <algorithm>
 #include <math.h>
-#include <qregularexpression.h>
 
 static const QString dateWord = i18nc("Note this is a KRunner keyword", "date");
 static const QString timeWord = i18nc("Note this is a KRunner keyword", "time");
@@ -165,10 +165,10 @@ void DateTimeRunner::match(RunnerContext &context)
             for (int n = minLen; i + n < term.length() + 1 && time.isNull(); ++n) {
                 dtTerm = term.mid(i, n);
                 // try to parse substring as datetime or time
-                if (QDateTime dateTimeParse = QLocale::system().toDateTime(dtTerm, QLocale::ShortFormat); dateTimeParse.isValid()) {
+                if (QDateTime dateTimeParse = QLocale().toDateTime(dtTerm, QLocale::ShortFormat); dateTimeParse.isValid()) {
                     date = dateTimeParse.date();
                     time = dateTimeParse.time();
-                } else if (QTime timeParse = QLocale::system().toTime(dtTerm, QLocale::ShortFormat); timeParse.isValid()) {
+                } else if (QTime timeParse = QLocale().toTime(dtTerm, QLocale::ShortFormat); timeParse.isValid()) {
                     time = timeParse;
                     // unspecified date will later be initialized to current date in from time zone
                 }
@@ -205,9 +205,9 @@ void DateTimeRunner::match(RunnerContext &context)
             const QString fromTimeStr = QLocale().toString(fromDatetime.time(), QLocale::ShortFormat);
 
             for (auto jt = toZones.constBegin(), itEnd = toZones.constEnd(); jt != itEnd; ++jt) {
-                const QTimeZone toTimeZone = jt.value();
+                const QTimeZone toZone = jt.value();
                 const QString toZoneStr = jt.key();
-                const QDateTime toDatetime = fromDatetime.toTimeZone(toTimeZone);
+                const QDateTime toDatetime = fromDatetime.toTimeZone(toZone);
                 const QString toTimeStr = QLocale().toString(toDatetime.time(), QLocale::ShortFormat);
 
                 const qint64 dateDiff = QDateTime(fromDatetime.date(), fromDatetime.time()).daysTo(QDateTime(toDatetime.date(), toDatetime.time()))
@@ -258,10 +258,11 @@ QHash<QString, QTimeZone> DateTimeRunner::matchingTimeZones(const QStringView &z
     QHash<QString, QTimeZone> ret;
 
     if (zoneTerm.isEmpty()) {
+        const QTimeZone systemTimeZone = QTimeZone::systemTimeZone().isValid() ? QTimeZone::systemTimeZone() : QTimeZone::utc(); // needed for FreeBSD CI
         const QDate atDate = referenceDatetime.date().isValid() ? referenceDatetime.date() : QDateTime::currentDateTime().date();
         const QTime atTime = referenceDatetime.time().isValid() ? referenceDatetime.time() : QDateTime::currentDateTime().time();
-        const QDateTime atDatetime(atDate, atTime);
-        ret[QTimeZone::systemTimeZone().abbreviation(atDatetime)] = QTimeZone::systemTimeZone();
+        const QDateTime atDatetime(atDate, atTime, systemTimeZone);
+        ret[systemTimeZone.displayName(atDatetime)] = systemTimeZone;
         return ret;
     }
 
@@ -270,7 +271,7 @@ QHash<QString, QTimeZone> DateTimeRunner::matchingTimeZones(const QStringView &z
         QTimeZone timeZone(zoneId);
         const QDate atDate = referenceDatetime.date().isValid() ? referenceDatetime.date() : QDateTime::currentDateTime().toTimeZone(timeZone).date();
         const QTime atTime = referenceDatetime.time().isValid() ? referenceDatetime.time() : QDateTime::currentDateTime().toTimeZone(timeZone).time();
-        const QDateTime atDatetime(atDate, atTime);
+        const QDateTime atDatetime(atDate, atTime, timeZone);
 
         // eg "Sweden"
         const QString country = QLocale::countryToString(timeZone.country());
