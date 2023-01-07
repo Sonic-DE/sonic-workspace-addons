@@ -29,23 +29,6 @@ static const QString conversionWords = i18nc(
     "to|in|as|at");
 static const QRegularExpression conversionWordsRegex = QRegularExpression(QString("\\s(%1)\\s").arg(conversionWords));
 
-static const QString datetimeDiffLaterPhrase =
-    i18nc("date/time difference between time zones, e.g. in Stockholm it's 4 hours later than in Brasilia", "%1 later");
-static const QString datetimeDiffEarlierPhrase =
-    i18nc("date/time difference between time zones, e.g. in Brasilia it's 4 hours earlier than in Stockholm", "%1 earlier");
-static const QString timeDiffSamePhrase =
-    i18nc("no time difference between time zones, e.g. in Stockholm it's the same time as in Berlin", "no time difference");
-static const QString dateDiffSamePhrase =
-    i18nc("no date difference between time zones, e.g. in Stockholm it's the same calendar day as in Berlin", "no date difference");
-static const QString timeDayDiffLaterPhrase = i18nc(
-    "time difference with calendar date difference between time zones, e.g. 22:00 Brasilia time in Stockholm = 02:00 + 1 day, where %1 is the time and %2 is "
-    "the days later",
-    "%1 + %2");
-static const QString timeDayDiffEarlierPhrase = i18nc(
-    "time difference with calendar date difference between time zones, e.g. 02:00 Stockholm time in Brasilia = 22:00 - 1 day, where %1 is the time and %2 is "
-    "the days earlier",
-    "%1 - %2");
-
 DateTimeRunner::DateTimeRunner(QObject *parent, const KPluginMetaData &metaData, const QVariantList &args)
     : AbstractRunner(parent, metaData, args)
 {
@@ -59,7 +42,7 @@ DateTimeRunner::DateTimeRunner(QObject *parent, const KPluginMetaData &metaData,
                            i18n("Displays the current time and difference to system time in a given timezone")));
     addSyntax(RunnerSyntax(i18nc("The <> and space are part of the example query", "<timezone> <time> <timezone>"), //
                            i18n("Converts the time from the first timezone to the second timezone. If only one time zone is given, the other will be the "
-                                "system time zone. If no date is given, the current date will be used.")));
+                                "system time zone. If no date is given, it will be the current date.")));
 }
 
 DateTimeRunner::~DateTimeRunner()
@@ -93,9 +76,13 @@ void DateTimeRunner::match(RunnerContext &context)
 
             const qint64 dateDiff = QDateTime::currentDateTime().daysTo(QDateTime(datetime.date(), datetime.time())) * (24 * 60 * 60 * 1000); // full days in ms
             const QString dateDiffNumStr = KFormat().formatSpelloutDuration(abs(dateDiff));
-            const QString dateDiffStr = dateDiff > 0 ? datetimeDiffLaterPhrase.arg(dateDiffNumStr)
-                : dateDiff < 0                       ? datetimeDiffEarlierPhrase.arg(dateDiffNumStr)
-                                                     : dateDiffSamePhrase;
+            const QString dateDiffLaterStr =
+                i18nc("time difference between time zones, e.g. in Stockholm it's 1 calendar day later than in Brasilia", "%1 later", dateDiffNumStr);
+            const QString dateDiffEarlierStr =
+                i18nc("date difference between time zones, e.g. in Brasilia it's 1 calendar day earlier than in Stockholm", "%1 earlier", dateDiffNumStr);
+            const QString dateDiffSameStr =
+                i18nc("no date difference between time zones, e.g. in Stockholm it's the same calendar day as in Berlin", "no date difference");
+            const QString dateDiffStr = dateDiff > 0 ? dateDiffLaterStr : dateDiff < 0 ? dateDiffEarlierStr : dateDiffSameStr;
 
             addMatch(QStringLiteral("%1: %2 (%3)").arg(zoneStr, dateStr, dateDiffStr),
                      dateStr,
@@ -127,16 +114,33 @@ void DateTimeRunner::match(RunnerContext &context)
 
             const qint64 dateDiff = QDateTime::currentDateTime().daysTo(QDateTime(datetime.date(), datetime.time())) * (24 * 60 * 60 * 1000); // full days in ms
             const QString dayDiffNumStr = KFormat().formatSpelloutDuration(abs(dateDiff));
-            const QString timeDayStr = dateDiff > 0 ? timeDayDiffLaterPhrase.arg(timeStr, dayDiffNumStr)
-                : dateDiff < 0                      ? timeDayDiffEarlierPhrase.arg(timeStr, dayDiffNumStr)
-                                                    : timeStr;
+            const QString timeDayLaterStr = i18nc(
+                "time difference with calendar date difference between time zones, e.g. 22:00 Brasilia time in Stockholm = "
+                "02:00 + 1 day, where %1 is the time and %2 is "
+                "the days later",
+                "%1 + %2",
+                timeStr,
+                dayDiffNumStr);
+            const QString timeDayEarlierStr = i18nc(
+                "time difference with calendar date difference between time zones, e.g. 02:00 Stockholm time in Brasilia "
+                "= 22:00 - 1 day, where %1 is the time and %2 is "
+                "the days earlier",
+                "%1 - %2",
+                timeStr,
+                dayDiffNumStr);
+            const QString timeDayStr = dateDiff > 0 ? timeDayLaterStr : dateDiff < 0 ? timeDayEarlierStr : timeStr;
 
             const qint64 timeDiff = round((double)QDateTime::currentDateTime().secsTo(QDateTime(datetime.date(), datetime.time())) / 60)
                 * (60 * 1000); // time in ms rounded to the nearest full
             const QString timeDiffNumStr = KFormat().formatSpelloutDuration(abs(timeDiff));
-            const QString timeDiffStr = timeDiff > 0 ? datetimeDiffLaterPhrase.arg(timeDiffNumStr)
-                : timeDiff < 0                       ? datetimeDiffEarlierPhrase.arg(timeDiffNumStr)
-                                                     : timeDiffSamePhrase;
+            const QString timeDiffLaterStr =
+                i18nc("time difference between time zones, e.g. in Stockholm it's 4 hours later than in Brasilia", "%1 later", timeDiffNumStr);
+            const QString timeDiffEarlierStr =
+                i18nc("time difference between time zones, e.g. in Brasilia it's 4 hours earlier than in Stockholm", "%1 earlier", timeDiffNumStr);
+            const QString timeDiffSameStr =
+                i18nc("no time difference between time zones, e.g. in Stockholm it's the same time as in Berlin", "no time difference");
+            const QString timeDiffStr = timeDiff > 0 ? timeDiffLaterStr : timeDiff < 0 ? timeDiffEarlierStr : timeDiffSameStr;
+
             addMatch(QStringLiteral("%1: %2 (%3)").arg(zoneStr, timeDayStr, timeDiffStr),
                      timeStr,
                      ((qreal)(zoneStr.count(zoneTerm, Qt::CaseInsensitive)) * zoneTerm.length() - (qreal)zoneStr.indexOf(zoneTerm, Qt::CaseInsensitive))
@@ -213,17 +217,33 @@ void DateTimeRunner::match(RunnerContext &context)
                 const qint64 dateDiff = QDateTime(fromDatetime.date(), fromDatetime.time()).daysTo(QDateTime(toDatetime.date(), toDatetime.time()))
                     * (24 * 60 * 60 * 1000); // full days in ms
                 const QString dayDiffNumStr = KFormat().formatSpelloutDuration(abs(dateDiff));
-                const QString toTimeDayStr = dateDiff > 0 ? timeDayDiffLaterPhrase.arg(toTimeStr, dayDiffNumStr)
-                    : dateDiff < 0                        ? timeDayDiffEarlierPhrase.arg(toTimeStr, dayDiffNumStr)
-                                                          : toTimeStr;
+                const QString toTimeDayLaterStr = i18nc(
+                    "time difference with calendar date difference between time zones, e.g. 22:00 Brasilia time in Stockholm = "
+                    "02:00 + 1 day, where %1 is the time and %2 is "
+                    "the days later",
+                    "%1 + %2",
+                    toTimeStr,
+                    dayDiffNumStr);
+                const QString toTimeDayEarlierStr = i18nc(
+                    "time difference with calendar date difference between time zones, e.g. 02:00 Stockholm time in Brasilia "
+                    "= 22:00 - 1 day, where %1 is the time and %2 is "
+                    "the days earlier",
+                    "%1 - %2",
+                    toTimeStr,
+                    dayDiffNumStr);
+                const QString toTimeDayStr = dateDiff > 0 ? toTimeDayLaterStr : dateDiff < 0 ? toTimeDayEarlierStr : toTimeStr;
 
                 const qint64 timeDiff =
                     round((double)QDateTime(fromDatetime.date(), fromDatetime.time()).secsTo(QDateTime(toDatetime.date(), toDatetime.time())) / 60)
                     * (60 * 1000); // time in ms rounded to the nearest full minutes
                 const QString timeDiffNumStr = KFormat().formatSpelloutDuration(abs(timeDiff));
-                const QString timeDiffStr = timeDiff > 0 ? datetimeDiffLaterPhrase.arg(timeDiffNumStr)
-                    : timeDiff < 0                       ? datetimeDiffEarlierPhrase.arg(timeDiffNumStr)
-                                                         : timeDiffSamePhrase;
+                const QString timeDiffLaterStr =
+                    i18nc("time difference between time zones, e.g. in Stockholm it's 4 hours later than in Brasilia", "%1 later", timeDiffNumStr);
+                const QString timeDiffEarlierStr =
+                    i18nc("time difference between time zones, e.g. in Brasilia it's 4 hours earlier than in Stockholm", "%1 earlier", timeDiffNumStr);
+                const QString timeDiffSameStr =
+                    i18nc("no time difference between time zones, e.g. in Stockholm it's the same time as in Berlin", "no time difference");
+                const QString timeDiffStr = timeDiff > 0 ? timeDiffLaterStr : timeDiff < 0 ? timeDiffEarlierStr : timeDiffSameStr;
 
                 const qreal toZoneRelevance = ((qreal)(toZoneStr.count(toZoneTerm, Qt::CaseInsensitive)) * toZoneTerm.length()
                                                - (qreal)toZoneStr.indexOf(toZoneTerm, Qt::CaseInsensitive))
