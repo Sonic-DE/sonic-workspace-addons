@@ -6,14 +6,18 @@
 
 #include "hebrewcalendar.h"
 
-#include <array>
-
 #include "icucalendar_p.h"
 
 class HebrewCalendarProviderPrivate : public ICUCalendarPrivate
 {
 public:
     explicit HebrewCalendarProviderPrivate();
+
+    /**
+     * For formatting, see the documentation of SimpleDateFormat:
+     * https://unicode-org.github.io/icu-docs/apidoc/released/icu4c/classicu_1_1SimpleDateFormat.html#details
+     */
+    QString formattedDateString(const icu::UnicodeString &str) const;
 
     QCalendar::YearMonthDay fromGregorian(const QDate &_date);
     CalendarEvents::CalendarEventsPlugin::SubLabel subLabels(const QDate &date);
@@ -27,6 +31,22 @@ HebrewCalendarProviderPrivate::HebrewCalendarProviderPrivate()
     }
 
     m_calendar.reset(icu::Calendar::createInstance(icu::Locale("he_IL@calendar=hebrew"), m_errorCode));
+}
+
+QString HebrewCalendarProviderPrivate::formattedDateString(const icu::UnicodeString &str) const
+{
+    // See https://unicode-org.github.io/icu/userguide/locale/#keywords for available keywords
+    static const icu::Locale locale("he_IL", 0, 0, "calendar=hebrew;numbers=hebr");
+    UErrorCode errorCode = U_ZERO_ERROR;
+    icu::UnicodeString dateString;
+    icu::SimpleDateFormat formatter(str, locale, errorCode);
+    formatter.setCalendar(*m_calendar);
+    formatter.format(m_calendar->getTime(errorCode), dateString);
+
+    std::string utf8Str;
+    dateString.toUTF8String<std::string>(utf8Str);
+
+    return QString::fromStdString(utf8Str);
 }
 
 QCalendar::YearMonthDay HebrewCalendarProviderPrivate::fromGregorian(const QDate &_date)
@@ -46,29 +66,8 @@ CalendarEvents::CalendarEventsPlugin::SubLabel HebrewCalendarProviderPrivate::su
         return sublabel;
     }
 
-    static const std::array<QString, 13> monthNames{
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Nisan"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Iyyar"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Sivan"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Tammuz"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Ab"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Elul"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Tishri"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Heshvan"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Kislev"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Tebeth"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Shebat"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Adar I"),
-        i18ndc("plasma_calendar_alternatecalendar", "Month name in Hebrew/Jewish Calendar", "Adar II"),
-    };
-
-    sublabel.dayLabel = QString::number(day());
-    sublabel.label = i18ndc("plasma_calendar_alternatecalendar",
-                            "@label %1 day %2 month name in Hebrew/Jewish Calendar %3 year",
-                            "%1 %2, %3",
-                            sublabel.dayLabel,
-                            monthNames[month() - 1],
-                            QString::number(year()));
+    sublabel.dayLabel = QLocale::system().language() == QLocale::Hebrew ? formattedDateString("d") : QString::number(day());
+    sublabel.label = formattedDateString("d בMMMM y"); // See https://unicode-org.github.io/cldr/ldml/tr35-dates.html
     sublabel.priority = CalendarEvents::CalendarEventsPlugin::SubLabelPriority::Low;
 
     return sublabel;
