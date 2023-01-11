@@ -36,6 +36,7 @@ public:
         Chinese = static_cast<int>(QCalendar::System::Last) + 1, // QTBUG-89824: QCalendar doesn't support Chinese calendar system
         Indian, // QCalendar doesn't support India calendar system
         Hebrew,
+        Islamic, // Astronomical
     };
     Q_ENUM(System)
 };
@@ -62,8 +63,12 @@ static const std::map<QString /* id */, CalendarSystemItem> s_calendarMap{
         {CalendarSystem::Jalali, QStringLiteral("Jalali"), i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "The Solar Hijri Calendar (Persian)")}
     },
     {
+        QStringLiteral("Islamic"),
+        {CalendarSystem::Islamic, QStringLiteral("Islamic"), i18ndc("plasma_calendar_alternatecalendar", "@item:inlist See https://cldr.unicode.org/development/development-process/design-proposals/islamic-calendar-types for more details", "Islamic Calendar (Astronomical)")}
+    },
+    {
         QStringLiteral("IslamicCivil"),
-        {CalendarSystem::IslamicCivil, QStringLiteral("IslamicCivil"), i18ndc("plasma_calendar_alternatecalendar", "@item:inlist", "The Islamic Civil Calendar")}
+        {CalendarSystem::IslamicCivil, QStringLiteral("IslamicCivil"), i18ndc("plasma_calendar_alternatecalendar", "@item:inlist See https://cldr.unicode.org/development/development-process/design-proposals/islamic-calendar-types for more details", "The Islamic Civil Calendar (Tabular)")}
     },
     {
         QStringLiteral("Chinese"),
