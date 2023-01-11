@@ -45,7 +45,7 @@ Kirigami.FormLayout {
 
     Loader {
         id: dateOffsetSpinBoxLoader
-        active: calendarSystemComboBox.currentValue === "IslamicCivil"
+        active: calendarSystemComboBox.currentValue.startsWith("Islamic")
         visible: active
         Kirigami.FormData.label: i18ndc("plasma_calendar_alternatecalendar", "@label:spinbox", "Date offset:")
 
