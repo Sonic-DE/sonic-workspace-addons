@@ -10,6 +10,7 @@
 
 #include <QDBusConnection>
 #include <QThreadPool>
+#include <QTimeZone>
 
 #include <KPluginFactory>
 
@@ -56,6 +57,29 @@ bool isNetworkConnected()
     }
 #endif
     return true;
+}
+
+int msecsToNextUpdate()
+{
+    const QDateTime currentDateTime = QDateTime::currentDateTime();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 2, 0)
+    const QLocale::Country currentTimeZoneCountry = currentDateTime.timeZone().territory();
+#elif QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    const QLocale::Country currentTimeZoneCountry = currentDateTime.timeZone().country();
+#else
+    const QLocale::Country currentTimeZoneCountry = QLocale::AnyCountry;
+#endif
+    const int interval = currentDateTime.msecsTo(QDate::currentDate().addDays(1).startOfDay()) + 60000;
+    // BUG 463345: Bing PotD is updated at 12:00 a.m. Pacific Time in the United States
+    if (currentTimeZoneCountry == QLocale::Australia // 3 timezones
+        || currentTimeZoneCountry == QLocale::Canada // 6 timezones
+        || currentTimeZoneCountry == QLocale::UnitedStates // 6 timezones
+        || currentTimeZoneCountry == QLocale::Russia // 11 timezones
+    ) {
+        return std::min(interval, 60 * 60 * 1000); // Max 1 hour
+    }
+
+    return interval;
 }
 }
 
@@ -231,8 +255,7 @@ PotdEngine::PotdEngine(QObject *parent)
 
     connect(&m_checkDatesTimer, &QTimer::timeout, this, &PotdEngine::forceUpdateSource);
 
-    int interval = QDateTime::currentDateTime().msecsTo(QDate::currentDate().addDays(1).startOfDay()) + 60000;
-    m_checkDatesTimer.setInterval(interval);
+    m_checkDatesTimer.setInterval(msecsToNextUpdate());
     m_checkDatesTimer.start();
     qCDebug(WALLPAPERPOTD) << "Time to next update (h):" << m_checkDatesTimer.interval() / 1000.0 / 60.0 / 60.0;
 
@@ -351,7 +374,7 @@ void PotdEngine::slotDone(PotdClient *client, bool success)
     if (!--m_updateCount) {
         // Do not update until next day, and delay 1minute to make sure last modified condition is satisfied.
         if (m_lastUpdateSuccess) {
-            m_checkDatesTimer.setInterval(QDateTime::currentDateTime().msecsTo(QDate::currentDate().startOfDay().addDays(1)) + 60000);
+            m_checkDatesTimer.setInterval(msecsToNextUpdate());
         } else {
             m_checkDatesTimer.setInterval(10min);
         }
