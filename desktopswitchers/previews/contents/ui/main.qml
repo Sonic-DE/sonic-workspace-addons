@@ -10,7 +10,7 @@ import QtQuick 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kquickcontrolsaddons 2.0
-import org.kde.kwin 2.0 as KWin
+import org.kde.kwin 3.0 as KWin
 
 KWin.Switcher {
     id: tabBox
@@ -68,7 +68,7 @@ KWin.Switcher {
                     property alias caption: thumbnailItem.caption
                     width: listView.thumbnailWidth
                     height: listView.thumbnailWidth*(1.0/screenFactor)
-                    KWin.DesktopThumbnailItem {
+                    DesktopThumbnailItem {
                         id: thumbnailItem
                         property variant caption: model.caption
                         desktop: model.desktop
