@@ -15,23 +15,20 @@
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QThreadPool>
-#include <QTimer>
 
-#include <QDebug>
 #include "debug.h"
 
-LoadImageThread::LoadImageThread(const QString &filePath)
-    : m_filePath(filePath)
+LoadImageDataThread::LoadImageDataThread(const QString &filePath)
+    : m_localPath(filePath)
 {
 }
 
-void LoadImageThread::run()
+void LoadImageDataThread::run()
 {
-    PotdProviderData data;
-    data.wallpaperImage = QImage(m_filePath);
+    QVariantMap data;
+    data[QStringLiteral("LocalPath")] = m_localPath;
 
-    const QString infoPath = m_filePath + QStringLiteral(".json");
-    QFile infoFile(infoPath);
+    QFile infoFile(m_localPath + QStringLiteral(".json"));
 
     if (infoFile.exists()) {
         if (infoFile.open(QIODevice::ReadOnly)) {
@@ -41,10 +38,10 @@ void LoadImageThread::run()
 
             if (jsonParseError.error == QJsonParseError::NoError && jsonDoc.isObject()) {
                 const QJsonObject jsonObject = jsonDoc.object();
-                data.wallpaperInfoUrl = QUrl(jsonObject.value(QStringLiteral("InfoUrl")).toString());
-                data.wallpaperRemoteUrl = QUrl(jsonObject.value(QStringLiteral("RemoteUrl")).toString());
-                data.wallpaperTitle = jsonObject.value(QStringLiteral("Title")).toString();
-                data.wallpaperAuthor = jsonObject.value(QStringLiteral("Author")).toString();
+                data[QStringLiteral("InfoUrl")] = QUrl(jsonObject.value(QLatin1String("InfoUrl")).toString());
+                data[QStringLiteral("RemoteUrl")] = QUrl(jsonObject.value(QLatin1String("RemoteUrl")).toString());
+                data[QStringLiteral("Title")] = jsonObject.value(QLatin1String("Title")).toString();
+                data[QStringLiteral("Author")] = jsonObject.value(QLatin1String("Author")).toString();
             } else {
                 qCWarning(WALLPAPERPOTD) << "Failed to read the wallpaper information!";
             }
@@ -56,35 +53,38 @@ void LoadImageThread::run()
     Q_EMIT done(data);
 }
 
-SaveImageThread::SaveImageThread(const QString &identifier, const QVariantList &args, const PotdProviderData &data)
+SaveImageThread::SaveImageThread(const QString &identifier, const QVariantList &args, const QVariantMap &data)
     : m_identifier(identifier)
     , m_args(args)
-    , m_data(data)
+    , m_remoteUrl(data[QStringLiteral("RemoteUrl")].toUrl())
+    , m_infoUrl(data[QStringLiteral("InfoUrl")].toUrl())
+    , m_title(data[QStringLiteral("Title")].toString())
+    , m_author(data[QStringLiteral("Author")].toString())
+    , m_image(data[QStringLiteral("Image")].value<QImage>())
 {
 }
 
 void SaveImageThread::run()
 {
-    m_data.wallpaperLocalUrl = CachedProvider::identifierToPath(m_identifier, m_args);
-    m_data.wallpaperImage.save(m_data.wallpaperLocalUrl, "JPEG");
+    const QString localPath = CachedProvider::identifierToPath(m_identifier, m_args);
+    m_image.save(localPath, "JPEG");
 
-    const QString infoPath = m_data.wallpaperLocalUrl + ".json";
-    QFile infoFile(infoPath);
+    QFile infoFile(localPath + QStringLiteral(".json"));
     if (infoFile.open(QIODevice::WriteOnly)) {
         QJsonObject jsonObject;
 
-        jsonObject.insert(QStringLiteral("InfoUrl"), m_data.wallpaperInfoUrl.url());
-        jsonObject.insert(QStringLiteral("RemoteUrl"), m_data.wallpaperRemoteUrl.url());
-        jsonObject.insert(QStringLiteral("Title"), m_data.wallpaperTitle);
-        jsonObject.insert(QStringLiteral("Author"), m_data.wallpaperAuthor);
+        jsonObject.insert(QLatin1String("InfoUrl"), m_infoUrl.url());
+        jsonObject.insert(QLatin1String("RemoteUrl"), m_remoteUrl.url());
+        jsonObject.insert(QLatin1String("Title"), m_title);
+        jsonObject.insert(QLatin1String("Author"), m_author);
 
         infoFile.write(QJsonDocument(jsonObject).toJson(QJsonDocument::Compact));
         infoFile.close();
     } else {
-        qWarning(WALLPAPERPOTD) << "Failed to save the wallpaper information!";
+        qWarning() << "Failed to save the wallpaper information!";
     }
 
-    Q_EMIT done(m_identifier, m_data);
+    Q_EMIT done(localPath);
 }
 
 QString CachedProvider::identifierToPath(const QString &identifier, const QVariantList &args)
@@ -108,8 +108,8 @@ CachedProvider::CachedProvider(const QString &identifier, const QVariantList &ar
     , mIdentifier(identifier)
     , m_args(args)
 {
-    LoadImageThread *thread = new LoadImageThread(identifierToPath(mIdentifier, m_args));
-    connect(thread, &LoadImageThread::done, this, &CachedProvider::triggerFinished);
+    LoadImageDataThread *thread = new LoadImageDataThread(CachedProvider::identifierToPath(mIdentifier, m_args));
+    connect(thread, &LoadImageDataThread::done, this, &CachedProvider::slotFinished);
     QThreadPool::globalInstance()->start(thread);
 }
 
@@ -118,29 +118,53 @@ QString CachedProvider::identifier() const
     return mIdentifier;
 }
 
-void CachedProvider::triggerFinished(const PotdProviderData &data)
+QString CachedProvider::localPath() const
 {
-    potdProviderData()->wallpaperImage = data.wallpaperImage;
-    potdProviderData()->wallpaperLocalUrl = data.wallpaperLocalUrl;
-    potdProviderData()->wallpaperInfoUrl = data.wallpaperInfoUrl;
-    potdProviderData()->wallpaperRemoteUrl = data.wallpaperRemoteUrl;
-    potdProviderData()->wallpaperTitle = data.wallpaperTitle;
-    potdProviderData()->wallpaperAuthor = data.wallpaperAuthor;
+    return m_localPath;
+}
 
-    Q_EMIT finished(this);
+QUrl CachedProvider::remoteUrl() const
+{
+    return m_remoteUrl;
+}
+
+QUrl CachedProvider::infoUrl() const
+{
+    return m_infoUrl;
+}
+
+QString CachedProvider::title() const
+{
+    return m_title;
+}
+
+QString CachedProvider::author() const
+{
+    return m_author;
+}
+
+void CachedProvider::slotFinished(const QVariantMap &data)
+{
+    m_localPath = data[QStringLiteral("LocalPath")].toString();
+    m_infoUrl = data[QStringLiteral("InfoUrl")].toUrl();
+    m_remoteUrl = data[QStringLiteral("RemoteUrl")].toUrl();
+    m_title = data[QStringLiteral("Title")].toString();
+    m_author = data[QStringLiteral("Author")].toString();
+
+    Q_EMIT finished(this, QImage());
 }
 
 bool CachedProvider::isCached(const QString &identifier, const QVariantList &args, bool ignoreAge)
 {
-    const QString path = identifierToPath(identifier, args);
-    if (!QFile::exists(path)) {
+    const QString path = CachedProvider::identifierToPath(identifier, args);
+    if (!QFileInfo::exists(path)) {
         return false;
     }
 
     QRegularExpression re(QLatin1String(":\\d{4}-\\d{2}-\\d{2}"));
 
     if (!ignoreAge && !re.match(identifier).hasMatch()) {
-        // no date in the identifier, so it's a daily; check to see ifthe modification time is today
+        // no date in the identifier, so it's a daily; check to see if the modification time is today
         QFileInfo info(path);
         if (info.lastModified().daysTo(QDateTime::currentDateTime()) >= 1) {
             return false;
