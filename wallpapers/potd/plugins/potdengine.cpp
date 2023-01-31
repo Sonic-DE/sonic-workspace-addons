@@ -9,6 +9,7 @@
 #include <chrono>
 
 #include <QDBusConnection>
+#include <QFileInfo>
 #include <QThreadPool>
 
 #include <KPluginFactory>
@@ -93,7 +94,7 @@ void PotdClient::updateSource(bool refresh)
         return;
     }
 
-    if (auto url = CachedProvider::identifierToPath(m_identifier, m_args); QFile::exists(url)) {
+    if (auto url = PotdProviderUtils::identifierToPath(m_identifier, m_args); QFileInfo::exists(url)) {
         setLocalUrl(url);
     }
 
@@ -127,19 +128,11 @@ void PotdClient::slotFinished(PotdProvider *provider)
     setTitle(provider->title());
     setAuthor(provider->author());
 
-    // Store in cache if it's not the response of a CachedProvider
-    if (qobject_cast<CachedProvider *>(provider) == nullptr) {
-        m_data.wallpaperImage = provider->image();
-        m_imageChanged = true;
-        SaveImageThread *thread = new SaveImageThread(m_identifier, m_args, m_data);
-        connect(thread, &SaveImageThread::done, this, &PotdClient::slotCachingFinished);
-        QThreadPool::globalInstance()->start(thread);
-    } else {
+    if (qobject_cast<CachedProvider *>(provider)) {
         // Is cache provider
-        setLocalUrl(CachedProvider::identifierToPath(m_identifier, m_args));
+        setLocalUrl(provider->localPath());
         if (m_imageChanged) {
             m_imageChanged = false;
-            Q_EMIT imageChanged();
         }
         setLoading(false);
     }
@@ -157,10 +150,10 @@ void PotdClient::slotError(PotdProvider *provider)
     Q_EMIT done(this, false);
 }
 
-void PotdClient::slotCachingFinished(const QString &, const PotdProviderData &data)
+void PotdClient::slotCached(PotdProvider *provider)
 {
-    setLocalUrl(data.wallpaperLocalUrl);
-    Q_EMIT imageChanged();
+    Q_ASSERT(!qobject_cast<CachedProvider *>(provider)); // Must not be CachedProvider
+    setLocalUrl(provider->localPath());
     setLoading(false);
 }
 
@@ -176,51 +169,51 @@ void PotdClient::setLoading(bool status)
 
 void PotdClient::setLocalUrl(const QString &urlString)
 {
-    if (m_data.wallpaperLocalUrl == urlString) {
+    if (m_localPath == urlString) {
         return;
     }
 
-    m_data.wallpaperLocalUrl = urlString;
+    m_localPath = urlString;
     Q_EMIT localUrlChanged();
 }
 
 void PotdClient::setInfoUrl(const QUrl &url)
 {
-    if (m_data.wallpaperInfoUrl == url) {
+    if (m_infoUrl == url) {
         return;
     }
 
-    m_data.wallpaperInfoUrl = url;
+    m_infoUrl = url;
     Q_EMIT infoUrlChanged();
 }
 
 void PotdClient::setRemoteUrl(const QUrl &url)
 {
-    if (m_data.wallpaperRemoteUrl == url) {
+    if (m_remoteUrl == url) {
         return;
     }
 
-    m_data.wallpaperRemoteUrl = url;
+    m_remoteUrl = url;
     Q_EMIT remoteUrlChanged();
 }
 
 void PotdClient::setTitle(const QString &title)
 {
-    if (m_data.wallpaperTitle == title) {
+    if (m_title == title) {
         return;
     }
 
-    m_data.wallpaperTitle = title;
+    m_title = title;
     Q_EMIT titleChanged();
 }
 
 void PotdClient::setAuthor(const QString &author)
 {
-    if (m_data.wallpaperAuthor == author) {
+    if (m_author == author) {
         return;
     }
 
-    m_data.wallpaperAuthor = author;
+    m_author = author;
     Q_EMIT authorChanged();
 }
 

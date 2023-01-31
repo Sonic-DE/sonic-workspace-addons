@@ -13,24 +13,20 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QRegularExpression>
-#include <QStandardPaths>
 #include <QThreadPool>
 #include <QTimer>
 
 #include <QDebug>
 #include "debug.h"
 
-LoadImageThread::LoadImageThread(const QString &filePath)
-    : m_filePath(filePath)
+LoadImageDataThread::LoadImageDataThread(const QString &filePath)
+    : localPath(filePath)
 {
 }
 
-void LoadImageThread::run()
+void LoadImageDataThread::run()
 {
-    PotdProviderData data;
-    data.wallpaperImage = QImage(m_filePath);
-
-    const QString infoPath = m_filePath + QStringLiteral(".json");
+    const QString infoPath = localPath + QStringLiteral(".json");
     QFile infoFile(infoPath);
 
     if (infoFile.exists()) {
@@ -41,10 +37,10 @@ void LoadImageThread::run()
 
             if (jsonParseError.error == QJsonParseError::NoError && jsonDoc.isObject()) {
                 const QJsonObject jsonObject = jsonDoc.object();
-                data.wallpaperInfoUrl = QUrl(jsonObject.value(QStringLiteral("InfoUrl")).toString());
-                data.wallpaperRemoteUrl = QUrl(jsonObject.value(QStringLiteral("RemoteUrl")).toString());
-                data.wallpaperTitle = jsonObject.value(QStringLiteral("Title")).toString();
-                data.wallpaperAuthor = jsonObject.value(QStringLiteral("Author")).toString();
+                infoUrl = QUrl(jsonObject.value(QStringLiteral("InfoUrl")).toString());
+                remoteUrl = QUrl(jsonObject.value(QStringLiteral("RemoteUrl")).toString());
+                title = jsonObject.value(QStringLiteral("Title")).toString();
+                author = jsonObject.value(QStringLiteral("Author")).toString();
             } else {
                 qCWarning(WALLPAPERPOTD) << "Failed to read the wallpaper information!";
             }
@@ -53,54 +49,7 @@ void LoadImageThread::run()
         }
     }
 
-    Q_EMIT done(data);
-}
-
-SaveImageThread::SaveImageThread(const QString &identifier, const QVariantList &args, const PotdProviderData &data)
-    : m_identifier(identifier)
-    , m_args(args)
-    , m_data(data)
-{
-}
-
-void SaveImageThread::run()
-{
-    m_data.wallpaperLocalUrl = CachedProvider::identifierToPath(m_identifier, m_args);
-    m_data.wallpaperImage.save(m_data.wallpaperLocalUrl, "JPEG");
-
-    const QString infoPath = m_data.wallpaperLocalUrl + ".json";
-    QFile infoFile(infoPath);
-    if (infoFile.open(QIODevice::WriteOnly)) {
-        QJsonObject jsonObject;
-
-        jsonObject.insert(QStringLiteral("InfoUrl"), m_data.wallpaperInfoUrl.url());
-        jsonObject.insert(QStringLiteral("RemoteUrl"), m_data.wallpaperRemoteUrl.url());
-        jsonObject.insert(QStringLiteral("Title"), m_data.wallpaperTitle);
-        jsonObject.insert(QStringLiteral("Author"), m_data.wallpaperAuthor);
-
-        infoFile.write(QJsonDocument(jsonObject).toJson(QJsonDocument::Compact));
-        infoFile.close();
-    } else {
-        qWarning(WALLPAPERPOTD) << "Failed to save the wallpaper information!";
-    }
-
-    Q_EMIT done(m_identifier, m_data);
-}
-
-QString CachedProvider::identifierToPath(const QString &identifier, const QVariantList &args)
-{
-    const QString argString = std::accumulate(args.cbegin(), args.cend(), QString(), [](const QString &s, const QVariant &arg) {
-        if (arg.canConvert(QMetaType::QString)) {
-            return s + QStringLiteral(":%1").arg(arg.toString());
-        }
-
-        return s;
-    });
-
-    const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation) + QLatin1String("/plasma_engine_potd/");
-    QDir d;
-    d.mkpath(dataDir);
-    return QStringLiteral("%1%2%3").arg(dataDir, identifier, argString);
+    Q_EMIT done(this);
 }
 
 CachedProvider::CachedProvider(const QString &identifier, const QVariantList &args, QObject *parent)
@@ -108,8 +57,8 @@ CachedProvider::CachedProvider(const QString &identifier, const QVariantList &ar
     , mIdentifier(identifier)
     , m_args(args)
 {
-    LoadImageThread *thread = new LoadImageThread(identifierToPath(mIdentifier, m_args));
-    connect(thread, &LoadImageThread::done, this, &CachedProvider::triggerFinished);
+    LoadImageDataThread *thread = new LoadImageDataThread(PotdProviderUtils::identifierToPath(mIdentifier, m_args));
+    connect(thread, &LoadImageDataThread::done, this, &CachedProvider::slotFinished);
     QThreadPool::globalInstance()->start(thread);
 }
 
@@ -118,21 +67,45 @@ QString CachedProvider::identifier() const
     return mIdentifier;
 }
 
-void CachedProvider::triggerFinished(const PotdProviderData &data)
+QString CachedProvider::localPath() const
 {
-    potdProviderData()->wallpaperImage = data.wallpaperImage;
-    potdProviderData()->wallpaperLocalUrl = data.wallpaperLocalUrl;
-    potdProviderData()->wallpaperInfoUrl = data.wallpaperInfoUrl;
-    potdProviderData()->wallpaperRemoteUrl = data.wallpaperRemoteUrl;
-    potdProviderData()->wallpaperTitle = data.wallpaperTitle;
-    potdProviderData()->wallpaperAuthor = data.wallpaperAuthor;
+    return m_localPath;
+}
+
+QUrl CachedProvider::remoteUrl() const
+{
+    return m_remoteUrl;
+}
+
+QUrl CachedProvider::infoUrl() const
+{
+    return m_infoUrl;
+}
+
+QString CachedProvider::title() const
+{
+    return m_title;
+}
+
+QString CachedProvider::author() const
+{
+    return m_author;
+}
+
+void CachedProvider::slotFinished(LoadImageDataThread *thread)
+{
+    m_localPath = thread->localPath;
+    m_infoUrl = thread->infoUrl;
+    m_remoteUrl = thread->remoteUrl;
+    m_title = thread->title;
+    m_author = thread->author;
 
     Q_EMIT finished(this);
 }
 
 bool CachedProvider::isCached(const QString &identifier, const QVariantList &args, bool ignoreAge)
 {
-    const QString path = identifierToPath(identifier, args);
+    const QString path = PotdProviderUtils::identifierToPath(identifier, args);
     if (!QFile::exists(path)) {
         return false;
     }
