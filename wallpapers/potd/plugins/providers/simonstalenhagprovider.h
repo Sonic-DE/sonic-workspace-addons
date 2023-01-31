@@ -21,12 +21,18 @@ class SimonStalenhagProvider : public PotdProvider
     Q_OBJECT
 
 public:
-    SimonStalenhagProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+    explicit SimonStalenhagProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+
+    QUrl remoteUrl() const override;
+    QString title() const override;
 
 private:
     void entrypointRequestFinished(KJob *job);
     void metaDataRequestFinished(KJob *job);
     void imageRequestFinished(KJob *job);
+
+    QUrl m_remoteUrl;
+    QString m_title;
 };
 
 #endif

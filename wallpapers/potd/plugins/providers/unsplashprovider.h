@@ -19,8 +19,12 @@ class UnsplashProvider : public PotdProvider
     Q_OBJECT
 
 public:
-    UnsplashProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+    explicit UnsplashProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+
+    QUrl infoUrl() const override;
 
 private:
     void imageRequestFinished(KJob *job);
+
+    QUrl m_infoUrl;
 };

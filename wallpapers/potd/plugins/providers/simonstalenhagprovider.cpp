@@ -44,6 +44,16 @@ SimonStalenhagProvider::SimonStalenhagProvider(QObject *parent, const KPluginMet
     connect(job, &KIO::StoredTransferJob::finished, this, &SimonStalenhagProvider::entrypointRequestFinished);
 }
 
+QUrl SimonStalenhagProvider::remoteUrl() const
+{
+    return m_remoteUrl;
+}
+
+QString SimonStalenhagProvider::title() const
+{
+    return m_title;
+}
+
 void SimonStalenhagProvider::entrypointRequestFinished(KJob *_job)
 {
     KIO::StoredTransferJob *job = static_cast<KIO::StoredTransferJob *>(_job);
@@ -79,19 +89,19 @@ void SimonStalenhagProvider::metaDataRequestFinished(KJob *_job)
         Q_EMIT error(this);
         return;
     }
-    potdProviderData()->wallpaperRemoteUrl = QUrl(urlStr);
+    m_remoteUrl = QUrl(urlStr);
 
     const QString titleStr = imageObj.toObject().value(QStringLiteral("name")).toString();
     const QString sectionStr = imageObj.toObject().value(QStringLiteral("section")).toString();
     if (!titleStr.isEmpty()) {
         if (!sectionStr.isEmpty()) {
-            potdProviderData()->wallpaperTitle = sectionStr + " - " + titleStr;
+            m_title = sectionStr + " - " + titleStr;
         } else {
-            potdProviderData()->wallpaperTitle = titleStr;
+            m_title = titleStr;
         }
     }
 
-    KIO::StoredTransferJob *imageJob = KIO::storedGet(potdProviderData()->wallpaperRemoteUrl, KIO::NoReload, KIO::HideProgressInfo);
+    KIO::StoredTransferJob *imageJob = KIO::storedGet(m_remoteUrl, KIO::NoReload, KIO::HideProgressInfo);
     connect(imageJob, &KIO::StoredTransferJob::finished, this, &SimonStalenhagProvider::imageRequestFinished);
 }
 
@@ -103,8 +113,7 @@ void SimonStalenhagProvider::imageRequestFinished(KJob *_job)
         return;
     }
     QByteArray data = job->data();
-    potdProviderData()->wallpaperImage = QImage::fromData(data);
-    Q_EMIT finished(this);
+    Q_EMIT finished(this, QImage::fromData(data));
 }
 
 K_PLUGIN_CLASS_WITH_JSON(SimonStalenhagProvider, "simonstalenhagprovider.json")

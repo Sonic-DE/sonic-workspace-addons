@@ -6,10 +6,27 @@
 
 #pragma once
 
-#include <QImage>
 #include <QRunnable>
 
 #include "potdprovider.h"
+
+class LoadImageDataThread : public QObject, public QRunnable
+{
+    Q_OBJECT
+
+public:
+    explicit LoadImageDataThread(const QString &filePath);
+    void run() override;
+
+    QUrl remoteUrl;
+    QUrl infoUrl;
+    QString localPath;
+    QString title;
+    QString author;
+
+Q_SIGNALS:
+    void done(LoadImageDataThread *thread);
+};
 
 /**
  * This class provides pictures from the local cache.
@@ -33,6 +50,12 @@ public:
      */
     QString identifier() const override;
 
+    QString localPath() const override;
+    QUrl remoteUrl() const override;
+    QUrl infoUrl() const override;
+    QString title() const override;
+    QString author() const override;
+
     /**
      * Returns whether a picture with the given @p identifier and @p args is cached.
      */
@@ -44,26 +67,16 @@ public:
     static QString identifierToPath(const QString &identifier, const QVariantList &args);
 
 private Q_SLOTS:
-    void triggerFinished(const PotdProviderData &data);
+    void slotFinished(LoadImageDataThread *thread);
 
 private:
     QString mIdentifier;
     QVariantList m_args;
-};
-
-class LoadImageThread : public QObject, public QRunnable
-{
-    Q_OBJECT
-
-public:
-    explicit LoadImageThread(const QString &filePath);
-    void run() override;
-
-Q_SIGNALS:
-    void done(const PotdProviderData &data);
-
-private:
-    QString m_filePath;
+    QUrl m_remoteUrl;
+    QUrl m_infoUrl;
+    QString m_localPath;
+    QString m_title;
+    QString m_author;
 };
 
 class SaveImageThread : public QObject, public QRunnable
@@ -71,14 +84,18 @@ class SaveImageThread : public QObject, public QRunnable
     Q_OBJECT
 
 public:
-    SaveImageThread(const QString &identifier, const QVariantList &args, const PotdProviderData &data);
+    SaveImageThread(const QString &identifier, const QVariantList &args, const QVariantMap &data);
     void run() override;
 
 Q_SIGNALS:
-    void done(const QString &source, const PotdProviderData &data);
+    void done(const QString &localPath);
 
 private:
     QString m_identifier;
     QVariantList m_args;
-    PotdProviderData m_data;
+    QUrl m_remoteUrl;
+    QUrl m_infoUrl;
+    QString m_title;
+    QString m_author;
+    QImage m_image;
 };

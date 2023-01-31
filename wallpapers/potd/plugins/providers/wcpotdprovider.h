@@ -24,9 +24,17 @@ class WcpotdProvider : public PotdProvider
     Q_OBJECT
 
 public:
-    WcpotdProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+    explicit WcpotdProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+
+    QUrl remoteUrl() const override;
+    QUrl infoUrl() const override;
+    QString title() const override;
 
 private:
     void pageRequestFinished(KJob *job);
     void imageRequestFinished(KJob *job);
+
+    QUrl m_remoteUrl;
+    QUrl m_infoUrl;
+    QString m_title;
 };
