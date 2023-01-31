@@ -27,7 +27,22 @@ class FlickrProvider : public PotdProvider
 public:
     explicit FlickrProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
 
+    QUrl remoteUrl() const override;
+    QUrl infoUrl() const override;
+    QString title() const override;
+    QString author() const override;
+
+Q_SIGNALS:
+    void configLoaded(const QString &apiKey, const QString &apiSecret);
+
+private Q_SLOTS:
+    void configRequestFinished(KJob *job);
+    void configWriteFinished(KJob *job);
+
 private:
+    void loadConfig();
+    void refreshConfig();
+
     void sendXmlRequest(const QString &apiKey);
     void xmlRequestFinished(KJob *job);
     void imageRequestFinished(KJob *job);
@@ -38,8 +53,17 @@ private:
     void pageRequestFinished(KJob *job);
 
 private:
+    QString m_configLocalPath;
+    QUrl m_configRemoteUrl;
+    QUrl m_configLocalUrl;
     QDate mActualDate;
     QString mApiKey;
+    bool m_refreshed = false;
+
+    QUrl m_remoteUrl;
+    QUrl m_infoUrl;
+    QString m_title;
+    QString m_author;
 
     QXmlStreamReader xml;
 
