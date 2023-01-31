@@ -24,10 +24,15 @@ UnsplashProvider::UnsplashProvider(QObject *parent, const KPluginMetaData &data,
     }
     const QUrl url(QStringLiteral("https://source.unsplash.com/collection/%1/3840x2160/daily").arg(collectionId));
 
-    potdProviderData()->wallpaperInfoUrl = QUrl(QStringLiteral("https://unsplash.com/collections/%1").arg(collectionId));
+    m_infoUrl = QUrl(QStringLiteral("https://unsplash.com/collections/%1").arg(collectionId));
 
     KIO::StoredTransferJob *job = KIO::storedGet(url, KIO::NoReload, KIO::HideProgressInfo);
     connect(job, &KIO::StoredTransferJob::finished, this, &UnsplashProvider::imageRequestFinished);
+}
+
+QUrl UnsplashProvider::infoUrl() const
+{
+    return m_infoUrl;
 }
 
 void UnsplashProvider::imageRequestFinished(KJob *_job)
@@ -38,8 +43,7 @@ void UnsplashProvider::imageRequestFinished(KJob *_job)
         return;
     }
     QByteArray data = job->data();
-    potdProviderData()->wallpaperImage = QImage::fromData(data);
-    Q_EMIT finished(this);
+    Q_EMIT finished(this, QImage::fromData(data));
 }
 
 K_PLUGIN_CLASS_WITH_JSON(UnsplashProvider, "unsplashprovider.json")
