@@ -5,29 +5,14 @@
 #pragma once
 
 #include <QImage>
-#include <QObject>
 #include <QUrl>
 #include <QVariantList>
 
-#include <KIO/Job>
 #include <KPluginMetaData>
 
 #include "plasma_potd_export.h"
 
 class QDate;
-
-/**
- * This class is used to store wallpaper data.
- */
-struct PotdProviderData {
-    QImage wallpaperImage;
-    QString wallpaperLocalUrl;
-    QUrl wallpaperRemoteUrl;
-    QUrl wallpaperInfoUrl;
-    QString wallpaperTitle;
-    QString wallpaperAuthor;
-};
-Q_DECLARE_METATYPE(PotdProviderData)
 
 /**
  * This class is an interface for PoTD providers.
@@ -43,26 +28,22 @@ public:
      * @param parent The parent object.
      * @param data The metadata of the plugin
      * @param args The arguments.
+     * @since 5.25
      */
     explicit PotdProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
 
     /**
-     * @deprecated Since 5.25. The constructor will be removed in Plasma 6.
-     */
-    PLASMA_POTD_DEPRECATED explicit PotdProvider(QObject *parent, const QVariantList &args);
-
-    /**
      * Destroys the PoTD provider.
      */
-    ~PotdProvider() override;
+    virtual ~PotdProvider() override;
 
     /**
-     * Returns the requested image.
+     * Returns the local path of the requested image.
      *
-     * Note: This method returns only a valid image after the
+     * Note: This method returns only a valid path after the
      *       finished() signal has been emitted.
      */
-    virtual QImage image() const;
+    virtual QString localPath() const;
 
     /**
      * Returns the identifier of the PoTD request (name + date).
@@ -76,7 +57,7 @@ public:
      * @return the remote URL of the image, if any
      * @since 5.25
      */
-    QUrl remoteUrl() const;
+    virtual QUrl remoteUrl() const;
 
     /**
      * Returns the information URL of the image from the provider
@@ -84,7 +65,7 @@ public:
      * @return the information URL of the image, if any
      * @since 5.25
      */
-    QUrl infoUrl() const;
+    virtual QUrl infoUrl() const;
 
     /**
      * Returns the title of the image from the provider, if any.
@@ -92,7 +73,7 @@ public:
      * @return the title of the image, if any
      * @since 5.25
      */
-    QString title() const;
+    virtual QString title() const;
 
     /**
      * Returns the author of the image from the provider
@@ -100,25 +81,17 @@ public:
      * @return the title of the image, if any
      * @since 5.25
      */
-    QString author() const;
+    virtual QString author() const;
 
     /**
      * @return the name of this provider (equiv to X-KDE-PlasmaPoTDProvider-Identifier)
      */
-    QString name() const;
+    virtual QString name() const;
 
     /**
      * @return the date to load for this item, if any
      */
-    QDate date() const;
-
-    /**
-     * @return if the date is fixed, or if it should always be "today"
-     */
-    bool isFixedDate() const;
-
-    void refreshConfig();
-    void loadConfig();
+    virtual QDate date() const;
 
 Q_SIGNALS:
     /**
@@ -126,8 +99,9 @@ Q_SIGNALS:
      * successfully.
      *
      * @param provider The provider which emitted the signal.
+     * @param image The image from the provider.
      */
-    void finished(PotdProvider *provider);
+    void finished(PotdProvider *provider, const QImage &image);
 
     /**
      * This signal is emitted whenever an error has occurred.
@@ -136,19 +110,14 @@ Q_SIGNALS:
      */
     void error(PotdProvider *provider);
 
-    void configLoaded(QString apiKey, QString apiSecret);
-
 protected:
-    PotdProviderData *potdProviderData() const;
+    std::unique_ptr<class PotdProviderPrivate> d_ptr;
+
+    QUrl m_remoteUrl;
+    QUrl m_infoUrl;
+    QString m_title;
+    QString m_author;
 
 private:
-    void configRequestFinished(KJob *job);
-    void configWriteFinished(KJob *job);
-
-    const QScopedPointer<class PotdProviderPrivate> d;
-
-    QUrl configRemoteUrl;
-    QUrl configLocalUrl;
-    QString configLocalPath;
-    bool refreshed = false;
+    Q_DECLARE_PRIVATE(PotdProvider)
 };
