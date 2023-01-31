@@ -32,6 +32,21 @@ WcpotdProvider::WcpotdProvider(QObject *parent, const KPluginMetaData &data, con
     connect(job, &KIO::StoredTransferJob::finished, this, &WcpotdProvider::pageRequestFinished);
 }
 
+QUrl WcpotdProvider::remoteUrl() const
+{
+    return m_remoteUrl;
+}
+
+QUrl WcpotdProvider::infoUrl() const
+{
+    return m_infoUrl;
+}
+
+QString WcpotdProvider::title() const
+{
+    return m_title;
+}
+
 void WcpotdProvider::pageRequestFinished(KJob *_job)
 {
     KIO::StoredTransferJob *job = static_cast<KIO::StoredTransferJob *>(_job);
@@ -50,8 +65,8 @@ void WcpotdProvider::pageRequestFinished(KJob *_job)
 
     const QString imageFile = jsonImageArray.at(0).toString();
     if (!imageFile.isEmpty()) {
-        potdProviderData()->wallpaperRemoteUrl = QUrl(QStringLiteral("https://commons.wikimedia.org/wiki/Special:FilePath/") + imageFile);
-        KIO::StoredTransferJob *imageJob = KIO::storedGet(potdProviderData()->wallpaperRemoteUrl, KIO::NoReload, KIO::HideProgressInfo);
+        m_remoteUrl = QUrl(QStringLiteral("https://commons.wikimedia.org/wiki/Special:FilePath/") + imageFile);
+        KIO::StoredTransferJob *imageJob = KIO::storedGet(m_remoteUrl, KIO::NoReload, KIO::HideProgressInfo);
         connect(imageJob, &KIO::StoredTransferJob::finished, this, &WcpotdProvider::imageRequestFinished);
     } else {
         Q_EMIT error(this);
@@ -74,8 +89,8 @@ void WcpotdProvider::pageRequestFinished(KJob *_job)
     const QRegularExpression titleRegEx(QStringLiteral("<div.*?class=\"description.*?>.*?<a href=\"(.+?)\".*?>(.+?)</a>"));
     const QRegularExpressionMatch titleMatch = titleRegEx.match(text);
     if (titleMatch.hasMatch()) {
-        potdProviderData()->wallpaperInfoUrl = QUrl(titleMatch.captured(1).trimmed());
-        potdProviderData()->wallpaperTitle = QTextDocumentFragment::fromHtml(titleMatch.captured(2).trimmed()).toPlainText();
+        m_infoUrl = QUrl(titleMatch.captured(1).trimmed());
+        m_title = QTextDocumentFragment::fromHtml(titleMatch.captured(2).trimmed()).toPlainText();
     }
 }
 
@@ -87,8 +102,7 @@ void WcpotdProvider::imageRequestFinished(KJob *_job)
         return;
     }
     QByteArray data = job->data();
-    potdProviderData()->wallpaperImage = QImage::fromData(data);
-    Q_EMIT finished(this);
+    Q_EMIT finished(this, QImage::fromData(data));
 }
 
 K_PLUGIN_CLASS_WITH_JSON(WcpotdProvider, "wcpotdprovider.json")

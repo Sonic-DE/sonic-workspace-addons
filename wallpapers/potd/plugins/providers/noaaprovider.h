@@ -22,10 +22,18 @@ class NOAAProvider : public PotdProvider
     Q_OBJECT
 
 public:
-    NOAAProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+    explicit NOAAProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+
+    QUrl remoteUrl() const override;
+    QUrl infoUrl() const override;
+    QString title() const override;
 
 private:
     void listPageRequestFinished(KJob *job);
     void pageRequestFinished(KJob *job);
     void imageRequestFinished(KJob *job);
+
+    QUrl m_remoteUrl;
+    QUrl m_infoUrl;
+    QString m_title;
 };

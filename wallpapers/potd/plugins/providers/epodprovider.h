@@ -21,9 +21,19 @@ class EpodProvider : public PotdProvider
     Q_OBJECT
 
 public:
-    EpodProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+    explicit EpodProvider(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+
+    QUrl remoteUrl() const override;
+    QUrl infoUrl() const override;
+    QString title() const override;
+    QString author() const override;
 
 private:
     void pageRequestFinished(KJob *job);
     void imageRequestFinished(KJob *job);
+
+    QUrl m_remoteUrl;
+    QUrl m_infoUrl;
+    QString m_title;
+    QString m_author;
 };
