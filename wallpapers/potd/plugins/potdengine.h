@@ -38,14 +38,18 @@ public:
 #endif
 
     KPluginMetaData m_metadata;
-    PotdProviderData m_data;
     bool m_loading = false;
+
+    QUrl m_remoteUrl;
+    QUrl m_infoUrl;
+    QString m_localPath;
+    QString m_title;
+    QString m_author;
 
 Q_SIGNALS:
     /**
      * Emitted only when the image content has been updated
      */
-    void imageChanged();
     void loadingChanged();
     void localUrlChanged();
     void infoUrlChanged();
@@ -56,8 +60,8 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void slotFinished(PotdProvider *provider);
+    void slotCached(PotdProvider *provider);
     void slotError(PotdProvider *provider);
-    void slotCachingFinished(const QString &source, const PotdProviderData &data);
 
 private:
     void setLoading(bool status);
