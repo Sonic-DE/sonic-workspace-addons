@@ -20,9 +20,9 @@ Item {
         scale: Math.min(parent.width / container.width, parent.height / container.height)
 
         Repeater {
-            model: KWinComponents.ClientFilterModel {
+            model: KWinComponents.WindowFilterModel {
                 activity: KWinComponents.Workspace.currentActivity
-                model: KWinComponents.ClientModel {}
+                model: KWinComponents.WindowModel {}
             }
 
             KWinComponents.WindowThumbnailItem {
