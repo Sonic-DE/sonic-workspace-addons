@@ -75,7 +75,7 @@ DropArea {
             PlasmaCore.ToolTipArea {
                 anchors.fill: parent
                 mainText: parent.text
-                subText: xi18nc("@info:usagetip", "Drag a color code here to save it<nl/>Drag an image file here to get its average color");
+                subText: xi18nc("@info:usagetip", "Drag a color code here to save it<nl/>Drag an image file here to get its average color<nl/>Middle-click on any color cricle to copy the color code");
             }
 
             PlasmaCore.IconItem {
