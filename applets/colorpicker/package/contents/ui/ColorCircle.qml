@@ -92,7 +92,13 @@ PlasmaComponents3.ToolButton {
         }
 
         TapHandler {
+            acceptedButtons: Qt.LeftButton
             onTapped: colorButton.clicked();
+        }
+
+        TapHandler {
+            acceptedButtons: Qt.MiddleButton
+            onTapped: picker.copyToClipboard(colorButton.text)
         }
     }
 }
