@@ -21,3 +21,4 @@ install(FILES plugin/qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/plasma/pri
 install(FILES timer.svgz
 	DESTINATION ${PLASMA_DATA_INSTALL_DIR}/desktoptheme/default/widgets/)
 
+install(FILES plasma_applet_timer.notifyrc  DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
