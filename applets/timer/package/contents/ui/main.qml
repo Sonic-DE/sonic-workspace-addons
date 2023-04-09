@@ -10,6 +10,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasma5support 2.0 as P5Support
 import org.kde.kquickcontrolsaddons 2.0 as QtExtra
 import org.kde.plasma.private.timer 0.1 as TimerPlasmoid
+import org.kde.notification 1.0
 
 Item {
     id: root;
@@ -82,10 +83,13 @@ Item {
         }
     }
 
-    P5Support.DataSource {
-        id: notificationSource
-        engine: "notifications"
-        connectedSources: "org.freedesktop.Notifications"
+    Notification {
+        id: timerNotification
+        componentName: "org.kde.plasma.timer"
+        iconName: "chronometer"
+        eventId: "timerFinished"
+        title: root.title || i18n("Timer")
+        text: notificationText || i18n("Timer finished")
     }
 
     Timer {
@@ -99,7 +103,8 @@ Item {
                 root.running = false;
 
                 if (showNotification) {
-                    root.createNotification();
+                    console.log("DEBUG: Should send notification")
+                    timerNotification.sendEvent();
                 }
                 if (runCommand) {
                     TimerPlasmoid.Timer.runCommand(command);
