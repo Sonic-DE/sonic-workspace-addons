@@ -122,24 +122,13 @@ Item {
         delayedSaveTimer.start();
     }
 
-    function createNotification() {
-        var service = notificationSource.serviceForSource("notification");
-        var operation = service.operationDescription("createNotification");
-
-        operation.appName = root.title || i18n("Timer");
-        operation["appIcon"] = "chronometer";
-        operation.summary = notificationText || i18n("Timer finished")
-        operation["body"] = "";
-        operation["timeout"] = 2000;
-
-        service.startOperationCall(operation);
-    }
-
     Component.onCompleted: rebuildMenu()
 
     Connections {
         target: plasmoid.configuration
-        onPredefinedTimersChanged: rebuildMenu()
+        function onPredefinedTimersChanged() {
+            rebuildMenu()
+        }
     }
 
     function rebuildMenu() {
