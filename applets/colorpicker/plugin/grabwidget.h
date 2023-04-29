@@ -10,11 +10,18 @@
 #include <QColor>
 #include <QObject>
 
+class QDBusServiceWatcher;
+
 class GrabWidget : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(QColor currentColor READ currentColor NOTIFY currentColorChanged)
+
+    /**
+     * Is KWin compositing enabled?
+     */
+    Q_PROPERTY(bool isCompositingActive READ isCompositingActive NOTIFY isCompositingActiveChanged)
 
 public:
     explicit GrabWidget(QObject *parent = nullptr);
@@ -22,13 +29,25 @@ public:
     QColor currentColor() const;
     void setCurrentColor(const QColor &color);
 
+    bool isCompositingActive() const;
+
     Q_INVOKABLE void pick();
     Q_INVOKABLE void copyToClipboard(const QString &text);
 
 Q_SIGNALS:
     void currentColorChanged();
+    void isCompositingActiveChanged();
+
+private Q_SLOTS:
+    void slotPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
+    void queryCompositingActive();
 
 private:
+    void initCompositorWatcher();
+
+    QDBusServiceWatcher *m_serviceWatcher = nullptr;
+    bool m_isCompositingActive = false;
+
     QColor m_currentColor;
 };
 

@@ -67,6 +67,7 @@ DropArea {
 
             property Item loadingIndicator: null
 
+            enabled: picker.isCompositingActive
             display: PlasmaComponents3.AbstractButton.IconOnly
             text: i18nc("@info:tooltip", "Pick color")
 

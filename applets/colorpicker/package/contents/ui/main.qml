@@ -150,6 +150,7 @@ Item {
                 text: i18nc("@info:usagetip", "No colors")
 
                 helpfulAction: QQC2.Action {
+                    enabled: picker.isCompositingActive
                     icon.name: "color-picker"
                     text: i18nc("@action:button", "Pick Color")
                     onTriggered: root.pickColor()
