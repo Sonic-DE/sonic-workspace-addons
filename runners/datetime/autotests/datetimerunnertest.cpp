@@ -122,6 +122,7 @@ void DateTimeRunnerTest::testConversion()
     });
 
     QVERIFY(!matches.isEmpty());
+    qDebug() << matches.cbegin()->text() << expectedTargetTimezone << expectedTargetTime << expectedSourceTimezone << expectedSourceTime;
     QVERIFY(matches.first().text().contains(QString("%1: %2").arg(expectedTargetTimezone, expectedTargetTime)));
     QVERIFY(matches.first().text().contains(QString("%1: %2").arg(expectedSourceTimezone, expectedSourceTime)));
     QVERIFY(matches.first().text().contains(expectedTimeDiff));
