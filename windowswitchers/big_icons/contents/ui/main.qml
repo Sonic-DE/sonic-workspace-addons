@@ -30,12 +30,54 @@ KWin.TabBoxSwitcher {
 
             width: Math.min(Math.max(tabBox.screenGeometry.width * 0.3, icons.implicitWidth), tabBox.screenGeometry.width * 0.9)
 
-            IconTabBox {
-                id: icons
-                model: tabBox.model
-                iconSize: PlasmaCore.Units.iconSizes.enormous
+            ListView {
+                id: iconsListView
+
+                readonly property int iconSize: PlasmaCore.Units.iconSizes.enormous
+
                 Layout.alignment: Qt.AlignHCenter
                 Layout.maximumWidth: tabBox.screenGeometry.width * 0.9
+
+                implicitWidth: contentWidth
+                implicitHeight: iconSize + (highlightItem ? highlightItem.margins.top + highlightItem.margins.bottom : 0)
+
+                focus: true
+                orientation: ListView.Horizontal
+
+                model: tabBox.model
+                delegate: PlasmaCore.IconItem {
+                    property string caption: model.caption
+
+                    width: iconSize + (highlightItem ? highlightItem.margins.left + highlightItem.margins.right : 0)
+                    height: iconSize + (highlightItem ? highlightItem.margins.top + highlightItem.margins.bottom : 0)
+
+                    source: model.icon
+                    active: index == iconsListView.currentIndex
+                    usesPlasmaTheme: false
+
+                    TapHandler {
+                        onSingleTapped: {
+                            if (index === iconsListView.currentIndex) {
+                                iconsListView.model.activate(index);
+                                return;
+                            }
+                            iconsListView.currentIndex = index;
+                        }
+                        onDoubleTapped: iconsListView.model.activate(index)
+                    }
+                }
+
+                highlight: PlasmaCore.FrameSvgItem {
+                    id: highlightItem
+                    imagePath: "widgets/viewitem"
+                    prefix: "hover"
+                    width: iconSize + margins.left + margins.right
+                    height: iconSize + margins.top + margins.bottom
+                }
+
+                highlightMoveDuration: 0
+                highlightResizeDuration: 0
+                boundsBehavior: Flickable.StopAtBounds
             }
 
             PlasmaComponents3.Label {
