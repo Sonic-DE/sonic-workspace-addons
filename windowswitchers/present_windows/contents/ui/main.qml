@@ -138,6 +138,8 @@ KWin.TabBoxSwitcher {
                     thumbnailListView.moveCurrentIndexUp();
                 } else if (event.key == Qt.Key_Down) {
                     thumbnailListView.moveCurrentIndexDown();
+                } else if (event.matches(StandardKey.Close)) {
+                    model.close(currentIndex)
                 }
             }
         }
