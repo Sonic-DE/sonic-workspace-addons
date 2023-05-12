@@ -19,11 +19,11 @@ import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0 as QtExtra
 import org.kde.plasma.plasmoid 2.0
 
-QQC2.Control {
+PlasmoidItem {
     id: main;
 
-    Plasmoid.switchWidth: Layout.minimumWidth
-    Plasmoid.switchHeight: Layout.minimumHeight
+    switchWidth: Layout.minimumWidth
+    switchHeight: Layout.minimumHeight
     Layout.minimumWidth: 150
     Layout.minimumHeight: 225
 
@@ -32,7 +32,7 @@ QQC2.Control {
 
     // Make the buttons' text labels scale with the widget's size
     // This is propagated down to all child controls with text
-    font.pixelSize: Math.round(width/12)
+//    font.pixelSize: Math.round(width/12)
 
     property real result: 0;
     property bool hasResult: false;
