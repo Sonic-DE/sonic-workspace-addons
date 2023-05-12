@@ -16,7 +16,16 @@ Rectangle {
         root.color = Qt.hsla(Math.random(), 1,0.5,1)
     }
 
-    Component.onCompleted: randomColor()
+    Component.onCompleted: {
+        // Skip the animation when first showing the wallpaper
+        let duration = colorAnimation.duration
+        colorAnimation.duration = 0
+
+        randomColor()
+
+        colorAnimation.duration = duration
+    }
+
     MouseArea {
         anchors.fill: parent
         onClicked: randomColor()
@@ -47,6 +56,7 @@ Rectangle {
     Behavior on color {
         SequentialAnimation {
             ColorAnimation {
+                id: colorAnimation
                 duration: 1000
                 easing.type: Easing.InQuad
             }
