@@ -12,6 +12,8 @@ Rectangle {
     width: 800
     height: 480
 
+    property int cfg_Interval
+
     function randomColor() {
         root.color = Qt.hsla(Math.random(), 1,0.5,1)
     }
@@ -46,7 +48,7 @@ Rectangle {
         property variant layers: [centerLayer0, centerLayer1, leftLayer0, leftLayer1, bottomLayer0, rightLayer0, rightLayer1]
         running: true
         repeat: true
-        interval: 30000
+        interval: wallpaper.configuration.Interval * 1000
         onTriggered: randomColor()
     }
     // Intentionally not using a standard duration value as this is an animated
