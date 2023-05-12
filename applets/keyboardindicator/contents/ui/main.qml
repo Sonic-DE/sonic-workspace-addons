@@ -14,7 +14,7 @@ import org.kde.plasma.plasma5support 2.0 as P5Support
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-Item {
+PlasmoidItem {
     id: root
 
     readonly property QtObject source: P5Support.DataSource {
@@ -61,9 +61,9 @@ Item {
         return "input-caps-on"
     }
 
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
+    preferredRepresentation: compactRepresentation
 
-    Plasmoid.compactRepresentation: MouseArea {
+    compactRepresentation: MouseArea {
         id: compactMouse
 
         activeFocusOnTab: true
@@ -85,7 +85,7 @@ Item {
         }
     }
 
-    Plasmoid.fullRepresentation: PlasmaComponents3.Page {
+    fullRepresentation: PlasmaComponents3.Page {
         implicitWidth: PlasmaCore.Units.gridUnit * 12
         implicitHeight: PlasmaCore.Units.gridUnit * 12
 
@@ -98,7 +98,7 @@ Item {
     }
 
     Plasmoid.status: root.lockedCount > 0 ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.PassiveStatus
-    Plasmoid.toolTipSubText: {
+    toolTipSubText: {
         var ret = "";
         var found = false;
         for (var v in keystateSource.connectedSources) {
