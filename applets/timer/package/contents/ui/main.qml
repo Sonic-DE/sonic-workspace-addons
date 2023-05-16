@@ -11,11 +11,11 @@ import org.kde.plasma.plasma5support 2.0 as P5Support
 import org.kde.kquickcontrolsaddons 2.0 as QtExtra
 import org.kde.plasma.private.timer 0.1 as TimerPlasmoid
 
-Item {
+PlasmoidItem {
     id: root;
 
-    Plasmoid.switchWidth: PlasmaCore.Units.gridUnit * 8
-    Plasmoid.switchHeight: PlasmaCore.Units.gridUnit * 4
+    switchWidth: PlasmaCore.Units.gridUnit * 8
+    switchHeight: PlasmaCore.Units.gridUnit * 4
 
     readonly property bool inPanel: [PlasmaCore.Types.TopEdge, PlasmaCore.Types.RightEdge, PlasmaCore.Types.BottomEdge, PlasmaCore.Types.LeftEdge]
         .includes(Plasmoid.location)
@@ -53,7 +53,7 @@ Item {
 
     readonly property string notificationText: plasmoid.configuration.notificationText;
 
-    Plasmoid.toolTipMainText: {
+    toolTipMainText: {
         var timerName = "";
         if (showTitle && title != "") {
             timerName = title;
@@ -67,10 +67,10 @@ Item {
             return i18n("%1 not running", timerName);
         }
     }
-    Plasmoid.toolTipSubText: running ? i18np("Remaining time left: %1 second", "Remaining time left: %1 seconds", seconds) : i18n("Use mouse wheel to change digits or choose from predefined timers in the context menu");
+    toolTipSubText: running ? i18np("Remaining time left: %1 second", "Remaining time left: %1 seconds", seconds) : i18n("Use mouse wheel to change digits or choose from predefined timers in the context menu");
 
-    Plasmoid.compactRepresentation: CompactRepresentation { }
-    Plasmoid.fullRepresentation: TimerView { }
+    compactRepresentation: CompactRepresentation { }
+    fullRepresentation: TimerView { }
 
     function toggleTimer() {
         if (root.running) {
