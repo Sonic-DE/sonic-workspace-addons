@@ -12,11 +12,11 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.private.profiles 1.0 as Profiles
 
-FocusScope {
+PlasmoidItem {
    id: konsoleProfiles
 
-    Plasmoid.switchWidth: PlasmaCore.Units.gridUnit * 11
-    Plasmoid.switchHeight: PlasmaCore.Units.gridUnit * 9
+    switchWidth: PlasmaCore.Units.gridUnit * 11
+    switchHeight: PlasmaCore.Units.gridUnit * 9
 
     Layout.minimumWidth: PlasmaCore.Units.gridUnit * 12
     Layout.minimumHeight: PlasmaCore.Units.gridUnit * 10
@@ -27,106 +27,109 @@ FocusScope {
         }
     }
 
-    PlasmaCore.SortFilterModel {
-        id: sortModel
-        sortRole: "name"
-        sortOrder: "AscendingOrder"
-        sourceModel: Profiles.ProfilesModel {
-            id: profilesModel
-            appName: "konsole"
-        }
-    }
-
-    Component.onCompleted: {
-        plasmoid.popupIcon = "utilities-terminal";
-    }
-
-   PlasmaCore.Svg {
-       id: lineSvg
-       imagePath: "widgets/line"
-    }
-
-    Row {
-        id: headerRow
-        anchors { left: parent.left; right: parent.right }
-
-        PlasmaCore.IconItem {
-            id: appIcon
-            source: "utilities-terminal"
-            width: PlasmaCore.Units.iconSizes.medium
-            height: PlasmaCore.Units.iconSizes.medium
+    FocusScope {
+        anchors.fill: parent
+        PlasmaCore.SortFilterModel {
+            id: sortModel
+            sortRole: "name"
+            sortOrder: "AscendingOrder"
+            sourceModel: Profiles.ProfilesModel {
+                id: profilesModel
+                appName: "konsole"
+            }
         }
 
-        PlasmaComponents3.Label {
-            id: header
-            text: i18nc("@title", "Konsole Profiles")
-            horizontalAlignment: Text.AlignHCenter | Text.AlignVCenter
-            width: parent.width - appIcon.width * 2
-            height: parent.height
+        Component.onCompleted: {
+            plasmoid.popupIcon = "utilities-terminal";
         }
-    }
 
-    PlasmaCore.SvgItem {
-        id: separator
+    PlasmaCore.Svg {
+        id: lineSvg
+        imagePath: "widgets/line"
+        }
 
-        anchors { left: headerRow.left; right: headerRow.right; top: headerRow.bottom }
-        svg: lineSvg
-        elementId: "horizontal-line"
-        height: lineSvg.elementSize("horizontal-line").height
-    }
+        Row {
+            id: headerRow
+            anchors { left: parent.left; right: parent.right }
 
-    Text {
-        id: textMetric
-        visible: false
-        // translated but not used, we just need length/height
-        text: i18n("Arbitrary String Which Says Something")
-    }
+            PlasmaCore.IconItem {
+                id: appIcon
+                source: "utilities-terminal"
+                width: PlasmaCore.Units.iconSizes.medium
+                height: PlasmaCore.Units.iconSizes.medium
+            }
 
-    ScrollView {
-        anchors { left: parent.left; right: parent.right; bottom: parent.bottom; top: separator.bottom; topMargin: PlasmaCore.Units.smallSpacing}
+            PlasmaComponents3.Label {
+                id: header
+                text: i18nc("@title", "Konsole Profiles")
+                horizontalAlignment: Text.AlignHCenter | Text.AlignVCenter
+                width: parent.width - appIcon.width * 2
+                height: parent.height
+            }
+        }
 
-        ListView {
-            id: view
+        PlasmaCore.SvgItem {
+            id: separator
 
-            model: sortModel
-            clip: true
-            focus: true
-            keyNavigationWraps: true
+            anchors { left: headerRow.left; right: headerRow.right; top: headerRow.bottom }
+            svg: lineSvg
+            elementId: "horizontal-line"
+            height: lineSvg.elementSize("horizontal-line").height
+        }
 
-            delegate: PlasmaComponents3.ItemDelegate {
-                id: listdelegate
+        Text {
+            id: textMetric
+            visible: false
+            // translated but not used, we just need length/height
+            text: i18n("Arbitrary String Which Says Something")
+        }
 
-                width: ListView.view.width
-                height: textMetric.paintedHeight * 2
+        ScrollView {
+            anchors { left: parent.left; right: parent.right; bottom: parent.bottom; top: separator.bottom; topMargin: PlasmaCore.Units.smallSpacing}
 
-                hoverEnabled: true
-                text: model.name
+            ListView {
+                id: view
 
-                Accessible.role: Accessible.Button
+                model: sortModel
+                clip: true
+                focus: true
+                keyNavigationWraps: true
 
-                onClicked: {
-                    openProfile();
-                }
+                delegate: PlasmaComponents3.ItemDelegate {
+                    id: listdelegate
 
-                onHoveredChanged: {
-                    if (hovered) {
-                        view.currentIndex = index;
+                    width: ListView.view.width
+                    height: textMetric.paintedHeight * 2
+
+                    hoverEnabled: true
+                    text: model.name
+
+                    Accessible.role: Accessible.Button
+
+                    onClicked: {
+                        openProfile();
+                    }
+
+                    onHoveredChanged: {
+                        if (hovered) {
+                            view.currentIndex = index;
+                        }
+                    }
+
+                    function openProfile() {
+                        /*var service = profilesSource.serviceForSource(model["DataEngineSource"])
+                        var operation = service.operationDescription("open")
+                        var  = service.startOperationCall(operation)*/
+                        console.error(model.profileIdentifier)
+                        profilesModel.openProfile(model.profileIdentifier)
                     }
                 }
 
-                function openProfile() {
-                    /*var service = profilesSource.serviceForSource(model["DataEngineSource"])
-                    var operation = service.operationDescription("open")
-                    var  = service.startOperationCall(operation)*/
-                    console.error(model.profileIdentifier)
-                    profilesModel.openProfile(model.profileIdentifier)
-                }
+                highlight: PlasmaExtras.Highlight {}
+
+                highlightMoveDuration: PlasmaCore.Units.longDuration
+                highlightMoveVelocity: 1
             }
-
-            highlight: PlasmaExtras.Highlight {}
-
-            highlightMoveDuration: PlasmaCore.Units.longDuration
-            highlightMoveVelocity: 1
         }
     }
 }
