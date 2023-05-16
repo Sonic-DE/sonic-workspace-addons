@@ -20,20 +20,15 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.private.notes 0.1
 
-PlasmaCore.SvgItem {
+PlasmoidItem{
     id: root
-
-    svg: PlasmaCore.Svg {
-        imagePath: "widgets/notes"
-    }
-    elementId: Plasmoid.configuration.color + "-notes"
 
     width: PlasmaCore.Units.gridUnit * 15
     height: PlasmaCore.Units.gridUnit * 15
     Layout.minimumWidth: PlasmaCore.Units.iconSizes.medium
     Layout.minimumHeight: PlasmaCore.Units.iconSizes.medium
-    Plasmoid.switchWidth: PlasmaCore.Units.gridUnit * 5
-    Plasmoid.switchHeight: PlasmaCore.Units.gridUnit * 5
+    switchWidth: PlasmaCore.Units.gridUnit * 5
+    switchHeight: PlasmaCore.Units.gridUnit * 5
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
@@ -88,7 +83,7 @@ PlasmaCore.SvgItem {
         id: noteManager
     }
 
-    Plasmoid.compactRepresentation: DragDrop.DropArea {
+    compactRepresentation: DragDrop.DropArea {
         id: compactDropArea
         onDragEnter: activationTimer.restart()
         onDragLeave: activationTimer.stop()
@@ -126,451 +121,460 @@ PlasmaCore.SvgItem {
         defaultFontSize: mainTextArea.cfgFontPointSize
     }
 
-    FocusScope {
-        id: focusScope
-        anchors {
-            fill: parent
-            leftMargin: horizontalMargins
-            rightMargin: horizontalMargins
-            topMargin: verticalMargins
-            bottomMargin: verticalMargins
-        }
+    PlasmaCore.SvgItem {
+        anchors.fill: parent
 
-        QQC2.ScrollView {
-            id: scrollview
+        svg: PlasmaCore.Svg {
+            imagePath: "widgets/notes"
+        }
+        elementId: Plasmoid.configuration.color + "-notes"
+
+        FocusScope {
+            id: focusScope
             anchors {
-                top: parent.top
-                left: parent.left
-                right: parent.right
-                bottom: fontButtons.top
-                bottomMargin: Math.round(PlasmaCore.Units.largeSpacing / 2)
+                fill: parent
+                leftMargin: horizontalMargins
+                rightMargin: horizontalMargins
+                topMargin: verticalMargins
+                bottomMargin: verticalMargins
             }
 
-            clip: true
+            QQC2.ScrollView {
+                id: scrollview
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                    bottom: fontButtons.top
+                    bottomMargin: Math.round(PlasmaCore.Units.largeSpacing / 2)
+                }
 
-            PlasmaComponents3.TextArea {
-                id: mainTextArea
-                property real cfgFontPointSize: Plasmoid.configuration.fontSize
+                clip: true
 
-                textFormat: TextEdit.RichText
-                onLinkActivated: Qt.openUrlExternally(link)
-                background: Rectangle { color: "transparent" }
-                color: textIconColor
-                persistentSelection: true
-                wrapMode: TextEdit.Wrap
+                PlasmaComponents3.TextArea {
+                    id: mainTextArea
+                    property real cfgFontPointSize: Plasmoid.configuration.fontSize
 
-                font.pointSize: cfgFontPointSize
+                    textFormat: TextEdit.RichText
+                    onLinkActivated: Qt.openUrlExternally(link)
+                    background: Rectangle { color: "transparent" }
+                    color: textIconColor
+                    persistentSelection: true
+                    wrapMode: TextEdit.Wrap
 
-                Keys.onPressed: {
-                    if (event.key === Qt.Key_Escape) {
-                        Plasmoid.expanded = false;
-                        event.accepted = true;
-                    } else if (event.modifiers === Qt.ControlModifier) {
-                        if (event.key === Qt.Key_B) {
-                            documentHandler.bold = !documentHandler.bold;
+                    font.pointSize: cfgFontPointSize
+
+                    Keys.onPressed: {
+                        if (event.key === Qt.Key_Escape) {
+                            Plasmoid.expanded = false;
                             event.accepted = true;
-                        } else if (event.key === Qt.Key_I) {
-                            documentHandler.italic = !documentHandler.italic;
-                            event.accepted = true;
-                        } else if (event.key === Qt.Key_U) {
-                            documentHandler.underline = !documentHandler.underline;
-                            event.accepted = true;
-                        } else if (event.key === Qt.Key_S) {
-                            documentHandler.strikeOut = !documentHandler.strikeOut;
-                            event.accepted = true;
-                        } else if (event.matches(StandardKey.Paste)) {
-                            documentHandler.pasteWithoutFormatting();
-                            documentHandler.reset();
-                            event.accepted = true;
-                        } else if (event.matches(StandardKey.Cut)) {
-                            mainTextArea.cut();
-                            documentHandler.reset();
-                            event.accepted = true;
+                        } else if (event.modifiers === Qt.ControlModifier) {
+                            if (event.key === Qt.Key_B) {
+                                documentHandler.bold = !documentHandler.bold;
+                                event.accepted = true;
+                            } else if (event.key === Qt.Key_I) {
+                                documentHandler.italic = !documentHandler.italic;
+                                event.accepted = true;
+                            } else if (event.key === Qt.Key_U) {
+                                documentHandler.underline = !documentHandler.underline;
+                                event.accepted = true;
+                            } else if (event.key === Qt.Key_S) {
+                                documentHandler.strikeOut = !documentHandler.strikeOut;
+                                event.accepted = true;
+                            } else if (event.matches(StandardKey.Paste)) {
+                                documentHandler.pasteWithoutFormatting();
+                                documentHandler.reset();
+                                event.accepted = true;
+                            } else if (event.matches(StandardKey.Cut)) {
+                                mainTextArea.cut();
+                                documentHandler.reset();
+                                event.accepted = true;
+                            }
                         }
                     }
-                }
 
-                // Apply the font size change to existing texts
-                onCfgFontPointSizeChanged: {
-                    var [start, end] = [mainTextArea.selectionStart, mainTextArea.selectionEnd];
+                    // Apply the font size change to existing texts
+                    onCfgFontPointSizeChanged: {
+                        var [start, end] = [mainTextArea.selectionStart, mainTextArea.selectionEnd];
 
-                    mainTextArea.selectAll();
-                    documentHandler.fontSize = cfgFontPointSize;
-                    mainTextArea.select(start, end);
-                }
-
-                // update the note if the source changes, but only if the user isn't editing it currently
-                Binding {
-                    target: mainTextArea
-                    property: "text"
-                    value: note.noteText
-                    when: !mainTextArea.activeFocus
-                    // don't restore an empty value (which IS empty by default when the applet starts up),
-                    // instead only remove this binding for the time when the user edits the content.
-                    restoreMode: Binding.RestoreBinding
-                }
-
-                onActiveFocusChanged: {
-                    if (activeFocus && root.Window && (root.Window.window.flags & Qt.WindowDoesNotAcceptFocus)) {
-                        Plasmoid.status = PlasmaCore.Types.AcceptingInputStatus
-                    } else {
-                        Plasmoid.status = PlasmaCore.Types.ActiveStatus
-                        note.save(mainTextArea.text);
+                        mainTextArea.selectAll();
+                        documentHandler.fontSize = cfgFontPointSize;
+                        mainTextArea.select(start, end);
                     }
-                }
 
-                onPressed: {
-                    if (event.button === Qt.RightButton) {
+                    // update the note if the source changes, but only if the user isn't editing it currently
+                    Binding {
+                        target: mainTextArea
+                        property: "text"
+                        value: note.noteText
+                        when: !mainTextArea.activeFocus
+                        // don't restore an empty value (which IS empty by default when the applet starts up),
+                        // instead only remove this binding for the time when the user edits the content.
+                        restoreMode: Binding.RestoreBinding
+                    }
+
+                    onActiveFocusChanged: {
+                        if (activeFocus && root.Window && (root.Window.window.flags & Qt.WindowDoesNotAcceptFocus)) {
+                            Plasmoid.status = PlasmaCore.Types.AcceptingInputStatus
+                        } else {
+                            Plasmoid.status = PlasmaCore.Types.ActiveStatus
+                            note.save(mainTextArea.text);
+                        }
+                    }
+
+                    onPressed: {
+                        if (event.button === Qt.RightButton) {
+                            event.accepted = true;
+                            contextMenu.popup();
+                            mainTextArea.forceActiveFocus();
+                        }
+                        if (event.button === Qt.LeftButton && contextMenu.visible === true) {
                         event.accepted = true;
-                        contextMenu.popup();
+                        contextMenu.dismiss();
                         mainTextArea.forceActiveFocus();
-                    }
-                    if (event.button === Qt.LeftButton && contextMenu.visible === true) {
-                       event.accepted = true;
-                       contextMenu.dismiss();
-                       mainTextArea.forceActiveFocus();
-                    }
-                }
-
-                Component.onCompleted: {
-                    if (!Plasmoid.configuration.fontSize) {
-                        // Set fontSize to default if it is not set
-                        Plasmoid.configuration.fontSize = mainTextArea.font.pointSize
-                    }
-                }
-
-                QQC2.Menu {
-                    id: contextMenu
-
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.Undo
-                        _enabled: mainTextArea.canUndo
-                        _iconName: "edit-undo"
-                        _text: i18n("Undo")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.undo())
-                    }
-
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.Redo
-                        _enabled: mainTextArea.canRedo
-                        _iconName: "edit-redo"
-                        _text: i18n("Redo")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.redo())
-                    }
-
-                    QQC2.MenuSeparator {}
-
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.Cut
-                        _enabled: mainTextArea.selectedText.length > 0
-                        _iconName: "edit-cut"
-                        _text: i18n("Cut")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.cut())
-                    }
-
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.Copy
-                        _enabled: mainTextArea.selectedText.length > 0
-                        _iconName: "edit-copy"
-                        _text: i18n("Copy")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.copy())
-                    }
-
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.Paste
-                        _enabled: mainTextArea.canPaste
-                        _iconName: "edit-paste"
-                        _text: i18n("Paste")
-                        onTriggered: contextMenu.retFocus(() => documentHandler.pasteWithoutFormatting())
-                    }
-
-                    ShortcutMenuItem {
-                        _enabled: mainTextArea.canPaste
-                        _text: i18n("Paste with Full Formatting")
-                        _iconName: "edit-paste"
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.paste())
-                    }
-
-                    ShortcutMenuItem {
-                        _enabled: mainTextArea.selectedText.length > 0
-                        _text: i18nc("@action:inmenu", "Remove Formatting")
-                        _iconName: "edit-clear-all"
-                        onTriggered: {
-                            var richText = mainTextArea.getFormattedText(mainTextArea.selectionStart, mainTextArea.selectionEnd)
-                            var unformattedText = documentHandler.strip(richText)
-                            unformattedText = unformattedText.replace(/\n/g, "<br>")
-                            mainTextArea.remove(mainTextArea.selectionStart, mainTextArea.selectionEnd)
-                            contextMenu.retFocus(() => mainTextArea.insert(mainTextArea.selectionStart, unformattedText))
                         }
                     }
 
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.Delete
-                        _enabled: mainTextArea.selectedText.length > 0
-                        _iconName: "edit-delete"
-                        _text: i18n("Delete")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.remove(mainTextArea.selectionStart, mainTextArea.selectionEnd))
+                    Component.onCompleted: {
+                        if (!Plasmoid.configuration.fontSize) {
+                            // Set fontSize to default if it is not set
+                            Plasmoid.configuration.fontSize = mainTextArea.font.pointSize
+                        }
                     }
 
-                    ShortcutMenuItem {
-                        _enabled: mainTextArea.text.length > 0
-                        _iconName: "edit-clear"
-                        _text: i18n("Clear")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.clear())
-                    }
+                    QQC2.Menu {
+                        id: contextMenu
 
-                    QQC2.MenuSeparator {}
+                        ShortcutMenuItem {
+                            _sequence: StandardKey.Undo
+                            _enabled: mainTextArea.canUndo
+                            _iconName: "edit-undo"
+                            _text: i18n("Undo")
+                            onTriggered: contextMenu.retFocus(() => mainTextArea.undo())
+                        }
 
-                    ShortcutMenuItem {
-                        _sequence: StandardKey.SelectAll
-                        _enabled: mainTextArea.text.length > 0
-                        _iconName: "edit-select-all"
-                        _text: i18n("Select All")
-                        onTriggered: contextMenu.retFocus(() => mainTextArea.selectAll())
-                    }
+                        ShortcutMenuItem {
+                            _sequence: StandardKey.Redo
+                            _enabled: mainTextArea.canRedo
+                            _iconName: "edit-redo"
+                            _text: i18n("Redo")
+                            onTriggered: contextMenu.retFocus(() => mainTextArea.redo())
+                        }
 
-                    function retFocus(f) {
-                        f()
-                        documentHandler.reset()
-                        mainTextArea.forceActiveFocus()
-                    }
-                }
-            }
+                        QQC2.MenuSeparator {}
 
-            // Save scrolling position when it changes, but throttle to avoid
-            // killing a storage disk.
-            Connections {
-                target: scrollview.contentItem
-                function onContentXChanged() {
-                    throttedScrollSaver.restart();
-                }
-                function onContentYChanged() {
-                    throttedScrollSaver.restart();
-                }
-            }
-            Connections {
-                target: mainTextArea
-                function onCursorPositionChanged() {
-                    throttedScrollSaver.restart();
-                }
-            }
+                        ShortcutMenuItem {
+                            _sequence: StandardKey.Cut
+                            _enabled: mainTextArea.selectedText.length > 0
+                            _iconName: "edit-cut"
+                            _text: i18n("Cut")
+                            onTriggered: contextMenu.retFocus(() => mainTextArea.cut())
+                        }
 
-            Timer {
-                id: throttedScrollSaver
-                interval: PlasmaCore.Units.humanMoment
-                repeat: false
-                running: false
-                onTriggered: scrollview.saveScroll()
-            }
+                        ShortcutMenuItem {
+                            _sequence: StandardKey.Copy
+                            _enabled: mainTextArea.selectedText.length > 0
+                            _iconName: "edit-copy"
+                            _text: i18n("Copy")
+                            onTriggered: contextMenu.retFocus(() => mainTextArea.copy())
+                        }
 
-            function saveScroll() {
-                const flickable = scrollview.contentItem;
-                Plasmoid.configuration.scrollX = flickable.contentX;
-                Plasmoid.configuration.scrollY = flickable.contentY;
-                Plasmoid.configuration.cursorPosition = mainTextArea.cursorPosition;
-            }
+                        ShortcutMenuItem {
+                            _sequence: StandardKey.Paste
+                            _enabled: mainTextArea.canPaste
+                            _iconName: "edit-paste"
+                            _text: i18n("Paste")
+                            onTriggered: contextMenu.retFocus(() => documentHandler.pasteWithoutFormatting())
+                        }
 
-            function restoreScroll() {
-                const flickable = scrollview.contentItem;
-                flickable.contentX = Plasmoid.configuration.scrollX;
-                flickable.contentY = Plasmoid.configuration.scrollY;
-                mainTextArea.cursorPosition = Plasmoid.configuration.cursorPosition;
-            }
+                        ShortcutMenuItem {
+                            _enabled: mainTextArea.canPaste
+                            _text: i18n("Paste with Full Formatting")
+                            _iconName: "edit-paste"
+                            onTriggered: contextMenu.retFocus(() => mainTextArea.paste())
+                        }
 
-            // Give it some time to lay out the text, because at this
-            // point in time content size is not reliable yet.
-            Component.onCompleted: Qt.callLater(restoreScroll)
-            Component.onDestruction: saveScroll()
-        }
+                        ShortcutMenuItem {
+                            _enabled: mainTextArea.selectedText.length > 0
+                            _text: i18nc("@action:inmenu", "Remove Formatting")
+                            _iconName: "edit-clear-all"
+                            onTriggered: {
+                                var richText = mainTextArea.getFormattedText(mainTextArea.selectionStart, mainTextArea.selectionEnd)
+                                var unformattedText = documentHandler.strip(richText)
+                                unformattedText = unformattedText.replace(/\n/g, "<br>")
+                                mainTextArea.remove(mainTextArea.selectionStart, mainTextArea.selectionEnd)
+                                contextMenu.retFocus(() => mainTextArea.insert(mainTextArea.selectionStart, unformattedText))
+                            }
+                        }
 
-        DragDrop.DropArea {
-            id: dropArea
-            anchors.fill: scrollview
+                        ShortcutMenuItem {
+                            _sequence: StandardKey.Delete
+                            _enabled: mainTextArea.selectedText.length > 0
+                            _iconName: "edit-delete"
+                            _text: i18n("Delete")
+                            onTriggered: contextMenu.retFocus(() => mainTextArea.remove(mainTextArea.selectionStart, mainTextArea.selectionEnd))
+                        }
 
-            function positionOfDrop(event) {
-                return mainTextArea.positionAt(event.x, event.y)
-            }
+                        ShortcutMenuItem {
+                            _enabled: mainTextArea.text.length > 0
+                            _iconName: "edit-clear"
+                            _text: i18n("Clear")
+                            onTriggered: contextMenu.retFocus(() => mainTextArea.clear())
+                        }
 
-            onDrop: {
-                var mimeData = event.mimeData
-                var text = ""
-                if (mimeData.hasUrls) {
-                    var urls = mimeData.urls
-                    for (var i = 0, j = urls.length; i < j; ++i) {
-                        var url = urls[i]
-                        text += "<a href=\"" + url + "\">" + url + "</a><br>"
-                    }
-                } else {
-                    text = mimeData.text.replace(/\n/g, "<br>")
-                }
+                        QQC2.MenuSeparator {}
 
-                mainTextArea.insert(positionOfDrop(event), text)
-                event.accept(Qt.CopyAction)
-            }
-            onDragMove: {
-                // there doesn't seem to be a "just move the cursor", so we move
-                // the selection and then unselect so the cursor follows the mouse
-                mainTextArea.moveCursorSelection(positionOfDrop(event))
-                mainTextArea.deselect()
-            }
+                        ShortcutMenuItem {
+                            _sequence: StandardKey.SelectAll
+                            _enabled: mainTextArea.text.length > 0
+                            _iconName: "edit-select-all"
+                            _text: i18n("Select All")
+                            onTriggered: contextMenu.retFocus(() => mainTextArea.selectAll())
+                        }
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: mainTextArea.hoveredLink ? Qt.PointingHandCursor : Qt.IBeamCursor
-                acceptedButtons: Qt.NoButton
-            }
-        }
-
-        RowLayout {
-            id: fontButtons
-            spacing: PlasmaCore.Units.smallSpacing
-            anchors {
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-            }
-            height: visible ? implicitHeight : 0
-            visible: opacity > 0
-            opacity: focusScope.activeFocus ? 1 : 0
-            Behavior on opacity { NumberAnimation { duration: PlasmaCore.Units.longDuration } }
-
-            readonly property int requiredWidth: formatButtonsRow.width + spacing + settingsButton.width + removeButton.width
-            readonly property bool showFormatButtons: width > requiredWidth
-
-            Row {
-                id: formatButtonsRow
-                spacing: PlasmaCore.Units.smallSpacing
-                // show format buttons if TextField or any of the buttons have focus
-                enabled: opacity > 0
-                visible: fontButtons.showFormatButtons
-
-                QQC2.ToolButton {
-                    focusPolicy: Qt.TabFocus
-                    icon.name: "format-text-bold"
-                    icon.color: textIconColor
-                    checked: documentHandler.bold
-                    onClicked: documentHandler.bold = !documentHandler.bold
-                    Accessible.name: boldTooltip.text
-                    QQC2.ToolTip {
-                        id: boldTooltip
-                        text: i18nc("@info:tooltip", "Bold")
+                        function retFocus(f) {
+                            f()
+                            documentHandler.reset()
+                            mainTextArea.forceActiveFocus()
+                        }
                     }
                 }
-                QQC2.ToolButton {
-                    focusPolicy: Qt.TabFocus
-                    icon.name: "format-text-italic"
-                    icon.color: textIconColor
-                    checked: documentHandler.italic
-                    onClicked: documentHandler.italic = !documentHandler.italic
-                    Accessible.name: italicTooltip.text
-                    QQC2.ToolTip {
-                        id: italicTooltip
-                        text: i18nc("@info:tooltip", "Italic")
+
+                // Save scrolling position when it changes, but throttle to avoid
+                // killing a storage disk.
+                Connections {
+                    target: scrollview.contentItem
+                    function onContentXChanged() {
+                        throttedScrollSaver.restart();
+                    }
+                    function onContentYChanged() {
+                        throttedScrollSaver.restart();
                     }
                 }
-                QQC2.ToolButton {
-                    focusPolicy: Qt.TabFocus
-                    icon.name: "format-text-underline"
-                    icon.color: textIconColor
-                    checked: documentHandler.underline
-                    onClicked: documentHandler.underline = !documentHandler.underline
-                    Accessible.name: underlineTooltip.text
-                    QQC2.ToolTip {
-                        id: underlineTooltip
-                        text: i18nc("@info:tooltip", "Underline")
+                Connections {
+                    target: mainTextArea
+                    function onCursorPositionChanged() {
+                        throttedScrollSaver.restart();
                     }
                 }
-                QQC2.ToolButton {
-                    focusPolicy: Qt.TabFocus
-                    icon.name: "format-text-strikethrough"
-                    icon.color: textIconColor
-                    checked: documentHandler.strikeOut
-                    onClicked: documentHandler.strikeOut = !documentHandler.strikeOut
-                    Accessible.name: strikethroughTooltip.text
-                    QQC2.ToolTip {
-                        id: strikethroughTooltip
-                        text: i18nc("@info:tooltip", "Strikethrough")
-                    }
+
+                Timer {
+                    id: throttedScrollSaver
+                    interval: PlasmaCore.Units.humanMoment
+                    repeat: false
+                    running: false
+                    onTriggered: scrollview.saveScroll()
                 }
-            }
 
-            Item { // spacer
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
-
-            QQC2.ToolButton {
-                id: settingsButton
-                focusPolicy: Qt.TabFocus
-                icon.name: "configure"
-                icon.color: textIconColor
-                onClicked: Plasmoid.action("configure").trigger()
-                Accessible.name: settingsTooltip.text
-                QQC2.ToolTip {
-                    id: settingsTooltip
-                    text: Plasmoid.action("configure").text
+                function saveScroll() {
+                    const flickable = scrollview.contentItem;
+                    Plasmoid.configuration.scrollX = flickable.contentX;
+                    Plasmoid.configuration.scrollY = flickable.contentY;
+                    Plasmoid.configuration.cursorPosition = mainTextArea.cursorPosition;
                 }
+
+                function restoreScroll() {
+                    const flickable = scrollview.contentItem;
+                    flickable.contentX = Plasmoid.configuration.scrollX;
+                    flickable.contentY = Plasmoid.configuration.scrollY;
+                    mainTextArea.cursorPosition = Plasmoid.configuration.cursorPosition;
+                }
+
+                // Give it some time to lay out the text, because at this
+                // point in time content size is not reliable yet.
+                Component.onCompleted: Qt.callLater(restoreScroll)
+                Component.onDestruction: saveScroll()
             }
 
-            QQC2.ToolButton {
-                id: removeButton
-                focusPolicy: Qt.TabFocus
-                icon.name: "edit-delete"
-                icon.color: textIconColor
-                onClicked: {
-                    // No need to ask for confirmation in the cases when...
-                    // ...the note is blank
-                    if (mainTextArea.length === 0 ||
-                        // ...the note's content is equal to the clipboard text
+            DragDrop.DropArea {
+                id: dropArea
+                anchors.fill: scrollview
 
-                        // Note that we are intentionally not using
-                        // mainTextArea.getText() because it has a method of
-                        // converting the text to plainText that does not produce
-                        // the same exact output of various other methods, and if
-                        // we go out of our way to match it, we will be
-                        // depending on an implementation detail. So we instead
-                        // roll our own version to ensure that the conversion
-                        // is done in the same way every time.
-                        documentHandler.stripAndSimplify(mainTextArea.text) === documentHandler.strippedClipboardText()
-                    ) {
-                        Plasmoid.action("remove").trigger();
+                function positionOfDrop(event) {
+                    return mainTextArea.positionAt(event.x, event.y)
+                }
+
+                onDrop: {
+                    var mimeData = event.mimeData
+                    var text = ""
+                    if (mimeData.hasUrls) {
+                        var urls = mimeData.urls
+                        for (var i = 0, j = urls.length; i < j; ++i) {
+                            var url = urls[i]
+                            text += "<a href=\"" + url + "\">" + url + "</a><br>"
+                        }
                     } else {
-                        discardConfirmationDialogLoader.open();
+                        text = mimeData.text.replace(/\n/g, "<br>")
+                    }
+
+                    mainTextArea.insert(positionOfDrop(event), text)
+                    event.accept(Qt.CopyAction)
+                }
+                onDragMove: {
+                    // there doesn't seem to be a "just move the cursor", so we move
+                    // the selection and then unselect so the cursor follows the mouse
+                    mainTextArea.moveCursorSelection(positionOfDrop(event))
+                    mainTextArea.deselect()
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: mainTextArea.hoveredLink ? Qt.PointingHandCursor : Qt.IBeamCursor
+                    acceptedButtons: Qt.NoButton
+                }
+            }
+
+            RowLayout {
+                id: fontButtons
+                spacing: PlasmaCore.Units.smallSpacing
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+                height: visible ? implicitHeight : 0
+                visible: opacity > 0
+                opacity: focusScope.activeFocus ? 1 : 0
+                Behavior on opacity { NumberAnimation { duration: PlasmaCore.Units.longDuration } }
+
+                readonly property int requiredWidth: formatButtonsRow.width + spacing + settingsButton.width + removeButton.width
+                readonly property bool showFormatButtons: width > requiredWidth
+
+                Row {
+                    id: formatButtonsRow
+                    spacing: PlasmaCore.Units.smallSpacing
+                    // show format buttons if TextField or any of the buttons have focus
+                    enabled: opacity > 0
+                    visible: fontButtons.showFormatButtons
+
+                    QQC2.ToolButton {
+                        focusPolicy: Qt.TabFocus
+                        icon.name: "format-text-bold"
+                        icon.color: textIconColor
+                        checked: documentHandler.bold
+                        onClicked: documentHandler.bold = !documentHandler.bold
+                        Accessible.name: boldTooltip.text
+                        QQC2.ToolTip {
+                            id: boldTooltip
+                            text: i18nc("@info:tooltip", "Bold")
+                        }
+                    }
+                    QQC2.ToolButton {
+                        focusPolicy: Qt.TabFocus
+                        icon.name: "format-text-italic"
+                        icon.color: textIconColor
+                        checked: documentHandler.italic
+                        onClicked: documentHandler.italic = !documentHandler.italic
+                        Accessible.name: italicTooltip.text
+                        QQC2.ToolTip {
+                            id: italicTooltip
+                            text: i18nc("@info:tooltip", "Italic")
+                        }
+                    }
+                    QQC2.ToolButton {
+                        focusPolicy: Qt.TabFocus
+                        icon.name: "format-text-underline"
+                        icon.color: textIconColor
+                        checked: documentHandler.underline
+                        onClicked: documentHandler.underline = !documentHandler.underline
+                        Accessible.name: underlineTooltip.text
+                        QQC2.ToolTip {
+                            id: underlineTooltip
+                            text: i18nc("@info:tooltip", "Underline")
+                        }
+                    }
+                    QQC2.ToolButton {
+                        focusPolicy: Qt.TabFocus
+                        icon.name: "format-text-strikethrough"
+                        icon.color: textIconColor
+                        checked: documentHandler.strikeOut
+                        onClicked: documentHandler.strikeOut = !documentHandler.strikeOut
+                        Accessible.name: strikethroughTooltip.text
+                        QQC2.ToolTip {
+                            id: strikethroughTooltip
+                            text: i18nc("@info:tooltip", "Strikethrough")
+                        }
                     }
                 }
-                Accessible.name: removeTooltip.text
-                QQC2.ToolTip {
-                    id: removeTooltip
-                    text: Plasmoid.action("remove").text
+
+                Item { // spacer
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
+
+                QQC2.ToolButton {
+                    id: settingsButton
+                    focusPolicy: Qt.TabFocus
+                    icon.name: "configure"
+                    icon.color: textIconColor
+                    onClicked: Plasmoid.action("configure").trigger()
+                    Accessible.name: settingsTooltip.text
+                    QQC2.ToolTip {
+                        id: settingsTooltip
+                        text: Plasmoid.action("configure").text
+                    }
+                }
+
+                QQC2.ToolButton {
+                    id: removeButton
+                    focusPolicy: Qt.TabFocus
+                    icon.name: "edit-delete"
+                    icon.color: textIconColor
+                    onClicked: {
+                        // No need to ask for confirmation in the cases when...
+                        // ...the note is blank
+                        if (mainTextArea.length === 0 ||
+                            // ...the note's content is equal to the clipboard text
+
+                            // Note that we are intentionally not using
+                            // mainTextArea.getText() because it has a method of
+                            // converting the text to plainText that does not produce
+                            // the same exact output of various other methods, and if
+                            // we go out of our way to match it, we will be
+                            // depending on an implementation detail. So we instead
+                            // roll our own version to ensure that the conversion
+                            // is done in the same way every time.
+                            documentHandler.stripAndSimplify(mainTextArea.text) === documentHandler.strippedClipboardText()
+                        ) {
+                            Plasmoid.action("remove").trigger();
+                        } else {
+                            discardConfirmationDialogLoader.open();
+                        }
+                    }
+                    Accessible.name: removeTooltip.text
+                    QQC2.ToolTip {
+                        id: removeTooltip
+                        text: Plasmoid.action("remove").text
+                    }
                 }
             }
         }
-    }
 
-    Loader {
-        id: discardConfirmationDialogLoader
+        Loader {
+            id: discardConfirmationDialogLoader
 
-        function open() {
-            if (item) {
-                item.open();
-            } else {
-                active = true;
+            function open() {
+                if (item) {
+                    item.open();
+                } else {
+                    active = true;
+                }
+                item.visible = true;
             }
-            item.visible = true;
-        }
 
-        active: false
+            active: false
 
-        sourceComponent: MessageDialog {
-            visible: false
-            title: i18n("Discard this note?")
-            text: i18n("Are you sure you want to discard this note?")
+            sourceComponent: MessageDialog {
+                visible: false
+                title: i18n("Discard this note?")
+                text: i18n("Are you sure you want to discard this note?")
 
-            buttons: MessageDialog.Discard | MessageDialog.Cancel
+                buttons: MessageDialog.Discard | MessageDialog.Cancel
 
-            onRejected: {
-                Plasmoid.action("remove").trigger()
-                visible = false;
+                onRejected: {
+                    Plasmoid.action("remove").trigger()
+                    visible = false;
+                }
             }
         }
     }
