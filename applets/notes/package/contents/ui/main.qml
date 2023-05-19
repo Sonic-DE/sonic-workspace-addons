@@ -20,7 +20,7 @@ import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.private.notes 0.1
 
-PlasmoidItem{
+PlasmoidItem {
     id: root
 
     width: PlasmaCore.Units.gridUnit * 15
@@ -33,8 +33,8 @@ PlasmoidItem{
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
     // this isn't a frameSVG, the default SVG margins take up around 7% of the frame size, so we use that
-    readonly property real horizontalMargins: width * 0.07
-    readonly property real verticalMargins: height * 0.07
+    readonly property real horizontalMargins: backgroundItem.width * 0.07
+    readonly property real verticalMargins: backgroundItem.height * 0.07
 
     // note is of type Note
     property QtObject note: noteManager.loadNote(Plasmoid.configuration.noteId);
@@ -56,7 +56,7 @@ PlasmoidItem{
     }
 
     Connections {
-        target: Plasmoid.self
+        target: Plasmoid
         function onExpandedChanged(expanded) {
             // don't autofocus when we're on the desktop
             if (expanded && (Plasmoid.formFactor === PlasmaCore.Types.Vertical || Plasmoid.formFactor === PlasmaCore.Types.Horizontal)) {
@@ -122,7 +122,7 @@ PlasmoidItem{
     }
 
     PlasmaCore.SvgItem {
-        anchors.fill: parent
+        id: backgroundItem
 
         svg: PlasmaCore.Svg {
             imagePath: "widgets/notes"
