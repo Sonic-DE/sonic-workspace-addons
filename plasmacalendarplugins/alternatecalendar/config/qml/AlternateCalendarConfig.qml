@@ -71,7 +71,7 @@ Kirigami.FormLayout {
             textFromValue: (value, locale) => i18ndp("plasma_calendar_alternatecalendar","%1 day", "%1 days", value)
             valueFromText: (text, locale) => parseInt(text)
 
-            QQC2.ToolTip.text: i18ndc("plasma_calendar_alternatecalendar", "@info:tooltip", "A positive date offset signifies a later date, while a negative date offset represents an earlier date.")
+            QQC2.ToolTip.text: i18ndc("plasma_calendar_alternatecalendar", "@info:tooltip", "A positive offset signifies a later date, while a negative offset signifies an earlier date.")
             QQC2.ToolTip.visible: hovered
             QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
        }
