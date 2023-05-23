@@ -55,6 +55,16 @@ PlasmoidItem {
         }
     }
 
+    onExternalData: (mimetype, data) => {
+        var type = items.isDir(data) ? "folder" : "file";
+        var item = {
+            "path": data,
+            "type": type
+        };
+
+        addItem(item);
+    }
+
     function loadPathList() {
         var list = plasmoid.configuration.pathList
         items.clear()
@@ -442,19 +452,6 @@ PlasmoidItem {
         text: i18nc("@action:button", "Configure…")
         onClicked: {
             plasmoid.action("configure").trigger();
-        }
-    }
-
-    Connections {
-        target: plasmoid
-        function onExternalData(mimetype, data) {
-            var type = items.isDir(data) ? "folder" : "file";
-            var item = {
-                "path": data,
-                "type": type
-            };
-
-            addItem(item);
         }
     }
 }
