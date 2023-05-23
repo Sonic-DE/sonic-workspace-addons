@@ -49,6 +49,17 @@ PlasmoidItem {
         return "#202020";
     }
 
+    onExternalData: (mimetype, data) => {
+        // if we dropped a text file, we want its contents,
+        // otherwise we take the external data verbatim
+        var contents = NotesHelper.fileContents(data) || data
+        mainTextArea.text = contents.replace(/\n/g, "<br>") // what about richtext?
+
+        // place cursor at the end of text, there's no "just move the cursor" function
+        mainTextArea.moveCursorSelection(mainTextArea.length)
+        mainTextArea.deselect()
+    }
+
     Timer {
         id: forceFocusTimer
         interval: 1
@@ -66,16 +77,6 @@ PlasmoidItem {
         function onActivated() {
             // FIXME doing forceActiveFocus here directly doesn't work
             forceFocusTimer.restart()
-        }
-        function onExternalData(mimetype, data) {
-            // if we dropped a text file, we want its contents,
-            // otherwise we take the external data verbatim
-            var contents = NotesHelper.fileContents(data) || data
-            mainTextArea.text = contents.replace(/\n/g, "<br>") // what about richtext?
-
-            // place cursor at the end of text, there's no "just move the cursor" function
-            mainTextArea.moveCursorSelection(mainTextArea.length)
-            mainTextArea.deselect()
         }
     }
 
