@@ -61,8 +61,6 @@ PlasmoidItem {
         return "input-caps-on"
     }
 
-    preferredRepresentation: compactRepresentation
-
     compactRepresentation: MouseArea {
         id: compactMouse
 
@@ -93,7 +91,7 @@ PlasmoidItem {
             anchors.centerIn: parent
             width: parent.width - (PlasmaCore.Units.gridUnit * 4)
             iconName: Plasmoid.icon
-            text: Plasmoid.toolTipSubText
+            text: root.toolTipSubText
         }
     }
 
