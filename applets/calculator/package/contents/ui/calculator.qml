@@ -24,11 +24,6 @@ PlasmoidItem {
 
     switchWidth: Layout.minimumWidth
     switchHeight: Layout.minimumHeight
-    Layout.minimumWidth: 150
-    Layout.minimumHeight: 225
-
-    width: PlasmaCore.Units.gridSize * 3
-    height: PlasmaCore.Units.gridSize * 4
 
     // Make the buttons' text labels scale with the widget's size
     // This is propagated down to all child controls with text
@@ -302,6 +297,12 @@ PlasmoidItem {
         id: mainLayout
         anchors.fill: parent
         anchors.margins: 4
+
+        Layout.minimumWidth: 150
+        Layout.minimumHeight: 225
+
+        width: PlasmaCore.Units.gridSize * 3
+        height: PlasmaCore.Units.gridSize * 4
 
         focus: true;
         spacing: 4;
