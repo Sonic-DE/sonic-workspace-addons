@@ -27,7 +27,6 @@ PlasmoidItem {
 
     // Make the buttons' text labels scale with the widget's size
     // This is propagated down to all child controls with text
-//    font.pixelSize: Math.round(width/12)
 
     property real result: 0;
     property bool hasResult: false;
