@@ -14,6 +14,7 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.5 as QQC2
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.plasma5support 2.0 as P5Support
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.kquickcontrolsaddons 2.0 as QtExtra
@@ -313,7 +314,7 @@ PlasmoidItem {
             KeyNavigation.left: allClearButton
             KeyNavigation.right: clearButton
 
-            PlasmaCore.FrameSvgItem {
+            KSvg.FrameSvgItem {
                 id: displayFrame;
                 Layout.fillWidth: true
                 Layout.minimumHeight: 2 * display.font.pixelSize;
