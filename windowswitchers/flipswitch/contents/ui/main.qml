@@ -12,6 +12,7 @@ import QtQuick.Window 2.15
 
 import org.kde.kirigami 2.15 as Kirigami
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.components 3.0 as PC3
 
 import org.kde.kwin 3.0 as KWin
@@ -170,7 +171,7 @@ KWin.TabBoxSwitcher {
                 angle: 10
             }
 
-            highlight: PlasmaCore.FrameSvgItem {
+            highlight: KSvg.FrameSvgItem {
                 imagePath: "widgets/viewitem"
                 prefix: "hover"
 

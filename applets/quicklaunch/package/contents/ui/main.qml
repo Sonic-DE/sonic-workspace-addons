@@ -8,6 +8,7 @@ import QtQuick 2.2
 import QtQuick.Layouts 1.0
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.draganddrop 2.0 as DragAndDrop
 import org.kde.plasma.private.quicklaunch 1.0
@@ -193,12 +194,12 @@ Item {
                 popup.visible = !popup.visible
             }
 
-            PlasmaCore.Svg {
+            KSvg.Svg {
                 id: arrowSvg
                 imagePath: "widgets/arrows"
             }
 
-            PlasmaCore.SvgItem {
+            KSvg.SvgItem {
                 id: arrow
 
                 anchors.centerIn: parent

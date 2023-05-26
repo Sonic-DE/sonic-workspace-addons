@@ -14,16 +14,17 @@ import QtQuick.Dialogs
 import org.kde.draganddrop 2.0 as DragDrop
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.plasmoid 2.0
 
 import org.kde.plasma.private.notes 0.1
 
-PlasmaCore.SvgItem {
+KSvg.SvgItem {
     id: root
 
-    svg: PlasmaCore.Svg {
+    svg: KSvg.Svg {
         imagePath: "widgets/notes"
     }
     elementId: Plasmoid.configuration.color + "-notes"
