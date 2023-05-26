@@ -9,6 +9,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.3
 
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.ksvg 2.0 as KSvg
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
@@ -34,7 +35,7 @@ GridLayout {
 
     columns: 3
 
-    PlasmaCore.Svg {
+    KSvg.Svg {
         id: windSvg
 
         imagePath: "weather/wind-arrows"
@@ -85,7 +86,7 @@ GridLayout {
         Layout.minimumWidth: sideWidth
         Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
-        PlasmaCore.SvgItem {
+        KSvg.SvgItem {
             id: windSpeedDirection
 
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
