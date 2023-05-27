@@ -8,8 +8,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
-import org.kde.draganddrop 2.0 as DragDrop
-
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
@@ -23,6 +21,14 @@ Item {
     MediaFrame {
         id: items
         random: plasmoid.configuration.randomize
+        paths: plasmoid.configuration.pathList
+
+        onPathsChanged: {
+            if (paths === plasmoid.configuration.pathList) {
+                return;
+            }
+            plasmoid.configuration.pathList = paths;
+        }
     }
 
     Plasmoid.preferredRepresentation: plasmoid.fullRepresentation
@@ -55,41 +61,9 @@ Item {
         }
     }
 
-    function loadPathList() {
-        var list = plasmoid.configuration.pathList
-        items.clear()
-        for(var i in list) {
-            var item = JSON.parse(list[i])
-            items.add(item.path,true)
-        }
-    }
-
     Component.onCompleted: {
-        loadPathList()
-
         if (items.random)
             nextItem()
-    }
-
-    Connections {
-        target: plasmoid.configuration
-        function onPathListChanged() {
-            loadPathList()
-        }
-    }
-
-    function addItem(item) {
-
-        if(items.isAdded(item.path)) {
-            console.info(item.path,"already exists. Skipping…")
-            return
-        }
-        // work-around for QTBUG-67773:
-        // C++ object property of type QVariant(QStringList) is not updated on changes from QML
-        // so explicitly create a deep JSValue copy, modify that and then set it back to overwrite the old
-        var updatedList = plasmoid.configuration.pathList.slice();
-        updatedList.push(JSON.stringify(item));
-        plasmoid.configuration.pathList = updatedList;
     }
 
     function nextItem() {
@@ -272,19 +246,19 @@ Item {
         }
     }
 
-    DragDrop.DropArea {
+    DropArea {
         id: dropArea
         anchors.fill: parent
 
-        onDrop: {
-            var mimeData = event.mimeData
-            if (mimeData.hasUrls) {
-                var urls = mimeData.urls
-                for (var i = 0, j = urls.length; i < j; ++i) {
-                    var url = urls[i]
-                    var type = items.isDir(url) ? "folder" : "file"
-                    var item = { "path":url, "type":type }
-                    addItem(item)
+        onDropped: (event) => {
+            if (event.hasUrls) {
+                const paths = items.add(event.urls);
+                if (paths.length > 0) {
+                    let newPathList = Plasmoid.configuration.pathList;
+                    paths.forEach((path) => {
+                        newPathList.push(path);
+                    });
+                    Plasmoid.configuration.pathList = newPathList;
                 }
             }
             event.accept(Qt.CopyAction)
@@ -445,16 +419,14 @@ Item {
         }
     }
 
-    Connections {
-        target: plasmoid
-        function onExternalData(mimetype, data) {
-            var type = items.isDir(data) ? "folder" : "file";
-            var item = {
-                "path": data,
-                "type": type
-            };
-
-            addItem(item);
+    Plasmoid.onExternalData: (mimetype, data) => {
+        const paths = items.add(data);
+        if (paths.length > 0) {
+            let newPathList = Plasmoid.configuration.pathList;
+            paths.forEach((path) => {
+                newPathList.push(path);
+            });
+            Plasmoid.configuration.pathList = newPathList;
         }
     }
 }
