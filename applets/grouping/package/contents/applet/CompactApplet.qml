@@ -23,6 +23,7 @@ PlasmaCore.ToolTipArea {
     active: !plasmoid.expanded
     textFormat: plasmoid.toolTipTextFormat
     mainItem: plasmoid.toolTipItem ? plasmoid.toolTipItem : null
+    property PlasmoidItem plasmoidItem
 
     property Item fullRepresentation
     property Item compactRepresentation
@@ -109,7 +110,7 @@ PlasmaCore.ToolTipArea {
         visible: plasmoid.expanded && fullRepresentation
         visualParent: compactRepresentation ? compactRepresentation : null
         location: plasmoid.location
-        hideOnWindowDeactivate: plasmoid.hideOnWindowDeactivate
+        hideOnWindowDeactivate: root.plasmoidItem.hideOnWindowDeactivate
 
         property var oldStatus: PlasmaCore.Types.UnknownStatus
 
