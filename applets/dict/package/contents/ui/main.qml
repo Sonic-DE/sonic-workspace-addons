@@ -17,6 +17,7 @@ import org.kde.kirigami 2.19 as Kirigami
 import org.kde.plasma.private.dict 1.0
 
 PlasmoidItem {
+    id: root
     fullRepresentation: ColumnLayout {
         Keys.forwardTo: input
 
@@ -37,7 +38,7 @@ PlasmoidItem {
             Layout.fillWidth: true
             PlasmaExtras.SearchField {
                 id: input
-                focus: Plasmoid.expanded && !Kirigami.InputMethod.willShowOnActive
+                focus: root.expanded && !Kirigami.InputMethod.willShowOnActive
                 placeholderText: i18nc("@info:placeholder", "Enter word to define here…")
                 Layout.fillWidth: true
                 Layout.minimumWidth: PlasmaCore.Units.gridUnit * 12
