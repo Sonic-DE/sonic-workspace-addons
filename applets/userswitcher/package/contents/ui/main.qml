@@ -60,8 +60,8 @@ PlasmoidItem {
         Layout.preferredHeight: isVertical ? Layout.minimumHeight : PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).height * 2
 
         property bool wasExpanded
-        onPressed: wasExpanded = Plasmoid.expanded
-        onClicked: Plasmoid.expanded = !wasExpanded
+        onPressed: wasExpanded = root.expanded
+        onClicked: root.expanded = !wasExpanded
 
         Row {
             id: compactRow
@@ -232,9 +232,9 @@ PlasmoidItem {
         }
 
         Connections {
-            target: Plasmoid.self
+            target: root
             function onExpandedChanged() {
-                if (Plasmoid.expanded) {
+                if (root.expanded) {
                     sessionsModel.reload();
                 }
             }

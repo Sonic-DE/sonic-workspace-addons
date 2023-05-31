@@ -92,7 +92,7 @@ PlasmoidItem {
         Timer {
             id: activationTimer
             interval: 250 // matches taskmanager delay
-            onTriggered: Plasmoid.expanded = true
+            onTriggered: root.expanded = true
         }
 
         MouseArea {
@@ -101,8 +101,8 @@ PlasmoidItem {
 
             property bool wasExpanded
 
-            onPressed: wasExpanded = Plasmoid.expanded
-            onClicked: Plasmoid.expanded = !wasExpanded
+            onPressed: wasExpanded = root.expanded
+            onClicked: root.expanded = !wasExpanded
 
             PlasmaCore.IconItem {
                 anchors.fill: parent
@@ -167,7 +167,7 @@ PlasmoidItem {
 
                     Keys.onPressed: {
                         if (event.key === Qt.Key_Escape) {
-                            Plasmoid.expanded = false;
+                            root.expanded = false;
                             event.accepted = true;
                         } else if (event.modifiers === Qt.ControlModifier) {
                             if (event.key === Qt.Key_B) {

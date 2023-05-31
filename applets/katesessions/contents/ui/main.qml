@@ -86,7 +86,7 @@ PlasmoidItem {
                 }
                 case Qt.Key_Escape: {
                     if (filter.text == "") {
-                        plasmoid.expanded = false;
+                        main.expanded = false;
                     } else {
                         filter.text = "";
                     }
@@ -129,7 +129,7 @@ PlasmoidItem {
                 Layout.topMargin: PlasmaCore.Units.smallSpacing
                 onItemSelected: function (profileIdentifier) {
                     model.openProfile(profileIdentifier)
-                    plasmoid.expanded = false;
+                    main.expanded = false;
                 }
             }
         }

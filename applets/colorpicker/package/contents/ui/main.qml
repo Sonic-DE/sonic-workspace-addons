@@ -53,7 +53,7 @@ PlasmoidItem {
     }
 
     function pickColor() {
-        Plasmoid.expanded = false
+        root.expanded = false
         picker.pick()
     }
 
@@ -105,7 +105,7 @@ PlasmoidItem {
     }
 
     function action_expand() {
-        Plasmoid.expanded = true;
+        root.expanded = true;
     }
 
     Component.onCompleted: {
@@ -142,7 +142,7 @@ PlasmoidItem {
             anchors.centerIn: parent
             visible: active
 
-            active: fullRoot.count === 0 && Plasmoid.expanded
+            active: fullRoot.count === 0 && root.expanded
             asynchronous: true
 
             sourceComponent: PlasmaExtras.PlaceholderMessage {
@@ -182,9 +182,9 @@ PlasmoidItem {
         }
 
         Connections {
-            target: Plasmoid.self
+            target: root
             function onExpandedChanged() {
-                if (Plasmoid.expanded) {
+                if (root.expanded) {
                     fullRoot.forceActiveFocus()
                 }
             }
@@ -192,7 +192,7 @@ PlasmoidItem {
 
         Keys.onPressed: event => {
             if (event.key === Qt.Key_Escape) {
-                Plasmoid.expanded = false;
+                root.expanded = false;
                 event.accepted = true;
             }
         }
