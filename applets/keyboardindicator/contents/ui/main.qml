@@ -72,8 +72,8 @@ PlasmoidItem {
         Accessible.role: Accessible.Button
 
         property bool wasExpanded: false
-        onPressed: wasExpanded = Plasmoid.expanded
-        onClicked: Plasmoid.expanded = !wasExpanded
+        onPressed: wasExpanded = root.expanded
+        onClicked: root.expanded = !wasExpanded
 
         PlasmaCore.IconItem {
             anchors.fill: parent
