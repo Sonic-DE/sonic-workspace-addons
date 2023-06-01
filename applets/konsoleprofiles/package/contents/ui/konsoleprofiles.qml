@@ -21,14 +21,18 @@ PlasmoidItem {
     Layout.minimumWidth: PlasmaCore.Units.gridUnit * 12
     Layout.minimumHeight: PlasmaCore.Units.gridUnit * 10
 
-    onExpandedChanged: {
-        if (konsoleProfiles.expanded) {
-            view.forceActiveFocus();
-        }
-    }
-
-    FocusScope {
+    fullRepresentation: FocusScope {
         anchors.fill: parent
+
+        Connections {
+            target: konsoleProfiles
+            function onExpandedChanged() {
+                if (konsoleProfiles.expanded) {
+                    view.forceActiveFocus();
+                }
+            }
+        }
+
         PlasmaCore.SortFilterModel {
             id: sortModel
             sortRole: "name"
