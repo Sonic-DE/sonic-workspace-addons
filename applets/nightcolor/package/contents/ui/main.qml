@@ -46,9 +46,9 @@ PlasmoidItem {
         return i18n("Night Color is active (%1K)", monitor.currentTemperature);
     }
 
-    preferredRepresentation: compactRepresentation
+    preferredRepresentation: fullRepresentation
 
-    compactRepresentation: PlasmaCore.IconItem {
+    fullRepresentation: PlasmaCore.IconItem {
         active: compactMouseArea.containsMouse
         source: Plasmoid.icon
 

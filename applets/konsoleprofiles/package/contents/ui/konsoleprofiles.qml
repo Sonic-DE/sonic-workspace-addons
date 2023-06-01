@@ -21,7 +21,7 @@ PlasmoidItem {
     Layout.minimumWidth: PlasmaCore.Units.gridUnit * 12
     Layout.minimumHeight: PlasmaCore.Units.gridUnit * 10
 
-    Plasmoid.onExpandedChanged: {
+    onExpandedChanged: {
         if (konsoleProfiles.expanded) {
             view.forceActiveFocus();
         }
