@@ -22,8 +22,8 @@ import org.kde.plasma.plasmoid 2.0
 PlasmoidItem {
     id: main;
 
-    switchWidth: Layout.minimumWidth
-    switchHeight: Layout.minimumHeight
+    switchWidth: fullRepresentationItem.Layout.minimumWidth
+    switchHeight: fullRepresentationItem.Layout.minimumHeight
 
     // Make the buttons' text labels scale with the widget's size
     // This is propagated down to all child controls with text
@@ -37,70 +37,12 @@ PlasmoidItem {
     property bool commaPressed: false;
     property int decimals: 0;
     property int inputSize: 0;
+    readonly property TextEdit display: fullRepresentationItem.display
 
     readonly property int maxInputLength: 18; // More than that and the number notation
                                               // turns scientific (i.e.: 1.32324e+12).
                                               // When calculating 1/3 the answer is
                                               // 18 characters long.
-
-    Keys.onDigit0Pressed: { digitClicked(0); zeroButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit1Pressed: { digitClicked(1); oneButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit2Pressed: { digitClicked(2); twoButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit3Pressed: { digitClicked(3); threeButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit4Pressed: { digitClicked(4); fourButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit5Pressed: { digitClicked(5); fiveButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit6Pressed: { digitClicked(6); sixButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit7Pressed: { digitClicked(7); sevenButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit8Pressed: { digitClicked(8); eightButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDigit9Pressed: { digitClicked(9); nineButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onEscapePressed: { allClearClicked(); allClearButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onDeletePressed: { clearClicked(); clearButton.forceActiveFocus(Qt.TabFocusReason); }
-    Keys.onPressed: {
-        switch (event.key) {
-        case Qt.Key_Plus:
-            setOperator("+");
-            plusButton.forceActiveFocus(Qt.TabFocusReason);
-            break;
-        case Qt.Key_Minus:
-            setOperator("-");
-            minusButton.forceActiveFocus(Qt.TabFocusReason);
-            break;
-        case Qt.Key_Asterisk:
-            setOperator("*");
-            multiplyButton.forceActiveFocus(Qt.TabFocusReason);
-            break;
-        case Qt.Key_Slash:
-            setOperator("/");
-            divideButton.forceActiveFocus(Qt.TabFocusReason);
-            break;
-        case Qt.Key_Comma:
-        case Qt.Key_Period:
-            decimalClicked();
-            decimalButton.forceActiveFocus(Qt.TabFocusReason);
-            break;
-        case Qt.Key_Equal:
-        case Qt.Key_Return:
-        case Qt.Key_Enter:
-            equalsClicked();
-            break;
-        case Qt.Key_Backspace:
-            deleteDigit();
-            display.forceActiveFocus(Qt.TabFocusReason);
-            break;
-        default:
-            if (event.matches(StandardKey.Copy)) {
-                copyToClipboard();
-            } else if (event.matches(StandardKey.Paste)) {
-                pasteFromClipboard();
-            }
-            break;
-        }
-    }
-
-    KeyNavigation.up: zeroButton
-    KeyNavigation.down: clearButton
-    KeyNavigation.left: allClearButton
-    KeyNavigation.right: clearButton
 
     function digitClicked(digit) {
         if (showingResult) {
@@ -288,11 +230,11 @@ PlasmoidItem {
     Connections {
         target: plasmoid;
         function onPopupEvent() {
-            main.focus = true;
+            main.fullRepresentationItem.focus = true;
         }
     }
 
-    ColumnLayout {
+    fullRepresentation: ColumnLayout {
         id: mainLayout
         anchors.fill: parent
         anchors.margins: 4
@@ -305,6 +247,67 @@ PlasmoidItem {
 
         focus: true;
         spacing: 4;
+
+        property alias display: display
+
+        Keys.onDigit0Pressed: { digitClicked(0); zeroButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit1Pressed: { digitClicked(1); oneButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit2Pressed: { digitClicked(2); twoButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit3Pressed: { digitClicked(3); threeButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit4Pressed: { digitClicked(4); fourButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit5Pressed: { digitClicked(5); fiveButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit6Pressed: { digitClicked(6); sixButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit7Pressed: { digitClicked(7); sevenButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit8Pressed: { digitClicked(8); eightButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDigit9Pressed: { digitClicked(9); nineButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onEscapePressed: { allClearClicked(); allClearButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onDeletePressed: { clearClicked(); clearButton.forceActiveFocus(Qt.TabFocusReason); }
+        Keys.onPressed: {
+            switch (event.key) {
+            case Qt.Key_Plus:
+                setOperator("+");
+                plusButton.forceActiveFocus(Qt.TabFocusReason);
+                break;
+            case Qt.Key_Minus:
+                setOperator("-");
+                minusButton.forceActiveFocus(Qt.TabFocusReason);
+                break;
+            case Qt.Key_Asterisk:
+                setOperator("*");
+                multiplyButton.forceActiveFocus(Qt.TabFocusReason);
+                break;
+            case Qt.Key_Slash:
+                setOperator("/");
+                divideButton.forceActiveFocus(Qt.TabFocusReason);
+                break;
+            case Qt.Key_Comma:
+            case Qt.Key_Period:
+                decimalClicked();
+                decimalButton.forceActiveFocus(Qt.TabFocusReason);
+                break;
+            case Qt.Key_Equal:
+            case Qt.Key_Return:
+            case Qt.Key_Enter:
+                equalsClicked();
+                break;
+            case Qt.Key_Backspace:
+                deleteDigit();
+                display.forceActiveFocus(Qt.TabFocusReason);
+                break;
+            default:
+                if (event.matches(StandardKey.Copy)) {
+                    copyToClipboard();
+                } else if (event.matches(StandardKey.Paste)) {
+                    pasteFromClipboard();
+                }
+                break;
+            }
+        }
+
+        KeyNavigation.up: zeroButton
+        KeyNavigation.down: clearButton
+        KeyNavigation.left: allClearButton
+        KeyNavigation.right: clearButton
 
         PlasmaCore.FrameSvgItem {
             id: displayFrame;

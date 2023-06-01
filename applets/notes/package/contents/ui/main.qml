@@ -23,18 +23,14 @@ import org.kde.plasma.private.notes 0.1
 PlasmoidItem {
     id: root
 
-    width: PlasmaCore.Units.gridUnit * 15
-    height: PlasmaCore.Units.gridUnit * 15
-    Layout.minimumWidth: PlasmaCore.Units.iconSizes.medium
-    Layout.minimumHeight: PlasmaCore.Units.iconSizes.medium
     switchWidth: PlasmaCore.Units.gridUnit * 5
     switchHeight: PlasmaCore.Units.gridUnit * 5
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
     // this isn't a frameSVG, the default SVG margins take up around 7% of the frame size, so we use that
-    readonly property real horizontalMargins: backgroundItem.width * 0.07
-    readonly property real verticalMargins: backgroundItem.height * 0.07
+    readonly property real horizontalMargins: fullRepresentationItem.width * 0.07
+    readonly property real verticalMargins: fullRepresentationItem.height * 0.07
 
     // note is of type Note
     property QtObject note: noteManager.loadNote(Plasmoid.configuration.noteId);
@@ -53,27 +49,21 @@ PlasmoidItem {
         // if we dropped a text file, we want its contents,
         // otherwise we take the external data verbatim
         var contents = NotesHelper.fileContents(data) || data
-        mainTextArea.text = contents.replace(/\n/g, "<br>") // what about richtext?
+        root.fullRepresentationItem.mainTextArea.text = contents.replace(/\n/g, "<br>") // what about richtext?
 
         // place cursor at the end of text, there's no "just move the cursor" function
-        mainTextArea.moveCursorSelection(mainTextArea.length)
-        mainTextArea.deselect()
+        root.fullRepresentationItem.mainTextArea.moveCursorSelection(root.fullRepresentationItem.mainTextArea.length)
+        root.fullRepresentationItem.mainTextArea.deselect()
     }
 
     Timer {
         id: forceFocusTimer
         interval: 1
-        onTriggered: mainTextArea.forceActiveFocus()
+        onTriggered: root.fullRepresentationItem.mainTextArea.forceActiveFocus()
     }
 
     Connections {
         target: Plasmoid
-        function onExpandedChanged(expanded) {
-            // don't autofocus when we're on the desktop
-            if (expanded && (Plasmoid.formFactor === PlasmaCore.Types.Vertical || Plasmoid.formFactor === PlasmaCore.Types.Horizontal)) {
-                mainTextArea.forceActiveFocus()
-            }
-        }
         function onActivated() {
             // FIXME doing forceActiveFocus here directly doesn't work
             forceFocusTimer.restart()
@@ -116,19 +106,38 @@ PlasmoidItem {
     DocumentHandler {
         id: documentHandler
         target: mainTextArea
-        cursorPosition: mainTextArea.cursorPosition
-        selectionStart: mainTextArea.selectionStart
-        selectionEnd: mainTextArea.selectionEnd
-        defaultFontSize: mainTextArea.cfgFontPointSize
+        cursorPosition: root.fullRepresentationItem.mainTextArea.cursorPosition
+        selectionStart: root.fullRepresentationItem.mainTextArea.selectionStart
+        selectionEnd: root.fullRepresentationItem.mainTextArea.selectionEnd
+        defaultFontSize: root.fullRepresentationItem.mainTextArea.cfgFontPointSize
     }
 
-    PlasmaCore.SvgItem {
+    fullRepresentation: PlasmaCore.SvgItem {
         id: backgroundItem
+
+        property alias mainTextArea: mainTextArea
+        Layout.preferredWidth: PlasmaCore.Units.gridUnit * 15
+        Layout.preferredHeight: PlasmaCore.Units.gridUnit * 15
+        Layout.minimumWidth: PlasmaCore.Units.iconSizes.medium
+        Layout.minimumHeight: PlasmaCore.Units.iconSizes.medium
 
         svg: PlasmaCore.Svg {
             imagePath: "widgets/notes"
         }
         elementId: Plasmoid.configuration.color + "-notes"
+
+        Connections {
+            target: root
+            function onExpandedChanged(expanded) {
+                // don't autofocus when we're on the desktop
+                if (expanded && (Plasmoid.formFactor === PlasmaCore.Types.Vertical || Plasmoid.formFactor === PlasmaCore.Types.Horizontal)) {
+                    mainTextArea.forceActiveFocus()
+                }
+            }
+        }
+        Component.onDestruction: {
+            note.save(mainTextArea.text);
+        }
 
         FocusScope {
             id: focusScope
@@ -223,16 +232,16 @@ PlasmoidItem {
                         }
                     }
 
-                    onPressed: {
+                    onPressed: event => {
                         if (event.button === Qt.RightButton) {
                             event.accepted = true;
                             contextMenu.popup();
                             mainTextArea.forceActiveFocus();
                         }
                         if (event.button === Qt.LeftButton && contextMenu.visible === true) {
-                        event.accepted = true;
-                        contextMenu.dismiss();
-                        mainTextArea.forceActiveFocus();
+                            event.accepted = true;
+                            contextMenu.dismiss();
+                            mainTextArea.forceActiveFocus();
                         }
                     }
 
@@ -598,10 +607,6 @@ PlasmoidItem {
         if (note.id != Plasmoid.configuration.noteId) {
             Plasmoid.configuration.noteId = note.id;
         }
-    }
-
-    Component.onDestruction: {
-        note.save(mainTextArea.text);
     }
 
     function actionTriggered(actionName) {
