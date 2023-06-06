@@ -88,7 +88,7 @@ ColumnLayout {
                     }
                 }
             }
-            onContextMenuRequested: function(request) {
+            onContextMenuRequested: request => {
                 request.accepted = true;
                 contextMenu.popup();
             }
