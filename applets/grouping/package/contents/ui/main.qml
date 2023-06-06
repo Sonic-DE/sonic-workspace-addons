@@ -136,7 +136,7 @@ ContainmentItem {
                 event.ignore();
                 return;
             }
-            plasmoid.nativeInterface.newTask(plasmoidId);
+            plasmoid.newTask(plasmoidId);
         }
     }
 

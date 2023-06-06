@@ -21,8 +21,6 @@ PlasmoidItem {
 
     property Item internalContainmentItem
 
-    Item {}
-
     Component.onCompleted: {
         root.internalContainmentItem = plasmoid.internalContainmentItem;
 
