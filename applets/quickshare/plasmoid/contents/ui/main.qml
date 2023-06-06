@@ -128,6 +128,7 @@ PlasmoidItem {
     }
 
     DropArea {
+        anchors.fill: parent
         onEntered: {
             root.state = "idle";
             var mimetype;

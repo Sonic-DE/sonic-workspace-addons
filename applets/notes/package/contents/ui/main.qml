@@ -29,8 +29,9 @@ PlasmoidItem {
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
 
     // this isn't a frameSVG, the default SVG margins take up around 7% of the frame size, so we use that
-    readonly property real horizontalMargins: fullRepresentationItem ? fullRepresentationItem.width * 0.07 : 0
-    readonly property real verticalMargins: fullRepresentationItem ? fullRepresentationItem.height * 0.07 : 0
+    readonly property real horizontalMargins: fullRepresentationItem.width * 0.07
+    readonly property real verticalMargins: fullRepresentationItem.height * 0.07
+    readonly property PlasmaComponents3.TextArea mainTextArea: fullRepresentationItem.mainTextArea
 
     // note is of type Note
     property QtObject note: noteManager.loadNote(Plasmoid.configuration.noteId);
@@ -48,19 +49,18 @@ PlasmoidItem {
     onExternalData: (mimetype, data) => {
         // if we dropped a text file, we want its contents,
         // otherwise we take the external data verbatim
-        root.expanded = true
         var contents = NotesHelper.fileContents(data) || data
-        root.fullRepresentationItem.mainTextArea.text = String(contents).replace(/\n/g, "<br>") // what about richtext?
+        mainTextArea.text = String(contents).replace(/\n/g, "<br>") // what about richtext?
 
         // place cursor at the end of text, there's no "just move the cursor" function
-        root.fullRepresentationItem.mainTextArea.moveCursorSelection(root.fullRepresentationItem.mainTextArea.length)
-        root.fullRepresentationItem.mainTextArea.deselect()
+        mainTextArea.moveCursorSelection(mainTextArea.length)
+        mainTextArea.deselect()
     }
 
     Timer {
         id: forceFocusTimer
         interval: 1
-        onTriggered: root.fullRepresentationItem.mainTextArea.forceActiveFocus()
+        onTriggered: mainTextArea.forceActiveFocus()
     }
 
     Connections {
@@ -106,13 +106,14 @@ PlasmoidItem {
 
     DocumentHandler {
         id: documentHandler
-        target: root.fullRepresentationItem ? root.fullRepresentationItem.mainTextArea : null
-        cursorPosition: root.fullRepresentationItem ? root.fullRepresentationItem.mainTextArea.cursorPosition : 0
-        selectionStart: root.fullRepresentationItem ? root.fullRepresentationItem.mainTextArea.selectionStart : 0
-        selectionEnd: root.fullRepresentationItem ? root.fullRepresentationItem.mainTextArea.selectionEnd : 0
+        target: root.fullRepresentationItem ? mainTextArea : null
+        cursorPosition: root.fullRepresentationItem ? mainTextArea.cursorPosition : 0
+        selectionStart: root.fullRepresentationItem ? mainTextArea.selectionStart : 0
+        selectionEnd: root.fullRepresentationItem ? mainTextArea.selectionEnd : 0
         defaultFontSize: Plasmoid.configuration.fontSize
     }
 
+    preloadFullRepresentation: true
     fullRepresentation: PlasmaCore.SvgItem {
         id: backgroundItem
 
