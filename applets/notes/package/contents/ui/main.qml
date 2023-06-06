@@ -118,8 +118,8 @@ PlasmoidItem {
         id: backgroundItem
 
         property alias mainTextArea: mainTextArea
-        Layout.preferredWidth: PlasmaCore.Units.gridUnit * 22
-        Layout.preferredHeight: PlasmaCore.Units.gridUnit * 22
+        Layout.preferredWidth: PlasmaCore.Units.gridUnit * 25
+        Layout.preferredHeight: PlasmaCore.Units.gridUnit * 25
         Layout.minimumWidth: PlasmaCore.Units.iconSizes.medium
         Layout.minimumHeight: PlasmaCore.Units.iconSizes.medium
 
