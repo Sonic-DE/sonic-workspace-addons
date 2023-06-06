@@ -234,346 +234,351 @@ PlasmoidItem {
         }
     }
 
-    fullRepresentation: ColumnLayout {
-        id: mainLayout
-        anchors.fill: parent
-        anchors.margins: 4
-
+    fullRepresentation: QQC2.Control {
+        property alias display: display
+        // Make the buttons' text labels scale with the widget's size
+        // This is propagated down to all child controls with text
+        font.pixelSize: Math.round(width/12)
+        padding: 0
         Layout.minimumWidth: 150
         Layout.minimumHeight: 225
 
         width: PlasmaCore.Units.gridSize * 3
         height: PlasmaCore.Units.gridSize * 4
 
-        focus: true;
-        spacing: 4;
+        contentItem: ColumnLayout {
+            id: mainLayout
+            anchors.fill: parent
+            anchors.margins: 4
 
-        property alias display: display
+            focus: true;
+            spacing: 4;
 
-        Keys.onDigit0Pressed: { digitClicked(0); zeroButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit1Pressed: { digitClicked(1); oneButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit2Pressed: { digitClicked(2); twoButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit3Pressed: { digitClicked(3); threeButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit4Pressed: { digitClicked(4); fourButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit5Pressed: { digitClicked(5); fiveButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit6Pressed: { digitClicked(6); sixButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit7Pressed: { digitClicked(7); sevenButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit8Pressed: { digitClicked(8); eightButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDigit9Pressed: { digitClicked(9); nineButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onEscapePressed: { allClearClicked(); allClearButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onDeletePressed: { clearClicked(); clearButton.forceActiveFocus(Qt.TabFocusReason); }
-        Keys.onPressed: {
-            switch (event.key) {
-            case Qt.Key_Plus:
-                setOperator("+");
-                plusButton.forceActiveFocus(Qt.TabFocusReason);
-                break;
-            case Qt.Key_Minus:
-                setOperator("-");
-                minusButton.forceActiveFocus(Qt.TabFocusReason);
-                break;
-            case Qt.Key_Asterisk:
-                setOperator("*");
-                multiplyButton.forceActiveFocus(Qt.TabFocusReason);
-                break;
-            case Qt.Key_Slash:
-                setOperator("/");
-                divideButton.forceActiveFocus(Qt.TabFocusReason);
-                break;
-            case Qt.Key_Comma:
-            case Qt.Key_Period:
-                decimalClicked();
-                decimalButton.forceActiveFocus(Qt.TabFocusReason);
-                break;
-            case Qt.Key_Equal:
-            case Qt.Key_Return:
-            case Qt.Key_Enter:
-                equalsClicked();
-                break;
-            case Qt.Key_Backspace:
-                deleteDigit();
-                display.forceActiveFocus(Qt.TabFocusReason);
-                break;
-            default:
-                if (event.matches(StandardKey.Copy)) {
-                    copyToClipboard();
-                } else if (event.matches(StandardKey.Paste)) {
-                    pasteFromClipboard();
+            Keys.onDigit0Pressed: { digitClicked(0); zeroButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit1Pressed: { digitClicked(1); oneButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit2Pressed: { digitClicked(2); twoButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit3Pressed: { digitClicked(3); threeButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit4Pressed: { digitClicked(4); fourButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit5Pressed: { digitClicked(5); fiveButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit6Pressed: { digitClicked(6); sixButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit7Pressed: { digitClicked(7); sevenButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit8Pressed: { digitClicked(8); eightButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDigit9Pressed: { digitClicked(9); nineButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onEscapePressed: { allClearClicked(); allClearButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onDeletePressed: { clearClicked(); clearButton.forceActiveFocus(Qt.TabFocusReason); }
+            Keys.onPressed: {
+                switch (event.key) {
+                case Qt.Key_Plus:
+                    setOperator("+");
+                    plusButton.forceActiveFocus(Qt.TabFocusReason);
+                    break;
+                case Qt.Key_Minus:
+                    setOperator("-");
+                    minusButton.forceActiveFocus(Qt.TabFocusReason);
+                    break;
+                case Qt.Key_Asterisk:
+                    setOperator("*");
+                    multiplyButton.forceActiveFocus(Qt.TabFocusReason);
+                    break;
+                case Qt.Key_Slash:
+                    setOperator("/");
+                    divideButton.forceActiveFocus(Qt.TabFocusReason);
+                    break;
+                case Qt.Key_Comma:
+                case Qt.Key_Period:
+                    decimalClicked();
+                    decimalButton.forceActiveFocus(Qt.TabFocusReason);
+                    break;
+                case Qt.Key_Equal:
+                case Qt.Key_Return:
+                case Qt.Key_Enter:
+                    equalsClicked();
+                    break;
+                case Qt.Key_Backspace:
+                    deleteDigit();
+                    display.forceActiveFocus(Qt.TabFocusReason);
+                    break;
+                default:
+                    if (event.matches(StandardKey.Copy)) {
+                        copyToClipboard();
+                    } else if (event.matches(StandardKey.Paste)) {
+                        pasteFromClipboard();
+                    }
+                    break;
                 }
-                break;
             }
-        }
 
-        KeyNavigation.up: zeroButton
-        KeyNavigation.down: clearButton
-        KeyNavigation.left: allClearButton
-        KeyNavigation.right: clearButton
+            KeyNavigation.up: zeroButton
+            KeyNavigation.down: clearButton
+            KeyNavigation.left: allClearButton
+            KeyNavigation.right: clearButton
 
-        PlasmaCore.FrameSvgItem {
-            id: displayFrame;
-            Layout.fillWidth: true
-            Layout.minimumHeight: 2 * display.font.pixelSize;
-            imagePath: "widgets/frame";
-            prefix: "plain";
+            PlasmaCore.FrameSvgItem {
+                id: displayFrame;
+                Layout.fillWidth: true
+                Layout.minimumHeight: 2 * display.font.pixelSize;
+                imagePath: "widgets/frame";
+                prefix: "plain";
 
-            TextEdit {
-                id: display;
-                anchors {
-                    fill: parent;
-                    margins: parent.margins.right;
+                TextEdit {
+                    id: display;
+                    anchors {
+                        fill: parent;
+                        margins: parent.margins.right;
+                    }
+                    text: "0";
+                    font.pointSize: PlasmaCore.Theme.defaultFont.pointSize * 2;
+                    font.weight: Font.Bold;
+                    color: PlasmaCore.Theme.viewTextColor;
+                    horizontalAlignment: TextEdit.AlignRight;
+                    verticalAlignment: TextEdit.AlignVCenter;
+                    readOnly: true;
+
+                    Accessible.name: text
+                    Accessible.description: i18nc("@label calculation result", "Result")
                 }
-                text: "0";
-                font.pointSize: PlasmaCore.Theme.defaultFont.pointSize * 2;
-                font.weight: Font.Bold;
-                color: PlasmaCore.Theme.viewTextColor;
-                horizontalAlignment: TextEdit.AlignRight;
-                verticalAlignment: TextEdit.AlignVCenter;
-                readOnly: true;
-
-                Accessible.name: text
-                Accessible.description: i18nc("@label calculation result", "Result")
             }
-        }
 
-        GridLayout {
-            id: buttonsGrid;
-            columns: 4;
-            rows: 5;
-            columnSpacing: 4
-            rowSpacing: 4
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            PlasmaComponents.Button {
-                id: clearButton
+            GridLayout {
+                id: buttonsGrid;
+                columns: 4;
+                rows: 5;
+                columnSpacing: 4
+                rowSpacing: 4
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
 
-                KeyNavigation.down: sevenButton
-                KeyNavigation.right: divideButton
+                PlasmaComponents.Button {
+                    id: clearButton
 
-                text: i18nc("Text of the clear button", "C");
-                onClicked: clearClicked();
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: divideButton
+                    KeyNavigation.down: sevenButton
+                    KeyNavigation.right: divideButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: i18nc("Text of the clear button", "C");
+                    onClicked: clearClicked();
+                }
 
-                KeyNavigation.down: eightButton
-                KeyNavigation.right: multiplyButton
+                PlasmaComponents.Button {
+                    id: divideButton
 
-                text: i18nc("Text of the division button", "÷");
-                onClicked: setOperator("/");
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: multiplyButton
+                    KeyNavigation.down: eightButton
+                    KeyNavigation.right: multiplyButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: i18nc("Text of the division button", "÷");
+                    onClicked: setOperator("/");
+                }
 
-                KeyNavigation.down: nineButton
-                KeyNavigation.right: allClearButton
+                PlasmaComponents.Button {
+                    id: multiplyButton
 
-                text: i18nc("Text of the multiplication button", "×");
-                onClicked: setOperator("*");
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: allClearButton
+                    KeyNavigation.down: nineButton
+                    KeyNavigation.right: allClearButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: i18nc("Text of the multiplication button", "×");
+                    onClicked: setOperator("*");
+                }
 
-                KeyNavigation.down: minusButton
+                PlasmaComponents.Button {
+                    id: allClearButton
 
-                text: i18nc("Text of the all clear button", "AC");
-                onClicked: allClearClicked();
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
+                    KeyNavigation.down: minusButton
 
-            PlasmaComponents.Button {
-                id: sevenButton
+                    text: i18nc("Text of the all clear button", "AC");
+                    onClicked: allClearClicked();
+                }
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
 
-                KeyNavigation.down: fourButton
-                KeyNavigation.right: eightButton
+                PlasmaComponents.Button {
+                    id: sevenButton
 
-                text: "7";
-                onClicked: digitClicked(7);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: eightButton
+                    KeyNavigation.down: fourButton
+                    KeyNavigation.right: eightButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "7";
+                    onClicked: digitClicked(7);
+                }
 
-                KeyNavigation.down: fiveButton
-                KeyNavigation.right: nineButton
+                PlasmaComponents.Button {
+                    id: eightButton
 
-                text: "8";
-                onClicked: digitClicked(8);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: nineButton
+                    KeyNavigation.down: fiveButton
+                    KeyNavigation.right: nineButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "8";
+                    onClicked: digitClicked(8);
+                }
 
-                KeyNavigation.down: sixButton
-                KeyNavigation.right: minusButton
+                PlasmaComponents.Button {
+                    id: nineButton
 
-                text: "9";
-                onClicked: digitClicked(9);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: minusButton
+                    KeyNavigation.down: sixButton
+                    KeyNavigation.right: minusButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "9";
+                    onClicked: digitClicked(9);
+                }
 
-                KeyNavigation.down: plusButton
+                PlasmaComponents.Button {
+                    id: minusButton
 
-                text: i18nc("Text of the minus button", "-");
-                onClicked: setOperator("-");
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
+                    KeyNavigation.down: plusButton
 
-            PlasmaComponents.Button {
-                id: fourButton
+                    text: i18nc("Text of the minus button", "-");
+                    onClicked: setOperator("-");
+                }
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
 
-                KeyNavigation.down: oneButton
-                KeyNavigation.right: fiveButton
+                PlasmaComponents.Button {
+                    id: fourButton
 
-                text: "4";
-                onClicked: digitClicked(4);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: fiveButton
+                    KeyNavigation.down: oneButton
+                    KeyNavigation.right: fiveButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "4";
+                    onClicked: digitClicked(4);
+                }
 
-                KeyNavigation.down: twoButton
-                KeyNavigation.right: sixButton
+                PlasmaComponents.Button {
+                    id: fiveButton
 
-                text: "5";
-                onClicked: digitClicked(5);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: sixButton
+                    KeyNavigation.down: twoButton
+                    KeyNavigation.right: sixButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "5";
+                    onClicked: digitClicked(5);
+                }
 
-                KeyNavigation.down: threeButton
-                KeyNavigation.right: plusButton
+                PlasmaComponents.Button {
+                    id: sixButton
 
-                text: "6";
-                onClicked: digitClicked(6);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: plusButton
+                    KeyNavigation.down: threeButton
+                    KeyNavigation.right: plusButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "6";
+                    onClicked: digitClicked(6);
+                }
 
-                KeyNavigation.down: ansButton
+                PlasmaComponents.Button {
+                    id: plusButton
 
-                text: i18nc("Text of the plus button", "+");
-                onClicked: setOperator("+");
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
+                    KeyNavigation.down: ansButton
 
-            PlasmaComponents.Button {
-                id: oneButton
+                    text: i18nc("Text of the plus button", "+");
+                    onClicked: setOperator("+");
+                }
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
 
-                KeyNavigation.down: zeroButton
-                KeyNavigation.right: twoButton
+                PlasmaComponents.Button {
+                    id: oneButton
 
-                text: "1";
-                onClicked: digitClicked(1);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: twoButton
+                    KeyNavigation.down: zeroButton
+                    KeyNavigation.right: twoButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "1";
+                    onClicked: digitClicked(1);
+                }
 
-                KeyNavigation.down: zeroButton
-                KeyNavigation.right: threeButton
+                PlasmaComponents.Button {
+                    id: twoButton
 
-                text: "2";
-                onClicked: digitClicked(2);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: threeButton
+                    KeyNavigation.down: zeroButton
+                    KeyNavigation.right: threeButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "2";
+                    onClicked: digitClicked(2);
+                }
 
-                KeyNavigation.down: decimalButton
-                KeyNavigation.right: ansButton
+                PlasmaComponents.Button {
+                    id: threeButton
 
-                text: "3";
-                onClicked: digitClicked(3);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: ansButton
+                    KeyNavigation.down: decimalButton
+                    KeyNavigation.right: ansButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    text: "3";
+                    onClicked: digitClicked(3);
+                }
 
-                Layout.rowSpan: 2
-                text: i18nc("Text of the equals button", "=");
-                onClicked: equalsClicked();
-            }
+                PlasmaComponents.Button {
+                    id: ansButton
 
-            PlasmaComponents.Button {
-                id: zeroButton
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    Layout.rowSpan: 2
+                    text: i18nc("Text of the equals button", "=");
+                    onClicked: equalsClicked();
+                }
 
-                KeyNavigation.right: decimalButton
+                PlasmaComponents.Button {
+                    id: zeroButton
 
-                Layout.columnSpan: 2
-                text: "0";
-                onClicked: digitClicked(0);
-            }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-            PlasmaComponents.Button {
-                id: decimalButton
+                    KeyNavigation.right: decimalButton
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                    Layout.columnSpan: 2
+                    text: "0";
+                    onClicked: digitClicked(0);
+                }
 
-                KeyNavigation.right: ansButton
+                PlasmaComponents.Button {
+                    id: decimalButton
 
-                text: Qt.locale().decimalPoint;
-                onClicked: decimalClicked();
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    KeyNavigation.right: ansButton
+
+                    text: Qt.locale().decimalPoint;
+                    onClicked: decimalClicked();
+                }
             }
         }
     }
