@@ -15,7 +15,9 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 PlasmoidItem {
-    ColumnLayout {
+    switchWidth: PlasmaCore.Units.gridUnit * 5
+    switchHeight: PlasmaCore.Units.gridUnit * 5
+    fullRepresentation: ColumnLayout {
         RowLayout{
             Layout.fillWidth: true
             PlasmaComponents3.Button {
