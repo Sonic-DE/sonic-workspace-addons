@@ -144,6 +144,7 @@ PlasmoidItem {
                     anchors.fill: parent
                     mainText: i18n("Quicklaunch")
                     subText: i18nc("@info", "Add launchers by Drag and Drop or by using the context menu.")
+                    location: Plasmoid.location
                 }
             }
         }
@@ -164,6 +165,7 @@ PlasmoidItem {
         PlasmaCore.ToolTipArea {
             id: popupArrow
             visible: enablePopup
+            location: Plasmoid.location
 
             anchors {
                 top: vertical ? undefined : parent.top
