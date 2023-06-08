@@ -15,11 +15,11 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.plasmoid 2.0
 
 PlasmoidItem {
-    switchWidth: PlasmaCore.Units.gridUnit * 10
-    switchHeight: PlasmaCore.Units.gridUnit * 10
+    switchWidth: PlasmaCore.Units.gridUnit * 16
+    switchHeight: PlasmaCore.Units.gridUnit * 23
     fullRepresentation: ColumnLayout {
         Layout.minimumWidth: PlasmaCore.Units.gridUnit * 15
-        Layout.minimumHeight: PlasmaCore.Units.gridUnit * 15
+        Layout.minimumHeight: PlasmaCore.Units.gridUnit * 22
 
         RowLayout{
             Layout.fillWidth: true
