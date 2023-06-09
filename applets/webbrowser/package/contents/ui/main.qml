@@ -6,8 +6,8 @@
  *   SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import QtQuick 2.0
-import QtWebEngine 1.5
+import QtQuick
+import QtWebEngine
 import QtQuick.Layouts 1.1
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -15,11 +15,40 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.plasmoid 2.0
 
 PlasmoidItem {
+    id: root
+
     switchWidth: PlasmaCore.Units.gridUnit * 16
     switchHeight: PlasmaCore.Units.gridUnit * 23
+
+    compactRepresentation: Loader {
+        active: Plasmoid.configuration.useFavIcon && webview.icon != ""
+        sourceComponent: Image {
+            source: fullRepresentation.favIcon
+        }
+
+        TapHandler {
+            property bool wasExpanded: false
+
+            acceptedButtons: Qt.LeftButton
+
+            onPressedChanged: if (pressed) {
+                wasExpanded = root.expanded;
+            }
+            onTapped: root.expanded = !wasExpanded
+        }
+
+        PlasmaCore.IconItem {
+            anchors.fill: parent
+            visible: !compactRepresentation.active || compactRepresentation.item.status !== Image.Ready
+            source: Plasmoid.configuration.icon || Plasmoid.icon
+        }
+    }
+
     fullRepresentation: ColumnLayout {
-        Layout.minimumWidth: PlasmaCore.Units.gridUnit * 15
-        Layout.minimumHeight: PlasmaCore.Units.gridUnit * 22
+        Layout.minimumWidth: root.switchWidth
+        Layout.minimumHeight: root.switchHeight
+
+        readonly property alias favIcon: webview.icon
 
         RowLayout{
             Layout.fillWidth: true
