@@ -7,7 +7,7 @@
 
 import QtQuick 2.5
 
-import org.kde.kquickcontrolsaddons 2.0
+import org.kde.kcmutils // KCMLauncher
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 
@@ -80,7 +80,7 @@ PlasmoidItem {
     }
 
     function action_configure() {
-        KCMShell.openSystemSettings("kcm_nightcolor");
+        KCMLauncher.openSystemSettings("kcm_nightcolor");
     }
 
     Inhibitor {
@@ -93,7 +93,7 @@ PlasmoidItem {
 
     Component.onCompleted: {
         Plasmoid.removeAction("configure");
-        if (KCMShell.authorize("kcm_nightcolor.desktop").length > 0) {
+        if (KCMLauncher.authorizeControlModule("kcm_nightcolor.desktop").length > 0) {
             Plasmoid.setAction("configure", i18n("&Configure Night Color…"), "configure", "alt+d, s");
         }
     }
