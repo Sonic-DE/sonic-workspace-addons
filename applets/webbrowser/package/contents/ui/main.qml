@@ -16,7 +16,7 @@ import org.kde.plasma.plasmoid 2.0
 
 PlasmoidItem {
     id: root
-
+    Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
     switchWidth: PlasmaCore.Units.gridUnit * 16
     switchHeight: PlasmaCore.Units.gridUnit * 23
 
@@ -54,6 +54,7 @@ PlasmoidItem {
         Layout.minimumHeight: root.switchHeight
 
         RowLayout{
+            visible: plasmoid.configuration.navbarEnabled
             Layout.fillWidth: true
             PlasmaComponents3.Button {
                 icon.name: "go-previous"
@@ -189,6 +190,7 @@ PlasmoidItem {
                 anchors.fill: parent
                 onUrlChanged: plasmoid.configuration.url = url;
                 Component.onCompleted: url = plasmoid.configuration.url;
+                backgroundColor: plasmoid.configuration.transparentBackgroundEnabled || (PlasmaCore.Types.ShadowBackground & root.Plasmoid.effectiveBackgroundHints) ? "transparent" : "white"
 
                 readonly property bool useMinViewWidth : plasmoid.configuration.useMinViewWidth
 

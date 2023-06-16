@@ -15,6 +15,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 Kirigami.FormLayout {
     property string cfg_icon: plasmoid.configuration.icon
     property alias cfg_useFavIcon: useFavIcon.checked
+    property alias cfg_navbarEnabled: navbarEnabled.checked
+    property alias cfg_transparentBackgroundEnabled: transparentBackgroundEnabled.checked
 
     QQC2.ButtonGroup {
         id: iconGroup
@@ -100,5 +102,19 @@ Kirigami.FormLayout {
                 }
             }
         }
+    }
+
+    Item {
+        Kirigami.FormData.isSection: true
+    }
+
+    QQC2.CheckBox {
+        id: navbarEnabled
+        text: i18nc("@option:check", "Display navigation bar")
+    }
+
+    QQC2.CheckBox {
+        id: transparentBackgroundEnabled
+        text: i18nc("@option:check", "Make background of viewport transparent")
     }
 }
