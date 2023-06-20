@@ -96,7 +96,7 @@ PlasmoidItem {
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.NoWrap
                 fontSizeMode: root.isVertical ? Text.HorizontalFit : Text.VerticalFit
-                font.pixelSize: tooSmall ? Kirigami.Theme.defaultFont.pixelSize : Kirigami.Units.roundedIconSize(Kirigami.Units.gridUnit * 2)
+                font.pixelSize: tooSmall ? Kirigami.Theme.defaultFont.pixelSize : Kirigami.Units.iconSizes.roundedIconSize(Kirigami.Units.gridUnit * 2)
                 minimumPointSize: Kirigami.Theme.smallFont.pointSize
                 visible: root.showName
             }
