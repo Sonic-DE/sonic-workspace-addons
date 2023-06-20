@@ -71,7 +71,7 @@ PlasmaComponents3.ToolButton {
                 if (contrast > 3 && colorCircle.color.a > 0.5) {
                     return 0;
                 } else {
-                    return Math.round(Math.max(Kirigami.Units.devicePixelRatio, width / 20));
+                    return Math.round(Math.max(1, width / 20));
                 }
             }
         }
