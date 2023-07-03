@@ -124,27 +124,47 @@ PlasmoidItem {
         delayedSaveTimer.start();
     }
 
-    Component.onCompleted: rebuildMenu()
-
-    Connections {
-        target: plasmoid.configuration
-        function onPredefinedTimersChanged() {
-            rebuildMenu()
+    Plasmoid.contextualActions: [
+        PlasmaCore.Action {
+            id: startAction
+            text: i18nc("@action", "&Start")
+            onTriggered: startTimer()
+        },
+        PlasmaCore.Action {
+            id: stopAction
+            text: i18nc("@action", "S&top")
+            onTriggered: stopTimer()
+        },
+        PlasmaCore.Action {
+            id: resetAction
+            text: i18nc("@action", "&Reset")
+            onTriggered: resetTimer()
+        },
+        PlasmaCore.Action {
+            id: separator1
+            isSeparator: true
+        },
+        PlasmaCore.Action {
+            id: separator2
+            isSeparator: true
         }
-    }
+    ]
 
-    function rebuildMenu() {
-        plasmoid.clearActions();
-        plasmoid.setAction("timerStart", i18nc("@action", "&Start"));
-        plasmoid.setAction("timerStop", i18nc("@action", "S&top"));
-        plasmoid.setAction("timerReset", i18nc("@action", "&Reset"));
-        plasmoid.setActionSeparator("separator0");
-
-        for (var predefinedTimer of plasmoid.configuration.predefinedTimers) {
-            plasmoid.setAction("predefined_timer_" + predefinedTimer,
-                               TimerPlasmoid.Timer.secondsToString(predefinedTimer, "hh:mm:ss"));
+    Instantiator {
+        model: plasmoid.configuration.predefinedTimers.length
+        delegate: PlasmaCore.Action {
+            text: TimerPlasmoid.Timer.secondsToString(plasmoid.configuration.predefinedTimers[modelData], "hh:mm:ss")
+            onTriggered: {
+                seconds = plasmoid.configuration.predefinedTimers[modelData]
+                startTimer();
+            }
         }
-        plasmoid.setActionSeparator("separator1");
+        onObjectAdded: (index, object) => {
+            Plasmoid.contextualActions.splice(Plasmoid.contextualActions.indexOf(separator2), 0, object)
+        }
+        onObjectRemoved: (index, object) => {
+            Plasmoid.contextualActions.splice(Plasmoid.contextualActions.indexOf(object), 1)
+        }
     }
 
     function startTimer() {
