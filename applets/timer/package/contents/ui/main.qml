@@ -197,13 +197,6 @@ PlasmoidItem {
         plasmoid.configuration.seconds = seconds
     }
 
-    function actionTriggered(actionName) {
-        if (actionName.indexOf("predefined_timer_") === 0) {
-            seconds = actionName.replace("predefined_timer_", "");
-            startTimer();
-        }
-    }
-
     function restoreToSeconds(cRunning, cSavedAt, cSeconds) {
         if (cRunning > 0) {
             var elapsedSeconds = cRunning - ~~(~~(((new Date()).getTime() - cSavedAt.getTime()) / 1000));
@@ -215,19 +208,6 @@ PlasmoidItem {
         } else {
             return cSeconds;
         }
-    }
-
-
-    function action_timerStart() {
-        startTimer();
-    }
-
-    function action_timerStop() {
-        stopTimer();
-    }
-
-    function action_timerReset() {
-        resetTimer();
     }
 }
 
