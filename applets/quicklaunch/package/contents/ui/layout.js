@@ -82,7 +82,7 @@ function minimumCellHeight()
 {
   var h = Kirigami.Units.iconSizes.small + 2 * itemPadding();
   if (showLauncherNames) {
-    h += PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).height * 2;
+    h += Kirigami.Units.gridUnit * 2;
   }
     return h;
 }
@@ -99,7 +99,7 @@ function preferredCellHeight()
 
 function popupItemWidth()
 {
-  var fw = PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width;
+  var fw = Kirigami.Units.gridUnit;
   return Math.max(root.width, Kirigami.Units.iconSizes.medium + 20 * fw);
 }
 
