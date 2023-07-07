@@ -214,7 +214,7 @@ PlasmoidItem {
                 }
             }
             onFinished: (output, error, message) => {
-                if (error==0 && output.hasOwnProperty("url") && output.url !== "") {
+                if (error == 0 && output.hasOwnProperty("url") && output.url !== "") {
                     console.assert(output.url !== undefined);
                     var resultUrl = output.url;
                     console.log("Received url", resultUrl)
