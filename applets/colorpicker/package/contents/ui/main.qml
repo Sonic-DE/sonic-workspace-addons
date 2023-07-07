@@ -111,7 +111,7 @@ PlasmoidItem {
         },
         PlasmaCore.Action {
             text: i18nc("@action", "View History")
-            icon.name: "color-management"
+            icon.name: "view-history"
             onTriggered: root.expanded = true
         }
     ]

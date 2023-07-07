@@ -92,10 +92,10 @@ PlasmoidItem {
     ]
 
     Instantiator {
-        model: root.pasteUrls.length
+        model: root.pasteUrls
         delegate: PlasmaCore.Action {
-            text: root.pasteUrls[modelData]
-            onTriggered: Qt.openUrlExternally(root.pasteUrls[modelData])
+            text: modelData
+            onTriggered: Qt.openUrlExternally(modelData)
         }
         onObjectAdded: (index, object) => {
             Plasmoid.contextualActions.push(object)
@@ -118,13 +118,7 @@ PlasmoidItem {
         }
         root.state = "configuration"
     }
-/*
-    function actionTriggered(actionName) {
-        var index = parseInt(actionName);
-        if (index)
-            Qt.openUrlExternally(pasteUrls[actionName]);
-    }
-*/
+
     function performPaste() {
         if (clipboard.formats.length < 1) { // empty clipboard!
             return; // do nothing (there's the tooltip!)
