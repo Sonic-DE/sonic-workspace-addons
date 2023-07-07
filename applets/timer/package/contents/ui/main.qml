@@ -151,11 +151,11 @@ PlasmoidItem {
     ]
 
     Instantiator {
-        model: plasmoid.configuration.predefinedTimers.length
+        model: plasmoid.configuration.predefinedTimers
         delegate: PlasmaCore.Action {
-            text: TimerPlasmoid.Timer.secondsToString(plasmoid.configuration.predefinedTimers[modelData], "hh:mm:ss")
+            text: TimerPlasmoid.Timer.secondsToString(modelData, "hh:mm:ss")
             onTriggered: {
-                seconds = plasmoid.configuration.predefinedTimers[modelData]
+                seconds = modelData
                 startTimer();
             }
         }
