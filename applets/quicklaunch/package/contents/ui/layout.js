@@ -99,8 +99,7 @@ function preferredCellHeight()
 
 function popupItemWidth()
 {
-  var fw = Kirigami.Units.gridUnit;
-  return Math.max(root.width, Kirigami.Units.iconSizes.medium + 20 * fw);
+  return Math.max(root.width, Kirigami.Units.iconSizes.medium + 20 * Kirigami.Units.gridUnit);
 }
 
 function popupItemHeight()
