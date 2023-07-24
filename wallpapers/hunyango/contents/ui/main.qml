@@ -14,7 +14,7 @@ WallpaperItem {
 
     contextualActions: [
         PlasmaCore.Action {
-            text: i18nd("plasma_wallpaper_org.kde.hunyango", "Random Color")
+            text: i18nd("plasma_wallpaper_org.kde.hunyango", "Randomize Wallpaper Color")
             icon.name: "color-profile"
             onTriggered: {
                 updateTimer.restart()
