@@ -131,8 +131,12 @@ CalendarEvents::CalendarEventsPlugin::SubLabel IslamicCalendarProviderPrivate::s
     return sublabel;
 }
 
-IslamicCalendarProvider::IslamicCalendarProvider(QObject *parent, CalendarSystem::System calendarSystem)
-    : AbstractCalendarProvider(parent, calendarSystem)
+IslamicCalendarProvider::IslamicCalendarProvider(QObject *parent,
+                                                 CalendarSystem::System calendarSystem,
+                                                 std::vector<QDate> &&alternateDates,
+                                                 std::vector<QDate> &&sublabelDates,
+                                                 int dateOffset)
+    : AbstractCalendarProvider(parent, calendarSystem, std::move(alternateDates), std::move(sublabelDates), dateOffset)
     , d(std::make_unique<IslamicCalendarProviderPrivate>(calendarSystem))
 {
     Q_ASSERT(m_calendarSystem == CalendarSystem::Jalali || m_calendarSystem == CalendarSystem::Islamic || m_calendarSystem == CalendarSystem::IslamicCivil
@@ -148,7 +152,7 @@ QCalendar::YearMonthDay IslamicCalendarProvider::fromGregorian(const QDate &date
     return d->fromGregorian(date);
 }
 
-CalendarEvents::CalendarEventsPlugin::SubLabel IslamicCalendarProvider::subLabels(const QDate &date) const
+CalendarEvents::CalendarEventsPlugin::SubLabel IslamicCalendarProvider::subLabel(const QDate &date) const
 {
     return d->subLabels(date);
 }
