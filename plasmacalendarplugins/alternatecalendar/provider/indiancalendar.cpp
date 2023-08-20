@@ -79,8 +79,11 @@ CalendarEvents::CalendarEventsPlugin::SubLabel IndianCalendarProviderPrivate::su
     return sublabel;
 }
 
-IndianCalendarProvider::IndianCalendarProvider(QObject *parent, CalendarSystem::System calendarSystem)
-    : AbstractCalendarProvider(parent, calendarSystem)
+IndianCalendarProvider::IndianCalendarProvider(QObject *parent,
+                                               CalendarSystem::System calendarSystem,
+                                               std::vector<QDate> &&alternateDates,
+                                               std::vector<QDate> &&sublabelDates)
+    : AbstractCalendarProvider(parent, calendarSystem, std::move(alternateDates), std::move(sublabelDates))
     , d(std::make_unique<IndianCalendarProviderPrivate>())
 {
     Q_ASSERT(m_calendarSystem == CalendarSystem::Indian);
@@ -95,7 +98,7 @@ QCalendar::YearMonthDay IndianCalendarProvider::fromGregorian(const QDate &date)
     return d->fromGregorian(date);
 }
 
-CalendarEvents::CalendarEventsPlugin::SubLabel IndianCalendarProvider::subLabels(const QDate &date) const
+CalendarEvents::CalendarEventsPlugin::SubLabel IndianCalendarProvider::subLabel(const QDate &date) const
 {
     return d->subLabels(date);
 }
