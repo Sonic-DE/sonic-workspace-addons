@@ -7,7 +7,7 @@
  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
@@ -96,7 +96,8 @@ KWin.Switcher {
             GridView {
                 id: thumbnailGridView
                 anchors.fill: parent
-
+                activeFocusOnTab: true
+                focus: true
                 model: tabBox.model
 
                 property int iconSize: PlasmaCore.Units.iconSizes.smallMedium
@@ -109,15 +110,22 @@ KWin.Switcher {
                 keyNavigationWraps: true
                 highlightMoveDuration: 0
 
+                // Tabbox is not an active window, so only forceActiveFocus() works
+                onCurrentItemChanged: currentItem.forceActiveFocus()
+
                 delegate: Item {
                     id: thumbnailGridItem
                     width: thumbnailGridView.cellWidth
                     height: thumbnailGridView.cellHeight
 
+                    Accessible.name: model.caption
+                    Accessible.role: Accessible.ListItem
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
                             thumbnailGridItem.select();
+                            GridView.view.currentIndex = index;
                         }
                     }
                     function select() {
