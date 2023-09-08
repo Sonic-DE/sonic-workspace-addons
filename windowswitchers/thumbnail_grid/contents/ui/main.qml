@@ -96,7 +96,7 @@ KWin.Switcher {
             GridView {
                 id: thumbnailGridView
                 anchors.fill: parent
-
+                focus: true
                 model: tabBox.model
 
                 property int iconSize: PlasmaCore.Units.iconSizes.smallMedium
@@ -109,15 +109,22 @@ KWin.Switcher {
                 keyNavigationWraps: true
                 highlightMoveDuration: 0
 
+                onCurrentItemChanged: currentItem.forceActiveFocus()
+
                 delegate: Item {
                     id: thumbnailGridItem
                     width: thumbnailGridView.cellWidth
                     height: thumbnailGridView.cellHeight
 
+                    focus: GridView.isCurrentItem
+                    Accessible.name: model.caption
+                    Accessible.role: Accessible.ListItem
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
                             thumbnailGridItem.select();
+                            GridView.view.currentIndex = index;
                         }
                     }
                     function select() {
