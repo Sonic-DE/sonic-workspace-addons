@@ -7,7 +7,7 @@
  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
@@ -96,7 +96,7 @@ KWin.Switcher {
             GridView {
                 id: thumbnailGridView
                 anchors.fill: parent
-
+                focus: true
                 model: tabBox.model
 
                 property int iconSize: PlasmaCore.Units.iconSizes.smallMedium
@@ -109,17 +109,19 @@ KWin.Switcher {
                 keyNavigationWraps: true
                 highlightMoveDuration: 0
 
-                delegate: Item {
+                delegate: MouseArea {
                     id: thumbnailGridItem
                     width: thumbnailGridView.cellWidth
                     height: thumbnailGridView.cellHeight
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            thumbnailGridItem.select();
-                        }
+                    focus: index === thumbnailGridView.currentIndex
+                    Accessible.name: model.caption
+                    Accessible.role: Accessible.ListItem
+
+                    onClicked: {
+                        thumbnailGridItem.select();
                     }
+
                     function select() {
                         thumbnailGridView.currentIndex = index;
                         thumbnailGridView.currentIndexChanged(thumbnailGridView.currentIndex);
