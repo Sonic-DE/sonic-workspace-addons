@@ -96,7 +96,7 @@ KWin.Switcher {
             GridView {
                 id: thumbnailGridView
                 anchors.fill: parent
-
+                focus: true
                 model: tabBox.model
 
                 property int iconSize: PlasmaCore.Units.iconSizes.smallMedium
