@@ -28,7 +28,7 @@ public:
     }
 
 private:
-    ProfilesModel m_model;
+    ProfilesModel m_model{this};
     const QLatin1String m_triggerWord = QLatin1String("konsole");
 };
 
