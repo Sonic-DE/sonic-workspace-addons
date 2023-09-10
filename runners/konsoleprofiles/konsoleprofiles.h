@@ -22,6 +22,10 @@ public:
 
     void match(RunnerContext &context) override;
     void run(const RunnerContext &context, const QueryMatch &match) override;
+    void init() override
+    {
+        m_model.setAppName(m_triggerWord);
+    }
 
 private:
     ProfilesModel m_model;
