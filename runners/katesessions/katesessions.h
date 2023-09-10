@@ -30,7 +30,7 @@ public:
 
 private:
     const QLatin1String m_triggerWord = QLatin1String("kate");
-    ProfilesModel m_model;
+    ProfilesModel m_model{this};
 };
 
 #endif
