@@ -242,6 +242,8 @@ PlasmoidItem {
         padding: 0
         Layout.minimumWidth: Kirigami.Units.gridUnit * 7
         Layout.minimumHeight: Math.round(Kirigami.Units.gridUnit * 10.5)
+        Layout.preferredWidth: Kirigami.Units.gridUnit * 16
+        Layout.preferredHeight: Math.round(Kirigami.Units.gridUnit * 22)
 
         contentItem: ColumnLayout {
             id: mainLayout
