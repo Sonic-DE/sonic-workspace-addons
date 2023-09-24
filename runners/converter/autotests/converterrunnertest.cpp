@@ -31,6 +31,7 @@ private Q_SLOTS:
 
 void ConverterRunnerTest::initTestCase()
 {
+    QStandardPaths::setTestModeEnabled(true);
     initProperties();
 }
 
@@ -73,7 +74,8 @@ void ConverterRunnerTest::testLettersAndCurrency()
     launchQuery(QStringLiteral("4us$>ca$"));
 
     QCOMPARE(manager->matches().count(), 1);
-    QVERIFY(manager->matches().constFirst().text().contains(QLatin1String("Canadian dollars (CAD)")));
+    QVERIFY2(manager->matches().constFirst().text().contains(QLatin1String("Canadian dollars (CAD)")),
+             manager->matches().constFirst().text().toUtf8().constData());
 }
 
 /**
@@ -138,7 +140,7 @@ void ConverterRunnerTest::testRoundingOfCurrencies()
     launchQuery(QStringLiteral("50.123$"));
     QVERIFY(!manager->matches().isEmpty());
     QRegularExpression hasTwoDecimalPrescision(QStringLiteral(R"(^\d+\.\d\d)"));
-    QVERIFY(manager->matches().constFirst().text().contains(hasTwoDecimalPrescision));
+    QVERIFY2(manager->matches().constFirst().text().contains(hasTwoDecimalPrescision), manager->matches().constFirst().text().toUtf8().constData());
 }
 
 QTEST_MAIN(ConverterRunnerTest)
