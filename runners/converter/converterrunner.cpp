@@ -14,11 +14,9 @@
 #include <QGuiApplication>
 #include <QLocale>
 #include <QMimeData>
-#include <QMutex>
 
 #include <cmath>
-
-static QMutex s_initMutex;
+#include <mutex>
 
 K_PLUGIN_CLASS_WITH_JSON(ConverterRunner, "plasma-runner-converter.json")
 
@@ -69,11 +67,11 @@ void ConverterRunner::match(RunnerContext &context)
 
     // Initialize if not done already
     {
-        QMutexLocker lock(&s_initMutex);
-        if (!converter) {
+        static std::once_flag s_flag;
+        std::call_once(s_flag, [this] {
             converter = std::make_unique<KUnitConversion::Converter>();
             insertCompatibleUnits();
-        }
+        });
     }
 
     // Check if unit is valid, otherwise check for the value in the compatibleUnits map
@@ -83,6 +81,7 @@ void ConverterRunner::match(RunnerContext &context)
         inputUnitString = compatibleUnits.value(inputUnitString.toUpper());
         inputCategory = converter->categoryForUnit(inputUnitString);
         if (inputCategory.id() == KUnitConversion::InvalidCategory) {
+            qCritical() << "Invalid category";
             return;
         }
     }
