@@ -14,11 +14,8 @@
 #include <QGuiApplication>
 #include <QLocale>
 #include <QMimeData>
-#include <QMutex>
 
 #include <cmath>
-
-static QMutex s_initMutex;
 
 K_PLUGIN_CLASS_WITH_JSON(ConverterRunner, "plasma-runner-converter.json")
 
@@ -68,13 +65,10 @@ void ConverterRunner::match(RunnerContext &context)
     }
 
     // Initialize if not done already
-    {
-        QMutexLocker lock(&s_initMutex);
-        if (!converter) {
-            converter = std::make_unique<KUnitConversion::Converter>();
-            insertCompatibleUnits();
-        }
-    }
+    std::call_once(m_converterInitialized, [this] {
+        converter = std::make_unique<KUnitConversion::Converter>();
+        insertCompatibleUnits();
+    });
 
     // Check if unit is valid, otherwise check for the value in the compatibleUnits map
     QString inputUnitString = unitStrings.first().simplified();
@@ -103,10 +97,11 @@ void ConverterRunner::match(RunnerContext &context)
     const double numberValue = numberDataPair.second;
     QList<QueryMatch> matches;
     for (const KUnitConversion::Unit &outputUnit : outputUnits) {
-        KUnitConversion::Value outputValue = inputCategory.convert(KUnitConversion::Value(numberValue, inputUnit), outputUnit);
-        if (!outputValue.isValid() || inputUnit == outputUnit) {
+        if (!inputUnit.isValid() || !outputUnit.isValid() || inputUnit == outputUnit) {
             continue;
         }
+        KUnitConversion::Value outputValue = KUnitConversion::Value(numberValue, inputUnit).convertTo(outputUnit);
+        qCritical() << "numberValue" << numberValue << outputValue.number() << outputValue.isValid();
 
         QueryMatch match(this);
         match.setType(QueryMatch::HelperMatch);
