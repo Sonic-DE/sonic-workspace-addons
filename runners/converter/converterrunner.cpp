@@ -14,11 +14,9 @@
 #include <QGuiApplication>
 #include <QLocale>
 #include <QMimeData>
-#include <QMutex>
 
 #include <cmath>
-
-static QMutex s_initMutex;
+#include <mutex>
 
 K_PLUGIN_CLASS_WITH_JSON(ConverterRunner, "plasma-runner-converter.json")
 
@@ -68,13 +66,10 @@ void ConverterRunner::match(RunnerContext &context)
     }
 
     // Initialize if not done already
-    {
-        QMutexLocker lock(&s_initMutex);
-        if (!converter) {
-            converter = std::make_unique<KUnitConversion::Converter>();
-            insertCompatibleUnits();
-        }
-    }
+    std::call_once(m_converterInitialized, [this] {
+        converter = std::make_unique<KUnitConversion::Converter>();
+        insertCompatibleUnits();
+    });
 
     // Check if unit is valid, otherwise check for the value in the compatibleUnits map
     QString inputUnitString = unitStrings.first().simplified();
@@ -94,9 +89,11 @@ void ConverterRunner::match(RunnerContext &context)
 
     const KUnitConversion::Unit inputUnit = inputCategory.unit(inputUnitString);
     const QList<KUnitConversion::Unit> outputUnits = createResultUnits(outputUnitString, inputCategory);
+    qCritical() << "inputUnitString" << inputUnitString << outputUnitString << inputCategory.id() << outputUnits.size() << inputUnit.id();
     const auto numberDataPair = getValidatedNumberValue(inputValueString);
     // Return on invalid user input
     if (!numberDataPair.first) {
+        qCritical() << "11";
         return;
     }
 
@@ -104,6 +101,8 @@ void ConverterRunner::match(RunnerContext &context)
     QList<QueryMatch> matches;
     for (const KUnitConversion::Unit &outputUnit : outputUnits) {
         KUnitConversion::Value outputValue = inputCategory.convert(KUnitConversion::Value(numberValue, inputUnit), outputUnit);
+        qCritical() << "valid" << outputValue.isValid() << outputValue.unit().id() << outputUnit.id() << numberValue;
+        qCritical() << "valid2" << inputCategory.isNull() << inputUnit.isValid() << outputUnit.isValid();
         if (!outputValue.isValid() || inputUnit == outputUnit) {
             continue;
         }
