@@ -53,7 +53,7 @@ void DateTimeRunnerTest::testLocalTimeInfo()
 
 void DateTimeRunnerTest::testRemoteTimeInfo()
 {
-    const QTime remoteTime = QDateTime::currentDateTime().toTimeZone(QTimeZone("UTC-02:00")).time();
+    const QTime remoteTime = QDateTime::currentDateTime().toTimeZone(QTimeZone("GMT-2")).time();
     const QString timeStr = QLocale().toString(remoteTime, QLocale::ShortFormat);
     const QString timeDiffStr = QString("2 hours earlier");
 
