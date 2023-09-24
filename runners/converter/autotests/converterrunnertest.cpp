@@ -27,11 +27,21 @@ private Q_SLOTS:
     void testInvalidQuery_data();
     void testInvalidQuery();
     void testRoundingOfCurrencies();
+
+private:
+    std::unique_ptr<KUnitConversion::Converter> m_converter = std::make_unique<KUnitConversion::Converter>();
 };
 
 void ConverterRunnerTest::initTestCase()
 {
+    QStandardPaths::setTestModeEnabled(true);
     initProperties();
+    KUnitConversion::UnitCategory currencyCategory = m_converter->category(QStringLiteral("Currency"));
+    auto job = currencyCategory.syncConversionTable();
+    if (job) {
+        QSignalSpy finishedSpy(job, &UpdateJob::finished);
+        QVERIFY(finishedSpy.wait(30000));
+    }
 }
 
 /**
@@ -73,7 +83,8 @@ void ConverterRunnerTest::testLettersAndCurrency()
     launchQuery(QStringLiteral("4us$>ca$"));
 
     QCOMPARE(manager->matches().count(), 1);
-    QVERIFY(manager->matches().constFirst().text().contains(QLatin1String("Canadian dollars (CAD)")));
+    QVERIFY2(manager->matches().constFirst().text().contains(QLatin1String("Canadian dollars (CAD)")),
+             manager->matches().constFirst().text().toUtf8().constData());
 }
 
 /**
@@ -138,7 +149,7 @@ void ConverterRunnerTest::testRoundingOfCurrencies()
     launchQuery(QStringLiteral("50.123$"));
     QVERIFY(!manager->matches().isEmpty());
     QRegularExpression hasTwoDecimalPrescision(QStringLiteral(R"(^\d+\.\d\d)"));
-    QVERIFY(manager->matches().constFirst().text().contains(hasTwoDecimalPrescision));
+    QVERIFY2(manager->matches().constFirst().text().contains(hasTwoDecimalPrescision), manager->matches().constFirst().text().toUtf8().constData());
 }
 
 QTEST_MAIN(ConverterRunnerTest)
