@@ -99,6 +99,7 @@ void DateTimeRunner::match(RunnerContext &context)
         term = term.replace(conversionWordsRegex, QStringLiteral(" ")); // strip away conversion words
         const auto zoneTerm = QStringView(term).right(term.length() - timeWord.length() - 1);
         const auto zones = matchingTimeZones(zoneTerm);
+        qCritical() << "zones" << zoneTerm << zones;
         for (auto it = zones.constBegin(), itEnd = zones.constEnd(); it != itEnd; ++it) {
             const QTimeZone zone = it.value();
             const QString zoneStr = it.key();
