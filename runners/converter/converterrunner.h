@@ -8,6 +8,8 @@
 #ifndef CONVERTERRUNNER_H
 #define CONVERTERRUNNER_H
 
+#include <mutex>
+
 #include <KRunner/AbstractRunner>
 #include <KRunner/Action>
 #include <KUnitConversion/Converter>
@@ -35,6 +37,7 @@ public:
     QMimeData *mimeDataForMatch(const QueryMatch &match) override;
 
 private:
+    std::once_flag m_converterInitialized;
     std::unique_ptr<KUnitConversion::Converter> converter;
     const QLocale locale;
     QRegularExpression valueRegex;
