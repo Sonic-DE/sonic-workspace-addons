@@ -14,7 +14,7 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
-import org.kde.kquickcontrolsaddons 2.1 // KCMShell
+import org.kde.kquickcontrolsaddons // KCMShell
 import org.kde.kwindowsystem 1.0
 
 import org.kde.plasma.private.colorpicker 2.0 as ColorPicker
