@@ -19,6 +19,8 @@ Kirigami.FormLayout {
 
     property alias cfg_fuzzyness: fuzzyness.value
 
+    property alias cfg_textAlignment: alignmentGroup.getValue()
+
     QQC2.CheckBox {
         id: boldCheckBox
         Kirigami.FormData.label: i18nc("@title:group", "Font:")
@@ -55,6 +57,36 @@ Kirigami.FormLayout {
 
         QQC2.Label {
             text: i18nc("@item:inrange", "Fuzzy")
+        }
+    }
+
+    ButtonGroup {
+        id: alignmentGroup
+        function getValue() {
+            return checkedButton.value
+        }
+    }
+    RowLayout {
+        Kirigami.FormData.label: i18nc("@title:group", "Alignment:")
+
+        QQC2.RadioButton {
+            property string value: QQC2.Text.AlignLeft
+
+            text: i18nc("Alignment", "Left")
+            ButtonGroup.group: alignmentGroup
+        }
+        QQC2.RadioButton {
+            property int value: QQC2.Text.AlignHCenter
+
+            text: i18nc("Alignment", "Center")
+            checked: true
+            ButtonGroup.group: alignmentGroup
+        }
+        QQC2.RadioButton {
+            property int value: QQC2.Text.AlignRight
+
+            text: i18nc("Alignment", "Right")
+            ButtonGroup.group: alignmentGroup
         }
     }
 }
