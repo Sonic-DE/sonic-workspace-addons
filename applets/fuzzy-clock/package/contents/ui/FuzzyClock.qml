@@ -251,6 +251,16 @@ Item {
         }
     }
 
+    function getHorizontalAlignment(alignment) {
+        if (alignment == "left") {
+            return Text.AlignLeft
+        } else if (alignment == "center") {
+            return Text.AlignHCenter
+        } else if (alignment == "right") {
+            return Text.AlignRight
+        }
+    }
+
     activeFocusOnTab: true
 
     Accessible.name: Plasmoid.title
@@ -270,7 +280,7 @@ Item {
         text: timeString()
 
         wrapMode: Text.NoWrap
-        horizontalAlignment: Text.AlignHCenter
+        horizontalAlignment: getHorizontalAlignment(plasmoid.configuration.textAlignment)
         verticalAlignment: Text.AlignVCenter
         height: 0
         width: 0
