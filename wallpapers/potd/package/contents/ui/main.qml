@@ -33,6 +33,7 @@ WallpaperItem {
         readonly property size sourceSize: Qt.size(imageView.width * Screen.devicePixelRatio, imageView.height * Screen.devicePixelRatio)
         property Item pendingImage
         property bool doesSkipAnimation: true
+        property size loadedSourceSize
 
         onFillModeChanged: Qt.callLater(imageView.loadImage)
         onSourceSizeChanged: Qt.callLater(imageView.loadImage)
@@ -47,7 +48,7 @@ WallpaperItem {
                 imageView.pendingImage = null;
             }
 
-            imageView.doesSkipAnimation = imageView.empty
+            imageView.doesSkipAnimation = imageView.empty || sourceSize !== loadedSourceSize;
             imageView.pendingImage = imageComponent.createObject(imageView, {
                 "source": backend.localUrl,
                 "fillMode": imageView.fillMode,
@@ -58,6 +59,7 @@ WallpaperItem {
             });
             imageView.pendingImage.statusChanged.connect(imageView.replaceWhenLoaded);
             imageView.replaceWhenLoaded();
+            loadedSourceSize = sourceSize;
         }
 
         function replaceWhenLoaded() {
