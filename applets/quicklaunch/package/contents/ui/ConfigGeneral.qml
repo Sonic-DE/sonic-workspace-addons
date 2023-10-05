@@ -16,7 +16,7 @@ Kirigami.FormLayout {
     anchors.right: parent.right
     anchors.left: parent.left
 
-    readonly property bool vertical: plasmoid.formFactor == PlasmaCore.Types.Vertical || (plasmoid.formFactor == PlasmaCore.Types.Planar && plasmoid.height > plasmoid.width)
+    readonly property bool vertical: Plasmoid.formFactor == PlasmaCore.Types.Vertical || (Plasmoid.formFactor == PlasmaCore.Types.Planar && Plasmoid.height > Plasmoid.width)
 
     property alias cfg_maxSectionCount: maxSectionCount.value
     property alias cfg_showLauncherNames: showLauncherNames.checked
@@ -61,7 +61,7 @@ Kirigami.FormLayout {
         Kirigami.FormData.label: i18nc("@title:group", "Title:")
         Layout.fillWidth: true
 
-        visible: plasmoid.formFactor == PlasmaCore.Types.Planar
+        visible: Plasmoid.formFactor == PlasmaCore.Types.Planar
 
         QQC2.CheckBox {
             id: showTitle
