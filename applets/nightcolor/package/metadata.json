@@ -85,7 +85,6 @@
         "Description[x-test]": "xxPlasmoid for controlling Night Colorxx",
         "Description[zh_CN]": "用于控制夜间颜色的 Plasma 小程序",
         "Description[zh_TW]": "用來控制夜色功能的 Plasmoid",
-        "EnabledByDefault": true,
         "Icon": "redshift-status-on",
         "Id": "org.kde.plasma.nightcolorcontrol",
         "License": "GPL-2.0+",
