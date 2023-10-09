@@ -113,14 +113,12 @@ add_subdirectory(dict)
 add_subdirectory(profiles)
 add_subdirectory(applets)
 add_subdirectory(runners)
-
 add_subdirectory(wallpapers)
-
 add_subdirectory(windowswitchers)
-
 add_subdirectory(plasmacalendarplugins)
-
 add_subdirectory(templates)
+add_subdirectory(effects)
+
 add_subdirectory(appiumtests)
 
 # add clang-format target for all our real source files

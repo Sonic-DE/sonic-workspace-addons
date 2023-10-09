@@ -1,0 +1,20 @@
+{
+    "KPackageStructure": "KWin/Effect",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "vlad.zahorodnii@kde.org",
+                "Name": "Vlad Zahorodnii"
+            }
+        ],
+        "Category": "Window Management",
+        "Description": "Arrange desktops in a virtual cube",
+        "EnabledByDefault": false,
+        "Id": "cube",
+        "License": "GPL",
+        "Name": "Cube"
+    },
+    "X-KDE-Ordering": 60,
+    "X-Plasma-API": "declarativescript"
+
+}
