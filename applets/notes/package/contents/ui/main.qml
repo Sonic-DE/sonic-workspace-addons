@@ -107,15 +107,6 @@ PlasmoidItem {
         }
     }
 
-    DocumentHandler {
-        id: documentHandler
-        target: root.fullRepresentationItem ? mainTextArea : null
-        cursorPosition: root.fullRepresentationItem ? mainTextArea.cursorPosition : 0
-        selectionStart: root.fullRepresentationItem ? mainTextArea.selectionStart : 0
-        selectionEnd: root.fullRepresentationItem ? mainTextArea.selectionEnd : 0
-        defaultFontSize: Plasmoid.configuration.fontSize
-    }
-
     preloadFullRepresentation: true
     fullRepresentation: KSvg.SvgItem {
         id: backgroundItem
@@ -123,11 +114,20 @@ PlasmoidItem {
         property alias mainTextArea: mainTextArea
         Layout.preferredWidth: Kirigami.Units.gridUnit * 25
         Layout.preferredHeight: Kirigami.Units.gridUnit * 25
-        Layout.minimumWidth: Kirigami.Units.iconSizes.medium
-        Layout.minimumHeight: Kirigami.Units.iconSizes.medium
+        Layout.minimumWidth: Kirigami.Units.gridUnit * 15
+        Layout.minimumHeight: Kirigami.Units.gridUnit * 15
 
         imagePath: "widgets/notes"
         elementId: Plasmoid.configuration.color + "-notes"
+
+        DocumentHandler {
+            id: documentHandler
+            target: mainTextArea
+            cursorPosition: mainTextArea.cursorPosition
+            selectionStart: mainTextArea.selectionStart
+            selectionEnd: mainTextArea.selectionEnd
+            defaultFontSize: Plasmoid.configuration.fontSize
+        }
 
         Connections {
             target: root
@@ -170,14 +170,14 @@ PlasmoidItem {
 
                     textFormat: TextEdit.RichText
                     onLinkActivated: Qt.openUrlExternally(link)
-                    background: Rectangle { color: "transparent" }
+                    background: null
                     color: textIconColor
                     persistentSelection: true
                     wrapMode: TextEdit.Wrap
 
                     font.pointSize: cfgFontPointSize
 
-                    Keys.onPressed: {
+                    Keys.onPressed: event => {
                         if (event.key === Qt.Key_Escape) {
                             root.expanded = false;
                             event.accepted = true;
@@ -199,7 +199,7 @@ PlasmoidItem {
                                 documentHandler.reset();
                                 event.accepted = true;
                             } else if (event.matches(StandardKey.Cut)) {
-                                mainTextArea.cut();
+                                cut();
                                 documentHandler.reset();
                                 event.accepted = true;
                             }
@@ -208,11 +208,12 @@ PlasmoidItem {
 
                     // Apply the font size change to existing texts
                     onCfgFontPointSizeChanged: {
-                        var [start, end] = [mainTextArea.selectionStart, mainTextArea.selectionEnd];
+                        const start = selectionStart;
+                        const end = selectionEnd;
 
-                        mainTextArea.selectAll();
+                        selectAll();
                         documentHandler.fontSize = cfgFontPointSize;
-                        mainTextArea.select(start, end);
+                        select(start, end);
                     }
 
                     // update the note if the source changes, but only if the user isn't editing it currently
@@ -227,11 +228,12 @@ PlasmoidItem {
                     }
 
                     onActiveFocusChanged: {
-                        if (activeFocus && Window && (Window.window.flags & Qt.WindowDoesNotAcceptFocus)) {
+                        const window = Window.window;
+                        if (activeFocus && window && (window.flags & Qt.WindowDoesNotAcceptFocus)) {
                             Plasmoid.status = PlasmaCore.Types.AcceptingInputStatus
                         } else {
                             Plasmoid.status = PlasmaCore.Types.ActiveStatus
-                            note.save(mainTextArea.text);
+                            note.save(text);
                         }
                     }
 
@@ -239,19 +241,19 @@ PlasmoidItem {
                         if (event.button === Qt.RightButton) {
                             event.accepted = true;
                             contextMenu.popup();
-                            mainTextArea.forceActiveFocus();
+                            forceActiveFocus();
                         }
                         if (event.button === Qt.LeftButton && contextMenu.visible === true) {
                             event.accepted = true;
                             contextMenu.dismiss();
-                            mainTextArea.forceActiveFocus();
+                            forceActiveFocus();
                         }
                     }
 
                     Component.onCompleted: {
                         if (!Plasmoid.configuration.fontSize) {
                             // Set fontSize to default if it is not set
-                            Plasmoid.configuration.fontSize = mainTextArea.font.pointSize
+                            Plasmoid.configuration.fontSize = font.pointSize
                         }
                     }
 
@@ -584,9 +586,15 @@ PlasmoidItem {
 
                 buttons: MessageDialog.Discard | MessageDialog.Cancel
 
+                onButtonClicked: (button, role) => {
+                    if (button === MessageDialog.Discard) {
+                        Plasmoid.internalAction("remove").trigger()
+                        visible = false;
+                    }
+                }
+
                 onRejected: {
-                    Plasmoid.internalAction("remove").trigger()
-                    visible = false;
+                    visible = false
                 }
             }
         }

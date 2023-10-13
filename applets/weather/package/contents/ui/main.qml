@@ -17,6 +17,13 @@ PlasmoidItem {
 
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
 
+    readonly property bool inPanel: [
+        PlasmaCore.Types.TopEdge,
+        PlasmaCore.Types.RightEdge,
+        PlasmaCore.Types.BottomEdge,
+        PlasmaCore.Types.LeftEdge,
+    ].includes(Plasmoid.location)
+
     readonly property string weatherSource: Plasmoid.configuration.source
     readonly property int updateInterval: Plasmoid.configuration.updateInterval
     readonly property int displayTemperatureUnit: Plasmoid.configuration.temperatureUnit
@@ -374,14 +381,14 @@ PlasmoidItem {
         let iconName;
         // workaround for now to ensure "Please configure" tooltip
         // TODO: remove when configurationRequired works
-         if (status === Util.NeedsConfiguration) {
-             iconName = "configure";
+        if (status === Util.NeedsConfiguration) {
+            iconName = "configure";
         } else {
             iconName = generalModel.currentConditionIconName;
         }
 
         if (inPanel) {
-            return symbolicizeIconName(iconName);
+            iconName = symbolicizeIconName(iconName);
         }
 
         return iconName;
