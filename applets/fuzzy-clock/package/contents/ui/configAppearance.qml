@@ -60,26 +60,30 @@ Kirigami.FormLayout {
         }
     }
 
-    RowLayout {
+    Item {
+	Kirigami.FormData.isSection: true
+    }
+
+    ColumnLayout {
         id: textAlignmentGroup
-        Kirigami.FormData.label: i18nc("@title:group", "Alignment:")
+        Kirigami.FormData.label: i18nc("@title:group", "Text alignment:")
 
         property string alignment: plasmoid.configuration.textAlignment
 
         QQC2.RadioButton {
             text: i18nc("Alignment", "Left")
             checked: textAlignmentGroup.alignment == "left"
-            onClicked: textAlignmentGroup.alignment = "left"
+            onToggled: textAlignmentGroup.alignment = "left"
         }
         QQC2.RadioButton {
             text: i18nc("Alignment", "Center")
             checked: textAlignmentGroup.alignment == "center"
-            onClicked: textAlignmentGroup.alignment = "center"
+            onToggled: textAlignmentGroup.alignment = "center"
         }
         QQC2.RadioButton {
             text: i18nc("Alignment", "Right")
             checked: textAlignmentGroup.alignment == "right"
-            onClicked: textAlignmentGroup.alignment = "right"
+            onToggled: textAlignmentGroup.alignment = "right"
         }
     }
 }
