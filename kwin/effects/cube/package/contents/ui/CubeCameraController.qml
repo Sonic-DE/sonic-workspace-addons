@@ -5,7 +5,6 @@
 */
 
 import QtQuick
-import QtQuick.Window
 import QtQuick3D
 
 Item {
@@ -94,9 +93,13 @@ Item {
         camera.rotation = root.rotation;
     }
 
-    Connections {
-        target: Window.window
-        onAfterAnimating: processInputs()
+    Timer {
+        interval: 16
+        repeat: true
+        running: root.busy
+        onTriggered: {
+            processInputs();
+        }
     }
 
     QtObject {
