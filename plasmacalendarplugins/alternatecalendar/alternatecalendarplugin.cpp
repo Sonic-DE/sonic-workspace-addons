@@ -25,7 +25,7 @@ using SubLabel = CalendarEvents::CalendarEventsPlugin::SubLabel;
 AlternateCalendarPlugin::AlternateCalendarPlugin(QObject *parent)
     : CalendarEvents::CalendarEventsPlugin(parent)
 {
-    auto config = KSharedConfig::openConfig(QStringLiteral("plasma_calendar_alternatecalendar"));
+    auto config = KSharedConfig::openConfig(QStringLiteral("plasma_calendar_alternatecalendar"), KConfig::NoGlobals);
     m_generalConfigGroup = config->group("General");
     m_configWatcher = KConfigWatcher::create(config);
     connect(m_configWatcher.get(), &KConfigWatcher::configChanged, this, &AlternateCalendarPlugin::updateSettings);
