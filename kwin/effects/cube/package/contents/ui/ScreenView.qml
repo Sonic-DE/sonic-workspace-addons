@@ -29,8 +29,7 @@ Item {
     View3D {
         id: view
         anchors.fill: parent
-        // TODO: Uncomment renderMode: View3D.Underlay when screen views are properly marked opaque in kwin
-        // renderMode: View3D.Underlay
+        renderMode: View3D.Underlay
 
         Loader {
             id: colorSceneEnvironment
