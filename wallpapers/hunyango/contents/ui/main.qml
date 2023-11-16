@@ -47,7 +47,7 @@ WallpaperItem {
         Behavior on color {
             SequentialAnimation {
                 ColorAnimation {
-                    duration: 1000
+                    duration: root.configuration.SlowTransition ? 30000 : 1000
                     easing.type: Easing.InQuad
                 }
 
