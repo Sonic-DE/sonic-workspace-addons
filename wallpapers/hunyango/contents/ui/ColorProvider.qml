@@ -8,23 +8,36 @@ pragma Singleton
 
 import QtQuick
 
-Timer {
+Item {
     property color color: _randomColor()
+
+    readonly property int fastDuration: 2000
+    readonly property int slowDuration: 30000
+
+    Behavior on color {
+        SequentialAnimation {
+            id: animation
+
+            ColorAnimation {
+                id: colorAnimation
+                duration: slowDuration
+                easing.type: Easing.InOutQuad
+            }
+
+            ScriptAction {
+                script: updateColor()
+            }
+        }
+    }
 
     function _randomColor() {
         return Qt.hsla(Math.random(), 1, 0.5, 1)
     }
 
-    function updateColor(restartTimer = true) {
+    function updateColor(fast = false) {
+        colorAnimation.duration = fast ? fastDuration : slowDuration;
         color = _randomColor()
-
-        if (restartTimer) {
-            restart()
-        }
     }
 
-    running: true
-    repeat: true
-    interval: 30000
-    onTriggered: updateColor(false)
+    Component.onCompleted: updateColor()
 }
