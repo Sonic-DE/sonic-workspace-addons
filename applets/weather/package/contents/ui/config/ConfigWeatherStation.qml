@@ -30,6 +30,12 @@ ColumnLayout {
     // We use a custom property to provide a more responsive feedback
     property bool isSearching: false
 
+    readonly property var historyModel: Plasmoid.nativeInterface.history.map(source => {
+        const sourceDetails = source.split('|');
+        return { display: locationListModel.displayName(sourceDetails[2], providers[sourceDetails[0]]),
+                 value: source };
+    });
+
     LocationListModel {
         id: locationListModel
         onLocationSearchDone: {
@@ -85,51 +91,66 @@ ColumnLayout {
         }
     }
 
-    Kirigami.SearchField {
-        id: searchStringEdit
+    RowLayout {
+        QQC2.Label {
+            id: recentLabel
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
 
-        Layout.fillWidth: true
+            visible: !searchStringEdit.expanded
+            text: i18n("Recent locations:")
+        }
 
-        focus: true
-        enabled: Object.keys(providers).length > 0
-        placeholderText: hasSource ? i18nc("@info:placeholder", "Enter new location") : i18nc("@info:placeholder", "Enter location")
+        Kirigami.SearchField {
+            id: searchStringEdit
 
-        Timer {
-            id: searchDelayTimer
-            interval: 500
-            onTriggered: {
-                if (!canSearch) {
-                    locationListModel.clear();
+            readonly property bool expanded: historyModel.length === 0 || weatherStationConfigPage.canSearch || searchStringEdit.activeFocus
+
+            Layout.fillWidth: expanded
+            Layout.minimumWidth: Kirigami.Units.gridUnit * 4
+
+            focus: true
+            enabled: Object.keys(providers).length > 0
+            placeholderText: hasSource ? i18nc("@info:placeholder", "Search for a new location") : i18nc("@info:placeholder", "Search to set a location")
+
+            Timer {
+                id: searchDelayTimer
+                interval: 500
+                onTriggered: {
+                    if (!canSearch) {
+                        locationListModel.clear();
+                        return;
+                    }
+                    locationListModel.searchLocations(searchStringEdit.text, Object.keys(providers));
+                }
+            }
+
+            onTextChanged: {
+                isSearching = text.length > 0
+                searchDelayTimer.restart();
+            }
+
+            Keys.onUpPressed: {
+                if (locationListView.currentIndex != 0) {
+                    locationListView.currentIndex--;
+                }
+                event.accepted = true;
+            }
+            Keys.onDownPressed: {
+                if (locationListView.currentIndex != locationListView.count - 1) {
+                    locationListView.currentIndex++;
+                }
+                event.accepted = true;
+            }
+            Keys.onEscapePressed: {
+                if (!expanded) {
+                    event.accepted = false;
                     return;
                 }
-                locationListModel.searchLocations(searchStringEdit.text, Object.keys(providers));
+                searchStringEdit.clear();
+                locationListView.forceActiveFocus();
+                event.accepted = true;
             }
-        }
-
-        onTextChanged: {
-            isSearching = text.length > 0
-            searchDelayTimer.restart();
-        }
-
-        Keys.onUpPressed: {
-            if (locationListView.currentIndex != 0) {
-                locationListView.currentIndex--;
-            }
-            event.accepted = true;
-        }
-        Keys.onDownPressed: {
-            if (locationListView.currentIndex != locationListView.count - 1) {
-                locationListView.currentIndex++;
-            }
-            event.accepted = true;
-        }
-        Keys.onEscapePressed: {
-            if (searchStringEdit.text.length === 0) {
-                event.accepted = false;
-                return;
-            }
-            searchStringEdit.clear();
-            event.accepted = true;
         }
     }
 
@@ -146,26 +167,40 @@ ColumnLayout {
 
         ListView {
             id: locationListView
-            model: locationListModel
+
+            model: searchStringEdit.expanded ? locationListModel : historyModel
             focus: true
             activeFocusOnTab: true
             keyNavigationEnabled: true
 
-            onCurrentIndexChanged: {
-                const source = locationListModel.valueForListIndex(locationListView.currentIndex);
-                if (source) {
-                     weatherStationConfigPage.cfg_source = source;
+            onCurrentItemChanged: {
+                if (currentItem && currentItem.source) {
+                     weatherStationConfigPage.cfg_source = currentItem.source;
                 }
             }
 
-            delegate: QQC2.ItemDelegate {
-                width: locationListView.width
-                text: model.display
+            delegate: Kirigami.BasicListItem {
+                id: locationDelegate
+
+                readonly property string source: searchStringEdit.expanded ? locationListModel.valueForListIndex(index) : modelData.value
+
+                label: searchStringEdit.expanded ? model.display : modelData.display
                 highlighted: ListView.isCurrentItem
 
                 onClicked: {
                     locationListView.forceActiveFocus();
                     locationListView.currentIndex = index;
+                }
+
+                onDoubleClicked: {
+                    locationListView.currentIndex = index;
+                    root.saveConfig();  // ConfigurationAppletPage.saveConfig()
+                }
+
+                trailing: QQC2.ToolButton {
+                    icon.name: "delete"
+                    visible: !searchStringEdit.expanded && locationDelegate.hovered
+                    onClicked: Plasmoid.nativeInterface.removeFromHistory(source)
                 }
             }
 

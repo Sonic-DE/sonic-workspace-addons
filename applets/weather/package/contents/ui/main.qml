@@ -464,6 +464,8 @@ PlasmoidItem {
     onWeatherSourceChanged: {
         if (weatherSource.length === 0) {
             status = Util.NeedsConfiguration
+        } else {
+            Plasmoid.nativeInterface.addToHistory(weatherSource);
         }
     }
 
