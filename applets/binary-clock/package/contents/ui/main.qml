@@ -30,6 +30,7 @@ PlasmoidItem {
     width: Kirigami.Units.gridUnit * 10
     height: Kirigami.Units.gridUnit * 4
 
+    Plasmoid.backgroundHints: "NoBackground"
     preferredRepresentation: compactRepresentation
 
     // keep this consistent with toolTipMainText and toolTipSubText in analog-clock
