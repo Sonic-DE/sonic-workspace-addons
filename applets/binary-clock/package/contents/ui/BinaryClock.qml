@@ -47,6 +47,8 @@ Item {
     readonly property int minutes: root.minutes
     readonly property int seconds: root.seconds
 
+    readonly property int base: 10
+
     readonly property bool showOffLeds: plasmoid.configuration.showOffLeds
 
     readonly property int dots: showSeconds ? 6 : 4
