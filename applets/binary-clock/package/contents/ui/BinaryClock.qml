@@ -72,6 +72,7 @@ Item {
 
     GridLayout {
         anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
         columns: main.showSeconds ? 6 : 4
         Repeater {
             model: [8, 4, 2, 1]
