@@ -31,7 +31,7 @@ PlasmoidItem {
     width: Kirigami.Units.gridUnit * 10
     height: Kirigami.Units.gridUnit * 4
 
-    Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground | PlasmaCore.Types.ConfigurableBackground
+    Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground | PlasmaCore.Types.ConfigurableBackground
     preferredRepresentation: compactRepresentation
 
     // keep this consistent with toolTipMainText and toolTipSubText in analog-clock
