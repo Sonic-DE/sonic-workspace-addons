@@ -35,7 +35,7 @@ public:
     QMimeData *mimeDataForMatch(const QueryMatch &match) override;
 
 private Q_SLOTS:
-    void updateCompatibleUnits();
+    void updateCompatibleUnits(bool triggeredByTimer = true);
 
 private:
     std::unique_ptr<KUnitConversion::Converter> converter;
