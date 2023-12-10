@@ -217,16 +217,25 @@ QList<KUnitConversion::Unit> ConverterRunner::createResultUnits(QString &outputU
 void ConverterRunner::updateCompatibleUnits()
 {
     // Add all currency symbols to the map, if their ISO code is supported by backend
-    KUnitConversion::UnitCategory currencyCategory = converter->category(KUnitConversion::CurrencyCategory);
-    if (auto updateJob = currencyCategory.syncConversionTable(); updateJob) {
-        QEventLoop waitForFinshed;
-        waitForFinshed.connect(updateJob, &KUnitConversion::UpdateJob::finished, &waitForFinshed, &QEventLoop::quit);
-        waitForFinshed.exec();
-        compatibleUnits.clear();
-    } else if (!compatibleUnits.empty()) {
+    if (compatibleUnits.empty()) {
+        QMetaObject::invokeMethod(
+            QCoreApplication::instance(),
+            [this] {
+                KUnitConversion::UnitCategory currencyCategory = converter->category(KUnitConversion::CurrencyCategory);
+                auto updateJob = currencyCategory.syncConversionTable();
+                if (!updateJob) {
+                    return;
+                }
+                QEventLoop loop;
+                loop.connect(updateJob, &KUnitConversion::UpdateJob::finished, &loop, &QEventLoop::quit);
+                loop.exec();
+            },
+            Qt::BlockingQueuedConnection);
+    } else {
         return; // Already filled and is not expired
     }
 
+    KUnitConversion::UnitCategory currencyCategory = converter->category(KUnitConversion::CurrencyCategory);
     const QList<QLocale> allLocales = QLocale::matchingLocales(QLocale::AnyLanguage, QLocale::AnyScript, QLocale::AnyCountry);
     const QStringList availableISOCodes = currencyCategory.allUnits();
     const QRegularExpression hasCurrencyRegex = QRegularExpression(QStringLiteral("\\p{Sc}")); // clazy:exclude=use-static-qregularexpression
