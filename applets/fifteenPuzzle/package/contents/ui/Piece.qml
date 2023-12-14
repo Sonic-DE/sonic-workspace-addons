@@ -51,7 +51,7 @@ Rectangle {
         case Qt.Key_Enter:
         case Qt.Key_Return:
         case Qt.Key_Select:
-            tapHandler.tapped(null);
+            tapHandler.tapped(null, null);
             break;
         }
     }
