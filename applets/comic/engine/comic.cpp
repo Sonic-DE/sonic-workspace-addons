@@ -16,6 +16,7 @@
 #include <QStandardPaths>
 
 #include <KPackage/PackageLoader>
+#include <kfileutils.h>
 #include <qloggingcategory.h>
 
 #include "cachedprovider.h"
@@ -34,9 +35,10 @@ ComicEngine::ComicEngine(QObject *parent)
 QList<ComicProviderInfo> ComicEngine::loadProviders()
 {
     mProviders.clear();
-    auto comics = KPackage::PackageLoader::self()->listPackages(QStringLiteral("Plasma/Comic"));
+    const auto comics = KPackage::PackageLoader::self()->listKPackages(QStringLiteral("Plasma/Comic"));
     QList<ComicProviderInfo> providers;
-    for (auto comic : comics) {
+    for (auto comicPackage : comics) {
+        const KPluginMetaData comic = comicPackage.metadata();
         qCDebug(PLASMA_COMIC) << "ComicEngine::loadProviders()  service name=" << comic.name();
         ComicProviderInfo data;
         data.pluginId = comic.pluginId();
