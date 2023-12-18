@@ -38,7 +38,7 @@ KCM.GridViewKCM {
         }
     }
 
-    view.model: ["white", "black", "red", "orange", "yellow", "green", "blue", "pink", "translucent", "translucent-light"]
+    view.model: ["white", "black", "red", "orange", "yellow", "green", "blue", "pink", "transparent", "transparent-light"]
     view.currentIndex: view.model.indexOf(cfg_color)
     view.onCurrentIndexChanged: cfg_color = view.model[view.currentIndex]
 
@@ -67,8 +67,8 @@ KCM.GridViewKCM {
                     case "green": return i18n("A green sticky note")
                     case "blue": return i18n("A blue sticky note")
                     case "pink": return i18n("A pink sticky note")
-                    case "translucent": return i18n("A translucent sticky note")
-                    case "translucent-light": return i18n("A translucent sticky note with light text")
+                    case "transparent": return i18n("A transparent sticky note")
+                    case "transparent-light": return i18n("A transparent sticky note with light text")
                     }
                 }
                 elide: Text.ElideRight
@@ -77,7 +77,7 @@ KCM.GridViewKCM {
                 //this is deliberately _NOT_ the theme color as we are over a known bright background
                 //an unknown colour over a known colour is a bad move as you end up with white on yellow
                 color: {
-                    if (modelData === "black" || modelData === "translucent-light") {
+                    if (modelData === "black" || modelData === "transparent-light") {
                         return "#dfdfdf"
                     } else {
                         return "#202020"

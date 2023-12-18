@@ -42,7 +42,7 @@ PlasmoidItem {
     // this is deliberately _NOT_ the theme color as we are over a known bright background!
     // an unknown colour over a known colour is a bad move as you end up with white on yellow.
     readonly property color textIconColor: {
-        if (Plasmoid.configuration.color === "black" || Plasmoid.configuration.color === "translucent-light") {
+        if (Plasmoid.configuration.color === "black" || Plasmoid.configuration.color === "transparent-light") {
             return "#dfdfdf";
         }
         return "#202020";
@@ -634,12 +634,12 @@ PlasmoidItem {
             onTriggered: Plasmoid.configuration.color = "pink"
         },
         PlasmaCore.Action {
-            text: i18nc("@item:inmenu", "Translucent")
-            onTriggered: Plasmoid.configuration.color = "translucent"
+            text: i18nc("@item:inmenu", "Transparent")
+            onTriggered: Plasmoid.configuration.color = "transparent"
         },
         PlasmaCore.Action {
-            text: i18nc("@item:inmenu", "Translucent Light")
-            onTriggered: Plasmoid.configuration.color = "translucent-light"
+            text: i18nc("@item:inmenu", "Transparent Light")
+            onTriggered: Plasmoid.configuration.color = "transparent-light"
         },
         PlasmaCore.Action {
             isSeparator: true
