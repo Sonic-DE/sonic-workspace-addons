@@ -265,6 +265,7 @@ void PotdBackend::registerClient()
     connect(m_client, &PotdClient::remoteUrlChanged, this, &PotdBackend::remoteUrlChanged);
     connect(m_client, &PotdClient::titleChanged, this, &PotdBackend::titleChanged);
     connect(m_client, &PotdClient::authorChanged, this, &PotdBackend::authorChanged);
+    connect(m_client, &PotdClient::done, this, &PotdBackend::imageChanged);
 
     // Refresh the desktop wallpaper and the information in config dialog
     Q_EMIT loadingChanged();
