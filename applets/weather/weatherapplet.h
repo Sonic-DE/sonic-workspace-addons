@@ -36,7 +36,6 @@ Q_SIGNALS:
     void providersChanged();
 
 private:
-    void migrateConfig();
     void setDefaultUnits();
 
 private:
