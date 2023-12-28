@@ -33,8 +33,7 @@ ColumnLayout {
                 view: detailsView,
             })
         }
-        if (root.noticesModel && root.noticesModel.length > 0
-                && (root.noticesModel[0].length > 0 || root.noticesModel[1].length > 0)) {
+        if (root.noticesModel && root.noticesModel.length > 0) {
             pages.push({
                 title: i18nc("@title:tab", "Notices"),
                 view: noticesView,
