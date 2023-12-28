@@ -20,30 +20,49 @@ ListView {
     interactive: scrollBar.visible
 
     section.property: 'type'
-    section.delegate: Kirigami.Heading {
-        level: 4
+    section.delegate: Kirigami.ListSectionHeader {
         width: ListView.view.width
-        height: Kirigami.Units.gridUnit + Kirigami.Units.largeSpacing
-
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-
         text: section == 'Warning'
             ? i18nc("@title:column weather warnings", "Warnings Issued")
             : i18nc("@title:column weather watches" ,"Watches Issued")
     }
 
-    delegate: PlasmaComponents.Label {
+    delegate: RowLayout {
         width: ListView.view.width
-        horizontalAlignment: Text.AlignHCenter
+        spacing: Kirigami.Units.smallSpacing
 
-        font.underline: true
-        color: Kirigami.Theme.linkColor
-        text: modelData.description
+        PlasmaComponents.Label {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
+            Layout.minimumWidth: Kirigami.Units.gridUnit * 5
+            Layout.maximumWidth: Kirigami.Units.gridUnit * 10
+            Layout.margins: Kirigami.Units.largeSpacing
 
-        TapHandler {
-            cursorShape: Qt.PointingHandCursor
-            onTapped: Qt.openUrlExternally(modelData.info)
+            text: modelData.timestamp
+            horizontalAlignment: Text.AlignRight
+            wrapMode: Text.Wrap
+        }
+
+        Kirigami.SelectableLabel {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
+            Layout.minimumWidth: Kirigami.Units.gridUnit * 5
+            Layout.margins: Kirigami.Units.largeSpacing
+
+            text: modelData.description
+            wrapMode: Text.Wrap
+        }
+
+        PlasmaComponents.ToolButton {
+            visible: !!modelData.info
+            Layout.alignment: Qt.AlignTop
+            Layout.minimumWidth: implicitWidth
+            icon.name: 'showinfo-symbolic'
+            text: i18n("More Information")
+            display: PlasmaComponents.ToolButton.IconOnly
+            onClicked: {
+                Qt.openUrlExternally(Qt.resolvedUrl(modelData.info))
+            }
         }
     }
 
