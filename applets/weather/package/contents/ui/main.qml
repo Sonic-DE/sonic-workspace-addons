@@ -1,5 +1,6 @@
 /*
  * SPDX-FileCopyrightText: 2018 Friedrich W. H. Kossebau <kossebau@kde.org>
+ * SPDX-FileCopyrightText: 2023 Ismael Asensio <isma.af@gmail.com>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
@@ -307,31 +308,27 @@ PlasmoidItem {
         const model = [];
         const data = weatherDataSource.currentData;
 
-        const warnings = [];
+        const notice = (type, idx) => { return {
+            'type': type,
+            'description': data[`${type} Description ${idx}`],
+            'infoUrl': data[`${type} Info ${idx}`],
+        }};
+
         let warningsCount = parseInt((data && data["Total Warnings Issued"]) || "");
         if (isNaN(warningsCount)) {
             warningsCount = 0;
         }
         for (let i = 0; i < warningsCount; ++i) {
-            warnings.push({
-                "description": data["Warning Description "+i],
-                "info":        data["Warning Info "+i]
-            });
+            model.push(notice('Warning', i));
         }
-        model.push(warnings);
 
-        const watches = [];
         let watchesCount = parseInt((data && data["Total Watches Issued"]) || "");
         if (isNaN(watchesCount)) {
             watchesCount = 0;
         }
         for (let i = 0; i < watchesCount; ++i) {
-            watches.push({
-                "description": data["Watch Description "+i],
-                "info":        data["Watch Info "+i]
-            });
+            model.push(notice('Watch', i));
         }
-        model.push(watches);
 
         return model;
     }
