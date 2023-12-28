@@ -20,30 +20,57 @@ ListView {
     interactive: scrollBar.visible
 
     section.property: 'type'
-    section.delegate: Kirigami.Heading {
-        level: 4
+    section.delegate: Kirigami.ListSectionHeader {
         width: ListView.view.width
-        height: Kirigami.Units.gridUnit + Kirigami.Units.largeSpacing
-
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-
         text: section == 'Warning'
             ? i18nc("@title:column weather warnings", "Warnings Issued")
             : i18nc("@title:column weather watches", "Watches Issued")
     }
 
-    delegate: PlasmaComponents.Label {
+    delegate: RowLayout {
         width: ListView.view.width
-        horizontalAlignment: Text.AlignHCenter
+        spacing: 0
 
-        font.underline: true
-        color: Kirigami.Theme.linkColor
-        text: modelData.description
+        PlasmaComponents.Label {
+            Layout.alignment: Qt.AlignTop
+            Layout.minimumWidth: Kirigami.Units.gridUnit * 5
+            Layout.maximumWidth: Kirigami.Units.gridUnit * 10
+            Layout.margins: Kirigami.Units.largeSpacing
 
-        TapHandler {
-            cursorShape: Qt.PointingHandCursor
-            onTapped: Qt.openUrlExternally(modelData.infoUrl)
+            text: modelData.timestamp
+            horizontalAlignment: Text.AlignRight
+            wrapMode: Text.Wrap
+        }
+
+        Kirigami.Icon {
+            Layout.alignment: Qt.AlignTop
+            Layout.minimumWidth: implicitWidth
+            implicitWidth: Kirigami.Units.iconSizes.smallMedium
+            source: (modelData.priority >= 3) ? 'flag-red-symbolic' :
+                    (modelData.priority >= 2) ? 'flag-yellow-symbolic' :
+                                                'flag-blue-symbolic'
+        }
+
+        Kirigami.SelectableLabel {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
+            Layout.minimumWidth: Kirigami.Units.gridUnit * 5
+            Layout.margins: Kirigami.Units.largeSpacing
+
+            text: modelData.description
+            wrapMode: Text.Wrap
+        }
+
+        PlasmaComponents.ToolButton {
+            visible: !!modelData.infoUrl
+            Layout.alignment: Qt.AlignTop
+            Layout.minimumWidth: implicitWidth
+            icon.name: 'showinfo-symbolic'
+            text: i18nc("@action:button", "Show more information")
+            display: PlasmaComponents.ToolButton.IconOnly
+            onClicked: {
+                Qt.openUrlExternally(Qt.resolvedUrl(modelData.infoUrl))
+            }
         }
     }
 
@@ -53,7 +80,21 @@ ListView {
         visible: root.contentHeight > root.height
     }
 
-    Item {
-        Layout.fillHeight: true
+    Kirigami.Separator {
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+        visible: scrollBar.visible && (scrollBar.position > 0)
+    }
+
+    Kirigami.Separator {
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+        visible: scrollBar.visible && (scrollBar.position + scrollBar.size < 1)
     }
 }
