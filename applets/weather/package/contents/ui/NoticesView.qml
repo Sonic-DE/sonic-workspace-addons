@@ -1,63 +1,56 @@
 /*
  * SPDX-FileCopyrightText: 2018 Friedrich W. H. Kossebau <kossebau@kde.org>
+ * SPDX-FileCopyrightText: 2023 Ismael Asensio <isma.af@gmail.com>
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 import QtQuick
-
 import QtQuick.Layouts
+import QtQuick.Controls as QQC2
 
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.kirigami as Kirigami
 
-ColumnLayout {
+ListView {
     id: root
 
-    property alias model: categoryRepeater.model
-    readonly property bool hasContent: model && model.length > 0 && (model[0].length > 0 || model[1].length > 0)
+    anchors.fill: parent
+    anchors.rightMargin: scrollBar.visible ? scrollBar.width : 0
+    interactive: scrollBar.visible
 
-    spacing: Kirigami.Units.gridUnit
+    section.property: 'type'
+    section.delegate: Kirigami.Heading {
+        level: 4
+        width: ListView.view.width
+        height: Kirigami.Units.gridUnit + Kirigami.Units.largeSpacing
 
-    Repeater {
-        id: categoryRepeater
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
 
-        delegate: ColumnLayout {
-            property var categoryData: modelData
+        text: section == 'Warning'
+            ? i18nc("@title:column weather warnings", "Warnings Issued")
+            : i18nc("@title:column weather watches" ,"Watches Issued")
+    }
 
-            readonly property bool categoryHasNotices: categoryData.length > 0
-            visible: categoryHasNotices
+    delegate: PlasmaComponents.Label {
+        width: ListView.view.width
+        horizontalAlignment: Text.AlignHCenter
 
-            Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+        font.underline: true
+        color: Kirigami.Theme.linkColor
+        text: modelData.description
 
-            Kirigami.Heading {
-                level: 4
-                Layout.alignment: Qt.AlignHCenter
-
-                text: index == 0 ? i18nc("@title:column weather warnings", "Warnings Issued") : i18nc("@title:column weather watches" ,"Watches Issued")
-            }
-
-            Repeater {
-                id: repeater
-
-                model: categoryData
-
-                delegate: PlasmaComponents.Label {
-                    font.underline: true
-                    color: Kirigami.Theme.linkColor
-
-                    text: modelData.description
-
-                    MouseArea {
-                        anchors.fill: parent
-
-                        onClicked: {
-                            Qt.openUrlExternally(modelData.info);
-                        }
-                    }
-                }
-            }
+        TapHandler {
+            cursorShape: Qt.PointingHandCursor
+            onTapped: Qt.openUrlExternally(modelData.info)
         }
+    }
+
+    QQC2.ScrollBar.vertical: QQC2.ScrollBar {
+        id: scrollBar
+        anchors.left: parent.right
+        visible: root.contentHeight > root.height
     }
 
     Item {
