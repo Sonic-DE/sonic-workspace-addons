@@ -37,6 +37,7 @@ ColumnLayout {
             pages.push({
                 title: i18nc("@title:tab", "Notices"),
                 view: noticesView,
+                icon: 'data-warning-symbolic',
             })
         }
         return pages
@@ -52,6 +53,7 @@ ColumnLayout {
             model: root.pagesModel
             delegate: PlasmaComponents.TabButton {
                 text: modelData.title
+                icon.name: modelData.icon ?? ""
             }
         }
 

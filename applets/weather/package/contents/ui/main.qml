@@ -312,6 +312,7 @@ PlasmoidItem {
             'type': type,
             'description': data[`${type} Description ${idx}`],
             'infoUrl': data[`${type} Info ${idx}`],
+            'timestamp': data[`${type} Timestamp ${idx}`],
         }};
 
         let warningsCount = parseInt((data && data["Total Warnings Issued"]) || "");
