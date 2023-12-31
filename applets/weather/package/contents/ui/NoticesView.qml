@@ -16,19 +16,10 @@ ListView {
     id: root
 
     anchors.fill: parent
-    anchors.rightMargin: scrollBar.visible ? scrollBar.width : 0
     interactive: scrollBar.visible
 
-    section.property: 'type'
-    section.delegate: Kirigami.ListSectionHeader {
-        width: ListView.view.width
-        text: section == 'Warning'
-            ? i18nc("@title:column weather warnings", "Warnings Issued")
-            : i18nc("@title:column weather watches" ,"Watches Issued")
-    }
-
     delegate: RowLayout {
-        width: ListView.view.width
+        width: ListView.view.width - (scrollBar.visible ? scrollBar.width : 0)
         spacing: 0
 
         PlasmaComponents.Label {
@@ -77,11 +68,7 @@ ListView {
 
     QQC2.ScrollBar.vertical: QQC2.ScrollBar {
         id: scrollBar
-        anchors.left: parent.right
+        anchors.right: parent.right
         visible: root.contentHeight > root.height
-    }
-
-    Item {
-        Layout.fillHeight: true
     }
 }
