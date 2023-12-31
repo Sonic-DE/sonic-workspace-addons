@@ -29,7 +29,7 @@ ListView {
 
     delegate: RowLayout {
         width: ListView.view.width
-        spacing: Kirigami.Units.smallSpacing
+        spacing: 0
 
         PlasmaComponents.Label {
             Layout.fillWidth: true
@@ -41,6 +41,15 @@ ListView {
             text: modelData.timestamp
             horizontalAlignment: Text.AlignRight
             wrapMode: Text.Wrap
+        }
+
+        Kirigami.Icon {
+            Layout.alignment: Qt.AlignTop
+            Layout.minimumWidth: implicitWidth
+            implicitWidth: Kirigami.Units.iconSizes.smallMedium
+            source: (modelData.priority >= 3) ? 'flag-red-symbolic' :
+                    (modelData.priority >= 2) ? 'flag-yellow-symbolic' :
+                                                'flag-blue-symbolic'
         }
 
         Kirigami.SelectableLabel {
