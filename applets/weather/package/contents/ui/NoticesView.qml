@@ -16,7 +16,7 @@ ListView {
     id: root
 
     anchors.fill: parent
-    interactive: scrollBar.visible
+    interactive: false
 
     delegate: RowLayout {
         width: ListView.view.width - (scrollBar.visible ? scrollBar.width : 0)
@@ -70,5 +70,33 @@ ListView {
         id: scrollBar
         anchors.right: parent.right
         visible: root.contentHeight > root.height
+    }
+
+    // HACK: Manually handle wheel scrolling because setting `interactive: true`
+    // stops horizontal scrolling events going to the the swipe view
+    MouseArea {
+        property int wheelDelta: 0
+
+        anchors.fill: parent
+        anchors.rightMargin: -parent.anchors.rightMargin // cover the scrollbar
+
+        enabled: scrollBar.visible
+        acceptedButtons: Qt.NoButton
+
+        onWheel: wheel => {
+            if (Math.abs(wheel.angleDelta.x) > Math.abs(wheel.angleDelta.y)) {
+                wheel.accepted = false;
+                return;
+            }
+            wheelDelta += wheel.angleDelta.y;
+            while (wheelDelta >= 120) {
+                wheelDelta -= 120;
+                scrollBar.decrease();
+            }
+            while (wheelDelta <= -120) {
+                wheelDelta += 120;
+                scrollBar.increase();
+            }
+        }
     }
 }
