@@ -72,6 +72,24 @@ ListView {
         visible: root.contentHeight > root.height
     }
 
+    Kirigami.Separator {
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+        visible: scrollBar.visible && (scrollBar.position > 0)
+    }
+
+    Kirigami.Separator {
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+        visible: scrollBar.visible && (scrollBar.position + scrollBar.size < 1)
+    }
+
     // HACK: Manually handle wheel scrolling because setting `interactive: true`
     // stops horizontal scrolling events going to the the swipe view
     MouseArea {
