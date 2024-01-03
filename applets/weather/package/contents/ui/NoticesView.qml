@@ -16,11 +16,10 @@ ListView {
     id: root
 
     anchors.fill: parent
-    anchors.rightMargin: scrollBar.visible ? scrollBar.width : 0
     interactive: false
 
     delegate: RowLayout {
-        width: ListView.view.width
+        width: ListView.view.width - (scrollBar.visible ? scrollBar.width : 0)
         spacing: 0
 
         PlasmaComponents.Label {
@@ -69,7 +68,7 @@ ListView {
 
     QQC2.ScrollBar.vertical: QQC2.ScrollBar {
         id: scrollBar
-        anchors.left: parent.right
+        anchors.right: parent.right
         visible: root.contentHeight > root.height
     }
 
@@ -79,7 +78,6 @@ ListView {
         property int wheelDelta: 0
 
         anchors.fill: parent
-        anchors.rightMargin: -parent.anchors.rightMargin // cover the scrollbar
 
         enabled: scrollBar.visible
         acceptedButtons: Qt.NoButton
