@@ -35,7 +35,8 @@ ColumnLayout {
         }
         if (root.noticesModel && root.noticesModel.length > 0) {
             pages.push({
-                title: i18nc("@title:tab", "Notices"),
+                title: i18ncp("@title:tab %1 is the number of weather notices (alerts, warnings, watches, ...) issued",
+                              "%1 Notice", "%1 Notices", noticesModel.length),
                 view: noticesView,
                 icon: 'data-warning-symbolic',
             })
