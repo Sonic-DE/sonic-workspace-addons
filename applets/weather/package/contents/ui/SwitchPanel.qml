@@ -38,7 +38,9 @@ ColumnLayout {
                 title: i18ncp("@title:tab %1 is the number of weather notices (alerts, warnings, watches, ...) issued",
                               "%1 Notice", "%1 Notices", noticesModel.length),
                 view: noticesView,
-                icon: 'data-warning-symbolic',
+                // Show warning icon if the maximum priority shown is at least 2 (Moderate)
+                icon: noticesModel.reduce((acc, notice) => Math.max(notice.priority, acc), 0) >= 2 ?
+                    'data-warning-symbolic' : 'data-information-symbolic',
             })
         }
         return pages
