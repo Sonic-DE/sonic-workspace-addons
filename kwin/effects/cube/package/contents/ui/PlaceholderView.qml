@@ -23,7 +23,11 @@ Rectangle {
         anchors.centerIn: parent
         width: parent.width - Kirigami.Units.gridUnit * 2
         iconName: "virtual-desktops"
-        text: i18ndc("kwin_effect_cube", "@info:placeholder", "Not enough virtual desktops to display the Cube.\n Available %1, but at least 3 are required", KWinComponents.Workspace.desktops.length)
+        text: i18ndcp("kwin_effect_cube",
+                      "@info:placeholder",
+                      "At least 3 virtual desktops are required to display the Cube, but only %1 is present",
+                      "At least 3 virtual desktops are required to display the Cube, but only %1 are present",
+                      KWinComponents.Workspace.desktops.length)
         helpfulAction: Action {
             text: i18ndc("kwin_effect_cube", "@action:button", "Add Virtual Desktop")
             icon.name: "list-add-symbolic"
