@@ -18,6 +18,7 @@ import org.kde.plasma.core as PlasmaCore
 KCM.SimpleKCM {
     property string cfg_icon: plasmoid.configuration.icon
     property alias cfg_useFavIcon: useFavIcon.checked
+    property alias cfg_editableUrlBar: editableUrlBar.checked
 
     Kirigami.FormLayout {
 
@@ -106,5 +107,24 @@ KCM.SimpleKCM {
                 }
             }
         }
+
+        Item {
+            Kirigami.FormData.isSection: true
+        }
+
+        RowLayout {
+            Kirigami.FormData.label: i18nc("@title:group", "Url bar:")
+
+            QQC2.CheckBox {
+                id: editableUrlBar
+                text: i18nc("@option:check", "Make Url bar editable")
+                checked: cfg_editableUrlBar.checked
+
+                onCheckedChanged: {
+                    cfg_editableUrlBar = editableUrlBar.checked
+                }
+            }
+        }
+
     }
 }
