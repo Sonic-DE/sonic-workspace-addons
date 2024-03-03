@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.12 as QQC2
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.kcmutils as KCM
@@ -9,8 +10,44 @@ KCM.SimpleKCM {
     property alias cfg_useMinViewWidth: useMinViewWidth.checked
     property alias cfg_minViewWidth: minViewWidth.value
     property alias cfg_constantZoomFactor: constantZoomFactor.value
+    property alias cfg_useDefaultUrl: useDefaultUrl.checked
+    property alias cfg_defaultUrl: defaultUrl.text
 
     Kirigami.FormLayout {
+        RowLayout {
+            Kirigami.FormData.label: i18nc("@title:group", "Default Url:")
+
+            QQC2.CheckBox {
+                id: useDefaultUrl
+                text: i18nc("@option:radio", "Open default url on load")
+                checked: cfg_useDefaultUrl.checked
+
+                onCheckedChanged: {
+                    cfg_useDefaultUrl = useDefaultUrl.checked
+                    defaultUrl.forceActiveFocus();
+                }
+            }
+        }
+
+        PlasmaComponents3.TextField {
+            id: defaultUrl
+            onAccepted: {
+                var url = text;
+                if (url.indexOf(":/") < 0) {
+                    url = "http://" + url;
+                }
+            }
+            onActiveFocusChanged: {
+                if (activeFocus) {
+                    selectAll();
+                }
+            }
+
+            text: "https://ddg.gg"
+            enabled: useDefaultUrl.checked
+            Accessible.description: text.length > 0 ? text : i18nc("@info", "Type a URL")
+        }
+
 
         QQC2.ButtonGroup { id: zoomGroup }
 
