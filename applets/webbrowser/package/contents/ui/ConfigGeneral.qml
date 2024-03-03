@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.12 as QQC2
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.kcmutils as KCM
@@ -9,8 +10,63 @@ KCM.SimpleKCM {
     property alias cfg_useMinViewWidth: useMinViewWidth.checked
     property alias cfg_minViewWidth: minViewWidth.value
     property alias cfg_constantZoomFactor: constantZoomFactor.value
+    property alias cfg_useDefaultUrl: useDefaultUrlRadio.checked
+    property alias cfg_defaultUrl: defaultUrl.text
 
     Kirigami.FormLayout {
+        QQC2.ButtonGroup { id: defaultUrlGroup }
+
+        RowLayout {
+            Kirigami.FormData.label: i18nc("@title:group", "Default Url:")
+            
+            QQC2.RadioButton {
+                id: useUrlRadio
+                text: i18nc("@option:radio", "Load last-visited page")
+                checked: !cfg_useDefaultUrl
+                QQC2.ButtonGroup.group: defaultUrlGroup
+
+                onClicked: {
+                    cfg_useDefaultUrl = false;
+                }
+            }
+        }
+
+        RowLayout {
+            QQC2.RadioButton {
+                id: useDefaultUrlRadio
+                text: i18nc("@option:radio", "Always load this page")
+                checked: cfg_useDefaultUrl
+                QQC2.ButtonGroup.group: defaultUrlGroup
+
+                onClicked: {
+                    cfg_useDefaultUrl = true;
+                    constantZoomFactor.forceActiveFocus();
+                }
+            }
+        }
+
+        PlasmaComponents3.TextField {
+            id: defaultUrl
+            onAccepted: {
+                var url = text;
+                if (url.indexOf(":/") < 0) {
+                    url = "http://" + url;
+                }
+            }
+            onActiveFocusChanged: {
+                if (activeFocus) {
+                    selectAll();
+                }
+            }
+
+            text: cfg_defaultUrl
+            enabled: useDefaultUrlRadio.checked
+            Accessible.description: text.length > 0 ? text : i18nc("@info", "Type a URL")
+        }
+
+        Item {
+            Kirigami.FormData.isSection: true
+        }
 
         QQC2.ButtonGroup { id: zoomGroup }
 
