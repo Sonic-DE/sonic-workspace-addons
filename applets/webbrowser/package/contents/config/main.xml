@@ -31,6 +31,7 @@
       <default>true</default>
     </entry>
     <entry name="enableNavigationBar" type="Bool">
+    <entry name="editableUrlBar" type="Bool">
       <default>true</default>
     </entry>
   </group>
