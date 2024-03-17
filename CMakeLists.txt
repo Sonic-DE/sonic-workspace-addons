@@ -51,10 +51,12 @@ find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     Config
     CoreAddons
+    DBusAddons
     Declarative
     GlobalAccel
     Holidays
     I18n
+    Auth
     KIO
     KCMUtils
     Notifications
@@ -120,6 +122,7 @@ ecm_set_disabled_deprecation_versions(
 )
 
 add_subdirectory(dict)
+add_subdirectory(kdeds)
 add_subdirectory(profiles)
 add_subdirectory(applets)
 add_subdirectory(runners)
@@ -138,7 +141,7 @@ file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 
-ki18n_install(po)
+# ki18n_install(po)
 ecm_qt_install_logging_categories(EXPORT KDEPLASMAADDONS
     FILE kdeplasma-addons.categories
     DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
