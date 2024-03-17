@@ -1,0 +1,11 @@
+[Domain]
+Name=Kameleon
+Icon=color
+
+[org.kde.kameleon]
+Name=Save wallet configuration
+
+Description=Allow writing accent color to device LEDs
+Policy=yes
+PolicyInactive=yes
+Persistence=session
