@@ -1,0 +1,7 @@
+{
+    "KPlugin": {
+        "Name": "Kameleon",
+        "Description": "Synchronizes device backlights with the Plasma accent color"
+    },
+    "X-KDE-Kded-autoload": true
+}

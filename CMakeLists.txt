@@ -51,6 +51,7 @@ find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
     Config
     CoreAddons
+    DBusAddons
     Declarative
     GlobalAccel
     Holidays
@@ -120,6 +121,7 @@ ecm_set_disabled_deprecation_versions(
 )
 
 add_subdirectory(dict)
+add_subdirectory(kded)
 add_subdirectory(profiles)
 add_subdirectory(applets)
 add_subdirectory(runners)
