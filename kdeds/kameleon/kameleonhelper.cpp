@@ -47,6 +47,7 @@ KAuth::ActionReply KameleonHelper::writecolor(const QVariantMap &args)
         }
     }
 
+    qCInfo(KAMELEONHELPER) << "wrote color" << color << "to LED devices";
     return KAuth::ActionReply::SuccessReply();
 }
 
