@@ -14,6 +14,9 @@
 #define LED_SYSFS_PATH "/sys/class/leds/"
 #define LED_RGB_FILE "/multi_intensity"
 
+#define CONFIG_KEY_ACCENT "DeviceLedsAccentColored"
+#define CONFIG_KEY_COLOR "DeviceLedsColor"
+
 class Kameleon : public KDEDModule
 {
     Q_OBJECT
@@ -27,24 +30,35 @@ public:
     Q_SCRIPTABLE bool isSupported();
 
     /**
-     * Returns whether accent color syncing is enabled.
+     * Returns the currently active color as a hex string.
      */
-    Q_SCRIPTABLE bool isEnabled();
+    Q_SCRIPTABLE QString colorName();
 
     /**
-     * Enables or disables accent color syncing.
+     * Returns whether accent color syncing is enabled.
      */
-    Q_SCRIPTABLE void setEnabled(bool enabled);
+    Q_SCRIPTABLE bool isAccent();
+
+    /**
+     * Sets a custom color given as a hex string.
+     */
+    Q_SCRIPTABLE void setColor(QString colorName);
+
+    /**
+     * Enables following the accent color.
+     */
+    Q_SCRIPTABLE void setAccent();
 
 private:
-    bool m_enabled = true;
-    QColor m_accentColor = QColor(QColorConstants::White);
-
     KSharedConfig::Ptr m_config;
     KConfigWatcher::Ptr m_configWatcher;
     QStringList m_rgbLedDevices;
 
-    void loadConfig();
+    QColor m_color = QColor(QColorConstants::White);
+    bool m_accent = true;
+
     void findRgbLedDevices();
+    void updateLedColor();
+    void updateAccentColor();
     void applyColor(QColor color);
 };
