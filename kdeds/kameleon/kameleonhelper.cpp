@@ -29,21 +29,21 @@ KAuth::ActionReply KameleonHelper::writecolor(const QVariantMap &args)
         if (!QFileInfo(file).exists()) {
             qCWarning(KAMELEONHELPER) << "writing to" << file.fileName() << "failed:"
                                       << "file does not exist";
-            continue;
+            return KAuth::ActionReply::HelperErrorReply();
         }
         if (!QFileInfo(file).isWritable()) {
             qCWarning(KAMELEONHELPER) << "writing to" << file.fileName() << "failed:"
                                       << "file is not writable";
-            continue;
+            return KAuth::ActionReply::HelperErrorReply();
         }
         if (!file.open(QIODevice::WriteOnly)) {
             qCWarning(KAMELEONHELPER) << "writing to" << file.fileName() << "failed:" << file.error() << file.errorString();
-            continue;
+            return KAuth::ActionReply::HelperErrorReply();
         }
         const int bytesWritten = file.write(colorStr);
         if (bytesWritten == -1) {
             qCWarning(KAMELEONHELPER) << "writing to" << file.fileName() << "failed:" << file.error() << file.errorString();
-            continue;
+            return KAuth::ActionReply::HelperErrorReply();
         } else {
             qCDebug(KAMELEONHELPER) << "wrote color to" << file.fileName();
         }
