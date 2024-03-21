@@ -65,29 +65,11 @@ bool Kameleon::isSupported()
     return !m_rgbLedDevices.isEmpty();
 }
 
-bool Kameleon::isEnabled()
-{
-    return m_enabled;
-}
-
-void Kameleon::setEnabled(bool enabled)
-{
-    if (enabled != m_enabled) {
-        qCInfo(KAMELEON) << "enabled changed" << enabled;
-        m_enabled = enabled;
-        m_config->group("General").writeEntry<bool>("AccentColoredDeviceLeds", enabled);
-
-        if (enabled) {
-            applyColor(m_accentColor);
-        } else {
-            applyColor(QColor(QColorConstants::White));
-        }
-    }
-}
-
 void Kameleon::loadConfig()
 {
-    m_enabled = m_config->group("General").readEntry<bool>("AccentColoredDeviceLeds", true);
+    m_followAccent = m_config->group("General").readEntry<bool>("AccentColoredDeviceLeds", true);
+
+    color = m_config->group("General").readEntry<QColor>("ColorDeviceLeds", QColor(QColorConstants::White));
 
     QColor customAccentColor = m_config->group("General").readEntry<QColor>("AccentColor", QColor::Invalid);
     QColor schemeAccentColor = m_config->group("Colors::View").readEntry<QColor>("ForegroundActive", QColor::Invalid);
@@ -95,12 +77,50 @@ void Kameleon::loadConfig()
         : schemeAccentColor.isValid()                      ? schemeAccentColor
                                                            : QColor(QColorConstants::White);
 
-    if (activeAccentColor != m_accentColor) {
-        qCInfo(KAMELEON) << "accent color changed" << activeAccentColor;
-        m_accentColor = activeAccentColor;
-        if (m_enabled) {
-            applyColor(m_accentColor);
-        }
+    if (m_followAccent) {
+        color = activeAccentColor;
+    }
+
+    if (color != m_color) {
+        qCInfo(KAMELEON) << "color changed";
+        m_color = color;
+        applyColor(color);
+    }
+}
+
+QString Kameleon::color()
+{
+    return m_color.name();
+}
+
+bool Kameleon::isAccent()
+{
+    return m_isAccent;
+}
+
+void Kameleon::setColor(QString colorName)
+{
+    QColor color = QColor(colorName);
+    if (!color.isValid()) {
+        qCWarning(KAMELEON) << "invalid color" << colorName;
+    }
+
+    if (m_followAccent) {
+        qCInfo(KAMELEON) << "accent syncing disabled";
+        m_config->group("General").writeEntry<bool>("AccentColoredDeviceLeds", false);
+    }
+
+    if (color != m_color) {
+        qCInfo(KAMELEON) << "setting color" << colorName;
+        m_config->group("General").writeEntry<QColor>("ColorDeviceLeds", colorName);
+    }
+}
+
+void Kameleon::setAccent()
+{
+    if (!m_followAccent) {
+        qCInfo(KAMELEON) << "accent syncing enabled";
+        m_config->group("General").writeEntry<bool>("AccentColoredDeviceLeds", true);
     }
 }
 
@@ -116,6 +136,8 @@ void Kameleon::applyColor(QColor color)
         if (job->error()) {
             qCWarning(KAMELEON) << "Failed to write color to devices" << job->errorText();
             return;
+        } else {
+            m_color = color;
         }
     });
     job->start();
