@@ -27,24 +27,34 @@ public:
     Q_SCRIPTABLE bool isSupported();
 
     /**
-     * Returns whether accent color syncing is enabled.
+     * Returns the currently active color as a hex string.
      */
-    Q_SCRIPTABLE bool isEnabled();
+    Q_SCRIPTABLE QString colorName();
 
     /**
-     * Enables or disables accent color syncing.
+     * Returns whether accent color syncing is enabled.
      */
-    Q_SCRIPTABLE void setEnabled(bool enabled);
+    Q_SCRIPTABLE bool isAccent();
+
+    /**
+     * Sets a custom color given as a hex string.
+     */
+    Q_SCRIPTABLE void setColor(QString colorName);
+
+    /**
+     * Enables following the accent color.
+     */
+    Q_SCRIPTABLE void setAccent();
 
 private:
-    bool m_enabled = true;
-    QColor m_accentColor = QColor(QColorConstants::White);
+    QColor m_color = QColor(QColorConstants::White);
+    bool m_followAccent = true;
 
     KSharedConfig::Ptr m_config;
     KConfigWatcher::Ptr m_configWatcher;
     QStringList m_rgbLedDevices;
 
-    void loadConfig();
+    void loadAccent();
     void findRgbLedDevices();
     void applyColor(QColor color);
 };
