@@ -19,6 +19,7 @@
 #include <QColor>
 #include <QDir>
 #include <QFileInfo>
+#include <qcontainerfwd.h>
 
 K_PLUGIN_CLASS_WITH_JSON(Kameleon, "kameleon.json")
 
@@ -45,7 +46,7 @@ void Kameleon::findRgbLedDevices()
     ledsDir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
     auto ledDevices = ledsDir.entryList();
 
-    // sort to ensure keys light up nicely one next to the other
+    // Sort to ensure keys light up nicely one next to the other
     QCollator coll;
     coll.setNumericMode(true);
     std::sort(ledDevices.begin(), ledDevices.end(), [&](const QString &s1, const QString &s2) {
@@ -53,10 +54,29 @@ void Kameleon::findRgbLedDevices()
     });
 
     for (const QString &ledDevice : ledDevices) {
-        if (QFileInfo(QFile(LED_SYSFS_PATH + ledDevice + LED_RGB_FILE)).exists()) {
-            qCInfo(KAMELEON) << "found RGB LED device" << ledDevice;
-            m_rgbLedDevices.append(ledDevice);
+        // Get multicolor index (= RGB capability with order of colors)
+        QFile indexFile(LED_SYSFS_PATH + ledDevice + LED_INDEX_FILE);
+        if (!QFileInfo(indexFile).exists()) {
+            // Not a RGB capable device
+            continue;
         }
+        if (!indexFile.open(QIODevice::ReadOnly)) {
+            qCWarning(KAMELEON) << "failed to open" << indexFile.fileName() << indexFile.error() << indexFile.errorString();
+            continue;
+        }
+        QTextStream indexFileStream(&indexFile);
+        QString colorIndexStr = indexFileStream.readAll().trimmed();
+        indexFile.close();
+        QString colorIndex =
+            colorIndexStr.toLower().replace("red", "r").replace("green", "g").replace("blue", "b").replace(" ", ""); // eg "red green blue" -> "rgb"
+        if (!(colorIndex.length() == 3 && colorIndex.contains("r") && colorIndex.contains("g") && colorIndex.contains("b"))) {
+            qCWarning(KAMELEON) << "invalid color index" << colorIndexStr << "read from" << LED_INDEX_FILE << "for device" << ledDevice;
+            continue;
+        }
+
+        qCInfo(KAMELEON) << "found RGB LED device" << ledDevice;
+        m_rgbLedDevices.append(ledDevice);
+        m_deviceRgbIndices.append(colorIndex);
     }
 }
 
@@ -96,7 +116,7 @@ void Kameleon::loadConfig()
                                                            : QColor(QColorConstants::White);
 
     if (activeAccentColor != m_accentColor) {
-        qCInfo(KAMELEON) << "accent color changed" << activeAccentColor;
+        qCInfo(KAMELEON) << "accent color changed" << activeAccentColor.name();
         m_accentColor = activeAccentColor;
         if (m_enabled) {
             applyColor(m_accentColor);
@@ -106,17 +126,29 @@ void Kameleon::loadConfig()
 
 void Kameleon::applyColor(QColor color)
 {
+    QStringList colorStrs;
+    for (const QString &colorIndex : m_deviceRgbIndices) {
+        QStringList colorStrList = {"", "", ""};
+        colorStrList[colorIndex.indexOf("r")] = QString::number(color.red());
+        colorStrList[colorIndex.indexOf("g")] = QString::number(color.green());
+        colorStrList[colorIndex.indexOf("b")] = QString::number(color.blue());
+        QString colorStr = colorStrList.join(" ");
+        colorStrs.append(colorStr);
+    }
+
+    qCInfo(KAMELEON) << "writing color" << color.name() << "to LED devices";
     KAuth::Action action("org.kde.kameleonhelper.writecolor");
     action.setHelperId("org.kde.kameleonhelper");
-    action.addArgument("color", color.name());
     action.addArgument("devices", m_rgbLedDevices);
+    action.addArgument("colors", colorStrs);
     auto *job = action.execute();
 
-    connect(job, &KAuth::ExecuteJob::result, this, [job] {
+    connect(job, &KAuth::ExecuteJob::result, this, [job, color] {
         if (job->error()) {
-            qCWarning(KAMELEON) << "Failed to write color to devices" << job->errorText();
+            qCWarning(KAMELEON) << "failed to write color to devices" << job->errorText();
             return;
         }
+        qCInfo(KAMELEON) << "wrote color" << color.name() << "to LED devices";
     });
     job->start();
 }
