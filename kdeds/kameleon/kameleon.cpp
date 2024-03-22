@@ -53,10 +53,23 @@ void Kameleon::findRgbLedDevices()
     });
 
     for (const QString &ledDevice : ledDevices) {
-        if (QFileInfo(QFile(LED_SYSFS_PATH + ledDevice + LED_RGB_FILE)).exists()) {
-            qCInfo(KAMELEON) << "found RGB LED device" << ledDevice;
-            m_rgbLedDevices.append(ledDevice);
+        QFile indexFile(LED_SYSFS_PATH + ledDevice + LED_INDEX_FILE);
+        QFile intensityFile(LED_SYSFS_PATH + ledDevice + LED_RGB_FILE);
+        if (!QFileInfo(indexFile).exists() || !QFileInfo(intensityFile).exists()) {
+            continue;
         }
+
+        QString colorIndex;
+        if (!indexFile.open(QIODevice::ReadOnly)) {
+            qCWarning(KAMELEON) << "failed to open" << indexFile.fileName() << indexFile.error() << indexFile.errorString();
+            continue;
+        }
+        QTextStream stream(&indexFile);
+        stream >> colorIndex;
+        indexFile.close();
+
+        qCInfo(KAMELEON) << "found RGB LED device" << ledDevice;
+        m_rgbLedDevices.insert(ledDevice, colorIndex);
     }
 }
 
@@ -106,10 +119,34 @@ void Kameleon::loadConfig()
 
 void Kameleon::applyColor(QColor color)
 {
+    QMap<QString, QVariant> entries;
+    for (auto i = m_rgbLedDevices.cbegin(), end = m_rgbLedDevices.cend(); i != end; ++i) {
+        QString deviceName = i.key();
+        QString colorIndex = i.value();
+        QByteArray colorBytes;
+        if (colorIndex == "red green blue") {
+            colorBytes = QByteArray::fromStdString(QString("%1 %2 %3").arg(color.red()).arg(color.green()).arg(color.blue()).toStdString());
+        } else if (colorIndex == "red blue green") {
+            colorBytes = QByteArray::fromStdString(QString("%1 %2 %3").arg(color.red()).arg(color.blue()).arg(color.green()).toStdString());
+        } else if (colorIndex == "green red blue") {
+            colorBytes = QByteArray::fromStdString(QString("%1 %2 %3").arg(color.green()).arg(color.red()).arg(color.blue()).toStdString());
+        } else if (colorIndex == "green blue red") {
+            colorBytes = QByteArray::fromStdString(QString("%1 %2 %3").arg(color.green()).arg(color.blue()).arg(color.red()).toStdString());
+        } else if (colorIndex == "blue red green") {
+            colorBytes = QByteArray::fromStdString(QString("%1 %2 %3").arg(color.blue()).arg(color.red()).arg(color.green()).toStdString());
+        } else if (colorIndex == "blue green red") {
+            colorBytes = QByteArray::fromStdString(QString("%1 %2 %3").arg(color.blue()).arg(color.green()).arg(color.red()).toStdString());
+        } else {
+            qCWarning(KAMELEON) << "invalid color index" << colorIndex << "for device" << deviceName;
+            continue;
+        }
+        entries.insert(deviceName, colorBytes);
+    }
+
+    qCInfo(KAMELEON) << "writing color" << color.name() << "to LED devices";
     KAuth::Action action("org.kde.kameleonhelper.writecolor");
     action.setHelperId("org.kde.kameleonhelper");
-    action.addArgument("color", color.name());
-    action.addArgument("devices", m_rgbLedDevices);
+    action.addArgument("entries", entries);
     auto *job = action.execute();
 
     connect(job, &KAuth::ExecuteJob::result, this, [job] {
