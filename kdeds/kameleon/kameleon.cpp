@@ -63,21 +63,20 @@ void Kameleon::findRgbLedDevices()
             continue;
         }
         QTextStream indexFileStream(&indexFile);
-        QString colorIndexStr = indexFileStream.readAll().trimmed();
+        QStringList colorIndex = indexFileStream.readAll().trimmed().split(" ");
         indexFile.close();
-        QStringList colorIndex = colorIndexStr.split(" ");
         if (!(colorIndex.length() == 3 && colorIndex.contains("red") && colorIndex.contains("green") && colorIndex.contains("blue"))) {
-            qCWarning(KAMELEON) << "invalid color index" << colorIndexStr << "for device" << ledDevice;
+            qCWarning(KAMELEON) << "invalid color index" << colorIndex.join(" ") << "for device" << ledDevice;
             continue;
         }
 
-        qCInfo(KAMELEON) << "found RGB LED device" << ledDevice << colorIndex;
+        qCInfo(KAMELEON) << "found RGB LED device" << ledDevice;
         m_rgbLedDevices.insert(ledDevice, colorIndex);
 
         // Get current color
         // TODO: Monitor color changes continiously rather than only checking once on startup?
         QFile intensityFile(LED_SYSFS_PATH + ledDevice + LED_RGB_FILE);
-        if (!!QFileInfo(intensityFile).exists()) {
+        if (!QFileInfo(intensityFile).exists()) {
             qCWarning(KAMELEON) << "failed to read from" << intensityFile.fileName() << "file does not exist";
             continue;
         }
@@ -86,15 +85,17 @@ void Kameleon::findRgbLedDevices()
             continue;
         }
         QTextStream intensityFileStream(&intensityFile);
-        QString deviceColorStr = intensityFileStream.readAll().trimmed();
+        QStringList deviceColorStr = intensityFileStream.readAll().trimmed().split(" ");
         intensityFile.close();
-        QColor deviceColor(deviceColorStr);
+        int red = deviceColorStr[colorIndex.indexOf("red")].toInt();
+        int green = deviceColorStr[colorIndex.indexOf("green")].toInt();
+        int blue = deviceColorStr[colorIndex.indexOf("blue")].toInt();
+        QColor deviceColor = QColor::fromRgb(qRgb(red, green, blue));
         if (!deviceColor.isValid()) {
-            qCWarning(KAMELEON) << "invalid color" << deviceColorStr << "for device" << ledDevice;
+            qCWarning(KAMELEON) << "invalid color" << deviceColorStr.join(" ") << "for device" << ledDevice;
             continue;
         }
         if (!m_activeColor.isValid()) {
-            qCInfo(KAMELEON) << "found device led color" << deviceColor.name();
             m_activeColor = deviceColor;
         } else if (m_activeColor != deviceColor) {
             qCWarning(KAMELEON) << "different colors found on multiple devices; treating as white";
@@ -111,6 +112,8 @@ bool Kameleon::isSupported()
 void Kameleon::loadConfig()
 {
     qCDebug(KAMELEON) << "load color config";
+
+    qCInfo(KAMELEON) << "current color" << m_activeColor.name();
 
     bool accent = m_config->group("General").readEntry<bool>(CONFIG_KEY_ACCENT, true);
     if (accent != m_accent) {
@@ -210,6 +213,15 @@ void Kameleon::setColor(QString colorName)
 
 void Kameleon::applyColor(QColor color)
 {
+    // Sort to ensure keys light up nicely one next to the other
+    QStringList ledDevices = m_rgbLedDevices.keys();
+    QCollator coll;
+    coll.setNumericMode(true);
+    std::sort(ledDevices.begin(), ledDevices.end(), [&](const QString &s1, const QString &s2) {
+        return coll.compare(s1, s2) < 0;
+    });
+    qCInfo(KAMELEON) << "sorted devices" << ledDevices;
+
     QMap<QString, QVariant> entries;
     for (auto i = m_rgbLedDevices.cbegin(), end = m_rgbLedDevices.cend(); i != end; ++i) {
         QString deviceName = i.key();
@@ -222,7 +234,6 @@ void Kameleon::applyColor(QColor color)
         entries.insert(deviceName, colorBytes);
     }
 
-    qCInfo(KAMELEON) << "writing color" << color.name() << "to LED devices";
     KAuth::Action action("org.kde.kameleonhelper.writecolor");
     action.setHelperId("org.kde.kameleonhelper");
     action.addArgument("entries", entries);
@@ -234,6 +245,7 @@ void Kameleon::applyColor(QColor color)
             return;
         }
         m_activeColor = color;
+        qCInfo(KAMELEON) << "wrote color" << color.name() << "to LED devices";
     });
     job->start();
 }
