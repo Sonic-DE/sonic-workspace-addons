@@ -8,18 +8,25 @@
 
 #include <KAuth/HelperSupport>
 
+#include <QCollator>
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
 
 KAuth::ActionReply KameleonHelper::writecolor(const QVariantMap &args)
 {
-    QMap<QString, QVariant> devices = args.value(QStringLiteral("entries")).toMap();
-    for (auto i = devices.cbegin(), end = devices.cend(); i != end; ++i) {
-        QString device = i.key();
-        QByteArray color = i.value().toByteArray();
+    QStringList devices = args.value(QStringLiteral("devices")).toStringList();
+    QStringList entries = args.value(QStringLiteral("entries")).toStringList();
+    if (devices.length() != entries.length()) {
+        qCWarning(KAMELEONHELPER) << "length of devices and entires lists does not match";
+        return KAuth::ActionReply::HelperErrorReply();
+    }
+
+    for (int i = 0; i < devices.size(); ++i) {
+        QString device = devices[i];
+        QString color = entries[i];
         if (!(color.length() >= QByteArray("0 0 0").length() && color.length() <= QByteArray("255 255 255").length())) {
-            qCWarning(KAMELEONHELPER) << "invalid RGB color" << color << "for device" << devices;
+            qCWarning(KAMELEONHELPER) << "invalid RGB color" << color << "for device" << device;
             return KAuth::ActionReply::HelperErrorReply();
         }
 
@@ -38,13 +45,12 @@ KAuth::ActionReply KameleonHelper::writecolor(const QVariantMap &args)
             qCWarning(KAMELEONHELPER) << "writing to" << file.fileName() << "failed:" << file.error() << file.errorString();
             return KAuth::ActionReply::HelperErrorReply();
         }
-        const int bytesWritten = file.write(color);
+        const int bytesWritten = file.write(color.toUtf8());
         if (bytesWritten == -1) {
             qCWarning(KAMELEONHELPER) << "writing to" << file.fileName() << "failed:" << file.error() << file.errorString();
             return KAuth::ActionReply::HelperErrorReply();
-        } else {
-            qCInfo(KAMELEONHELPER) << "wrote color" << color << "to" << file.fileName();
         }
+        qCInfo(KAMELEONHELPER) << "wrote color to" << device;
     }
 
     return KAuth::ActionReply::SuccessReply();
