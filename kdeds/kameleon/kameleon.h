@@ -9,6 +9,8 @@
 #include <kdedmodule.h>
 
 #include <QColor>
+#include <QFileSystemWatcher>
+#include <qtmetamacros.h>
 
 #define LED_SYSFS_PATH "/sys/class/leds/"
 #define LED_INDEX_FILE "/multi_index"
@@ -40,6 +42,15 @@ public:
     Q_SCRIPTABLE QString activeColor();
 
     /**
+     * Emitted when the led color changes.
+     */
+<<<<<<< HEAD
+    Q_SCRIPTABLE void activeColorChanged();
+=======
+    Q_SCRIPTABLE void activeColorChanged(QString color);
+>>>>>>> 2a9b40e38 (kameleon: monitor for led color changed externally)
+
+    /**
      * Enables or disables following the accent color.
      */
     Q_SCRIPTABLE void setAccent(bool enabled);
@@ -52,6 +63,7 @@ public:
 private:
     KSharedConfig::Ptr m_config;
     KConfigWatcher::Ptr m_configWatcher;
+    QFileSystemWatcher m_fsWatcher;
     QStringList m_rgbLedDevices;
     QStringList m_deviceRgbIndices;
     QColor m_targetColor;
@@ -62,6 +74,7 @@ private:
     QColor m_customColor = QColor(QColorConstants::White);
 
     void findRgbLedDevices();
+    void loadLedColor();
     void loadConfig();
     void updateAccentColor();
     void updateCustomColor();
