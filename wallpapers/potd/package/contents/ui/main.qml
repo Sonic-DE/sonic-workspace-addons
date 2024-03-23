@@ -17,6 +17,8 @@ import org.kde.plasma.plasmoid 2.0
 WallpaperItem {
     id: root
 
+    readonly property string imageSourceUrl: backend.localUrl
+
     contextualActions: [
         PlasmaCore.Action {
             text: i18nd("plasma_wallpaper_org.kde.potd", "Open Wallpaper Image")
