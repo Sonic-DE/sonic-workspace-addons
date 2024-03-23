@@ -52,7 +52,8 @@ public:
 private:
     KSharedConfig::Ptr m_config;
     KConfigWatcher::Ptr m_configWatcher;
-    QMap<QString, QStringList> m_rgbLedDevices;
+    QStringList m_rgbLedDevices;
+    QList<QStringList> m_deviceRgbIndices;
     QColor m_activeColor;
 
     bool m_accent = true;
