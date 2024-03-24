@@ -18,6 +18,7 @@ WallpaperItem {
     id: root
 
     readonly property string imageSourceUrl: backend.localUrl
+    readonly property string imageTitle: backend.title
 
     contextualActions: [
         PlasmaCore.Action {
