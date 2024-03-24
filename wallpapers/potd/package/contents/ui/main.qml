@@ -17,8 +17,8 @@ import org.kde.plasma.plasmoid 2.0
 WallpaperItem {
     id: root
 
-    readonly property string imageSourceUrl: backend.localUrl
-    readonly property string imageTitle: backend.title
+    imageSourceUrl: backend.localUrl
+    imageTitle: backend.title
 
     contextualActions: [
         PlasmaCore.Action {
