@@ -19,6 +19,7 @@ WallpaperItem {
 
     imageSourceUrl: backend.localUrl
     imageTitle: backend.title
+    supportSaving: true
 
     contextualActions: [
         PlasmaCore.Action {
