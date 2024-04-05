@@ -52,7 +52,7 @@ void Kameleon::findRgbLedDevices()
         return coll.compare(s1, s2) < 0;
     });
 
-    for (const QString &ledDevice : ledDevices) {
+    for (const QString &ledDevice : std::as_const(ledDevices)) {
         // Get multicolor index (= RGB capability with order of colors)
         QFile indexFile(LED_SYSFS_PATH + ledDevice + LED_INDEX_FILE);
         if (!QFileInfo(indexFile).exists()) {
@@ -125,8 +125,8 @@ void Kameleon::loadConfig()
 void Kameleon::applyColor(QColor color)
 {
     QStringList colorStrs;
-    for (const QString &colorIndex : m_deviceRgbIndices) {
-        QStringList colorStrList = {"", "", ""};
+    for (const QString &colorIndex : std::as_const(m_deviceRgbIndices)) {
+        QStringList colorStrList = {QString(), QString(), QString()};
         colorStrList[colorIndex.indexOf("r")] = QString::number(color.red());
         colorStrList[colorIndex.indexOf("g")] = QString::number(color.green());
         colorStrList[colorIndex.indexOf("b")] = QString::number(color.blue());
