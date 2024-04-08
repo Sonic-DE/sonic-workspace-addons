@@ -72,6 +72,24 @@ void Kameleon::findRgbLedDevices()
             continue;
         }
 
+        // Get RGB bitness (= max brightness of the color LEDs)
+        QFile bitnessFile(LED_SYSFS_PATH + ledDevice + LED_BITNESS_FILE);
+        if (!QFileInfo(bitnessFile).exists()) {
+            qCWarning(KAMELEON) << "no maximum intensity information for device" << ledDevice << "; skipping";
+            // No information about color bits
+            continue;
+        }
+        if (!bitnessFile.open(QIODevice::ReadOnly)) {
+            qCWarning(KAMELEON) << "failed to open" << bitnessFile.fileName() << bitnessFile.error() << bitnessFile.errorString();
+            continue;
+        }
+        QString bitnessStr = bitnessFile.readAll().trimmed();
+        bitnessFile.close();
+        if (bitnessStr.toInt() != 255) {
+            qCInfo(KAMELEON) << "device" << ledDevice << "has max_brightness" << bitnessStr << "and does not support 8 bit color";
+            continue;
+        }
+
         qCInfo(KAMELEON) << "found RGB LED device" << ledDevice;
         m_rgbLedDevices.append(ledDevice);
         m_deviceRgbIndices.append(colorIndex);
