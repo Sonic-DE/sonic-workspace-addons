@@ -23,3 +23,6 @@ target_link_libraries(plasma_potd_bingprovider plasmapotdprovidercore KF6::KIOCo
 
 kcoreaddons_add_plugin(plasma_potd_simonstalenhagprovider SOURCES simonstalenhagprovider.cpp INSTALL_NAMESPACE "potd")
 target_link_libraries(plasma_potd_simonstalenhagprovider plasmapotdprovidercore KF6::KIOCore)
+
+kcoreaddons_add_plugin(plasma_potd_spotlightprovider SOURCES spotlightprovider.cpp INSTALL_NAMESPACE "potd")
+target_link_libraries(plasma_potd_spotlightprovider plasmapotdprovidercore KF6::KIOCore)
