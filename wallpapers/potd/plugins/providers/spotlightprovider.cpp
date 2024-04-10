@@ -62,7 +62,7 @@ void SpotlightProvider::imageRequestFinished(KJob *_job)
 
     auto image = QImage::fromData(job->data());
     if (image.isNull()) {
-         Q_EMIT error(this);
+        Q_EMIT error(this);
         return;
     }
 
@@ -103,7 +103,7 @@ QUrl SpotlightProvider::buildUrl()
     return url;
 }
 
-QJsonValue SpotlightProvider::getWallpaperItem(QByteArray data)
+QJsonValue SpotlightProvider::getWallpaperItem(const QByteArray &data)
 {
     QJsonDocument json = QJsonDocument::fromJson(data);
     QString itemStr = json["batchrsp"_L1]["items"_L1][0]["item"_L1].toString();
