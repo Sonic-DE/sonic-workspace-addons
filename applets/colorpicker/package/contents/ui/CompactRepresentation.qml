@@ -12,7 +12,6 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.private.colorpicker 2.0 as ColorPicker
 
 import "logic.js" as Logic
 
@@ -27,12 +26,12 @@ DropArea {
     readonly property real buttonSize: root.isVertical ? parent.width : parent.height
     property bool containsAcceptableDrag: false
 
-    onEntered: containsAcceptableDrag = (drag.hasColor || drag.hasUrls || ColorPicker.Utils.isValidColor(drag.text))
+    onEntered: containsAcceptableDrag = (drag.hasColor || drag.hasUrls || (drag.text as color).valid)
     onExited: containsAcceptableDrag = false
     onDropped: {
         if (drop.hasColor) {
             addColorToHistory(drop.colorData)
-        } else if (ColorPicker.Utils.isValidColor(drop.text)) {
+        } else if ((drop.text as color).valid) {
             addColorToHistory(drop.text)
         } else if (drop.hasUrls) {
             // Show loading indicator above the pick button if there are more than 1 circle
