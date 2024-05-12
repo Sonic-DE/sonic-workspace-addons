@@ -9,6 +9,7 @@
 #include "dictengine.h"
 
 #include <chrono>
+#include <ranges>
 
 #include <KLocalizedString>
 #include <QDebug>
@@ -16,6 +17,7 @@
 #include <QUrl>
 
 using namespace std::chrono_literals;
+using namespace std::string_view_literals;
 
 DictEngine::DictEngine(QObject *parent)
     : QObject(parent)
@@ -148,23 +150,23 @@ void DictEngine::getDicts()
     }
 
     QMap<QString, QString> availableDicts;
-    const QList<QByteArray> retLines = ret.split('\n');
-    for (const QByteArray &curr : retLines) {
-        if (curr.endsWith("420") || curr.startsWith("421")) {
+    for (const auto subrange : std::string_view(ret.constData()) | std::views::split('\n')) {
+        const std::string_view curr(subrange.begin(), subrange.end());
+        if (curr.ends_with("420"sv) || curr.starts_with("421"sv)) {
             // TODO: what happens if the server is down
         }
-        if (curr.startsWith("554")) {
+        if (curr.starts_with("554"sv)) {
             // TODO: What happens if no DB available?
             // TODO: Eventually there will be functionality to change the server...
             break;
         }
 
         // ignore status code and empty lines
-        if (curr.startsWith("250") || curr.startsWith("110") || curr.isEmpty()) {
+        if (curr.starts_with("250"sv) || curr.starts_with("110"sv) || curr.empty()) {
             continue;
         }
 
-        if (!curr.startsWith('-') && !curr.startsWith('.')) {
+        if (!curr.starts_with('-') && !curr.starts_with('.')) {
             const QString line = QString::fromUtf8(curr).trimmed();
             const QString id = line.section(' ', 0, 0);
             QString description = line.section(' ', 1);
