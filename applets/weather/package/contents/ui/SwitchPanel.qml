@@ -10,7 +10,9 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 
+import org.kde.kirigami as Kirigami
 import org.kde.plasma.components as PlasmaComponents
+import org.kde.plasma.extras as PlasmaExtras
 
 ColumnLayout {
     id: root
@@ -24,9 +26,10 @@ ColumnLayout {
 
     readonly property var pagesModel: {
         const pages = [{
-            title: root.forecastViewTitle,
-            view: forecastView,
+            title: root.forecastViewTitle || i18nc("@title:tab Weather forecast", "Forecast"),
+            view: root.forecastModel?.length > 0 ? forecastView : forecastPlaceholder,
         }]
+
         if (root.detailsModel && root.detailsModel.length > 0) {
             pages.push({
                 title: i18nc("@title:tab", "Details"),
@@ -95,6 +98,25 @@ ColumnLayout {
         ForecastView {
             model: root.forecastModel
             showNightRow: root.forecastViewNightRow
+        }
+    }
+
+    Component {
+        id: forecastPlaceholder
+        Item {
+            // Sets the minimum size for the placeholder tab
+            implicitWidth: Kirigami.Units.gridUnit * 20
+            implicitHeight: Kirigami.Units.gridUnit * 14
+
+            PlasmaExtras.PlaceholderMessage {
+                anchors.centerIn: parent
+                width: parent.width - (Kirigami.Units.largeSpacing * 4)
+
+                iconName: "weather-none-available-symbolic"
+                text: i18nc("@info:placeholder", "Unable to load weather forecast")
+                // TODO: Add a link to the bug-report url, which is now not possible to access within the placeholder
+                explanation: i18n("There may be a technical issue with the weather provider. If the issue persists for longer than a day, submit a bug report.",)
+            }
         }
     }
 
