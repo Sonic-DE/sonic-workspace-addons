@@ -23,10 +23,14 @@ ColumnLayout {
     required property string forecastViewTitle
 
     readonly property var pagesModel: {
-        const pages = [{
-            title: root.forecastViewTitle,
-            view: forecastView,
-        }]
+        const pages = []
+
+        if (root.forecastModel && root.forecastModel.length > 0) {
+            pages.push({
+                title: root.forecastViewTitle,
+                view: forecastView,
+            })
+        }
         if (root.detailsModel && root.detailsModel.length > 0) {
             pages.push({
                 title: i18nc("@title:tab", "Details"),
