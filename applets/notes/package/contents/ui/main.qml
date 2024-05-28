@@ -579,20 +579,17 @@ PlasmoidItem {
 
             active: false
 
-            sourceComponent: MessageDialog {
+            sourceComponent: Kirigami.PromptDialog {
                 visible: false
+                modal: false
                 title: i18n("Discard this note?")
-                text: i18n("Are you sure you want to discard this note?")
+                subtitle: i18n("Are you sure you want to discard this note?")
 
-                buttons: MessageDialog.Discard | MessageDialog.Cancel
-
-                onButtonClicked: (button, role) => {
-                    if (button === MessageDialog.Discard) {
-                        Plasmoid.internalAction("remove").trigger()
-                        visible = false;
-                    }
+                standardButtons: Kirigami.Dialog.Discard | Kirigami.Dialog.Cancel
+                onDiscarded: {
+                    Plasmoid.internalAction("remove").trigger()
+                    visible = false;
                 }
-
                 onRejected: {
                     visible = false
                 }
