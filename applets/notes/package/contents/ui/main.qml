@@ -536,62 +536,13 @@ PlasmoidItem {
                     icon.name: "edit-delete"
                     icon.color: textIconColor
                     onClicked: {
-                        // No need to ask for confirmation in the cases when...
-                        // ...the note is blank
-                        if (mainTextArea.length === 0 ||
-                            // ...the note's content is equal to the clipboard text
-
-                            // Note that we are intentionally not using
-                            // mainTextArea.getText() because it has a method of
-                            // converting the text to plainText that does not produce
-                            // the same exact output of various other methods, and if
-                            // we go out of our way to match it, we will be
-                            // depending on an implementation detail. So we instead
-                            // roll our own version to ensure that the conversion
-                            // is done in the same way every time.
-                            documentHandler.stripAndSimplify(mainTextArea.text) === documentHandler.strippedClipboardText()
-                        ) {
-                            Plasmoid.internalAction("remove").trigger();
-                        } else {
-                            discardConfirmationDialogLoader.open();
-                        }
+                        Plasmoid.internalAction("remove").trigger();
                     }
                     Accessible.name: removeTooltip.text
                     PlasmaComponents3.ToolTip {
                         id: removeTooltip
                         text: Plasmoid.internalAction("remove").text
                     }
-                }
-            }
-        }
-
-        Loader {
-            id: discardConfirmationDialogLoader
-
-            function open() {
-                if (item) {
-                    item.open();
-                } else {
-                    active = true;
-                }
-                item.visible = true;
-            }
-
-            active: false
-
-            sourceComponent: Kirigami.PromptDialog {
-                visible: false
-                modal: false
-                title: i18n("Discard this note?")
-                subtitle: i18n("Are you sure you want to discard this note?")
-
-                standardButtons: Kirigami.Dialog.Discard | Kirigami.Dialog.Cancel
-                onDiscarded: {
-                    Plasmoid.internalAction("remove").trigger()
-                    visible = false;
-                }
-                onRejected: {
-                    visible = false
                 }
             }
         }
