@@ -553,7 +553,7 @@ PlasmoidItem {
                         ) {
                             Plasmoid.internalAction("remove").trigger();
                         } else {
-                            discardConfirmationDialogLoader.open();
+                            NotesHelper.showRemoveConfirmationDialog();
                         }
                     }
                     Accessible.name: removeTooltip.text
@@ -565,33 +565,11 @@ PlasmoidItem {
             }
         }
 
-        Loader {
-            id: discardConfirmationDialogLoader
-
-            function open() {
-                if (item) {
-                    item.open();
-                } else {
-                    active = true;
-                }
-                item.visible = true;
-            }
-
-            active: false
-
-            sourceComponent: Kirigami.PromptDialog {
-                visible: false
-                modal: false
-                title: i18n("Discard this note?")
-                subtitle: i18n("Are you sure you want to discard this note?")
-
-                standardButtons: Kirigami.Dialog.Discard | Kirigami.Dialog.Cancel
-                onDiscarded: {
-                    Plasmoid.internalAction("remove").trigger()
-                    visible = false;
-                }
-                onRejected: {
-                    visible = false
+        Connections {
+            target: NotesHelper
+            function onRemoveConfirmationDialog(isRemove) {
+                if (isRemove) {
+                    Plasmoid.internalAction("remove").trigger();
                 }
             }
         }

@@ -13,6 +13,9 @@
 #include <QQmlEngine>
 #include <QQmlExtensionPlugin>
 
+#include <KLocalizedString>
+#include <KMessageBox>
+
 class NotesHelper : public QObject
 {
     Q_OBJECT
@@ -39,6 +42,21 @@ public:
 
         return QString::fromUtf8(file.readAll());
     }
+
+    Q_INVOKABLE void showRemoveConfirmationDialog()
+    {
+        int removeDialog = KMessageBox::questionTwoActions(nullptr,
+                                                        i18n("Are you sure you want to discard this note?"),
+                                                        i18n("Discard this note?"),
+                                                        KStandardGuiItem::del(),
+                                                        KStandardGuiItem::cancel(),
+                                                        QString(),
+                                                        KMessageBox::Dangerous);
+
+        Q_EMIT removeConfirmationDialog(removeDialog == KStandardGuiItem::Delete || removeDialog == KStandardGuiItem::Discard);
+    }
+
+    Q_SIGNAL void removeConfirmationDialog(bool);
 };
 
 class NotesPlugin : public QQmlExtensionPlugin
