@@ -553,7 +553,7 @@ PlasmoidItem {
                         ) {
                             Plasmoid.internalAction("remove").trigger();
                         } else {
-                            NotesHelper.showRemoveConfirmationDialog();
+                            noteManager.showRemoveConfirmationDialog();
                         }
                     }
                     Accessible.name: removeTooltip.text
@@ -566,7 +566,7 @@ PlasmoidItem {
         }
 
         Connections {
-            target: NotesHelper
+            target: noteManager
             function onRemoveConfirmationDialog(isRemove) {
                 if (isRemove) {
                     Plasmoid.internalAction("remove").trigger();

@@ -35,6 +35,14 @@ public:
 
     // LATER QAbstractListModel* notesModel(); //list of all notes
 
+    Q_INVOKABLE void showRemoveConfirmationDialog();
+
+    /**
+     * Answer from remove confirmation dialog,
+     * we will connect to it in QML
+     */
+    Q_SIGNAL void removeConfirmationDialog(bool);
+
 private:
     // ref count backends so that we only have for all notes
     static QSharedPointer<AbstractNoteLoader> loadBackend();
