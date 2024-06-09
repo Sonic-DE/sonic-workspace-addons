@@ -40,12 +40,12 @@ void NoteManager::showRemoveConfirmationDialog()
     int removeDialog = KMessageBox::questionTwoActions(nullptr,
                                                        i18n("Are you sure you want to discard this note?"),
                                                        i18n("Discard this note?"),
-                                                       KStandardGuiItem::del(),
+                                                       KStandardGuiItem::discard(),
                                                        KStandardGuiItem::cancel(),
                                                        QString(),
                                                        KMessageBox::Dangerous);
 
-    Q_EMIT removeConfirmationDialog(removeDialog == KStandardGuiItem::Delete || removeDialog == KStandardGuiItem::Discard);
+    Q_EMIT removeConfirmationDialog(removeDialog == KStandardGuiItem::Discard);
 }
 
 QSharedPointer<AbstractNoteLoader> NoteManager::loadBackend()
