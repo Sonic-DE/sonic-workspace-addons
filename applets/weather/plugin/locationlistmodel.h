@@ -78,6 +78,7 @@ public:
 public: // QAbstractListModel API
     QVariant data(const QModelIndex &index, int role) const override;
     int rowCount(const QModelIndex &index) const override;
+    QHash<int, QByteArray> roleNames() const override;
 
 public:
     bool isValidatingInput() const;
@@ -96,6 +97,7 @@ private:
     void addSources(const QMap<QString, QString> &sources);
     void validatorError(const QString &error);
     void completeSearch();
+    int relativeQuality(const QString &service) const;
 
 private:
     QList<LocationItem> m_locations;

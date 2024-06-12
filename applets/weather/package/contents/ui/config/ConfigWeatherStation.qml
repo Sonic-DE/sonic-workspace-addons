@@ -155,6 +155,14 @@ KCM.ScrollViewKCM {
             }
         }
 
+        section.property: "recommended"
+        section.delegate: Kirigami.ListSectionHeader {
+            required property bool section
+            width: ListView.view.width
+            label: section ? i18nc("@title:list Weather stations", "Recommended Stations")
+                           : i18nc("@title:list Weather stations", "General Stations")
+        }
+
         delegate: QQC2.ItemDelegate {
             width: locationListView.width
             text: model.display
