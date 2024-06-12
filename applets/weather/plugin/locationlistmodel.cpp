@@ -205,6 +205,11 @@ void LocationListModel::addSources(const QMap<QString, QString> &sources)
         }
     }
 
+    // Demote the results coming from "wetter.com" to later positions, as those offer less information
+    std::stable_sort(m_locations.begin(), m_locations.end(), [](const auto &a, const auto &b) {
+        return a.weatherService == b.weatherService || a.weatherService != QLatin1String("wettercom");
+    });
+
     endResetModel();
 
     ++m_checkedInCount;
