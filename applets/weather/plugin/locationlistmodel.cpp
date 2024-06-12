@@ -205,12 +205,27 @@ void LocationListModel::addSources(const QMap<QString, QString> &sources)
         }
     }
 
+    // Promote services with better quality to the top of the list
+    std::stable_sort(m_locations.begin(), m_locations.end(), [this](const auto &a, const auto &b) {
+        return relativeQuality(a.weatherService) >= relativeQuality(b.weatherService);
+    });
+
     endResetModel();
 
     ++m_checkedInCount;
     if (m_checkedInCount >= m_validators.count()) {
         completeSearch();
     }
+}
+
+int LocationListModel::relativeQuality(const QString &service) const
+{
+    if (service == QLatin1String("wettercom")) {
+        return -2; // wetter.com does not provide current weather status
+    } else if (service == QLatin1String("bbcukmet")) {
+        return -1; // only 3-day forecast and no alerts
+    }
+    return 0; // Rest of the providers. Default quality
 }
 
 void LocationListModel::completeSearch()
