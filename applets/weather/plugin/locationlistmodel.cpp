@@ -200,7 +200,6 @@ void LocationListModel::addSources(const QMap<QString, QString> &sources)
         it.next();
         const QStringList list = it.value().split(QLatin1Char('|'), Qt::SkipEmptyParts);
         if (list.count() > 2) {
-            qDebug() << list;
             m_locations.append(LocationItem(list[2], list[0], it.value()));
         }
     }
