@@ -187,6 +187,8 @@ void LocationListModel::validatorError(const QString &error)
 
 void LocationListModel::addSources(const QMap<QString, QString> &sources)
 {
+    static QList<LocationItem> fallbackLocations;
+
     QMapIterator<QString, QString> it(sources);
 
     // TODO: be more elaborate and use beginInsertRows() & endInsertRows()
@@ -195,8 +197,14 @@ void LocationListModel::addSources(const QMap<QString, QString> &sources)
     while (it.hasNext()) {
         it.next();
         const QStringList list = it.value().split(QLatin1Char('|'), Qt::SkipEmptyParts);
-        if (list.count() > 2) {
-            m_locations.append(LocationItem(list[2], list[0], it.value()));
+        if (list.count() <= 2) {
+            continue;
+        }
+        const auto item = LocationItem(list[2], list[0], it.value());
+        if (relativeQuality(item.weatherService) >= 0) {
+            m_locations << item;
+        } else {
+            fallbackLocations << item;
         }
     }
 
@@ -209,6 +217,12 @@ void LocationListModel::addSources(const QMap<QString, QString> &sources)
 
     ++m_checkedInCount;
     if (m_checkedInCount >= m_validators.count()) {
+        if (m_locations.isEmpty()) {
+            beginResetModel();
+            m_locations = fallbackLocations;
+            endResetModel();
+        }
+        fallbackLocations.clear();
         completeSearch();
     }
 }
