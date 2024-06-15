@@ -96,6 +96,7 @@ private:
     void addSources(const QMap<QString, QString> &sources);
     void validatorError(const QString &error);
     void completeSearch();
+    int relativeQuality(const QString &service) const;
 
 private:
     QList<LocationItem> m_locations;
