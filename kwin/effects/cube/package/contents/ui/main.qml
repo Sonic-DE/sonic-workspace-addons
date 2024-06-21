@@ -15,7 +15,7 @@ KWinComponents.SceneEffect {
     readonly property int animationDuration: Kirigami.Units.longDuration
 
     // stored as a property to keep the component alive and cleanup afterwards
-    property var mainDelegate:  KWinComponents.Workspace.desktops.length < 3 ? Qt.createComponent("PlaceholderView.qml") : Qt.createComponent("ScreenView.qml")
+    property var mainDelegate: KWinComponents.Workspace.desktops.length < 3 ? Qt.createComponent("PlaceholderView.qml") : Qt.createComponent("ScreenView.qml")
     delegate: mainDelegate
     Instantiator {
         model: effect.configuration.BorderActivate
