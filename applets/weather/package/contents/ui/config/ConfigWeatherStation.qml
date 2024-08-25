@@ -56,9 +56,8 @@ KCM.ScrollViewKCM {
                     return parseInt(text);
                 }
 
-                from: 30
+                from: 1
                 to: 3600
-                editable: true
             }
 
             QQC2.Label {

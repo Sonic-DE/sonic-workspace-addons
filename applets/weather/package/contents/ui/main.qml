@@ -25,8 +25,8 @@ PlasmoidItem {
         PlasmaCore.Types.LeftEdge,
     ].includes(Plasmoid.location)
 
-    readonly property string weatherSource: Plasmoid.configuration.source
-    readonly property int updateInterval: Plasmoid.configuration.updateInterval
+    readonly property string weatherSource: "envcan|weather|Red Deer, AB"
+    readonly property int updateInterval: 1
     readonly property int displayTemperatureUnit: Plasmoid.configuration.temperatureUnit
     readonly property int displaySpeedUnit: Plasmoid.configuration.speedUnit
     readonly property int displayPressureUnit: Plasmoid.configuration.pressureUnit
