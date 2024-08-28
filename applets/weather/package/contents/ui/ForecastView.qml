@@ -100,12 +100,19 @@ GridLayout {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 Layout.topMargin: -Kirigami.Units.smallSpacing
                 Layout.bottomMargin: Kirigami.Units.smallSpacing * 2
+                Layout.preferredHeight: regularFontMetrics.height
 
                 horizontalAlignment: Text.AlignHCenter
-                // i18n: \ufe0e forces the text representation of the umbrella emoji
-                text: modelData?.probability ? i18nc("Probability of precipitation in percentage", "\ufe0e☂%1%", modelData.probability) : "·"
+                text: modelData?.probability ? i18nc("Probability of precipitation in percentage", "☂%1%", modelData.probability) : "·"
                 textFormat: Text.PlainText
                 visible: modelData && root.rowHasProbability[index % root.rows]
+
+                // To prevent the emoji font from setting a larger height
+                TextMetrics{
+                    id: regularFontMetrics
+                    text: "99%"
+                    font: parent.font
+                }
             }
 
             PlasmaComponents.Label {
