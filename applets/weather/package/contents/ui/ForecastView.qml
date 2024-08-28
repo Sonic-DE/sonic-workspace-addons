@@ -51,6 +51,17 @@ GridLayout {
         Layout.topMargin: startsAtNight ? -Kirigami.Units.gridUnit : 0
     }
 
+    // Dummy item to get the metrics of the regular font in a PlasmaComponent.Label
+    PlasmaComponents.Label {
+        id: dummyLabel
+    }
+
+    TextMetrics{
+        id: labelFontMetrics
+        text: "99%"
+        font: dummyLabel.font
+    }
+
     Repeater {
         id: repeater
 
@@ -100,10 +111,11 @@ GridLayout {
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 Layout.topMargin: -Kirigami.Units.smallSpacing
                 Layout.bottomMargin: Kirigami.Units.smallSpacing * 2
+                // Fixed value, to prevent the emoji font from setting a larger height
+                Layout.preferredHeight: labelFontMetrics.height
 
                 horizontalAlignment: Text.AlignHCenter
-                // i18n: \ufe0e forces the text representation of the umbrella emoji
-                text: modelData?.probability ? i18nc("Probability of precipitation in percentage", "\ufe0e☂%1%", modelData.probability) : "·"
+                text: modelData?.probability ? i18nc("Probability of precipitation in percentage", "☂%1%", modelData.probability) : "·"
                 textFormat: Text.PlainText
                 visible: modelData && root.rowHasProbability[index % root.rows]
             }
