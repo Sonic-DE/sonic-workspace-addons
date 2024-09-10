@@ -19,6 +19,11 @@ Row {
     property bool alertMode: false
 
     signal digitModified(int valueDelta)
+    function maybeModify(valueDelta: int): void {
+        if (value + valueDelta < 24*60*60 && value + valueDelta >= 0) {
+            timerEdit.digitModified(valueDelta)
+        }
+    }
 
     QtObject {
         id: internal
@@ -52,14 +57,10 @@ Row {
                     root.toggleTimer();
                     break;
                 case Qt.Key_Up:
-                    if (value + meaning < 24*60*60) {
-                        timerEdit.digitModified(meaning)
-                    }
+                    timerEdit.maybeModify(meaning)
                     break;
                 case Qt.Key_Down:
-                    if (value - meaning >= 0) {
-                        timerEdit.digitModified(-meaning)
-                    }
+                    timerEdit.maybeModify(-meaning)
                     break;
                 case Qt.Key_Left:
                     nextItemInFocusChain(false).forceActiveFocus(Qt.BacktabFocusReason);
@@ -78,16 +79,20 @@ Row {
                 enabled: editable
                 propagateComposedEvents: true
 
+                onClicked: event => {
+                    if (event.y < parent.height / 2) {
+                        timerEdit.maybeModify(meaning)
+                    } else {
+                        timerEdit.maybeModify(-meaning)
+                    }
+                }
+
                 onWheel: wheel => {
                     wheel.accepted = true
                     if (wheel.angleDelta.y > mouseWheelAngleThreshold) {
-                        if (value + meaning < 24*60*60) {
-                            timerEdit.digitModified(meaning)
-                        }
+                        timerEdit.maybeModify(meaning)
                     } else if (wheel.angleDelta.y < -mouseWheelAngleThreshold) {
-                        if (value - meaning >= 0) {
-                            timerEdit.digitModified(-meaning)
-                        }
+                        timerEdit.maybeModify(-meaning)
                     }
                 }
             }
@@ -174,4 +179,3 @@ Row {
         second2.item.num = internal.valueString[5]
     }
 }
-
