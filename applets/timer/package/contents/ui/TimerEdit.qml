@@ -38,6 +38,7 @@ Row {
             readonly property int mouseWheelAngleThreshold: 5
             width: internal.digitW
             height: internal.digitH
+            anchors.verticalCenter: timerEdit.verticalCenter
 
             activeFocusOnTab: true
             imagePath: "widgets/timer"
@@ -99,6 +100,7 @@ Row {
         KSvg.SvgItem {
             width: internal.digitW / 2;
             height: internal.digitH;
+            anchors.verticalCenter: timerEdit.verticalCenter
             imagePath: "widgets/timer"
             elementId: "separator" + internal.digitSuffix
         }
@@ -174,4 +176,3 @@ Row {
         second2.item.num = internal.valueString[5]
     }
 }
-

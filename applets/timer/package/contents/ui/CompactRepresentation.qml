@@ -47,6 +47,13 @@ Item {
         }
     }
 
+    property bool shouldShowEditor
+
+    Binding on shouldShowEditor {
+        delayed: true
+        value: infoLayout.Layout.maximumWidth === -1 ? parent.width : infoLayout.Layout.maximumWidth >= textMetrics.width
+    }
+
     Keys.onUpPressed: adjustSecond(10);
     Keys.onDownPressed: adjustSecond(-10);
 
@@ -144,6 +151,7 @@ Item {
         }
 
         ColumnLayout {
+            id: infoLayout
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: layoutForm === CompactRepresentation.LayoutType.VerticalPanel || layoutForm === CompactRepresentation.LayoutType.VerticalDesktop
             Layout.maximumWidth: {
@@ -182,24 +190,41 @@ Item {
                 textFormat: Text.PlainText
             }
 
-            PlasmaComponents3.Label {
-                id: remainingTimeLabel
-
-                Layout.fillWidth: parent.Layout.fillWidth
+            TimerEdit {
+                id: timerEdit
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                Layout.fillWidth: infoLayout.Layout.fillWidth
                 Layout.fillHeight: true
+                Layout.minimumHeight: textMetrics.height
                 Layout.maximumWidth: Layout.fillWidth ? -1 : textMetrics.width
                 Layout.minimumWidth: Layout.maximumWidth
-                visible: root.showRemainingTime
+                visible: root.showRemainingTime && compactRepresentation.shouldShowEditor
+                value: root.seconds
+                editable: !root.running
+                alertMode: root.alertMode
+                onDigitModified: valueDelta => root.seconds += valueDelta
 
                 TextMetrics {
                     id: textMetrics
-                    text: {
-                        if (root.isVertical) {
-                            return i18ncp("remaining time", "%1s", "%1s", root.seconds);
-                        }
-                        // make it not jump around: reserve space for one extra digit than reasonable
-                        return root.showSeconds ? "44:44:444" : "44:444";
-                    }
+                    // make it not jump around: reserve space for one extra digit than reasonable
+                    text: root.showSeconds ? "44:44:444" : "44:444"
+                    font: remainingTimeLabel.font
+                }
+            }
+
+            PlasmaComponents3.Label {
+                id: remainingTimeLabel
+
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: infoLayout.Layout.fillWidth
+                Layout.fillHeight: true
+                Layout.maximumWidth: Layout.fillWidth ? -1 : textMetricsSecondsOnly.width
+                Layout.minimumWidth: Layout.maximumWidth
+                visible: root.showRemainingTime && !compactRepresentation.shouldShowEditor
+
+                TextMetrics {
+                    id: textMetricsSecondsOnly
+                    text: i18ncp("remaining time", "%1s", "%1s", root.seconds)
                     font: remainingTimeLabel.font
                 }
 
@@ -211,13 +236,7 @@ Item {
                 minimumPointSize: Kirigami.Theme.smallFont.pointSize
                 verticalAlignment: Text.AlignVCenter
 
-                text: {
-                    if (root.isVertical) {
-                        return i18ncp("remaining time", "%1s", "%1s", root.seconds);
-                    }
-
-                    return root.showSeconds ? TimerPlasmoid.Timer.secondsToString(root.seconds, "hh:mm:ss") : TimerPlasmoid.Timer.secondsToString(root.seconds, "hh:mm");
-                }
+                text: i18ncp("remaining time", "%1s", "%1s", root.seconds)
                 textFormat: Text.PlainText
 
                 Accessible.name: Plasmoid.toolTipMainText
