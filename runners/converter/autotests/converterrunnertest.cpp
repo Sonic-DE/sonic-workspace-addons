@@ -32,6 +32,8 @@ private Q_SLOTS:
 void ConverterRunnerTest::initTestCase()
 {
     initProperties();
+
+    QTest::qWait(5000); // KUnitConversion::UpdateJob::finished
 }
 
 /**
