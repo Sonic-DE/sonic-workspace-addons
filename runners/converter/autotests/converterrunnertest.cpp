@@ -32,6 +32,12 @@ private Q_SLOTS:
 void ConverterRunnerTest::initTestCase()
 {
     initProperties();
+
+    QTRY_VERIFY(std::invoke([] {
+        Converter converter;
+        KUnitConversion::UnitCategory currencyCategory = converter.category(KUnitConversion::CurrencyCategory);
+        return !currencyCategory.allUnits().empty();
+    }));
 }
 
 /**
