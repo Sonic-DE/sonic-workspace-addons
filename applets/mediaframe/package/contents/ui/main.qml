@@ -49,13 +49,6 @@ PlasmoidItem {
         items.watch(activeSource)
     }
 
-    onHasItemsChanged: {
-        if(hasItems) {
-            if(activeSource == "")
-                nextItem()
-        }
-    }
-
     onExternalData: (mimetype, data) => {
         var type = items.isDir(data) ? "folder" : "file";
         var item = {
@@ -77,9 +70,7 @@ PlasmoidItem {
 
     Component.onCompleted: {
         loadPathList()
-
-        if (items.random)
-            nextItem()
+        nextItem()
     }
 
     Connections {
