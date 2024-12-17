@@ -56,12 +56,27 @@ Loader {
 
             WorkspaceComponents.BadgeOverlay {
                 anchors.bottom: parent.bottom
-                anchors.right: parent.right
 
                 visible: showTemperature && useBadge && text.length > 0
 
                 text: observationModel.temperature
                 icon: parent
+
+                // Imperative to unset the previous anchor before setting a new one
+                readonly property bool shouldCenter : width >= parent.width
+                onShouldCenterChanged: positionBadge()
+                Component.onCompleted: positionBadge()
+
+                function positionBadge() : void {
+                    if (shouldCenter) {
+                        anchors.right = undefined
+                        anchors.horizontalCenter = parent.horizontalCenter
+                    } else {
+                        anchors.horizontalCenter = undefined
+                        anchors.right = parent.right
+                    }
+                }
+
             }
         }
     }
