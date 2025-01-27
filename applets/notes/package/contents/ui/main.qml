@@ -233,7 +233,7 @@ PlasmoidItem {
                     QQC2.Menu {
                         id: contextMenu
 
-                        readonly property bool shortcutsEnabled: contextMenu.visible || mainTextArea.activeFocus
+                        readonly property bool shortcutsEnabled: contextMenu.visible
                         ShortcutMenuItem {
                             _sequence: StandardKey.Undo
                             _enabled: contextMenu.shortcutsEnabled && mainTextArea.canUndo
