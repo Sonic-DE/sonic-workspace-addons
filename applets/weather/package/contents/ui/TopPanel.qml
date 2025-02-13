@@ -22,11 +22,6 @@ GridLayout {
         windSpeedDirection.naturalSize.width
     )
 
-    Layout.minimumWidth: Math.max(
-        locationLabel.implicitWidth,
-        (sideWidth + columnSpacing) * 2 + Kirigami.Units.iconSizes.huge /* conditionIcon.Layout.minimumWidth */
-    )
-
     visible: !!generalModel.location
 
     columnSpacing: Kirigami.Units.largeSpacing
@@ -42,7 +37,7 @@ GridLayout {
         Layout.columnSpan: 3
         Layout.fillWidth: true
 
-        wrapMode: Text.NoWrap
+        elide: Text.ElideRight
 
         text: generalModel.location
         textFormat: Text.PlainText
