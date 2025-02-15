@@ -41,6 +41,18 @@ GridLayout {
 
         text: generalModel.location
         textFormat: Text.PlainText
+
+        PlasmaComponents.ToolTip {
+            text: generalModel.location
+            visible: locationHover.hover
+        }
+
+        readonly property bool hover: locationHover.hover
+
+        HoverHandler {
+            id: locationHover
+            enabled: locationLabel.truncated
+        }
     }
 
     ColumnLayout {
