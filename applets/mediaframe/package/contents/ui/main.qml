@@ -49,13 +49,6 @@ PlasmoidItem {
         items.watch(activeSource)
     }
 
-    onHasItemsChanged: {
-        if(hasItems) {
-            if(activeSource == "")
-                nextItem()
-        }
-    }
-
     onExternalData: (mimetype, data) => {
         var type = items.isDir(data) ? "folder" : "file";
         var item = {
@@ -77,9 +70,7 @@ PlasmoidItem {
 
     Component.onCompleted: {
         loadPathList()
-
-        if (items.random)
-            nextItem()
+        nextItem()
     }
 
     Connections {
@@ -188,12 +179,13 @@ PlasmoidItem {
                 onTriggered: {
                     frontImage.sourceSize.width = width
                     frontImage.sourceSize.height = height
+                    bufferImage.sourceSize.width = width
+                    bufferImage.sourceSize.height = height
                 }
             }
 
             Image {
                 id: bufferImage
-
 
                 anchors.fill: parent
                 fillMode: plasmoid.configuration.fillMode
@@ -205,6 +197,19 @@ PlasmoidItem {
 
                 asynchronous: true
                 autoTransform: true
+
+                smooth: true
+
+                sourceSize.width: width
+                sourceSize.height: height
+
+                onStatusChanged: {
+                  if (itemCount > 1) { // Only do transition if we have more that one item
+                    if (bufferImage.status == Image.Ready) {
+                      faderAnimation.restart()
+                    }
+                  }
+                }
             }
 
             Image {
@@ -219,11 +224,23 @@ PlasmoidItem {
                 asynchronous: true
                 autoTransform: true
 
+                smooth: true
+
                 onWidthChanged: imageReloadTimer.restart()
                 onHeightChanged: imageReloadTimer.restart()
 
                 sourceSize.width: width
                 sourceSize.height: height
+
+                onStatusChanged: {
+                  if (itemCount > 1) { // Only do transition if we have more that one item
+                    if (frontImage.status == Image.Ready) {
+                      frontImage.opacity = 1
+                      transitionSource = ""
+                      bufferImage.opacity = 0
+                    }
+                  }
+                }
 
                 HoverHandler {
                     enabled: Plasmoid.configuration.leftClickOpenImage
@@ -257,7 +274,6 @@ PlasmoidItem {
     function setActiveSource(source) {
         if(itemCount > 1) { // Only do transition if we have more that one item
             transitionSource = source
-            faderAnimation.restart()
         } else {
             transitionSource = source
             activeSource = source
@@ -274,11 +290,7 @@ PlasmoidItem {
         ScriptAction {
             script: {
                 // Copy the transitionSource
-                var ts = transitionSource
-                activeSource = ts
-                frontImage.opacity = 1
-                transitionSource = ""
-                bufferImage.opacity = 0
+                activeSource = transitionSource
             }
         }
     }
