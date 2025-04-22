@@ -6,9 +6,10 @@
 
 #include "abstractunitlistmodel.h"
 
-AbstractUnitListModel::AbstractUnitListModel(const QList<UnitItem> &items, QObject *parent)
+AbstractUnitListModel::AbstractUnitListModel(const QList<UnitItem> &items, int defaultUnitId, QObject *parent)
     : QAbstractListModel(parent)
     , m_items(items)
+    , m_defaultIndex(listIndexForUnitId(defaultUnitId))
 {
 }
 
@@ -39,13 +40,17 @@ int AbstractUnitListModel::rowCount(const QModelIndex &index) const
 
 int AbstractUnitListModel::listIndexForUnitId(int unitId) const
 {
+    if (!unitId) {
+        unitId = m_defaultIndex;
+    }
+
     for (int i = 0; i < m_items.count(); ++i) {
         if (m_items.at(i).unitId == unitId) {
             return i;
         }
     }
 
-    return -1;
+    return m_defaultIndex;
 }
 
 int AbstractUnitListModel::unitIdForListIndex(int listIndex) const
@@ -55,4 +60,9 @@ int AbstractUnitListModel::unitIdForListIndex(int listIndex) const
     }
 
     return -1;
+}
+
+int AbstractUnitListModel::defaultUnitId() const
+{
+    return unitIdForListIndex(m_defaultIndex);
 }
