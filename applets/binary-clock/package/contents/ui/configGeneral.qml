@@ -26,7 +26,7 @@ KCM.SimpleKCM {
     Kirigami.FormLayout {
         QtControls.CheckBox {
             id: showOffLedsCheckBox
-            Kirigami.FormData.label: i18nc("@label", "Show:")
+            Kirigami.FormData.label: i18nc("@title:group The things being potentially shown are lights and seconds", "Show:")
             text: i18nc("@option:check", "Inactive lights")
         }
 
