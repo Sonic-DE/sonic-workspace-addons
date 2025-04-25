@@ -18,6 +18,8 @@ import org.kde.plasma.private.fifteenpuzzle 0.1 as Private
 PlasmoidItem {
     id: root
 
+    Component.onCompleted: FifteenImageProvider.init()
+
     switchWidth: Kirigami.Units.gridUnit * 16 - 20
     switchHeight: switchWidth
 
