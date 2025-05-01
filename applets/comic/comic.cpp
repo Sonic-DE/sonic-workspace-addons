@@ -280,39 +280,39 @@ QObject *ComicApplet::availableComicsModel() const
     return mModel;
 }
 
-QVariantMap ComicApplet::comicData() const
+ComicData ComicApplet::comicData() const
 {
-    return mComicData;
+    return mCurrent;
 }
 
 void ComicApplet::refreshComicData()
 {
-    mComicData[QStringLiteral("id")] = mCurrent.id();
-    mComicData[QStringLiteral("image")] = mCurrent.image();
-    mComicData[QStringLiteral("prev")] = mCurrent.prev();
-    mComicData[QStringLiteral("next")] = mCurrent.next();
-    mComicData[QStringLiteral("additionalText")] = mCurrent.additionalText();
+    // mComicData[QStringLiteral("id")] = mCurrent.id();
+    // mComicData[QStringLiteral("image")] = mCurrent.image();
+    // mComicData[QStringLiteral("prev")] = mCurrent.prev();
+    // mComicData[QStringLiteral("next")] = mCurrent.next();
+    // mComicData[QStringLiteral("additionalText")] = mCurrent.additionalText();
 
-    mComicData[QStringLiteral("websiteUrl")] = mCurrent.websiteUrl().toString();
-    mComicData[QStringLiteral("websiteHost")] = mCurrent.websiteUrl().host();
-    mComicData[QStringLiteral("imageUrl")] = mCurrent.websiteUrl().toString();
-    mComicData[QStringLiteral("shopUrl")] = mCurrent.shopUrl().toString();
-    mComicData[QStringLiteral("first")] = mCurrent.first();
-    mComicData[QStringLiteral("hasFirst")] = mCurrent.hasFirst();
-    mComicData[QStringLiteral("stripTitle")] = mCurrent.stripTitle();
-    mComicData[QStringLiteral("author")] = mCurrent.author();
-    mComicData[QStringLiteral("title")] = mCurrent.title();
-
-    mComicData[QStringLiteral("current")] = mCurrent.current();
-    // mComicData[QStringLiteral("last")] = mCurrent.last();
-    mComicData[QStringLiteral("currentReadable")] = mCurrent.currentReadable();
-    mComicData[QStringLiteral("firstStripNum")] = mCurrent.firstStripNum();
-    mComicData[QStringLiteral("maxStripNum")] = mCurrent.maxStripNum();
-    mComicData[QStringLiteral("isLeftToRight")] = mCurrent.isLeftToRight();
-    mComicData[QStringLiteral("isTopToBottom")] = mCurrent.isTopToBottom();
-    mComicData[QStringLiteral("isError")] = mCurrent.isError();
-    mComicData[QStringLiteral("storePosition")] = mCurrent.storePosition();
-    mComicData[QStringLiteral("ready")] = mCurrent.ready();
+    // mComicData[QStringLiteral("websiteUrl")] = mCurrent.websiteUrl().toString();
+    // mComicData[QStringLiteral("websiteHost")] = mCurrent.websiteUrl().host();
+    // // mComicData[QStringLiteral("imageUrl")] = mCurrent.websiteUrl().toString();
+    // mComicData[QStringLiteral("shopUrl")] = mCurrent.shopUrl().toString();
+    // mComicData[QStringLiteral("first")] = mCurrent.first();
+    // mComicData[QStringLiteral("hasFirst")] = mCurrent.hasFirst();
+    // mComicData[QStringLiteral("stripTitle")] = mCurrent.stripTitle();
+    // mComicData[QStringLiteral("author")] = mCurrent.author();
+    // mComicData[QStringLiteral("title")] = mCurrent.title();
+    //
+    // mComicData[QStringLiteral("current")] = mCurrent.current();
+    // // mComicData[QStringLiteral("last")] = mCurrent.last();
+    // mComicData[QStringLiteral("currentReadable")] = mCurrent.currentReadable();
+    // mComicData[QStringLiteral("firstStripNum")] = mCurrent.firstStripNum();
+    // mComicData[QStringLiteral("maxStripNum")] = mCurrent.maxStripNum();
+    // mComicData[QStringLiteral("isLeftToRight")] = mCurrent.isLeftToRight();
+    // mComicData[QStringLiteral("isTopToBottom")] = mCurrent.isTopToBottom();
+    // mComicData[QStringLiteral("isError")] = mCurrent.isError();
+    // mComicData[QStringLiteral("storePosition")] = mCurrent.storePosition();
+    // mComicData[QStringLiteral("ready")] = mCurrent.ready();
 
     Q_EMIT comicDataChanged();
 }
