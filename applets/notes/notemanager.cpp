@@ -11,6 +11,9 @@
 #include <QMutex>
 #include <QQmlEngine>
 
+#include <KLocalizedString>
+#include <KMessageBox>
+
 #include "filesystemnoteloader.h"
 #include "note.h"
 
@@ -30,6 +33,19 @@ Note *NoteManager::loadNote(const QString &id)
 void NoteManager::deleteNoteResources(const QString &id)
 {
     m_backend->deleteNoteResources(id);
+}
+
+void NoteManager::showRemoveConfirmationDialog()
+{
+    int removeDialog = KMessageBox::questionTwoActions(nullptr,
+                                                       i18n("Are you sure you want to discard this note?"),
+                                                       i18n("Discard this note?"),
+                                                       KStandardGuiItem::discard(),
+                                                       KStandardGuiItem::cancel(),
+                                                       QString(),
+                                                       KMessageBox::Dangerous);
+
+    Q_EMIT removeConfirmationDialog(removeDialog == KStandardGuiItem::Discard);
 }
 
 QSharedPointer<AbstractNoteLoader> NoteManager::loadBackend()

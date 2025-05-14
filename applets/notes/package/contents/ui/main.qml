@@ -536,7 +536,7 @@ PlasmoidItem {
                         ) {
                             Plasmoid.internalAction("remove").trigger();
                         } else {
-                            discardConfirmationDialogLoader.open();
+                            noteManager.showRemoveConfirmationDialog();
                         }
                     }
                     Accessible.name: removeTooltip.text
@@ -589,36 +589,11 @@ PlasmoidItem {
             }
         }
 
-        Loader {
-            id: discardConfirmationDialogLoader
-
-            function open() {
-                if (item) {
-                    item.open();
-                } else {
-                    active = true;
-                }
-                item.visible = true;
-            }
-
-            active: false
-
-            sourceComponent: MessageDialog {
-                visible: false
-                title: i18n("Discard this note?")
-                text: i18n("Are you sure you want to discard this note?")
-
-                buttons: MessageDialog.Discard | MessageDialog.Cancel
-
-                onButtonClicked: (button, role) => {
-                    if (button === MessageDialog.Discard) {
-                        Plasmoid.internalAction("remove").trigger()
-                        visible = false;
-                    }
-                }
-
-                onRejected: {
-                    visible = false
+        Connections {
+            target: noteManager
+            function onRemoveConfirmationDialog(isRemove) {
+                if (isRemove) {
+                    Plasmoid.internalAction("remove").trigger();
                 }
             }
         }
