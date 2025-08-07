@@ -392,7 +392,6 @@ void OpenMeteoIon::fetchForecast(std::shared_ptr<QPromise<std::shared_ptr<Foreca
             qCDebug(IONENGINE_OPEN_METEO) << "validated" << res.value();
             auto j = std::move(res).value();
             auto current = j[u"current"_s].toObject();
-            auto units = j[u"current_units"_s].toObject();
             auto time = QDateTime::fromString(current[u"time"_s].toString(), Qt::ISODate);
             auto timezone = QTimeZone(j[u"timezone"_s].toString().toLocal8Bit());
             time.setTimeZone(timezone);
