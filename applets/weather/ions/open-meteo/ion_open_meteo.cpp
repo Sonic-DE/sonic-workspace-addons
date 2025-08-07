@@ -4,13 +4,14 @@
 */
 
 #include "ion_open_meteo.h"
-#include "forecast.h"
+
 #include "ion_open_meteodebug.h"
-#include "locations.h"
+
 #include <KIO/StoredTransferJob>
 #include <KLocalizedString>
 #include <KPluginFactory>
 #include <KUnitConversion/Value>
+
 #include <QDate>
 #include <QDateTime>
 #include <QJsonArray>
@@ -20,13 +21,11 @@
 #include <QTimeZone>
 #include <QUrl>
 #include <QUrlQuery>
+
 #include <optional>
 
 using namespace Qt::StringLiterals;
 
-static const QString ION_NAME = u"openmeteo"_s;
-static const QString MALFORMED_RESPONSE = ION_NAME + u"|malformed"_s;
-static const QString TIMEOUT_RESPONSE = ION_NAME + u"|timeout"_s;
 static const QString SEARCH_ENDPOINT = u"https://geocoding-api.open-meteo.com/v1/search"_s;
 static const QString WEATHER_ENDPOINT = u"https://api.open-meteo.com/v1/forecast"_s;
 static const QString CREDIT_URL = u"https://open-meteo.com"_s;
@@ -161,10 +160,10 @@ static void cancelPromise(QPromise<std::decay_t<T>> &promise)
 }
 
 struct OpenMeteoIon::Private {
-    QMap<int, QString> weatherCodeToStrMapCommon;
-    QMap<int, QString> weatherCodeToStrMapDay;
-    QMap<int, QString> weatherCodeToStrMapNight;
-    QMap<int, ConditionIcons> weatherCodeToIconMapCommon{
+    QHash<int, QString> weatherCodeToStrMapCommon;
+    QHash<int, QString> weatherCodeToStrMapDay;
+    QHash<int, QString> weatherCodeToStrMapNight;
+    QHash<int, ConditionIcons> weatherCodeToIconMapCommon{
         {3, Overcast},
         {30, Overcast},
         {4, Haze},
@@ -205,7 +204,7 @@ struct OpenMeteoIon::Private {
         {96, Thunderstorm},
         {999, NotAvailable},
     };
-    QMap<int, ConditionIcons> weatherCodeToIconMapDay{
+    QHash<int, ConditionIcons> weatherCodeToIconMapDay{
         {0, ClearDay},
         {1, FewCloudsDay},
         {10, FewCloudsDay},
@@ -214,7 +213,7 @@ struct OpenMeteoIon::Private {
         {80, ChanceShowersDay},
         {95, ChanceThunderstormDay},
     };
-    QMap<int, ConditionIcons> weatherCodeToIconMapNight{
+    QHash<int, ConditionIcons> weatherCodeToIconMapNight{
         {0, ClearNight},
         {1, FewCloudsNight},
         {10, FewCloudsNight},
@@ -381,7 +380,7 @@ void OpenMeteoIon::fetchForecast(std::shared_ptr<QPromise<std::shared_ptr<Foreca
         job,
         &KJob::result,
         this,
-        [job, placeInfo, promise, coords, this]() {
+        [job, promise, coords, this]() {
             auto locale = QLocale::system();
             auto res = validateJob(job);
             if (!res.has_value()) {

@@ -4,7 +4,7 @@
 */
 
 #pragma once
-#include "../ion.h"
+#include "ion.h"
 #include <memory>
 Q_MOC_INCLUDE("forecast.h")
 Q_MOC_INCLUDE("locations.h")
