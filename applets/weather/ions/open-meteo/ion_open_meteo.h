@@ -4,14 +4,11 @@
 */
 
 #pragma once
+#include "forecast.h"
 #include "ion.h"
-#include <memory>
-Q_MOC_INCLUDE("forecast.h")
-Q_MOC_INCLUDE("locations.h")
+#include "locations.h"
 
-class KJob;
-class Forecast;
-class Locations;
+#include <memory>
 
 /**
  * open-meteo.com
