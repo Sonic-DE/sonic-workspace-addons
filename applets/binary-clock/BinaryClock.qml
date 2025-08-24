@@ -29,13 +29,9 @@ Item {
 
     readonly property real w1: (main.height-5*Kirigami.Units.smallSpacing)*dots/4
 
-    Layout.minimumWidth: w1 < 20 ? 20 : w1
+    Layout.minimumWidth: w1 < 40 ? (main.height*dots/4) : w1
     Layout.maximumWidth: Infinity
     Layout.preferredWidth: Layout.minimumWidth
-
-    Layout.minimumHeight: 16+(Kirigami.Units.smallSpacing*5)
-    //Layout.maximumHeight: vertical ? Layout.minimumHeight : Infinity
-    //Layout.preferredHeight: Layout.minimumHeight
 
     readonly property int formFactor: plasmoid.formFactor
 
@@ -56,7 +52,7 @@ Item {
     readonly property color onColor: plasmoid.configuration.useCustomColorForActive ? plasmoid.configuration.customColorForActive : Kirigami.Theme.textColor
     readonly property color offColor: plasmoid.configuration.useCustomColorForInactive ? plasmoid.configuration.customColorForInactive : Qt.rgba(onColor.r, onColor.g, onColor.b, 0.2)
 
-    readonly property int dotSize: Math.min((height-5*Kirigami.Units.smallSpacing)/4, (width-(dots+1)*Kirigami.Units.smallSpacing)/dots)
+    readonly property int dotSize: Math.max(Math.min((height-5*Kirigami.Units.smallSpacing)/4, (width-(dots+1)*Kirigami.Units.smallSpacing)/dots), 3)
 
     property bool wasExpanded: false
 
