@@ -1,8 +1,8 @@
 {
     "KPlugin": {
-        "Description": "Weather from open-meteo",
+        "Description": "Weather from Open-Meteo",
         "Icon": "noneyet",
-        "Name": "open-meteo"
+        "Name": "Open-Meteo"
     },
     "Quality": 3,
     "Comment": "7-day forecast and observation"

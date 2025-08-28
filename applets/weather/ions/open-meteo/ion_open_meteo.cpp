@@ -114,27 +114,28 @@ static QString formatPlaceName(const QJsonObject &place)
     }
     names.append(place[u"name"_s].toString());
 
-    QString translatedTemplate;
     if (names.size() == 6) {
-        translatedTemplate = i18nc("place name, %6 is the smallest area and %1 the largest", "%6, %5, %4, %3, %2, %1");
+        return i18nc("place name, %6 is the smallest area and %1 the largest",
+                     "%6, %5, %4, %3, %2, %1",
+                     names[0],
+                     names[1],
+                     names[2],
+                     names[3],
+                     names[4],
+                     names[5]);
     } else if (names.size() == 5) {
-        translatedTemplate = i18nc("place name, %5 is the smallest area and %1 the largest", "%5, %4, %3, %2, %1");
+        return i18nc("place name, %5 is the smallest area and %1 the largest", "%5, %4, %3, %2, %1", names[0], names[1], names[2], names[3], names[4]);
     } else if (names.size() == 4) {
-        translatedTemplate = i18nc("place name, %4 is the smallest area and %1 the largest", "%4, %3, %2, %1");
+        return i18nc("place name, %4 is the smallest area and %1 the largest", "%4, %3, %2, %1", names[0], names[1], names[2], names[3]);
     } else if (names.size() == 3) {
-        translatedTemplate = i18nc("place name, %3 is the smallest area and %1 the largest", "%3, %2, %1");
+        return i18nc("place name, %3 is the smallest area and %1 the largest", "%3, %2, %1", names[0], names[1], names[2]);
     } else if (names.size() == 2) {
-        translatedTemplate = i18nc("place name, %2 is the smallest area and %1 the largest", "%2, %1");
+        return i18nc("place name, %2 is the smallest area and %1 the largest", "%2, %1", names[0], names[1]);
     } else if (names.size() == 1) {
-        translatedTemplate = i18nc("place name", "%1");
+        return i18nc("place name", "%1", names[0]);
     } else {
-        translatedTemplate = u""_s;
+        return u""_s;
     }
-
-    for (const auto &name : names) {
-        translatedTemplate = translatedTemplate.arg(name);
-    }
-    return translatedTemplate;
 }
 
 // https://en.wikipedia.org/wiki/Wind_direction
@@ -306,7 +307,7 @@ struct OpenMeteoIon::Private {
 
 OpenMeteoIon::OpenMeteoIon(QObject *parent)
     : Ion(parent)
-    , m_d(std::make_unique<Private>())
+    , d(std::make_unique<Private>())
 {
     qCDebug(IONENGINE_OPEN_METEO) << "loaded OpenMeteo";
 }
@@ -315,18 +316,16 @@ OpenMeteoIon::~OpenMeteoIon() = default;
 
 void OpenMeteoIon::findPlaces(std::shared_ptr<QPromise<std::shared_ptr<Locations>>> promise, const QString &query)
 {
-    auto systemLocale = QLocale::system();
-    auto languages = systemLocale.uiLanguages();
+    const QStringList languages = QLocale::system().uiLanguages();
     // open-meteo does not support fallback to other languages,
     // and it does not return in the response whether names
     // in the requested language are available.
     // So our only choice is to use one language in the query.
-    auto fullLanguageCode = languages.isEmpty() ? u""_s : languages[0];
     // Also, it does not work well with full language codes,
     // so we truncate it so that it only contains the language part.
     // If the situation changes in the future, this part of the
     // code should be changed accordingly.
-    auto language = fullLanguageCode.split(u'-')[0];
+    const QString language = languages.isEmpty() ? QString() : languages.first().split(u'-').first();
 
     promise->start();
     auto job = KIO::storedGet(searchPlacesUrl(query, language), KIO::Reload, KIO::HideProgressInfo);
@@ -336,19 +335,19 @@ void OpenMeteoIon::findPlaces(std::shared_ptr<QPromise<std::shared_ptr<Locations
         this,
         [job, promise, query]() {
             auto res = validateJob(job);
-            auto locations = std::make_shared<Locations>();
+            const auto locations = std::make_shared<Locations>();
             if (!res.has_value()) {
                 resolvePromise(*promise, locations);
                 return;
             }
             qCDebug(IONENGINE_OPEN_METEO) << "validated" << res.value();
-            auto places = res.value()[u"results"_s].toArray();
+            const QJsonArray places = std::move(res).value()[u"results"_s].toArray();
 
             for (const auto &place : places) {
-                auto o = place.toObject();
-                auto latitude = o[u"latitude"_s].toDouble();
-                auto longitude = o[u"longitude"_s].toDouble();
-                auto name = formatPlaceName(o);
+                const QJsonObject o = place.toObject();
+                const double latitude = o[u"latitude"_s].toDouble();
+                const double longitude = o[u"longitude"_s].toDouble();
+                const QString name = formatPlaceName(o);
                 Location location;
                 location.setDisplayName(name);
                 location.setStation(name);
@@ -381,22 +380,22 @@ void OpenMeteoIon::fetchForecast(std::shared_ptr<QPromise<std::shared_ptr<Foreca
         &KJob::result,
         this,
         [job, promise, coords, this]() {
-            auto locale = QLocale::system();
+            const auto locale = QLocale::system();
             auto res = validateJob(job);
             if (!res.has_value()) {
                 promise->finish();
                 return;
             }
 
-            auto data = std::make_shared<Forecast>();
+            const auto data = std::make_shared<Forecast>();
             qCDebug(IONENGINE_OPEN_METEO) << "validated" << res.value();
-            auto j = std::move(res).value();
-            auto current = j[u"current"_s].toObject();
+            const QJsonObject j = std::move(res).value();
+            const QJsonObject current = j[u"current"_s].toObject();
             auto time = QDateTime::fromString(current[u"time"_s].toString(), Qt::ISODate);
-            auto timezone = QTimeZone(j[u"timezone"_s].toString().toLocal8Bit());
+            const auto timezone = QTimeZone(j[u"timezone"_s].toString().toLocal8Bit());
             time.setTimeZone(timezone);
-            auto curWeatherCode = current[u"weather_code"_s].toInt();
-            auto currentIsDay = !!current[u"is_day"_s].toInt();
+            const int curWeatherCode = current[u"weather_code"_s].toInt();
+            const int currentIsDay = !!current[u"is_day"_s].toInt();
             Station station;
             station.setPlace(coords[0]);
             station.setCoordinates(coords[1].toDouble(), coords[2].toDouble());
@@ -406,12 +405,12 @@ void OpenMeteoIon::fetchForecast(std::shared_ptr<QPromise<std::shared_ptr<Foreca
             metaData.setWindSpeedUnit(KUnitConversion::KilometerPerHour);
             metaData.setPressureUnit(KUnitConversion::Hectopascal);
             metaData.setHumidityUnit(KUnitConversion::Percent);
-            metaData.setCredit(i18nc("weather credit", "Weather data by open-meteo"));
+            metaData.setCredit(i18nc("weather credit", "Weather data by Open-Meteo"));
             metaData.setCreditURL(CREDIT_URL);
             data->setMetadata(metaData);
             LastObservation lastObservation;
-            lastObservation.setCurrentConditions(m_d->weatherCodeToStr(curWeatherCode, currentIsDay));
-            lastObservation.setConditionIcon(getWeatherIcon(m_d->weatherCodeToIconCode(curWeatherCode, currentIsDay)));
+            lastObservation.setCurrentConditions(d->weatherCodeToStr(curWeatherCode, currentIsDay));
+            lastObservation.setConditionIcon(getWeatherIcon(d->weatherCodeToIconCode(curWeatherCode, currentIsDay)));
             lastObservation.setTemperature(current[u"temperature_2m"_s].toDouble());
             lastObservation.setObservationTimestamp(time);
             lastObservation.setWindchill(current[u"apparent_temperature"_s].toDouble());
@@ -422,23 +421,23 @@ void OpenMeteoIon::fetchForecast(std::shared_ptr<QPromise<std::shared_ptr<Foreca
             lastObservation.setHumidity(current[u"relative_humidity_2m"_s].toDouble());
             data->setLastObservation(lastObservation);
 
-            auto futureDays = std::make_shared<FutureDays>();
+            const auto futureDays = std::make_shared<FutureDays>();
 
-            auto forecast = j[u"daily"_s].toObject();
-            auto numDays = forecast[u"time"_s].toArray().size();
-            for (int d = 0; d < numDays; ++d) {
+            const QJsonObject forecast = j[u"daily"_s].toObject();
+            const qsizetype numDays = forecast[u"time"_s].toArray().size();
+            for (qsizetype day = 0; day < numDays; ++day) {
                 FutureDayForecast futureDayForecast;
                 FutureForecast futureForecast;
-                auto forecastDate = QDate::fromString(forecast[u"time"_s].toArray()[d].toString(), Qt::ISODate);
+                const auto forecastDate = QDate::fromString(forecast[u"time"_s].toArray()[day].toString(), Qt::ISODate);
                 futureDayForecast.setMonthDay(forecastDate.day());
                 futureDayForecast.setWeekDay(locale.toString(forecastDate, u"ddd"_s));
-                const auto isDay = true;
-                auto weatherCode = forecast[u"weather_code"_s].toArray()[d].toInt();
-                futureForecast.setConditionIcon(getWeatherIcon(m_d->weatherCodeToIconCode(weatherCode, isDay)));
-                futureForecast.setCondition(m_d->weatherCodeToStr(weatherCode, isDay));
-                futureForecast.setHighTemp(forecast[u"temperature_2m_max"_s].toArray()[d].toDouble());
-                futureForecast.setLowTemp(forecast[u"temperature_2m_min"_s].toArray()[d].toDouble());
-                futureForecast.setConditionProbability(forecast[u"precipitation_probability_max"_s].toArray()[d].toDouble());
+                const bool isDay = true;
+                const int weatherCode = forecast[u"weather_code"_s].toArray()[day].toInt();
+                futureForecast.setConditionIcon(getWeatherIcon(d->weatherCodeToIconCode(weatherCode, isDay)));
+                futureForecast.setCondition(d->weatherCodeToStr(weatherCode, isDay));
+                futureForecast.setHighTemp(forecast[u"temperature_2m_max"_s].toArray()[day].toDouble());
+                futureForecast.setLowTemp(forecast[u"temperature_2m_min"_s].toArray()[day].toDouble());
+                futureForecast.setConditionProbability(forecast[u"precipitation_probability_max"_s].toArray()[day].toDouble());
                 futureDayForecast.setDaytime(futureForecast);
                 futureDays->addDay(futureDayForecast);
             }

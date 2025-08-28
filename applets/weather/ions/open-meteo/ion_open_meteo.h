@@ -27,5 +27,5 @@ public:
 
 private:
     struct Private;
-    std::unique_ptr<Private> m_d;
+    std::unique_ptr<Private> d;
 };
