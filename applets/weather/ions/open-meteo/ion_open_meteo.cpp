@@ -35,11 +35,14 @@ static const QUrlQuery WEATHER_QUERY{
      u"temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m,apparent_temperature,is_day,wind_speed_10m,wind_direction_10m,wind_gusts_10m,surface_pressure,relative_humidity_2m"_s},
     {u"timezone"_s, u"auto"_s}};
 static const QStringList ADMIN_AREA_KEYS{
-    u"admin1"_s,
-    u"admin2"_s,
-    u"admin3"_s,
+    u"name"_s,
     u"admin4"_s,
+    u"admin3"_s,
+    u"admin2"_s,
+    u"admin1"_s,
+    u"country"_s,
 };
+static const QString PLACE_NAME_JOINER = u" | "_s;
 // taken from ion_noaa
 static const QStringList WIND_DIRECTION_STRS{
     u"N"_s,
@@ -98,13 +101,15 @@ static std::optional<QJsonObject> validateJob(KJob *job)
     return jd.object();
 }
 
+// As a compromise in
+// https://invent.kde.org/plasma/kdeplasma-addons/-/merge_requests/883#note_1290561
+// we use a way that is language-neutral to display the place names.
+// This is only displayed in the place search list. It is needed because
+// multiple places across the world can share the same name, and we need
+// to differentiate between them.
 static QString formatPlaceName(const QJsonObject &place)
 {
     QStringList names;
-    auto country = place[u"country"_s].toString();
-    if (!country.isEmpty()) {
-        names.append(country);
-    }
 
     for (const auto &k : ADMIN_AREA_KEYS) {
         auto adminAreaName = place[k].toString();
@@ -112,30 +117,17 @@ static QString formatPlaceName(const QJsonObject &place)
             names.append(adminAreaName);
         }
     }
-    names.append(place[u"name"_s].toString());
 
-    if (names.size() == 6) {
-        return i18nc("place name, %6 is the smallest area and %1 the largest",
-                     "%6, %5, %4, %3, %2, %1",
-                     names[0],
-                     names[1],
-                     names[2],
-                     names[3],
-                     names[4],
-                     names[5]);
-    } else if (names.size() == 5) {
-        return i18nc("place name, %5 is the smallest area and %1 the largest", "%5, %4, %3, %2, %1", names[0], names[1], names[2], names[3], names[4]);
-    } else if (names.size() == 4) {
-        return i18nc("place name, %4 is the smallest area and %1 the largest", "%4, %3, %2, %1", names[0], names[1], names[2], names[3]);
-    } else if (names.size() == 3) {
-        return i18nc("place name, %3 is the smallest area and %1 the largest", "%3, %2, %1", names[0], names[1], names[2]);
-    } else if (names.size() == 2) {
-        return i18nc("place name, %2 is the smallest area and %1 the largest", "%2, %1", names[0], names[1]);
-    } else if (names.size() == 1) {
-        return i18nc("place name", "%1", names[0]);
-    } else {
-        return u""_s;
-    }
+    return names.join(PLACE_NAME_JOINER);
+}
+
+/// Returns the name to be displayed as the title of the applet.
+/// Currently, this just returns the name of the smallest area.
+/// Since this is what we get directly from the Open-Meteo API,
+/// it is supposed to only include natural language.
+static QString titleNameFromFormattedPlaceName(const QString &formatted)
+{
+    return formatted.split(PLACE_NAME_JOINER).first();
 }
 
 // https://en.wikipedia.org/wiki/Wind_direction
@@ -352,7 +344,7 @@ void OpenMeteoIon::findPlaces(std::shared_ptr<QPromise<std::shared_ptr<Locations
                 location.setDisplayName(name);
                 location.setStation(name);
                 location.setCoordinates(QPointF(latitude, longitude));
-                location.setPlaceInfo(u"%1|%2|%3"_s.arg(name).arg(latitude).arg(longitude));
+                location.setPlaceInfo(u"%1||%2||%3"_s.arg(name).arg(latitude).arg(longitude));
                 locations->addLocation(location);
             }
             resolvePromise(*promise, locations);
@@ -363,7 +355,7 @@ void OpenMeteoIon::findPlaces(std::shared_ptr<QPromise<std::shared_ptr<Locations
 void OpenMeteoIon::fetchForecast(std::shared_ptr<QPromise<std::shared_ptr<Forecast>>> promise, const QString &placeInfo)
 {
     promise->start();
-    const auto coords = placeInfo.split(QChar(u'|'));
+    const auto coords = placeInfo.split(u"||"_s);
     if (coords.size() != 3) {
         promise->finish();
         return;
@@ -397,7 +389,7 @@ void OpenMeteoIon::fetchForecast(std::shared_ptr<QPromise<std::shared_ptr<Foreca
             const int curWeatherCode = current[u"weather_code"_s].toInt();
             const int currentIsDay = !!current[u"is_day"_s].toInt();
             Station station;
-            station.setPlace(coords[0]);
+            station.setPlace(titleNameFromFormattedPlaceName(coords[0]));
             station.setCoordinates(coords[1].toDouble(), coords[2].toDouble());
             data->setStation(station);
             MetaData metaData;
