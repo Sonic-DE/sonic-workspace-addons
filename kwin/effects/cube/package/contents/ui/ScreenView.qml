@@ -8,6 +8,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick3D
 import Qt5Compat.GraphicalEffects
+import org.kde.kirigami as Kirigami
 import org.kde.kwin as KWinComponents
 
 Item {
@@ -143,11 +144,12 @@ Item {
             transparentBorder: true
         }
         
-        // Dim overlay for better contrast
-        Rectangle {
+    	 Rectangle {
             anchors.fill: parent
-            color: Qt.rgba(0, 0, 0, 0.3)
-        }
+            color: Kirigami.Theme.backgroundColor
+            opacity: effect.configuration.DimWithThemeColor ? 0.7 : 0
+            visible: opacity > 0
+         }
     }
 
     MouseArea {

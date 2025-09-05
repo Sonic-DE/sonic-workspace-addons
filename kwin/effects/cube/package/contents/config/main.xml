@@ -14,6 +14,9 @@
         <entry name="ElevationAngle" type="Double">
             <default>-20</default>
         </entry>
+        <entry name="DimWithThemeColor" type="Bool">
+            <default>true</default>
+        </entry>
         <entry name="BorderActivate" type="IntList" />
         <entry name="TouchBorderActivate" type="IntList" />
         <entry name="MouseInvertedX" type="Bool">
