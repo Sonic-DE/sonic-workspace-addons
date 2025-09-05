@@ -1,6 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2022 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
-
+    SPDX-FileCopyrightText: 2025 Hocine Hachemi <salahhachmi06@gmail.com>
     SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
 
@@ -29,13 +29,13 @@ private:
     void updateUiFromDefaultConfig();
     void updateUnmanagedState();
 
-    int uiBackground() const;
-    void setUiBackground(int mode);
-    void updateBackgroundFromUi();
-
     qreal distanceFactor() const;
     void setDistanceFactor(qreal factor);
     void updateDistanceFactorFromUi();
+
+    // Tooltip update functions
+    void updateDistanceFactorTooltip();
+    void updateElevationAngleTooltip();
 
     ::Ui::CubeEffectConfig ui;
     KConfigLoader *m_configLoader = nullptr;

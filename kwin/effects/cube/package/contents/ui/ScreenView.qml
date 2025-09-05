@@ -1,15 +1,14 @@
 /*
     SPDX-FileCopyrightText: 2022 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
-
+    SPDX-FileCopyrightText: 2025 Hocine Hachemi <salahhachmi06@gmail.com>
     SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
 
 import QtQuick
 import QtQuick.Window
 import QtQuick3D
+import Qt5Compat.GraphicalEffects
 import org.kde.kwin as KWinComponents
-
-import "constants.js" as Constants
 
 Item {
     id: root
@@ -30,41 +29,16 @@ Item {
     View3D {
         id: view
         anchors.fill: parent
-        renderMode: View3D.Underlay
-
-        Loader {
-            id: transparentSceneEnvironment
-            active: effect.configuration.Background == Constants.Background.Color
-            sourceComponent: SceneEnvironment {
-                backgroundMode: SceneEnvironment.Transparent
-
-                // When using View3D.Underlay, SceneEnvironment.clearColor will do nothing.
-                Binding {
-                    target: root.Window.window
-                    property: "color"
-                    value: effect.configuration.BackgroundColor
-                }
-            }
+        renderMode: View3D.Overlay
+        
+        SceneEnvironment {
+            id: sceneEnvironment
+            backgroundMode: SceneEnvironment.Transparent
+            antialiasingMode: SceneEnvironment.MSAA
+            antialiasingQuality: SceneEnvironment.High
         }
 
-        Loader {
-            id: skyboxSceneEnvironment
-            active: effect.configuration.Background == Constants.Background.SkyBox
-            sourceComponent: SceneEnvironment {
-                backgroundMode: SceneEnvironment.SkyBox
-                lightProbe: Texture {
-                    source: effect.configuration.SkyBox
-                }
-            }
-        }
-
-        environment: {
-            if (skyboxSceneEnvironment.active) {
-                return skyboxSceneEnvironment.item;
-            } else {
-                return transparentSceneEnvironment.item;
-            }
-        }
+        environment: sceneEnvironment
 
         PerspectiveCamera {
             id: camera
@@ -100,7 +74,7 @@ Item {
                     PropertyChanges {
                         target: cameraController
                         radius: cube.faceDistance * effect.configuration.DistanceFactor + 0.5 * cube.faceSize.height / Math.tan(0.5 * camera.fieldOfView * Math.PI / 180)
-                        rotation: Quaternion.fromEulerAngles(0, cube.desktopAzimuth(KWinComponents.Workspace.currentDesktop), 0).times(Quaternion.fromEulerAngles(-20, 0, 0))
+                        rotation: Quaternion.fromEulerAngles(effect.configuration.ElevationAngle, cube.desktopAzimuth(KWinComponents.Workspace.currentDesktop), 0)
                     }
                 }
             ]
@@ -146,12 +120,46 @@ Item {
         }
     }
 
+    Rectangle {
+        anchors.fill: parent
+        z: -1  // Behind the View3D
+        color: "transparent"
+        
+        // Get the desktop background
+        KWinComponents.DesktopBackground {
+            id: desktopBackground
+            activity: KWinComponents.Workspace.currentActivity
+            desktop: KWinComponents.Workspace.currentDesktop
+            outputName: targetScreen.name
+            anchors.fill: parent
+            visible: false  // Don't show directly, only used as source for blur
+        }
+        
+        // Apply blur to the background
+        FastBlur {
+            anchors.fill: parent
+            source: desktopBackground
+            radius: 64
+            transparentBorder: true
+        }
+        
+        // Dim overlay for better contrast
+        Rectangle {
+            anchors.fill: parent
+            color: Qt.rgba(0, 0, 0, 0.3)
+        }
+    }
+
     MouseArea {
         anchors.fill: view
         onClicked: mouse => {
             const hitResult = view.pick(mouse.x, mouse.y);
             if (hitResult.objectHit) {
-                root.switchTo(hitResult.objectHit.desktop);
+                // Get the desktop from the hit object
+                const hitFace = hitResult.objectHit;
+                if (hitFace && hitFace.desktop) {
+                    root.switchTo(hitFace.desktop);
+                }
             } else {
                 root.switchToSelected();
             }
