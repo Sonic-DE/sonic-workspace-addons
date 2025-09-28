@@ -74,6 +74,7 @@ Item {
 
         Cube {
             id: cube
+            viewFromInside: effect.configuration.ViewFromInside
             faceDisplacement: effect.configuration.CubeFaceDisplacement
             faceSize: Qt.size(root.width, root.height)
         }
@@ -91,7 +92,7 @@ Item {
                     name: "close"
                     PropertyChanges {
                         target: cameraController
-                        radius: cube.faceDistance + 0.5 * cube.faceSize.height / Math.tan(0.5 * camera.fieldOfView * Math.PI / 180)
+                        radius: cube.faceDistance * (effect.configuration.ViewFromInside ? -1 : 1) + 0.5 * cube.faceSize.height / Math.tan(0.5 * camera.fieldOfView * Math.PI / 180)
                         rotation: Quaternion.fromEulerAngles(0, cube.desktopAzimuth(KWinComponents.Workspace.currentDesktop), 0)
                     }
                 },
@@ -99,8 +100,8 @@ Item {
                     name: "distant"
                     PropertyChanges {
                         target: cameraController
-                        radius: cube.faceDistance * effect.configuration.DistanceFactor + 0.5 * cube.faceSize.height / Math.tan(0.5 * camera.fieldOfView * Math.PI / 180)
-                        rotation: Quaternion.fromEulerAngles(0, cube.desktopAzimuth(KWinComponents.Workspace.currentDesktop), 0).times(Quaternion.fromEulerAngles(-20, 0, 0))
+                        radius: effect.configuration.ViewFromInside ? 0 : cube.faceDistance * effect.configuration.DistanceFactor + 0.5 * cube.faceSize.height / Math.tan(0.5 * camera.fieldOfView * Math.PI / 180)
+                        rotation: Quaternion.fromEulerAngles(0, cube.desktopAzimuth(KWinComponents.Workspace.currentDesktop), 0).times(Quaternion.fromEulerAngles(effect.configuration.ViewFromInside ? 0 : -20, 0, 0))
                     }
                 }
             ]
@@ -120,28 +121,24 @@ Item {
                 }
             }
 
-            function rotateToLeft() {
+            function rotate(increment) {
                 if (rotationAnimation.running) {
                     return;
                 }
                 const eulerAngles = rotation.toEulerAngles();
-                let next = Math.floor(eulerAngles.y / cube.angleTick) * cube.angleTick;
+                let next = (increment > 0 ? Math.ceil(eulerAngles.y / cube.angleTick) : Math.floor(eulerAngles.y / cube.angleTick)) * cube.angleTick;
                 if (Math.abs(next - eulerAngles.y) < 0.05 * cube.angleTick) {
-                    next -= cube.angleTick;
+                    next += increment
                 }
                 rotation = Quaternion.fromEulerAngles(0, next - eulerAngles.y, 0).times(rotation);
             }
 
+            function rotateToLeft() {
+                rotate(effect.configuration.ViewFromInside ? cube.angleTick : -cube.angleTick)
+            }
+
             function rotateToRight() {
-                if (rotationAnimation.running) {
-                    return;
-                }
-                const eulerAngles = rotation.toEulerAngles();
-                let next = Math.ceil(eulerAngles.y / cube.angleTick) * cube.angleTick;
-                if (Math.abs(next - eulerAngles.y) < 0.05 * cube.angleTick) {
-                    next += cube.angleTick;
-                }
-                rotation = Quaternion.fromEulerAngles(0, next - eulerAngles.y, 0).times(rotation);
+                rotate(effect.configuration.ViewFromInside ? -cube.angleTick : cube.angleTick)
             }
         }
     }
