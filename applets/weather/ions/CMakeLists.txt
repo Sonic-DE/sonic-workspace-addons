@@ -7,9 +7,9 @@ set(ionlib_SRCS
     ion.h
 )
 
-add_library(weatherion SHARED ${ionlib_SRCS})
+add_library(plasmaweatherion SHARED ${ionlib_SRCS})
 
-target_link_libraries(weatherion PUBLIC
+target_link_libraries(plasmaweatherion PUBLIC
     weatherdata
     KF6::UnitConversion
     KF6::Holidays
@@ -17,9 +17,10 @@ target_link_libraries(weatherion PUBLIC
     Qt::Qml
 )
 
-generate_export_header(weatherion)
 
-install(TARGETS weatherion DESTINATION ${KDE_INSTALL_LIBDIR})
+generate_export_header(plasmaweatherion)
+
+install(TARGETS plasmaweatherion DESTINATION ${KDE_INSTALL_LIBDIR})
 
 #add ions
 add_subdirectory(wetter.com)
