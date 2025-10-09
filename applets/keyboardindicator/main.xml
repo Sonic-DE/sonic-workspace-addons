@@ -8,6 +8,7 @@
   <group name="General">
     <entry name="key" type="StringList">
       <default>Caps Lock</default>
+      <default>Num Lock</default>
     </entry>
   </group>
 
