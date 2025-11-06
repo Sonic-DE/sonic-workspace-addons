@@ -18,7 +18,7 @@ Kirigami.FormLayout {
 
     Button {
         Kirigami.FormData.label: i18ndc("plasma_wallpaper_org.kde.tiled", "@label", "Tile:")
-        text: i18ndc("plasma_wallpaper_org.kde.tiled", "@action:button Select a tile image", "Select…")
+        text: i18ndc("plasma_wallpaper_org.kde.tiled", "@action:button Select a tile image", "Select Image…")
         visible: !tileButton.visible
         onClicked: fileDialog.open()
     }
