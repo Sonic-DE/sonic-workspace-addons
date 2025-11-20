@@ -25,6 +25,7 @@ PlasmoidItem {
     switchWidth: inPanel ? Number.POSITIVE_INFINITY : Kirigami.Units.gridUnit * 16
     switchHeight: inPanel ? Number.POSITIVE_INFINITY : Kirigami.Units.gridUnit * 23
     Plasmoid.icon: "internet-web-browser-symbolic"
+    hideOnWindowDeactivate: !Plasmoid.configuration.pin
 
     // Only exists because the default CompactRepresentation doesn't expose
     // a way to display arbitrary images; it can only show icons.
@@ -161,6 +162,20 @@ PlasmoidItem {
                 PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
                 PlasmaComponents3.ToolTip.text: text
             }
+            PlasmaComponents3.ToolButton {
+                id: pinButton
+                checkable: true
+                checked: Plasmoid.configuration.pin
+                onToggled: Plasmoid.configuration.pin = checked
+                icon.name: "window-pin"
+                visible: root.inPanel
+
+                display: PlasmaComponents3.AbstractButton.IconOnly
+                text: i18n("Keep Open")
+
+                PlasmaComponents3.ToolTip.text: text
+            }
+
         }
 
         Item {
