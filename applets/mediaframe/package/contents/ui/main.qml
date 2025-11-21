@@ -41,15 +41,6 @@ PlasmoidItem {
 
     readonly property bool pause: fullRepresentationItem?.overlayMouseArea?.containsMouse ?? false
 
-    // Equivalent to AppletQuickItemPrivate::appletShouldBeExpanded()
-    readonly property bool shouldBeExpanded: {
-        if (switchWidth > 0 && switchHeight > 0) {
-            return width > switchWidth && height > switchHeight
-        }
-        return (Plasmoid.formFactor !== PlasmaCore.Types.Horizontal &&
-                Plasmoid.formFactor !== PlasmaCore.Types.Vertical)
-    }
-
     readonly property int itemCount: (items.count + items.futureLength)
     readonly property bool hasItems: ((itemCount > 0) || (items.futureLength > 0))
     readonly property bool isTransitioning: fullRepresentationItem?.faderAnimation.running ?? false
@@ -94,7 +85,7 @@ PlasmoidItem {
     Connections {
         target: Plasmoid
         function onActivated() {
-            if (shouldBeExpanded) {
+            if (!compactRepresentationItem?.visible) {
                 Qt.openUrlExternally(main.activeSource)
             }
         }
