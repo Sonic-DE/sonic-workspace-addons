@@ -176,11 +176,18 @@ void FutureDays::addDays(const QList<FutureDayForecast> &forecasts)
 
 QString FutureDays::firstDayIcon() const
 {
-    const auto &forecast = m_nextDays.at(0).daytime();
+    const auto &dayForecast = m_nextDays.at(0);
 
-    if (forecast.has_value()) {
-        return *forecast->conditionIcon();
+    // Check first for icon from the datetime forecast
+    if (auto daytime = dayForecast.daytime(); daytime.has_value()) {
+        return *daytime->conditionIcon();
     }
+
+    // If the datetime forecast is not present try the night forecast
+    if (auto night = dayForecast.night(); night.has_value()) {
+        return *night->conditionIcon();
+    }
+
     return {};
 }
 
