@@ -70,6 +70,7 @@ PlasmoidItem {
         // place cursor at the end of text, there's no "just move the cursor" function
         mainTextArea.moveCursorSelection(mainTextArea.length)
         mainTextArea.deselect()
+        mainTextArea.forceActiveFocus()
     }
 
     Timer {
