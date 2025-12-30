@@ -1,6 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2022 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
-
+    SPDX-FileCopyrightText: 2025 Hocine Hachemi <salahhachmi06@gmail.com>
     SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
 
@@ -47,16 +47,13 @@ CubeEffectConfig::CubeEffectConfig(QObject *parent, const KPluginMetaData &data)
     ui.shortcutsEditor->addCollection(actionCollection);
     connect(ui.shortcutsEditor, &KShortcutsEditor::keyChange, this, &CubeEffectConfig::markAsChanged);
 
-    connect(ui.button_SelectSkyBox, &QPushButton::clicked, this, [this]() {
-        auto dialog = new QFileDialog(widget());
-        dialog->setFileMode(QFileDialog::ExistingFile);
-        connect(dialog, &QFileDialog::fileSelected, ui.kcfg_SkyBox, &QLineEdit::setText);
-        dialog->open();
-    });
-
-    connect(ui.button_Color, &QPushButton::toggled, this, &CubeEffectConfig::updateBackgroundFromUi);
-    connect(ui.button_SkyBox, &QPushButton::toggled, this, &CubeEffectConfig::updateBackgroundFromUi);
     connect(ui.slider_DistanceFactor, &QSlider::sliderMoved, this, &CubeEffectConfig::updateDistanceFactorFromUi);
+    connect(ui.slider_DistanceFactor, &QSlider::valueChanged, this, &CubeEffectConfig::updateDistanceFactorTooltip);
+    connect(ui.kcfg_ElevationAngle, &QSlider::valueChanged, this, &CubeEffectConfig::updateElevationAngleTooltip);
+
+    // Initialize tooltips with current values
+    updateDistanceFactorTooltip();
+    updateElevationAngleTooltip();
 }
 
 void CubeEffectConfig::load()
@@ -91,43 +88,13 @@ void CubeEffectConfig::defaults()
 
 void CubeEffectConfig::updateUiFromConfig()
 {
-    setUiBackground(m_configLoader->findItemByName(QStringLiteral("Background"))->property().toInt());
     setDistanceFactor(m_configLoader->findItemByName(QStringLiteral("DistanceFactor"))->property().toDouble());
 }
 
 void CubeEffectConfig::updateUiFromDefaultConfig()
 {
-    setUiBackground(m_configLoader->findItemByName(QStringLiteral("Background"))->property().toInt());
     setDistanceFactor(m_configLoader->findItemByName(QStringLiteral("DistanceFactor"))->property().toDouble());
     ui.shortcutsEditor->allDefault();
-}
-
-int CubeEffectConfig::uiBackground() const
-{
-    if (ui.button_SkyBox->isChecked()) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-void CubeEffectConfig::setUiBackground(int mode)
-{
-    switch (mode) {
-    case 1:
-        ui.button_SkyBox->setChecked(true);
-        break;
-    case 0:
-    default:
-        ui.button_Color->setChecked(true);
-        break;
-    }
-}
-
-void CubeEffectConfig::updateBackgroundFromUi()
-{
-    m_configLoader->findItemByName(QStringLiteral("Background"))->setProperty(uiBackground());
-    updateUnmanagedState();
 }
 
 qreal CubeEffectConfig::distanceFactor() const
@@ -146,13 +113,25 @@ void CubeEffectConfig::updateDistanceFactorFromUi()
     updateUnmanagedState();
 }
 
+void CubeEffectConfig::updateDistanceFactorTooltip()
+{
+    qreal factor = ui.slider_DistanceFactor->value() / 100.0;
+    ui.slider_DistanceFactor->setToolTip(i18n("Distance factor: %1x", factor));
+}
+
+void CubeEffectConfig::updateElevationAngleTooltip()
+{
+    int angle = ui.kcfg_ElevationAngle->value();
+    ui.kcfg_ElevationAngle->setToolTip(i18n("Elevation angle: %1°", angle));
+}
+
 void CubeEffectConfig::updateUnmanagedState()
 {
-    const auto backgroundItem = m_configLoader->findItemByName(QStringLiteral("Background"));
     const auto distanceFactorItem = m_configLoader->findItemByName(QStringLiteral("DistanceFactor"));
+    const auto elevationAngleItem = m_configLoader->findItemByName(QStringLiteral("ElevationAngle"));
 
-    unmanagedWidgetChangeState(backgroundItem->isSaveNeeded() || distanceFactorItem->isSaveNeeded());
-    unmanagedWidgetDefaultState(backgroundItem->isDefault() || distanceFactorItem->isDefault());
+    unmanagedWidgetChangeState(distanceFactorItem->isSaveNeeded() || elevationAngleItem->isSaveNeeded());
+    unmanagedWidgetDefaultState(distanceFactorItem->isDefault() || elevationAngleItem->isDefault());
 }
 
 #include "cubeeffectkcm.moc"
