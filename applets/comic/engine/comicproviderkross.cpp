@@ -92,17 +92,17 @@ QString ComicProviderKross::additionalText() const
     return m_wrapper.additionalText();
 }
 
-void ComicProviderKross::pageRetrieved(int id, const QByteArray &data)
+void ComicProviderKross::pageRetrieved(int id, const QString &extra, const QByteArray &data)
 {
-    m_wrapper.pageRetrieved(id, data);
+    m_wrapper.pageRetrieved(id, extra, data);
 }
 
-void ComicProviderKross::pageError(int id, const QString &message)
+void ComicProviderKross::pageError(int id, const QString &extra, const QString &message)
 {
-    m_wrapper.pageError(id, message);
+    m_wrapper.pageError(id, extra, message);
 }
 
-void ComicProviderKross::redirected(int id, const QUrl &newUrl)
+void ComicProviderKross::redirected(int id, const QString &extra, const QUrl &newUrl)
 {
-    m_wrapper.redirected(id, newUrl);
+    m_wrapper.redirected(id, extra, newUrl);
 }

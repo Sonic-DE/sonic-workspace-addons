@@ -176,9 +176,9 @@ public:
 
     IdentifierType identifierType() const;
     QImage comicImage();
-    void pageRetrieved(int id, const QByteArray &data);
-    void pageError(int id, const QString &message);
-    void redirected(int id, const QUrl &newUrl);
+    void pageRetrieved(int id, const QString &extra, const QByteArray &data);
+    void pageError(int id, const QString &extra, const QString &message);
+    void redirected(int id, const QString &extra, const QUrl &newUrl);
 
     bool identifierSpecified() const;
     QString textCodec() const;

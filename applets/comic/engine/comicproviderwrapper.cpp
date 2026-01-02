@@ -677,12 +677,12 @@ QVariant ComicProviderWrapper::previousIdentifierVariant() const
     return mPreviousIdentifier;
 }
 
-void ComicProviderWrapper::pageRetrieved(int id, const QByteArray &data)
+void ComicProviderWrapper::pageRetrieved(int id, const QString &extra, const QByteArray &data)
 {
     --mRequests;
     if (id == ComicProvider::Image) {
         mKrossImage = new ImageWrapper(this, data);
-        callFunction(QLatin1String("pageRetrieved"), {id, m_engine->newQObject(mKrossImage)});
+        callFunction(QLatin1String("pageRetrieved"), {id, m_engine->newQObject(mKrossImage), extra});
         if (mRequests < 1) { // Don't finish if we still have pageRequests
             finished();
         }
@@ -693,24 +693,24 @@ void ComicProviderWrapper::pageRetrieved(int id, const QByteArray &data)
         }
         QString html = codec.decode(data);
 
-        callFunction(QLatin1String("pageRetrieved"), {id, html});
+        callFunction(QLatin1String("pageRetrieved"), {id, html, extra});
     }
 }
 
-void ComicProviderWrapper::pageError(int id, const QString &message)
+void ComicProviderWrapper::pageError(int id, const QString &extra, const QString &message)
 {
     --mRequests;
-    callFunction(QLatin1String("pageError"), {id, message});
+    callFunction(QLatin1String("pageError"), {id, message, extra});
     if (!functionCalled()) {
         logWarning << "unhandled page error: id:" << id << "message:" << message;
         Q_EMIT mProvider->error(mProvider);
     }
 }
 
-void ComicProviderWrapper::redirected(int id, const QUrl &newUrl)
+void ComicProviderWrapper::redirected(int id, const QString &extra, const QUrl &newUrl)
 {
     --mRequests;
-    callFunction(QLatin1String("redirected"), {id, newUrl.toString()});
+    callFunction(QLatin1String("redirected"), {id, newUrl.toString(), extra});
     if (mRequests < 1) { // Don't finish while there are still requests
         finished();
     }
@@ -739,22 +739,32 @@ void ComicProviderWrapper::error() const
 void ComicProviderWrapper::requestPage(const QString &url, int id, const QVariantMap &infos)
 {
     QMap<QString, QString> map;
+    QString extra;
 
     for (auto it = infos.begin(), end = infos.end(); it != end; ++it) {
-        map[it.key()] = it.value().toString();
+        if(const QString &key = it.key(); key != QStringLiteral("extra"))
+            map[key] = it.value().toString();
+        else
+            extra = it.value().toString();
     }
-    mProvider->requestPage(QUrl(url), id, map);
+
+    mProvider->requestPage(QUrl(url), id, extra, map);
     ++mRequests;
 }
 
 void ComicProviderWrapper::requestRedirectedUrl(const QString &url, int id, const QVariantMap &infos)
 {
     QMap<QString, QString> map;
+    QString extra;
 
     for (auto it = infos.begin(), end = infos.end(); it != end; ++it) {
-        map[it.key()] = it.value().toString();
+        if(const QString &key = it.key(); key != QStringLiteral("extra"))
+            map[key] = it.value().toString();
+        else
+            extra = it.value().toString();
     }
-    mProvider->requestRedirectedUrl(QUrl(url), id, map);
+
+    mProvider->requestRedirectedUrl(QUrl(url), id, extra, map);
     ++mRequests;
 }
 

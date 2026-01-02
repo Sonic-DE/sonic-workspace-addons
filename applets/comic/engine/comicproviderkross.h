@@ -38,9 +38,9 @@ public:
     QString additionalText() const override;
 
 protected:
-    void pageRetrieved(int id, const QByteArray &data) override;
-    void pageError(int id, const QString &message) override;
-    void redirected(int id, const QUrl &newUrl) override;
+    void pageRetrieved(int id, const QString &extra, const QByteArray &data) override;
+    void pageError(int id, const QString &extra, const QString &message) override;
+    void redirected(int id, const QString &extra, const QUrl &newUrl) override;
     QString identifierToString(const QVariant &identifier) const;
 
 private:
