@@ -172,10 +172,7 @@ public:
         return 4600;
     }
 
-    Q_INVOKABLE void print(const QJSValue &str)
-    {
-        qCInfo(PLASMA_COMIC) << str.toString();
-    }
+    Q_INVOKABLE void print(const QJSValue &str);
 
     IdentifierType identifierType() const;
     QImage comicImage();

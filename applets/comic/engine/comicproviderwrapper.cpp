@@ -5,13 +5,15 @@
  *   SPDX-License-Identifier: LGPL-2.0-only
  */
 
+#define logDebug qCDebug(PLASMA_COMIC) << "Comic" << this->mProvider->pluginName() << ":"
+#define logInfo qCInfo(PLASMA_COMIC) << "Comic" << this->mProvider->pluginName() << ":"
+#define logWarning qCWarning(PLASMA_COMIC) << "Comic" << this->mProvider->pluginName() << ":"
+
 #include "comicproviderwrapper.h"
 #include "comic_debug.h"
 #include "comicproviderkross.h"
 
-#include <KPackage/Package>
 #include <KPackage/PackageLoader>
-#include <QFile>
 #include <QFileInfo>
 #include <QJSEngine>
 #include <QJSValueIterator>
@@ -329,6 +331,10 @@ void ComicProviderWrapper::init()
     }
 }
 
+void ComicProviderWrapper::print(const QJSValue &str) {
+    logInfo << str.toString();
+}
+
 IdentifierType ComicProviderWrapper::identifierType() const
 {
     IdentifierType result = IdentifierType::StringIdentifier;
@@ -521,7 +527,7 @@ void ComicProviderWrapper::setNextIdentifier(const QJSValue &nextIdentifier)
     mNextIdentifier = identifierFromScript(nextIdentifier);
     if (mNextIdentifier == mIdentifier) {
         mNextIdentifier.clear();
-        qCWarning(PLASMA_COMIC) << "Next identifier is the same as the current one, clearing next identifier.";
+        logWarning << "Next identifier is the same as the current one, clearing next identifier.";
     }
 }
 
@@ -535,7 +541,7 @@ void ComicProviderWrapper::setPreviousIdentifier(const QJSValue &previousIdentif
     mPreviousIdentifier = identifierFromScript(previousIdentifier);
     if (mPreviousIdentifier == mIdentifier) {
         mPreviousIdentifier.clear();
-        qCWarning(PLASMA_COMIC) << "Previous identifier is the same as the current one, clearing previous identifier.";
+        logWarning << "Previous identifier is the same as the current one, clearing previous identifier.";
     }
 }
 
@@ -696,6 +702,7 @@ void ComicProviderWrapper::pageError(int id, const QString &message)
     --mRequests;
     callFunction(QLatin1String("pageError"), {id, message});
     if (!functionCalled()) {
+        logWarning << "unhandled page error: id:" << id << "message:" << message;
         Q_EMIT mProvider->error(mProvider);
     }
 }
@@ -711,16 +718,16 @@ void ComicProviderWrapper::redirected(int id, const QUrl &newUrl)
 
 void ComicProviderWrapper::finished() const
 {
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Author").leftJustified(22, QLatin1Char('.')) << comicAuthor();
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Website URL").leftJustified(22, QLatin1Char('.')) << mWebsiteUrl;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Shop URL").leftJustified(22, QLatin1Char('.')) << mShopUrl;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Title").leftJustified(22, QLatin1Char('.')) << mTitle;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Additional Text").leftJustified(22, QLatin1Char('.')) << mAdditionalText;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Identifier").leftJustified(22, QLatin1Char('.')) << mIdentifier;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("First Identifier").leftJustified(22, QLatin1Char('.')) << mFirstIdentifier;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Last Identifier").leftJustified(22, QLatin1Char('.')) << mLastIdentifier;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Next Identifier").leftJustified(22, QLatin1Char('.')) << mNextIdentifier;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Previous Identifier").leftJustified(22, QLatin1Char('.')) << mPreviousIdentifier;
+    logDebug << QString::fromLatin1("Author").leftJustified(22, QLatin1Char('.')) << comicAuthor();
+    logDebug << QString::fromLatin1("Website URL").leftJustified(22, QLatin1Char('.')) << mWebsiteUrl;
+    logDebug << QString::fromLatin1("Shop URL").leftJustified(22, QLatin1Char('.')) << mShopUrl;
+    logDebug << QString::fromLatin1("Title").leftJustified(22, QLatin1Char('.')) << mTitle;
+    logDebug << QString::fromLatin1("Additional Text").leftJustified(22, QLatin1Char('.')) << mAdditionalText;
+    logDebug << QString::fromLatin1("Identifier").leftJustified(22, QLatin1Char('.')) << mIdentifier;
+    logDebug << QString::fromLatin1("First Identifier").leftJustified(22, QLatin1Char('.')) << mFirstIdentifier;
+    logDebug << QString::fromLatin1("Last Identifier").leftJustified(22, QLatin1Char('.')) << mLastIdentifier;
+    logDebug << QString::fromLatin1("Next Identifier").leftJustified(22, QLatin1Char('.')) << mNextIdentifier;
+    logDebug << QString::fromLatin1("Previous Identifier").leftJustified(22, QLatin1Char('.')) << mPreviousIdentifier;
     Q_EMIT mProvider->finished(mProvider);
 }
 
@@ -763,7 +770,7 @@ QVariant ComicProviderWrapper::callFunction(const QString &name, const QJSValueL
         if (mFuncFound) {
             auto val = m_engine->globalObject().property(name).call(args);
             if (val.isError()) {
-                qCWarning(PLASMA_COMIC) << "Error when calling function" << name << "with arguments" << QVariant::fromValue(args) << val.toString();
+                logWarning << "Error when calling function" << name << "with arguments" << QVariant::fromValue(args) << val.toString();
                 return QVariant();
             } else {
                 return val.toVariant();
