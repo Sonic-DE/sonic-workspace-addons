@@ -14,6 +14,7 @@
 #include <QImage>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QThreadPool>
 #include <QTimer>
 #include <QUrl>
 
@@ -119,7 +120,7 @@ bool CachedProvider::isCached(const QString &identifier)
     return QFile::exists(identifierToPath(identifier));
 }
 
-bool CachedProvider::storeInCache(const QString &identifier, const QImage &comic, const ComicMetaData &data)
+QFuture<bool> CachedProvider::storeInCache(const QString &identifier, QImage comic, const ComicMetaData &data)
 {
     const QString path = identifierToPath(identifier);
 
@@ -182,7 +183,16 @@ bool CachedProvider::storeInCache(const QString &identifier, const QImage &comic
     }
     settingsMain.setValue(QLatin1String("comics"), comics);
 
-    return comic.save(path, "PNG");
+    // run in background as large images can cause UI-freezes
+    QPromise<bool> promise;
+    auto future = promise.future();
+    QThreadPool::globalInstance()->start( [comic, path, promise = std::move(promise)]() mutable {
+        promise.start();
+        const bool success = comic.save(path, "PNG");
+        promise.addResult(success);
+        promise.finish();
+    });
+    return future;
 }
 
 QUrl CachedProvider::websiteUrl() const

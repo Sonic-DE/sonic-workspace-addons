@@ -180,12 +180,19 @@ void ComicEngine::finished(ComicProvider *provider)
         data.lastCachedStripIdentifier = lastCachedIdentifier(provider->identifier());
     }
 
+    QFuture<bool> cacheStoreFuture = QtFuture::makeReadyValueFuture(true);
     // store in cache if it's not the response of a CachedProvider,
     if (!provider->inherits("CachedProvider") && !provider->image().isNull()) {
-        CachedProvider::storeInCache(provider->identifier(), provider->image(), data);
+        cacheStoreFuture = CachedProvider::storeInCache(provider->identifier(), provider->image(), data);
         if (provider->isCurrent()) {
             QString currentIdentifier = provider->identifier().left(provider->identifier().indexOf(QLatin1Char(':')) + 1);
-            CachedProvider::storeInCache(currentIdentifier, provider->image(), data);
+            cacheStoreFuture = cacheStoreFuture.then([currentIdentifier, provider, data](const bool success) {
+                if(!success) {
+                    qCWarning(PLASMA_COMIC) << QStringLiteral("failed to save cache image for ") << provider->name() << provider->identifier();
+                }
+
+                return CachedProvider::storeInCache(currentIdentifier, provider->image(), data);
+            }).unwrap();
         }
     }
 
@@ -195,13 +202,21 @@ void ComicEngine::finished(ComicProvider *provider)
         KPackage::Package pkg = KPackage::PackageLoader::self()->loadPackage(QStringLiteral("Plasma/Comic"), providerName);
         data.identifierType = stringToIdentifierType(pkg.metadata().value(u"X-KDE-PlasmaComicProvider-SuffixType"));
     }
-    provider->deleteLater();
 
-    const QString key = m_jobs.key(provider);
-    if (!key.isEmpty()) {
-        m_jobs.remove(key);
-    }
-    Q_EMIT requestFinished(data);
+    cacheStoreFuture.then([this, provider, data](const bool success) {
+        if(!success) {
+            qCWarning(PLASMA_COMIC) << QStringLiteral("failed to save cache image for ") << provider->name() << provider->identifier();
+        }
+
+        provider->deleteLater();
+
+        const QString key = m_jobs.key(provider);
+        if (!key.isEmpty()) {
+            m_jobs.remove(key);
+        }
+
+        Q_EMIT requestFinished(data);
+    });
 }
 
 void ComicEngine::error(ComicProvider *provider)
