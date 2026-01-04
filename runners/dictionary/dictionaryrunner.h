@@ -7,6 +7,7 @@
 #define DICTIONARYRUNNER_H
 
 #include "../../dict/dictengine.h"
+#include "../../dict/localdictengine.h"
 #include <KRunner/AbstractRunner>
 
 using namespace KRunner;
@@ -23,7 +24,9 @@ public:
 
 private:
     QString m_triggerWord;
+    QString m_operationMode;
     DictEngine m_dictEngine;
+    LocalDictEngine m_localDictEngine;
 };
 
 #endif

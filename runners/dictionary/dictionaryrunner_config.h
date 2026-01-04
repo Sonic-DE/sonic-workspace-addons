@@ -8,8 +8,13 @@
 
 #include <KCModule>
 class QLineEdit;
+class QComboBox;
 
 static const char CONFIG_TRIGGERWORD[] = "triggerWord";
+static const char CONFIG_OPERATIONMODE[] = "operationMode";
+
+static const char OPMODE_OFFLINE[] = "Offline";
+static const char OPMODE_ONLINE[] = "Online";
 
 class DictionaryRunnerConfig : public KCModule
 {
@@ -25,5 +30,6 @@ public Q_SLOTS:
 
 private:
     QLineEdit *m_triggerWord;
+    QComboBox *m_operationMode;
 };
 #endif
