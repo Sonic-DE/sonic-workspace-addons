@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kcfg SYSTEM "http://www.kde.org/standards/kcfg/1.0/kcfg.dtd">
+<kcfg>
+  <kcfgfile name=""/>
+  <group name="General">
+    <entry name="ScreenForDesktop1" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="ScreenForDesktop2" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="ScreenForDesktop3" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="ScreenForDesktop4" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="ScreenForDesktop5" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="ScreenForDesktop6" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="ScreenForDesktop7" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="ScreenForDesktop8" type="Int">
+      <default>0</default>
+    </entry>
+    <entry name="ScreenForDesktop9" type="Int">
+      <default>0</default>
+    </entry>
+  </group>
+</kcfg>
