@@ -82,6 +82,15 @@ PlasmoidItem {
     }
 
     Connections {
+        target: Plasmoid
+        function onActivated() {
+            if (!compactRepresentationItem?.visible) {
+                Qt.openUrlExternally(main.activeSource)
+            }
+        }
+    }
+
+    Connections {
         target: plasmoid.configuration
         function onPathListChanged() {
             loadPathList()
