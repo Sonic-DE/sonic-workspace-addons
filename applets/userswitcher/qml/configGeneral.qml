@@ -15,6 +15,7 @@ KCM.SimpleKCM {
     property bool cfg_showName
     property bool cfg_showFullName
     property alias cfg_showTechnicalInfo: showTechnicalInfoCheck.checked
+    property alias cfg_lockSession: lockSessionCheck.checked
 
     Kirigami.FormLayout {
         QtControls.ButtonGroup {
@@ -105,6 +106,12 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: i18nc("@title:label", "Advanced:")
 
             text: i18nc("@option:check", "Show technical session information")
+        }
+
+        QtControls.CheckBox {
+            id: lockSessionCheck
+
+            text: i18nc("@option:check", "Lock Session on switch")
         }
     }
 }

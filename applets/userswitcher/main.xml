@@ -18,6 +18,9 @@
     <entry name="showTechnicalInfo" type="Bool">
       <default>false</default>
     </entry>
+    <entry name="lockSession" type="Bool">
+      <default>true</default>
+    </entry>
   </group>
 
 </kcfg>

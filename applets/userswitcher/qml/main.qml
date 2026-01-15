@@ -39,6 +39,8 @@ PlasmoidItem {
     // TTY number and X display
     readonly property bool showTechnicalInfo: Plasmoid.configuration.showTechnicalInfo
 
+    readonly property bool lockSession: Plasmoid.configuration.lockSession
+
     switchWidth: Kirigami.Units.gridUnit * 10
     switchHeight: Kirigami.Units.gridUnit * 12
 
@@ -209,7 +211,7 @@ PlasmoidItem {
 
                         onClicked: {
                             root.expanded = false
-                            sessionsModel.switchUser(model.vtNumber, sessionsModel.shouldLock)
+                            root.lockSession ? sessionsModel.switchUser(model.vtNumber, sessionsModel.shouldLock) : sessionsModel.switchUser(model.vtNumber)
                         }
                     }
                 }
@@ -226,7 +228,7 @@ PlasmoidItem {
 
                 onClicked: {
                     root.expanded = false
-                    sessionsModel.startNewSession(sessionsModel.shouldLock)
+                    root.lockSession ? sessionsModel.startNewSession(sessionsModel.shouldLock) :  sessionsModel.startNewSession()
                 }
             }
 
