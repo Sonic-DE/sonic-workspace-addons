@@ -1,0 +1,22 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "hi-angel@yandex.ru",
+                "Name": "Constantine Kharlamov",
+                "Name[ru]": "Константин Харламов"
+            }
+        ],
+        "Description": "TODO",
+        "Description[ru]": "TODO",
+        "Icon": "preferences-system-windows-script-test",
+        "Id": "per-screen-virtual-desktop",
+        "License": "GPL",
+        "Name": "Per screen virtual desktop",
+        "Name[ru]": "TODO"
+    },
+    "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted",
+    "KPackageStructure": "KWin/Script",
+    "X-Plasma-API": "javascript"
+}
