@@ -8,6 +8,8 @@
 #ifndef CACHEDPROVIDER_H
 #define CACHEDPROVIDER_H
 
+#include <QFuture>
+
 #include "comicprovider.h"
 #include "types.h"
 
@@ -117,7 +119,7 @@ public:
     /**
      * Stores the given @p comic with the given @p identifier in the cache.
      */
-    static bool storeInCache(const QString &identifier, const QImage &comic, const ComicMetaData &info);
+    static QFuture<bool> storeInCache(const QString &identifier, QImage comic, const ComicMetaData &info);
 
     /**
      * Returns the website of the comic.

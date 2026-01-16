@@ -8,7 +8,6 @@
 #ifndef COMICPROVIDERWRAPPER_H
 #define COMICPROVIDERWRAPPER_H
 
-#include "comic_debug.h"
 #include "comicprovider.h"
 #include "types.h"
 
@@ -172,16 +171,13 @@ public:
         return 4600;
     }
 
-    Q_INVOKABLE void print(const QJSValue &str)
-    {
-        qCInfo(PLASMA_COMIC) << str.toString();
-    }
+    Q_INVOKABLE void print(const QJSValue &str);
 
     IdentifierType identifierType() const;
     QImage comicImage();
-    void pageRetrieved(int id, const QByteArray &data);
-    void pageError(int id, const QString &message);
-    void redirected(int id, const QUrl &newUrl);
+    void pageRetrieved(int id, const QString &extra, const QByteArray &data);
+    void pageError(int id, const QString &extra, const QString &message);
+    void redirected(int id, const QString &extra, const QUrl &newUrl);
 
     bool identifierSpecified() const;
     QString textCodec() const;
@@ -224,9 +220,14 @@ public Q_SLOTS:
     void requestPage(const QString &url, int id, const QVariantMap &infos = QVariantMap());
     void requestRedirectedUrl(const QString &url, int id, const QVariantMap &infos = QVariantMap());
     void combine(const QVariant &image, PositionType position = Top);
+    void combineMulti(const QList<QVariant> &images, PositionType position = Top);
     QObject *image();
 
     void init();
+
+Q_SIGNALS:
+    void processingFailedAsync();
+    void setImage(QImage);
 
 protected:
     QVariant callFunction(const QString &name, const QJSValueList &args = {});
@@ -259,6 +260,10 @@ private:
     bool mIdentifierSpecified;
     bool mIsLeftToRight;
     bool mIsTopToBottom;
+
+private Q_SLOTS:
+    void onProcessingFailedAsync();
+    void onSetImage(QImage image);
 };
 
 #endif

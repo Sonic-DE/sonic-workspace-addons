@@ -225,41 +225,46 @@ protected:
      *
      * @param url The url to access.
      * @param id A unique id that identifies this request.
+     * @param extra A user-defined string which will be passed to pageRetrieved() or pageError().
      * @param infos A list of meta information passed to http.
      */
-    void requestPage(const QUrl &url, int id, const MetaInfos &infos = MetaInfos());
+    void requestPage(const QUrl &url, int id, const QString &extra, const MetaInfos &infos = MetaInfos());
 
     /**
      * This method can be used to find the place url points to, when finished
      * urlRetrieved() is called, either with the original url or a redirected url
      * @param url to check for redirections
      * @param id A unique id that identifies this request.
+     * @param extra A user-defined string which will be passed to redirected().
      * @param infos A list of meta information passed to KIO.
      */
-    void requestRedirectedUrl(const QUrl &url, int id, const MetaInfos &infos = MetaInfos());
+    void requestRedirectedUrl(const QUrl &url, int id, const QString &extra, const MetaInfos &infos = MetaInfos());
 
     /**
      * This method is called whenever a request done by requestPage() was successful.
      *
      * @param id The unique identifier of that request.
+     * @param extra the 'extra' string which was passed with the request.
      * @param data The data of the fetched object.
      */
-    virtual void pageRetrieved(int id, const QByteArray &data);
+    virtual void pageRetrieved(int id, const QString &extra, const QByteArray &data);
 
     /**
      * This method is called whenever a request done by requestPage() has failed.
      *
      * @param id The unique identifier of that request.
+     * @param extra the 'extra' string which was passed with the request.
      * @param message The error message.
      */
-    virtual void pageError(int id, const QString &message);
+    virtual void pageError(int id, const QString &extra, const QString &message);
 
     /**
      * This method is called whenever a request by requestRedirectedUrl() was done
      * @param id The unique identifier of that request.
-     * @param newUrl The redirected Url
+     * @param extra the 'extra' string which was passed with the request.
+     * @param newUrl The redirected Url.
      */
-    virtual void redirected(int id, const QUrl &newUrl);
+    virtual void redirected(int id, const QString &extra, const QUrl &newUrl);
 
 private:
     class Private;

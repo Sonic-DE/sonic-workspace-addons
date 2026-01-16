@@ -5,13 +5,15 @@
  *   SPDX-License-Identifier: LGPL-2.0-only
  */
 
+#define logDebug qCDebug(PLASMA_COMIC) << "Comic" << this->mProvider->pluginName() << ":"
+#define logInfo qCInfo(PLASMA_COMIC) << "Comic" << this->mProvider->pluginName() << ":"
+#define logWarning qCWarning(PLASMA_COMIC) << "Comic" << this->mProvider->pluginName() << ":"
+
 #include "comicproviderwrapper.h"
 #include "comic_debug.h"
 #include "comicproviderkross.h"
 
-#include <KPackage/Package>
 #include <KPackage/PackageLoader>
-#include <QFile>
 #include <QFileInfo>
 #include <QJSEngine>
 #include <QJSValueIterator>
@@ -19,6 +21,7 @@
 #include <QPainter>
 #include <QStandardPaths>
 #include <QStringDecoder>
+#include <QThreadPool>
 #include <QTimer>
 #include <QUrl>
 
@@ -270,6 +273,9 @@ ComicProviderWrapper::ComicProviderWrapper(ComicProviderKross *parent)
     , mIsLeftToRight(true)
     , mIsTopToBottom(true)
 {
+    QObject::connect(this, &ComicProviderWrapper::processingFailedAsync, this, &ComicProviderWrapper::onProcessingFailedAsync);
+    QObject::connect(this, &ComicProviderWrapper::setImage, this, &ComicProviderWrapper::onSetImage);
+
     QTimer::singleShot(0, this, &ComicProviderWrapper::init);
 }
 
@@ -327,6 +333,10 @@ void ComicProviderWrapper::init()
             }
         }
     }
+}
+
+void ComicProviderWrapper::print(const QJSValue &str) {
+    logInfo << str.toString();
 }
 
 IdentifierType ComicProviderWrapper::identifierType() const
@@ -521,7 +531,7 @@ void ComicProviderWrapper::setNextIdentifier(const QJSValue &nextIdentifier)
     mNextIdentifier = identifierFromScript(nextIdentifier);
     if (mNextIdentifier == mIdentifier) {
         mNextIdentifier.clear();
-        qCWarning(PLASMA_COMIC) << "Next identifier is the same as the current one, clearing next identifier.";
+        logWarning << "Next identifier is the same as the current one, clearing next identifier.";
     }
 }
 
@@ -535,7 +545,7 @@ void ComicProviderWrapper::setPreviousIdentifier(const QJSValue &previousIdentif
     mPreviousIdentifier = identifierFromScript(previousIdentifier);
     if (mPreviousIdentifier == mIdentifier) {
         mPreviousIdentifier.clear();
-        qCWarning(PLASMA_COMIC) << "Previous identifier is the same as the current one, clearing previous identifier.";
+        logWarning << "Previous identifier is the same as the current one, clearing previous identifier.";
     }
 }
 
@@ -671,12 +681,12 @@ QVariant ComicProviderWrapper::previousIdentifierVariant() const
     return mPreviousIdentifier;
 }
 
-void ComicProviderWrapper::pageRetrieved(int id, const QByteArray &data)
+void ComicProviderWrapper::pageRetrieved(int id, const QString &extra, const QByteArray &data)
 {
     --mRequests;
     if (id == ComicProvider::Image) {
         mKrossImage = new ImageWrapper(this, data);
-        callFunction(QLatin1String("pageRetrieved"), {id, m_engine->newQObject(mKrossImage)});
+        callFunction(QLatin1String("pageRetrieved"), {id, m_engine->newQObject(mKrossImage), extra});
         if (mRequests < 1) { // Don't finish if we still have pageRequests
             finished();
         }
@@ -687,23 +697,24 @@ void ComicProviderWrapper::pageRetrieved(int id, const QByteArray &data)
         }
         QString html = codec.decode(data);
 
-        callFunction(QLatin1String("pageRetrieved"), {id, html});
+        callFunction(QLatin1String("pageRetrieved"), {id, html, extra});
     }
 }
 
-void ComicProviderWrapper::pageError(int id, const QString &message)
+void ComicProviderWrapper::pageError(int id, const QString &extra, const QString &message)
 {
     --mRequests;
-    callFunction(QLatin1String("pageError"), {id, message});
+    callFunction(QLatin1String("pageError"), {id, message, extra});
     if (!functionCalled()) {
+        logWarning << "unhandled page error: id:" << id << "message:" << message;
         Q_EMIT mProvider->error(mProvider);
     }
 }
 
-void ComicProviderWrapper::redirected(int id, const QUrl &newUrl)
+void ComicProviderWrapper::redirected(int id, const QString &extra, const QUrl &newUrl)
 {
     --mRequests;
-    callFunction(QLatin1String("redirected"), {id, newUrl.toString()});
+    callFunction(QLatin1String("redirected"), {id, newUrl.toString(), extra});
     if (mRequests < 1) { // Don't finish while there are still requests
         finished();
     }
@@ -711,16 +722,16 @@ void ComicProviderWrapper::redirected(int id, const QUrl &newUrl)
 
 void ComicProviderWrapper::finished() const
 {
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Author").leftJustified(22, QLatin1Char('.')) << comicAuthor();
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Website URL").leftJustified(22, QLatin1Char('.')) << mWebsiteUrl;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Shop URL").leftJustified(22, QLatin1Char('.')) << mShopUrl;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Title").leftJustified(22, QLatin1Char('.')) << mTitle;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Additional Text").leftJustified(22, QLatin1Char('.')) << mAdditionalText;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Identifier").leftJustified(22, QLatin1Char('.')) << mIdentifier;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("First Identifier").leftJustified(22, QLatin1Char('.')) << mFirstIdentifier;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Last Identifier").leftJustified(22, QLatin1Char('.')) << mLastIdentifier;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Next Identifier").leftJustified(22, QLatin1Char('.')) << mNextIdentifier;
-    qCDebug(PLASMA_COMIC) << QString::fromLatin1("Previous Identifier").leftJustified(22, QLatin1Char('.')) << mPreviousIdentifier;
+    logDebug << QString::fromLatin1("Author").leftJustified(22, QLatin1Char('.')) << comicAuthor();
+    logDebug << QString::fromLatin1("Website URL").leftJustified(22, QLatin1Char('.')) << mWebsiteUrl;
+    logDebug << QString::fromLatin1("Shop URL").leftJustified(22, QLatin1Char('.')) << mShopUrl;
+    logDebug << QString::fromLatin1("Title").leftJustified(22, QLatin1Char('.')) << mTitle;
+    logDebug << QString::fromLatin1("Additional Text").leftJustified(22, QLatin1Char('.')) << mAdditionalText;
+    logDebug << QString::fromLatin1("Identifier").leftJustified(22, QLatin1Char('.')) << mIdentifier;
+    logDebug << QString::fromLatin1("First Identifier").leftJustified(22, QLatin1Char('.')) << mFirstIdentifier;
+    logDebug << QString::fromLatin1("Last Identifier").leftJustified(22, QLatin1Char('.')) << mLastIdentifier;
+    logDebug << QString::fromLatin1("Next Identifier").leftJustified(22, QLatin1Char('.')) << mNextIdentifier;
+    logDebug << QString::fromLatin1("Previous Identifier").leftJustified(22, QLatin1Char('.')) << mPreviousIdentifier;
     Q_EMIT mProvider->finished(mProvider);
 }
 
@@ -732,22 +743,32 @@ void ComicProviderWrapper::error() const
 void ComicProviderWrapper::requestPage(const QString &url, int id, const QVariantMap &infos)
 {
     QMap<QString, QString> map;
+    QString extra;
 
     for (auto it = infos.begin(), end = infos.end(); it != end; ++it) {
-        map[it.key()] = it.value().toString();
+        if(const QString &key = it.key(); key != QStringLiteral("extra"))
+            map[key] = it.value().toString();
+        else
+            extra = it.value().toString();
     }
-    mProvider->requestPage(QUrl(url), id, map);
+
+    mProvider->requestPage(QUrl(url), id, extra, map);
     ++mRequests;
 }
 
 void ComicProviderWrapper::requestRedirectedUrl(const QString &url, int id, const QVariantMap &infos)
 {
     QMap<QString, QString> map;
+    QString extra;
 
     for (auto it = infos.begin(), end = infos.end(); it != end; ++it) {
-        map[it.key()] = it.value().toString();
+        if(const QString &key = it.key(); key != QStringLiteral("extra"))
+            map[key] = it.value().toString();
+        else
+            extra = it.value().toString();
     }
-    mProvider->requestRedirectedUrl(QUrl(url), id, map);
+
+    mProvider->requestRedirectedUrl(QUrl(url), id, extra, map);
     ++mRequests;
 }
 
@@ -763,7 +784,7 @@ QVariant ComicProviderWrapper::callFunction(const QString &name, const QJSValueL
         if (mFuncFound) {
             auto val = m_engine->globalObject().property(name).call(args);
             if (val.isError()) {
-                qCWarning(PLASMA_COMIC) << "Error when calling function" << name << "with arguments" << QVariant::fromValue(args) << val.toString();
+                logWarning << "Error when calling function" << name << "with arguments" << QVariant::fromValue(args) << val.toString();
                 return QVariant();
             } else {
                 return val.toVariant();
@@ -785,6 +806,7 @@ void ComicProviderWrapper::combine(const QVariant &image, PositionType position)
         if (QFile::exists(path)) {
             header = QImage(path);
         } else {
+            logWarning << "combine() with non-existing path" << path;
             return;
         }
     } else {
@@ -792,6 +814,7 @@ void ComicProviderWrapper::combine(const QVariant &image, PositionType position)
         if (img) {
             header = img->image();
         } else {
+            logWarning << "combine() image was neither a path nor an image";
             return;
         }
     }
@@ -842,6 +865,146 @@ void ComicProviderWrapper::combine(const QVariant &image, PositionType position)
     painter.drawImage(headerPos, header);
     painter.drawImage(comicPos, comic);
     mKrossImage->setImage(img);
+}
+
+void ComicProviderWrapper::combineMulti(const QList<QVariant> &images, PositionType position) {
+    if(images.isEmpty())
+        return;
+
+    mRequests++;
+    QThreadPool::globalInstance()->start([this, images, position] {
+        QList<QImage> imgs;
+        imgs.reserve(images.size());
+        for (const auto & image : images) {
+            if (image.typeId() == QMetaType::QString) {
+                const QString path(mPackage->filePath("images", image.toString()));
+                if (QFile::exists(path)) {
+                    imgs.append(QImage(path));
+                } else {
+                    logWarning << "combineMulti() with non-existing path" << path;
+                    Q_EMIT processingFailedAsync();
+                    return;
+                }
+            } else {
+                ImageWrapper *img = qobject_cast<ImageWrapper *>(image.value<QObject *>());
+                if (img) {
+                    imgs.append(img->image());
+                } else {
+                    logWarning << "combineMulti() image was neither a path nor an image";
+                    Q_EMIT processingFailedAsync();
+                    return;
+                }
+            }
+        }
+
+        // calculate dimension
+        int width = 0;
+        int height = 0;
+        for (const auto & img : imgs) {
+            if(position == Top || position == Bottom) {
+                height += img.height();
+                width = std::max(width, img.width());
+            } else {
+                width += img.width();
+                height = std::max(height, img.height());
+            }
+        }
+
+        // assemble image
+        const auto fillColor = imgs[0].pixel(0, 0);
+        auto result = QImage(width, height, QImage::Format_RGB32);
+        QPainter painter(&result);
+
+        QPoint pos;
+        switch (position) {
+            case Top:
+                pos = QPoint(0, 0);
+                break;
+            case Bottom:
+                pos = QPoint(0, height);
+                break;
+            case Left:
+                pos = QPoint(0, 0);
+                break;
+            case Right:
+                pos = QPoint(width, 0);
+                break;
+        }
+
+        for (const auto &img : imgs) {
+            switch (position) {
+                case Top: {
+                    const int x = (width - img.width()) / 2;
+                    pos.setX(x);
+                    painter.drawImage(pos, img);
+
+                    if(x > 0) {
+                        painter.fillRect(QRect(0, pos.y(), x, img.height()), fillColor);
+                        painter.fillRect(QRect(x + img.width(), pos.y(), x, img.height()), fillColor);
+                    }
+
+                    pos.setY(pos.y() + img.height());
+                    break;
+                }
+                case Bottom: {
+                    pos.setY(pos.y() - img.height());
+
+                    const int x = (width - img.width()) / 2;
+                    pos.setX(x);
+                    painter.drawImage(pos, img);
+
+                    if(x > 0) {
+                        painter.fillRect(QRect(0, pos.y(), x, img.height()), fillColor);
+                        painter.fillRect(QRect(x + img.width(), pos.y(), x, img.height()), fillColor);
+                    }
+                    break;
+                }
+                case Left: {
+                    const int y = (height - img.height()) / 2;
+                    pos.setY(y);
+                    painter.drawImage(pos, img);
+
+                    if(y > 0) {
+                        painter.fillRect(QRect(pos.x(), 0, img.width(), y), fillColor);
+                        painter.fillRect(QRect(pos.x(), y + img.height(), img.width(), y), fillColor);
+                    }
+
+                    pos.setX(pos.x() + img.width());
+                    break;
+                }
+                case Right: {
+                    pos.setX(pos.x() - img.width());
+
+                    const int y = (height - img.height()) / 2;
+                    pos.setY(y);
+                    painter.drawImage(pos, img);
+
+                    if(y > 0) {
+                        painter.fillRect(QRect(pos.x(), 0, img.width(), y), fillColor);
+                        painter.fillRect(QRect(pos.x(), y + img.height(), img.width(), y), fillColor);
+                    }
+                    break;
+                }
+            }
+        }
+
+        Q_EMIT setImage(std::move(result));
+    });
+}
+
+void ComicProviderWrapper::onProcessingFailedAsync() {
+    mRequests--;
+    if (mRequests < 1) { // Don't finish if we still have pageRequests
+        error();
+    }
+}
+
+void ComicProviderWrapper::onSetImage(QImage image) {
+    mRequests--;
+    mKrossImage->setImage(image);
+    if (mRequests < 1) { // Don't finish if we still have pageRequests
+        finished();
+    }
 }
 
 QObject *ComicProviderWrapper::image()

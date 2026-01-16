@@ -36,10 +36,10 @@ public:
     void jobDone(KJob *job)
     {
         if (job->error()) {
-            mParent->pageError(job->property("uid").toInt(), job->errorText());
+            mParent->pageError(job->property("uid").toInt(), job->property("extra").toString(), job->errorText());
         } else {
             KIO::StoredTransferJob *storedJob = qobject_cast<KIO::StoredTransferJob *>(job);
-            mParent->pageRetrieved(job->property("uid").toInt(), storedJob->data());
+            mParent->pageRetrieved(job->property("uid").toInt(), job->property("extra").toString(), storedJob->data());
         }
     }
 
@@ -47,7 +47,7 @@ public:
     {
         Q_UNUSED(oldUrl)
 
-        mParent->redirected(job->property("uid").toInt(), newUrl);
+        mParent->redirected(job->property("uid").toInt(), job->property("extra").toString(), newUrl);
         mRedirections.remove(job);
     }
 
@@ -59,7 +59,7 @@ public:
 
         if (mRedirections.contains(job)) {
             // no redirection took place, return the original url
-            mParent->redirected(job->property("uid").toInt(), mRedirections[job]);
+            mParent->redirected(job->property("uid").toInt(), job->property("extra").toString(), mRedirections[job]);
             mRedirections.remove(job);
         }
     }
@@ -211,7 +211,7 @@ QString ComicProvider::requestedComicName() const
     return d->mRequestedComicName;
 }
 
-void ComicProvider::requestPage(const QUrl &url, int id, const MetaInfos &infos)
+void ComicProvider::requestPage(const QUrl &url, int id, const QString &extra, const MetaInfos &infos)
 {
     qCDebug(PLASMA_COMIC) << "Requested page" << url << "with id" << id << "and additional metadata" << infos;
     // each request restarts the timer
@@ -229,7 +229,10 @@ void ComicProvider::requestPage(const QUrl &url, int id, const MetaInfos &infos)
         // for webpages we always reload, making sure, that changes are recognised
         job = KIO::storedGet(url, KIO::Reload, KIO::HideProgressInfo);
     }
+
     job->setProperty("uid", id);
+    job->setProperty("extra", extra);
+
     connect(job, &KJob::result, this, [this](KJob *job) {
         d->jobDone(job);
     });
@@ -243,14 +246,18 @@ void ComicProvider::requestPage(const QUrl &url, int id, const MetaInfos &infos)
     }
 }
 
-void ComicProvider::requestRedirectedUrl(const QUrl &url, int id, const MetaInfos &infos)
+void ComicProvider::requestRedirectedUrl(const QUrl &url, int id, const QString &extra, const MetaInfos &infos)
 {
     // each request restarts the timer
     d->mTimer->start();
 
     KIO::MimetypeJob *job = KIO::mimetype(url, KIO::HideProgressInfo);
+
     job->setProperty("uid", id);
+    job->setProperty("extra", extra);
+
     d->mRedirections[job] = url;
+
     connect(job, &KIO::MimetypeJob::redirection, this, [this](KIO::Job *job, const QUrl &newUrl) {
         d->slotRedirection(job, QUrl(), newUrl);
     });
@@ -270,15 +277,15 @@ void ComicProvider::requestRedirectedUrl(const QUrl &url, int id, const MetaInfo
     }
 }
 
-void ComicProvider::pageRetrieved(int, const QByteArray &)
+void ComicProvider::pageRetrieved(int, const QString &, const QByteArray &)
 {
 }
 
-void ComicProvider::pageError(int, const QString &)
+void ComicProvider::pageError(int, const QString &, const QString &)
 {
 }
 
-void ComicProvider::redirected(int, const QUrl &)
+void ComicProvider::redirected(int, const QString &, const QUrl &)
 {
 }
 
