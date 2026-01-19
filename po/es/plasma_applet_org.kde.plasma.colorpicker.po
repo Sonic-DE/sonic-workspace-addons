@@ -1,15 +1,15 @@
 # Spanish translations for plasma_applet_org.kde.plasma.colorpicker.po package.
-# Copyright (C) 2015-2026 This file is copyright:
+# Copyright (C) 2015-2025 This file is copyright:
 # This file is distributed under the same license as the kdeplasma-addons package.
 # Automatically generated, 2015.
 #
-# SPDX-FileCopyrightText: 2015, 2016, 2018, 2022, 2023, 2025, 2026 Eloy Cuadra <ecuadra@eloihr.net>
+# SPDX-FileCopyrightText: 2015, 2016, 2018, 2022, 2023, 2025 Eloy Cuadra <ecuadra@eloihr.net>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.kde.plasma.colorpicker\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-14 02:40+0000\n"
-"PO-Revision-Date: 2026-02-17 13:34+0100\n"
+"POT-Creation-Date: 2026-01-19 00:44+0000\n"
+"PO-Revision-Date: 2025-05-13 21:06+0100\n"
 "Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
 "Language-Team: Spanish <kde-l10n-es@kde.org>\n"
 "Language: es\n"
@@ -17,27 +17,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.2\n"
+"X-Generator: Lokalize 23.08.1\n"
 
-#: qml/ColorCircle.qml:26
-#, kde-format
-msgctxt "@info"
-msgid "No Saved Colors"
-msgstr "No se han guardado colores"
-
-#: qml/ColorCircle.qml:40
+#: qml/ColorCircle.qml:39
 #, kde-format
 msgctxt "@info:usagetip"
 msgid "Middle-click to copy the color code"
 msgstr "Clic central para copiar el código de color"
 
-#: qml/CompactRepresentation.qml:85
+#: qml/CompactRepresentation.qml:79
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Pick color"
 msgstr "Escoger color"
 
-#: qml/CompactRepresentation.qml:92
+#: qml/CompactRepresentation.qml:86
 #, kde-kuit-format
 msgctxt "@info:usagetip"
 msgid ""
@@ -89,37 +83,37 @@ msgctxt "@label"
 msgid "Preview count:"
 msgstr "Contador de vistas previas:"
 
-#: qml/main.qml:122
+#: qml/main.qml:121
 #, kde-format
 msgctxt "@action"
 msgid "Open Color Dialog"
 msgstr "Abrir el diálogo de color"
 
-#: qml/main.qml:127
+#: qml/main.qml:126
 #, kde-format
 msgctxt "@action"
 msgid "Clear History"
 msgstr "Borrar historial"
 
-#: qml/main.qml:135
+#: qml/main.qml:134
 #, kde-format
 msgctxt "@action"
 msgid "View History"
 msgstr "Ver historial"
 
-#: qml/main.qml:143
+#: qml/main.qml:142
 #, kde-format
 msgctxt "@title:menu"
 msgid "Copy to Clipboard"
 msgstr "Copiar en el portapapeles"
 
-#: qml/main.qml:183
+#: qml/main.qml:182
 #, kde-format
 msgctxt "@info:usagetip"
 msgid "No colors"
 msgstr "Sin colores"
 
-#: qml/main.qml:183
+#: qml/main.qml:182
 #, kde-format
 msgctxt "@info:status when color picking is unavailable"
 msgid "Color picking unavailable when compositing is disabled"
@@ -127,7 +121,7 @@ msgstr ""
 "La selección de color no está disponible cuando la composición está "
 "desactivada."
 
-#: qml/main.qml:184
+#: qml/main.qml:183
 #, kde-format
 msgctxt "@info:status when color pick is unavailable"
 msgid ""
@@ -136,25 +130,25 @@ msgstr ""
 "La composición se ha desactivado manualmente o ha sido bloqueada por una "
 "aplicación en ejecución."
 
-#: qml/main.qml:191
+#: qml/main.qml:190
 #, kde-format
 msgctxt "@action:button"
 msgid "Pick Color"
 msgstr "Escoger color"
 
-#: qml/main.qml:199
+#: qml/main.qml:198
 #, kde-format
 msgctxt "@action:button open kwincompositing KCM"
 msgid "Configure Compositing"
 msgstr "Configurar la composición"
 
-#: qml/main.qml:385
+#: qml/main.qml:384
 #, kde-format
 msgctxt "@info:progress just copied a color to clipboard"
 msgid "Copied!"
 msgstr "Copiado"
 
-#: qml/main.qml:396
+#: qml/main.qml:395
 #, kde-format
 msgctxt "@action:button"
 msgid "Delete"
