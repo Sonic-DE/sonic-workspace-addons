@@ -1,15 +1,15 @@
 # Translation for plasma_applet_org.kde.plasma_colorpicker.po to Euskara/Basque (eu).
-# Copyright (C) 2017-2026 This file is copyright:
+# Copyright (C) 2017-2023 This file is copyright:
 # This file is distributed under the same license as the kdeplasma-addons package.
-# KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>.
+# KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>.
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2017, 2018, 2022, 2023, 2026.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2017, 2018, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdeplasma-addons\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-19 02:40+0000\n"
+"POT-Creation-Date: 2026-01-19 00:44+0000\n"
 "PO-Revision-Date: 2023-05-16 20:04+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"

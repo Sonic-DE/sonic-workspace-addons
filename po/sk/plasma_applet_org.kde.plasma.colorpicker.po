@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_kolourpicker\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-01-19 02:40+0000\n"
+"POT-Creation-Date: 2026-01-19 00:44+0000\n"
 "PO-Revision-Date: 2023-05-03 19:57+0200\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <opensuse-translation@opensuse.org>\n"
@@ -16,14 +16,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 21.12.3\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: qml/ColorCircle.qml:39
 #, kde-format
 msgctxt "@info:usagetip"
 msgid "Middle-click to copy the color code"
-msgstr "Kliknutím stredným tlačidlom skopírujete kód farby"
+msgstr ""
 
 #: qml/CompactRepresentation.qml:79
 #, kde-format
@@ -117,7 +117,7 @@ msgstr "Žiadne farby"
 #, kde-format
 msgctxt "@info:status when color picking is unavailable"
 msgid "Color picking unavailable when compositing is disabled"
-msgstr "Výber farby nie je dostupný, keď je kompozícia vypnutá"
+msgstr ""
 
 #: qml/main.qml:183
 #, kde-format
@@ -125,7 +125,6 @@ msgctxt "@info:status when color pick is unavailable"
 msgid ""
 "Compositing has been manually disabled or blocked by a running application"
 msgstr ""
-"Kompozícia bola manuálne vypnutá alebo zablokovaná spustenou aplikáciou"
 
 #: qml/main.qml:190
 #, kde-format
@@ -137,7 +136,7 @@ msgstr "Vybrať farbu"
 #, kde-format
 msgctxt "@action:button open kwincompositing KCM"
 msgid "Configure Compositing"
-msgstr "Nastaviť kompozíciu"
+msgstr ""
 
 #: qml/main.qml:384
 #, kde-format
