@@ -4,22 +4,22 @@
 # obsoleteman <tulliana@gmail.com>, 2008-2009.
 # Volkan Gezer <volkangezer@gmail.com>, 2013-2014, 2017.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014.
-# SPDX-FileCopyrightText: 2022, 2024, 2025, 2026 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2024, 2025 Emir SARI <emir_sari@icloud.com>
 # SPDX-FileCopyrightText: 2025 tunahan <tunahanyrd@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdeplasma-addons-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-17 02:41+0000\n"
-"PO-Revision-Date: 2026-03-15 13:38+0300\n"
-"Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
+"POT-Creation-Date: 2026-01-21 00:46+0000\n"
+"PO-Revision-Date: 2025-10-02 17:05+0300\n"
+"Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.12.2\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: i18n.dat:1
 #, kde-format
@@ -571,74 +571,74 @@ msgctxt "@label:listbox"
 msgid "Visibility:"
 msgstr "Görüş mesafesi:"
 
-#: qml/config/ConfigWeatherStation.qml:58
+#: qml/config/ConfigWeatherStation.qml:51
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Update every:"
 msgstr "Güncelleme aralığı:"
 
-#: qml/config/ConfigWeatherStation.qml:61
+#: qml/config/ConfigWeatherStation.qml:54
 #, kde-format
 msgid "%1 minute"
 msgid_plural "%1 minutes"
 msgstr[0] "%1 dakika"
 msgstr[1] "%1 dakika"
 
-#: qml/config/ConfigWeatherStation.qml:73
+#: qml/config/ConfigWeatherStation.qml:66
 #, kde-format
 msgctxt "@label"
 msgid "Location:"
 msgstr "Konum:"
 
-#: qml/config/ConfigWeatherStation.qml:86
+#: qml/config/ConfigWeatherStation.qml:79
 #, kde-format
 msgctxt "No location is currently selected"
 msgid "None selected"
 msgstr "Seçili yok"
 
-#: qml/config/ConfigWeatherStation.qml:92
+#: qml/config/ConfigWeatherStation.qml:85
 #, kde-format
 msgctxt "@label"
 msgid "Provider:"
 msgstr "Sağlayıcı:"
 
-#: qml/config/ConfigWeatherStation.qml:122
+#: qml/config/ConfigWeatherStation.qml:115
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Enter new location"
 msgstr "Yeni konum gir"
 
-#: qml/config/ConfigWeatherStation.qml:122
+#: qml/config/ConfigWeatherStation.qml:115
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Enter location"
 msgstr "Konum gir"
 
-#: qml/config/ConfigWeatherStation.qml:202
+#: qml/config/ConfigWeatherStation.qml:190
 #, kde-format
 msgctxt "A weather station location and the weather service it comes from"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: qml/config/ConfigWeatherStation.qml:233
+#: qml/config/ConfigWeatherStation.qml:215
 #, kde-format
 msgctxt "@info"
 msgid "No weather stations found for '%1'"
 msgstr "“%1” için hava durumu istasyonu bulunamadı"
 
-#: qml/config/ConfigWeatherStation.qml:235
+#: qml/config/ConfigWeatherStation.qml:217
 #, kde-format
 msgctxt "@info"
 msgid "Search for a weather station to change your location"
 msgstr "Konumunuzu değiştirmek için bir hava durumu istasyonu arayın"
 
-#: qml/config/ConfigWeatherStation.qml:237
+#: qml/config/ConfigWeatherStation.qml:219
 #, kde-format
 msgctxt "@info"
 msgid "Search for a weather station to set your location"
 msgstr "Konumunuzu ayarlamak için bir hava durumu istasyonu arayın"
 
-#: qml/config/ConfigWeatherStation.qml:240
+#: qml/config/ConfigWeatherStation.qml:222
 #, kde-format
 msgctxt "@info:usagetip"
 msgid ""
@@ -717,7 +717,7 @@ msgstr "Hava Raporunu Ayarla…"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose a location and monitor the weather there"
-msgstr "Bir konum seçip oranın hava durumunu takip etmek için tıklayın"
+msgstr "Bir konum seçip oranın hava durumunu takip etmek için tıkla"
 
 #: qml/main.qml:128
 #, kde-format
@@ -845,31 +845,31 @@ msgctxt ""
 msgid "Feels like %1"
 msgstr "Hissedilen %1"
 
-#: util.cpp:48
+#: util.cpp:43
 #, kde-format
 msgctxt "Degree, unit symbol"
 msgid "°"
 msgstr "°"
 
-#: util.cpp:52 util.cpp:56
+#: util.cpp:47 util.cpp:51
 #, kde-format
 msgctxt "temperature unitsymbol"
 msgid "%1 %2"
 msgstr "%1 %2"
 
-#: util.cpp:66
+#: util.cpp:61
 #, kde-format
 msgctxt "value unitsymbol"
 msgid "%1 %2"
 msgstr "%1 %2"
 
-#: util.cpp:72
+#: util.cpp:67
 #, kde-format
 msgctxt "value percentsymbol"
 msgid "%1 %"
 msgstr "%​%1"
 
-#: util.cpp:78
+#: util.cpp:73
 #, kde-format
 msgctxt "@item %1 is a unit description and %2 its unit symbol"
 msgid "%1 (%2)"

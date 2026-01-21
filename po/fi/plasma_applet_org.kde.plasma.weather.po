@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_weather\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-17 02:41+0000\n"
+"POT-Creation-Date: 2026-01-21 00:46+0000\n"
 "PO-Revision-Date: 2025-07-14 11:17+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -570,74 +570,74 @@ msgctxt "@label:listbox"
 msgid "Visibility:"
 msgstr "Näkyvyys:"
 
-#: qml/config/ConfigWeatherStation.qml:58
+#: qml/config/ConfigWeatherStation.qml:51
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Update every:"
 msgstr "Päivitä joka:"
 
-#: qml/config/ConfigWeatherStation.qml:61
+#: qml/config/ConfigWeatherStation.qml:54
 #, kde-format
 msgid "%1 minute"
 msgid_plural "%1 minutes"
 msgstr[0] "%1 minuutti"
 msgstr[1] "%1 minuuttia"
 
-#: qml/config/ConfigWeatherStation.qml:73
+#: qml/config/ConfigWeatherStation.qml:66
 #, kde-format
 msgctxt "@label"
 msgid "Location:"
 msgstr "Sijainti:"
 
-#: qml/config/ConfigWeatherStation.qml:86
+#: qml/config/ConfigWeatherStation.qml:79
 #, kde-format
 msgctxt "No location is currently selected"
 msgid "None selected"
 msgstr "Mitään ei ole valittu"
 
-#: qml/config/ConfigWeatherStation.qml:92
+#: qml/config/ConfigWeatherStation.qml:85
 #, kde-format
 msgctxt "@label"
 msgid "Provider:"
 msgstr "Tarjoaja:"
 
-#: qml/config/ConfigWeatherStation.qml:122
+#: qml/config/ConfigWeatherStation.qml:115
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Enter new location"
 msgstr "Anna uusi sijainti"
 
-#: qml/config/ConfigWeatherStation.qml:122
+#: qml/config/ConfigWeatherStation.qml:115
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Enter location"
 msgstr "Anna sijainti"
 
-#: qml/config/ConfigWeatherStation.qml:202
+#: qml/config/ConfigWeatherStation.qml:190
 #, kde-format
 msgctxt "A weather station location and the weather service it comes from"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: qml/config/ConfigWeatherStation.qml:233
+#: qml/config/ConfigWeatherStation.qml:215
 #, kde-format
 msgctxt "@info"
 msgid "No weather stations found for '%1'"
 msgstr "Kohteelle ”%1” ei löytynyt sääasemia"
 
-#: qml/config/ConfigWeatherStation.qml:235
+#: qml/config/ConfigWeatherStation.qml:217
 #, kde-format
 msgctxt "@info"
 msgid "Search for a weather station to change your location"
 msgstr "Vaihda sijaintia etsimällä sääasemaa"
 
-#: qml/config/ConfigWeatherStation.qml:237
+#: qml/config/ConfigWeatherStation.qml:219
 #, kde-format
 msgctxt "@info"
 msgid "Search for a weather station to set your location"
 msgstr "Aseta sijainti etsimällä sääasemaa"
 
-#: qml/config/ConfigWeatherStation.qml:240
+#: qml/config/ConfigWeatherStation.qml:222
 #, kde-format
 msgctxt "@info:usagetip"
 msgid ""
@@ -844,31 +844,31 @@ msgctxt ""
 msgid "Feels like %1"
 msgstr "Tuntuu kuin %1"
 
-#: util.cpp:48
+#: util.cpp:43
 #, kde-format
 msgctxt "Degree, unit symbol"
 msgid "°"
 msgstr "°"
 
-#: util.cpp:52 util.cpp:56
+#: util.cpp:47 util.cpp:51
 #, kde-format
 msgctxt "temperature unitsymbol"
 msgid "%1 %2"
 msgstr "%1 %2"
 
-#: util.cpp:66
+#: util.cpp:61
 #, kde-format
 msgctxt "value unitsymbol"
 msgid "%1 %2"
 msgstr "%1 %2"
 
-#: util.cpp:72
+#: util.cpp:67
 #, kde-format
 msgctxt "value percentsymbol"
 msgid "%1 %"
 msgstr "%1 %"
 
-#: util.cpp:78
+#: util.cpp:73
 #, kde-format
 msgctxt "@item %1 is a unit description and %2 its unit symbol"
 msgid "%1 (%2)"

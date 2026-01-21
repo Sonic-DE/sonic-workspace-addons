@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026 Shinjo Park <kde@peremen.name>
+# SPDX-FileCopyrightText: 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-17 02:41+0000\n"
-"PO-Revision-Date: 2026-04-08 20:12+0200\n"
+"POT-Creation-Date: 2026-01-21 00:46+0000\n"
+"PO-Revision-Date: 2025-07-21 01:03+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 24.12.3\n"
 
 #: i18n.dat:1
 #, kde-format
@@ -162,7 +162,7 @@ msgstr "오늘 밤"
 #, kde-format
 msgctxt "credit line, don't change name!"
 msgid "Source: Deutscher Wetterdienst"
-msgstr "출처: Deutscher Wetterdienst"
+msgstr "원본: Deutscher Wetterdienst"
 
 #: ions/dwd/ion_dwd.cpp:563 ions/envcan/ion_envcan.cpp:1498
 #, kde-format
@@ -565,75 +565,75 @@ msgstr "풍속:"
 #, kde-format
 msgctxt "@label:listbox"
 msgid "Visibility:"
-msgstr "가시 거리:"
+msgstr "표시 여부:"
 
-#: qml/config/ConfigWeatherStation.qml:58
+#: qml/config/ConfigWeatherStation.qml:51
 #, kde-format
 msgctxt "@label:spinbox"
 msgid "Update every:"
 msgstr "업데이트 주기:"
 
-#: qml/config/ConfigWeatherStation.qml:61
+#: qml/config/ConfigWeatherStation.qml:54
 #, kde-format
 msgid "%1 minute"
 msgid_plural "%1 minutes"
 msgstr[0] "%1분"
 
-#: qml/config/ConfigWeatherStation.qml:73
+#: qml/config/ConfigWeatherStation.qml:66
 #, kde-format
 msgctxt "@label"
 msgid "Location:"
 msgstr "위치:"
 
-#: qml/config/ConfigWeatherStation.qml:86
+#: qml/config/ConfigWeatherStation.qml:79
 #, kde-format
 msgctxt "No location is currently selected"
 msgid "None selected"
 msgstr "선택 없음"
 
-#: qml/config/ConfigWeatherStation.qml:92
+#: qml/config/ConfigWeatherStation.qml:85
 #, kde-format
 msgctxt "@label"
 msgid "Provider:"
 msgstr "공급자:"
 
-#: qml/config/ConfigWeatherStation.qml:122
+#: qml/config/ConfigWeatherStation.qml:115
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Enter new location"
 msgstr "새 위치 입력"
 
-#: qml/config/ConfigWeatherStation.qml:122
+#: qml/config/ConfigWeatherStation.qml:115
 #, kde-format
 msgctxt "@info:placeholder"
 msgid "Enter location"
 msgstr "위치 입력"
 
-#: qml/config/ConfigWeatherStation.qml:202
+#: qml/config/ConfigWeatherStation.qml:190
 #, kde-format
 msgctxt "A weather station location and the weather service it comes from"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: qml/config/ConfigWeatherStation.qml:233
+#: qml/config/ConfigWeatherStation.qml:215
 #, kde-format
 msgctxt "@info"
 msgid "No weather stations found for '%1'"
 msgstr "'%1'의 기상대를 찾을 수 없습니다"
 
-#: qml/config/ConfigWeatherStation.qml:235
+#: qml/config/ConfigWeatherStation.qml:217
 #, kde-format
 msgctxt "@info"
 msgid "Search for a weather station to change your location"
 msgstr "현재 위치를 변경하기 위하여 기상대 검색"
 
-#: qml/config/ConfigWeatherStation.qml:237
+#: qml/config/ConfigWeatherStation.qml:219
 #, kde-format
 msgctxt "@info"
 msgid "Search for a weather station to set your location"
 msgstr "현재 위치를 설정하기 위하여 기상대 검색"
 
-#: qml/config/ConfigWeatherStation.qml:240
+#: qml/config/ConfigWeatherStation.qml:222
 #, kde-format
 msgctxt "@info:usagetip"
 msgid ""
@@ -777,7 +777,7 @@ msgstr "기압 동향:"
 #, kde-format
 msgctxt "@label"
 msgid "Visibility:"
-msgstr "가시 거리:"
+msgstr "표시 여부:"
 
 #: qml/SwitchPanel.qml:72
 #, kde-format
@@ -837,31 +837,31 @@ msgctxt ""
 msgid "Feels like %1"
 msgstr "체감: %1"
 
-#: util.cpp:48
+#: util.cpp:43
 #, kde-format
 msgctxt "Degree, unit symbol"
 msgid "°"
 msgstr "°"
 
-#: util.cpp:52 util.cpp:56
+#: util.cpp:47 util.cpp:51
 #, kde-format
 msgctxt "temperature unitsymbol"
 msgid "%1 %2"
 msgstr "%1%2"
 
-#: util.cpp:66
+#: util.cpp:61
 #, kde-format
 msgctxt "value unitsymbol"
 msgid "%1 %2"
 msgstr "%1%2"
 
-#: util.cpp:72
+#: util.cpp:67
 #, kde-format
 msgctxt "value percentsymbol"
 msgid "%1 %"
 msgstr "%1%"
 
-#: util.cpp:78
+#: util.cpp:73
 #, kde-format
 msgctxt "@item %1 is a unit description and %2 its unit symbol"
 msgid "%1 (%2)"
