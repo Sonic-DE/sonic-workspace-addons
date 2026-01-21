@@ -1,0 +1,13 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "amato.amedeo@gmail.com",
+                "Name": "Amedeo Amato"
+            }
+        ],
+        "Name": "Windows Spotlight",
+        "Name[de]": "Windows-Blickpunkt"
+    },
+    "X-KDE-PlasmaPoTDProvider-Identifier": "spotlightprovider"
+}
