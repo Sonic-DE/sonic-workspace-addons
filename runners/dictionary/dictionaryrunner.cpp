@@ -20,6 +20,8 @@
 namespace
 {
 const char CONFIG_TRIGGERWORD[] = "triggerWord";
+const char CONFIG_OPERATIONMODE[] = "operationMode";
+static const char OPMODE_OFFLINE[] = "Offline";
 QMutex s_initMutex;
 }
 
@@ -32,6 +34,7 @@ void DictionaryRunner::reloadConfiguration()
 {
     KConfigGroup c = config();
     m_triggerWord = c.readEntry(CONFIG_TRIGGERWORD, i18nc("Trigger word before word to define", "define"));
+    m_operationMode = c.readEntry(CONFIG_OPERATIONMODE, i18nc("Use offline dictionary", OPMODE_OFFLINE));
     if (!m_triggerWord.isEmpty()) {
         m_triggerWord.append(QLatin1Char(' '));
         setTriggerWords({m_triggerWord});
@@ -61,51 +64,77 @@ void DictionaryRunner::match(RunnerContext &context)
     if (!context.isValid()) {
         return;
     }
-    QString returnedQuery;
-    QMetaObject::invokeMethod(&m_dictEngine, "requestDefinition", Qt::QueuedConnection, Q_ARG(const QString &, query));
-    QEventLoop loop;
-    connect(&m_dictEngine, &DictEngine::definitionRecieved, &loop, [&loop, &returnedQuery](const QString &html) {
-        returnedQuery = html;
-        loop.quit();
-    });
-    loop.exec();
-    if (!context.isValid() || returnedQuery.isEmpty()) {
-        return;
-    }
-
-    static const QRegularExpression removeHtml(QLatin1String("<[^>]*>"));
-    QString definitions(returnedQuery);
-    definitions.remove(QLatin1Char('\r')).remove(removeHtml);
-    while (definitions.contains(QLatin1String("  "))) {
-        definitions.replace(QLatin1String("  "), QLatin1String(" "));
-    }
-    QStringList lines = definitions.split(QLatin1Char('\n'), Qt::SkipEmptyParts);
-    if (lines.length() < 2) {
-        return;
-    }
-    lines.removeFirst();
-
-    QList<QueryMatch> matches;
-    int item = 0;
-    static const QRegularExpression partOfSpeech(QLatin1String("(?: ([a-z]{1,5})){0,1} [0-9]{1,2}: (.*)"));
-    QString lastPartOfSpeech;
-    for (const QString &line : std::as_const(lines)) {
-        const auto reMatch = partOfSpeech.match(line);
-        if (!reMatch.hasMatch()) {
-            continue;
+    if (m_operationMode == QStringLiteral("Online")) {
+        QString returnedQuery;
+        QMetaObject::invokeMethod(&m_dictEngine, "requestDefinition", Qt::QueuedConnection, Q_ARG(const QString &, query));
+        QEventLoop loop;
+        connect(&m_dictEngine, &DictEngine::definitionRecieved, &loop, [&loop, &returnedQuery](const QString &html) {
+            returnedQuery = html;
+            loop.quit();
+        });
+        loop.exec();
+        if (!context.isValid() || returnedQuery.isEmpty()) {
+            return;
         }
-        if (!reMatch.capturedView(1).isEmpty()) {
-            lastPartOfSpeech = reMatch.captured(1);
+
+        static const QRegularExpression removeHtml(QLatin1String("<[^>]*>"));
+        QString definitions(returnedQuery);
+        definitions.remove(QLatin1Char('\r')).remove(removeHtml);
+        while (definitions.contains(QLatin1String("  "))) {
+            definitions.replace(QLatin1String("  "), QLatin1String(" "));
         }
-        QueryMatch match(this);
-        match.setMultiLine(true);
-        match.setText(lastPartOfSpeech + QLatin1String(": ") + reMatch.captured(2));
-        match.setRelevance(1 - (static_cast<double>(++item) / static_cast<double>(lines.length())));
-        match.setCategoryRelevance(QueryMatch::CategoryRelevance::Moderate);
-        match.setIconName(QStringLiteral("accessories-dictionary"));
-        matches.append(match);
+        QStringList lines = definitions.split(QLatin1Char('\n'), Qt::SkipEmptyParts);
+        if (lines.length() < 2) {
+            return;
+        }
+        lines.removeFirst();
+
+        QList<QueryMatch> matches;
+        int item = 0;
+        static const QRegularExpression partOfSpeech(QLatin1String("(?: ([a-z]{1,5})){0,1} [0-9]{1,2}: (.*)"));
+        QString lastPartOfSpeech;
+        for (const QString &line : std::as_const(lines)) {
+            const auto reMatch = partOfSpeech.match(line);
+            if (!reMatch.hasMatch()) {
+                continue;
+            }
+            if (!reMatch.capturedView(1).isEmpty()) {
+                lastPartOfSpeech = reMatch.captured(1);
+            }
+            QueryMatch match(this);
+            match.setMultiLine(true);
+            match.setText(lastPartOfSpeech + QLatin1String(": ") + reMatch.captured(2));
+            match.setRelevance(1 - (static_cast<double>(++item) / static_cast<double>(lines.length())));
+            match.setCategoryRelevance(QueryMatch::CategoryRelevance::Moderate);
+            match.setIconName(QStringLiteral("accessories-dictionary"));
+            matches.append(match);
+        }
+        context.addMatches(matches);
+    } else {
+        QStringList returnedDefinitions;
+        QMetaObject::invokeMethod(&m_localDictEngine, "requestDefinition", Qt::QueuedConnection, Q_ARG(const QString &, query));
+        QEventLoop loop;
+        connect(&m_localDictEngine, &LocalDictEngine::definitionRecieved, &loop, [&loop, &returnedDefinitions](const QStringList &matches) {
+            returnedDefinitions = matches;
+            loop.quit();
+        });
+        loop.exec();
+        if (!context.isValid() || returnedDefinitions.isEmpty()) {
+            return;
+        }
+        QList<QueryMatch> matches;
+        int item = 0;
+        for (const QString &definition : returnedDefinitions) {
+            QueryMatch match(this);
+            match.setMultiLine(true);
+            match.setText(definition);
+            match.setRelevance(1 - (static_cast<double>(++item) / static_cast<double>(matches.length())));
+            match.setCategoryRelevance(QueryMatch::CategoryRelevance::Moderate);
+            match.setIconName(QStringLiteral("accessories-dictionary"));
+            matches.append(match);
+        }
+        context.addMatches(matches);
     }
-    context.addMatches(matches);
 }
 
 void DictionaryRunner::run(const RunnerContext &context, const QueryMatch &match)
