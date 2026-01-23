@@ -7,148 +7,151 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_notes\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-12 00:46+0000\n"
-"PO-Revision-Date: 2026-02-03 20:22-0500\n"
-"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
+"POT-Creation-Date: 2026-01-23 00:45+0000\n"
+"PO-Revision-Date: 2013-09-08 07:05+0900\n"
+"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.8\n"
 
 #: qml/config.qml:13
 #, kde-format
 msgctxt "@title"
 msgid "Appearance"
-msgstr "قىياپەت"
+msgstr ""
 
-#: qml/configAppearance.qml:36
+#: qml/configAppearance.qml:37
 #, kde-format
 msgid "%1pt"
-msgstr "%1pt"
+msgstr ""
 
-#: qml/configAppearance.qml:42
+#: qml/configAppearance.qml:43
 #, kde-format
 msgid "Text font size:"
-msgstr "تېكىست خەت چوڭلۇقى:"
-
-#: qml/configAppearance.qml:73
-#, kde-format
-msgid "A white sticky note"
-msgstr "ئاق چاپلاق"
+msgstr ""
 
 #: qml/configAppearance.qml:74
 #, kde-format
-msgid "A black sticky note"
-msgstr "قارا چاپلاق"
+msgid "A white sticky note"
+msgstr ""
 
 #: qml/configAppearance.qml:75
 #, kde-format
-msgid "A red sticky note"
-msgstr "قىزىل چاپلاق"
+msgid "A black sticky note"
+msgstr ""
 
 #: qml/configAppearance.qml:76
 #, kde-format
-msgid "An orange sticky note"
-msgstr "قىزغۇچ سېرىق چاپلاق"
+msgid "A red sticky note"
+msgstr ""
 
 #: qml/configAppearance.qml:77
 #, kde-format
-msgid "A yellow sticky note"
-msgstr "سېرىق چاپلاق"
+msgid "An orange sticky note"
+msgstr ""
 
 #: qml/configAppearance.qml:78
 #, kde-format
-msgid "A green sticky note"
-msgstr "يېشىل چاپلاق"
+msgid "A yellow sticky note"
+msgstr ""
 
 #: qml/configAppearance.qml:79
 #, kde-format
-msgid "A blue sticky note"
-msgstr "كۆك چاپلاق"
+msgid "A green sticky note"
+msgstr ""
 
 #: qml/configAppearance.qml:80
 #, kde-format
-msgid "A pink sticky note"
-msgstr "ھالرەڭ چاپلاق"
+msgid "A blue sticky note"
+msgstr ""
 
 #: qml/configAppearance.qml:81
 #, kde-format
-msgid "A transparent sticky note"
-msgstr "سۈزۈك چاپلاق"
+msgid "A pink sticky note"
+msgstr ""
 
 #: qml/configAppearance.qml:82
 #, kde-format
+msgid "A transparent sticky note"
+msgstr ""
+
+#: qml/configAppearance.qml:83
+#, kde-format
 msgid "A transparent sticky note with light text"
-msgstr "سۇس تېكىستلىك سۈزۈك چاپلاق"
+msgstr ""
 
 #: qml/main.qml:294
 #, kde-format
 msgid "Undo"
-msgstr "يېنىۋال"
+msgstr ""
 
 #: qml/main.qml:302
 #, kde-format
 msgid "Redo"
-msgstr "قايتىلا"
+msgstr ""
 
 #: qml/main.qml:312
 #, kde-format
 msgid "Cut"
-msgstr "كەس"
+msgstr ""
 
 #: qml/main.qml:320
 #, kde-format
 msgid "Copy"
-msgstr "كۆچۈر"
+msgstr ""
 
 #: qml/main.qml:328
 #, kde-format
 msgid "Paste"
-msgstr "چاپلا"
+msgstr ""
 
 #: qml/main.qml:334
 #, kde-format
 msgid "Paste with Full Formatting"
-msgstr "تولۇق پىچىمى بىلەن چاپلا"
+msgstr ""
 
 #: qml/main.qml:341
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Formatting"
 msgctxt "@action:inmenu"
 msgid "Remove Formatting"
-msgstr "پىچىمنى چىقىرىۋەت"
+msgstr "فورمات"
 
 #: qml/main.qml:356
 #, kde-format
 msgid "Delete"
-msgstr "ئۆچۈر"
+msgstr ""
 
 #: qml/main.qml:363
 #, kde-format
 msgid "Clear"
-msgstr "تازىلا"
+msgstr ""
 
 #: qml/main.qml:373
 #, kde-format
 msgid "Select All"
-msgstr "ھەممىنى تاللا"
+msgstr ""
 
 #: qml/main.qml:505
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Bold"
 msgctxt "@info:tooltip"
 msgid "Bold"
 msgstr "توم"
 
 #: qml/main.qml:518
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Italic"
 msgctxt "@info:tooltip"
 msgid "Italic"
 msgstr "يانتۇ"
 
 #: qml/main.qml:531
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Underline"
 msgctxt "@info:tooltip"
 msgid "Underline"
 msgstr "ئاستى سىزىق"
@@ -157,84 +160,95 @@ msgstr "ئاستى سىزىق"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Strikethrough"
-msgstr "ئۆچۈرۈش سىزىقى"
+msgstr ""
 
 #: qml/main.qml:618
 #, kde-format
 msgctxt "@action:button pin popup for panel widget"
 msgid "Keep Open"
-msgstr "ئوچۇق تۇت"
+msgstr ""
 
 #: qml/main.qml:647
 #, kde-format
 msgid "Discard this note?"
-msgstr "بۇ ئەسكەرتىشنى تاشلىۋېتەمدۇ؟"
+msgstr ""
 
 #: qml/main.qml:648
 #, kde-format
 msgid "Are you sure you want to discard this note?"
-msgstr "بۇ ئەسكەرتىشنى راستتىنلا تاشلىۋېتەمسىز؟"
+msgstr ""
 
 #: qml/main.qml:673
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "White"
 msgctxt "@item:inmenu"
 msgid "White"
 msgstr "ئاق"
 
 #: qml/main.qml:674
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Black"
 msgctxt "@item:inmenu"
 msgid "Black"
 msgstr "قارا"
 
 #: qml/main.qml:675
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Red"
 msgctxt "@item:inmenu"
 msgid "Red"
 msgstr "قىزىل"
 
 #: qml/main.qml:676
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Orange"
 msgctxt "@item:inmenu"
 msgid "Orange"
 msgstr "قىزغۇچ سېرىق"
 
 #: qml/main.qml:677
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Yellow"
 msgctxt "@item:inmenu"
 msgid "Yellow"
 msgstr "سېرىق"
 
 #: qml/main.qml:678
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Green"
 msgctxt "@item:inmenu"
 msgid "Green"
 msgstr "يېشىل"
 
 #: qml/main.qml:679
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Blue"
 msgctxt "@item:inmenu"
 msgid "Blue"
 msgstr "كۆك"
 
 #: qml/main.qml:680
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Pink"
 msgctxt "@item:inmenu"
 msgid "Pink"
 msgstr "ھالرەڭ"
 
 #: qml/main.qml:681
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Translucent"
 msgctxt "@item:inmenu"
 msgid "Transparent"
-msgstr "سۈزۈك"
+msgstr "يېرىم سۈزۈك"
 
 #: qml/main.qml:685
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Translucent"
 msgctxt "@item:inmenu"
 msgid "Transparent Light"
-msgstr "سۇس سۈزۈك"
+msgstr "يېرىم سۈزۈك"
 
+#, fuzzy
 #~| msgid "Justify"
 #~ msgid "Justified"
 #~ msgstr "ئوڭ-سول تەرىپى تەكشى"
