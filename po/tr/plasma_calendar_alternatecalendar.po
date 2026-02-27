@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the kdeplasma-addons package.
 #
-# SPDX-FileCopyrightText: 2022-2024, 2026 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024 Emir SARI <emir_sari@icloud.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdeplasma-addons\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-07-07 02:39+0000\n"
-"PO-Revision-Date: 2026-06-11 21:17+0300\n"
+"POT-Creation-Date: 2026-02-27 00:45+0000\n"
+"PO-Revision-Date: 2024-05-19 23:03+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 26.04.0\n"
+"X-Generator: Lokalize 24.07.70\n"
 
 #: calendarsystem.h:51
 #, kde-format
@@ -33,7 +33,7 @@ msgstr "Milankoviç"
 #, kde-format
 msgctxt "@item:inlist"
 msgid "The Solar Hijri Calendar (Persian)"
-msgstr "Hicrî Güneş Takvimi (Pers)"
+msgstr "Hicri Güneş Takvimi (Pers)"
 
 #: calendarsystem.h:63
 #, kde-format
@@ -41,7 +41,7 @@ msgctxt ""
 "@item:inlist See https://cldr.unicode.org/development/development-process/"
 "design-proposals/islamic-calendar-types for more details"
 msgid "Islamic Calendar (Astronomical)"
-msgstr "İslâmî Takvim (Gökbilimsel)"
+msgstr "İslami Takvim (Gökbilimsel)"
 
 #: calendarsystem.h:67
 #, kde-format
@@ -49,7 +49,7 @@ msgctxt ""
 "@item:inlist See https://cldr.unicode.org/development/development-process/"
 "design-proposals/islamic-calendar-types for more details"
 msgid "The Islamic Civil Calendar (Tabular)"
-msgstr "İslâmî Sivil Takvim (Cetvelli)"
+msgstr "İslami Sivil Takvim (Cetvelli)"
 
 #: calendarsystem.h:71
 #, kde-format
@@ -57,7 +57,7 @@ msgctxt ""
 "@item:inlist See https://cldr.unicode.org/development/development-process/"
 "design-proposals/islamic-calendar-types for more details"
 msgid "Islamic Calendar (Umm al-Qura)"
-msgstr "İslâmî Takvim (Ümmü’l–Kurâ)"
+msgstr "İslami Takvim (Ümmü’l–Kurra)"
 
 #: calendarsystem.h:75
 #, kde-format
@@ -75,13 +75,15 @@ msgstr "Ulusal Hint Takvimi"
 #, kde-format
 msgctxt "@item:inlist"
 msgid "Hebrew Calendar"
-msgstr "İbrânî Takvimi"
+msgstr "İbrani Takvimi"
 
 #: calendarsystem.h:87
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@item:inlist"
+#| msgid "Chinese Lunar Calendar"
 msgctxt "@item:inlist"
 msgid "Vietnamese Lunar Calendar"
-msgstr "Vietnam Ay Takvimi"
+msgstr "Çin Güneş Takvimi"
 
 #: config/qml/AlternateCalendarConfig.qml:48
 #, kde-format
@@ -150,10 +152,14 @@ msgctxt "@label %1 day %2 month name %3 year"
 msgid "%1 %2, %3"
 msgstr "%1 %2, %3"
 
-#~ msgctxt ""
-#~ "%1 Day number %2 Month number with leap %3 Year number with ganzhi name"
-#~ msgid "%1 %2, %3"
-#~ msgstr "%1 %2, %3"
+#: provider/vietnamesecalendar.cpp:406
+#, fuzzy, kde-format
+#| msgctxt "@label %1 day %2 month name in India National Calendar %3 year"
+#| msgid "%1 %2, %3"
+msgctxt ""
+"%1 Day number %2 Month number with leap %3 Year number with ganzhi name"
+msgid "%1 %2, %3"
+msgstr "%1 %2, %3"
 
 #~ msgctxt "Month name in Indian National Calendar"
 #~ msgid "Chaitra"
