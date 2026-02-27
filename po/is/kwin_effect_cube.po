@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: kdeplasma-addons\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-12-30 00:42+0000\n"
-"PO-Revision-Date: 2026-03-11 23:55+0000\n"
+"PO-Revision-Date: 2026-02-26 11:21+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -26,7 +26,7 @@ msgstr "KWin"
 #: kcm/cubeeffectkcm.cpp:42 package/contents/ui/main.qml:40
 #, kde-format
 msgid "Toggle Cube"
-msgstr "Virkja/afvirkja Tening"
+msgstr "Víxla teningi af/á"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: kcm/cubeeffectkcm.ui:23
