@@ -71,7 +71,6 @@ void GroupingContainment::migrateFromContainer()
     }
 
     // Delete the the old grouping containment
-    bool oldContainmentInstantiated = false;
     for (Plasma::Containment *cont : corona()->containments()) {
         if (cont->id() == oldContId) {
             delete cont;
