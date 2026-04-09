@@ -78,9 +78,7 @@ msgid "Hebrew Calendar"
 msgstr "Hebrejský kalendár"
 
 #: calendarsystem.h:87
-#, fuzzy, kde-format
-#| msgctxt "@item:inlist"
-#| msgid "Chinese Lunar Calendar"
+#, kde-format
 msgctxt "@item:inlist"
 msgid "Vietnamese Lunar Calendar"
 msgstr "Čínsky lunárny kalendár"
@@ -154,9 +152,7 @@ msgid "%1 %2, %3"
 msgstr "%1 %2, %3"
 
 #: provider/vietnamesecalendar.cpp:406
-#, fuzzy, kde-format
-#| msgctxt "@label %1 day %2 month name in India National Calendar %3 year"
-#| msgid "%1 %2, %3"
+#, kde-format
 msgctxt ""
 "%1 Day number %2 Month number with leap %3 Year number with ganzhi name"
 msgid "%1 %2, %3"

@@ -107,7 +107,7 @@ msgstr "Zadajte cestu alebo URL…"
 #: kcm/cubeeffectkcm.ui:218
 #, kde-format
 msgid "Select..."
-msgstr "Vybrať…"
+msgstr "Vybrať..."
 
 #: package/contents/ui/PlaceholderView.qml:28
 #, kde-format
