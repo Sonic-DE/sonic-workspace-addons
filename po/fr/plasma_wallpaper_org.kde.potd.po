@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: plasma_wallpaper_org.kde.potd\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-09 00:46+0000\n"
-"PO-Revision-Date: 2024-08-30 08:31+0200\n"
+"PO-Revision-Date: 2026-04-11 07:33+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
 "Language: fr\n"
@@ -133,13 +133,13 @@ msgstr "Ouvrir une image de fond d'écran"
 #, kde-format
 msgctxt "@action:inmenu Placeholder is title of image"
 msgid "About “%1”"
-msgstr ""
+msgstr "À propos de « %1 »"
 
 #: package/contents/ui/main.qml:28
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "About This Image"
-msgstr ""
+msgstr "À propos de cette image"
 
 #: package/contents/ui/WallpaperDelegate.qml:137
 #, kde-format
