@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-stable/messages/kdeplasma-addons/plasma_applet_org.kde."
+"X-Crowdin-File: /kf6-trunk/messages/kdeplasma-addons/plasma_applet_org.kde."
 "plasma.timer.pot\n"
-"X-Crowdin-File-ID: 52312\n"
+"X-Crowdin-File-ID: 43431\n"
 
 #: CompactRepresentation.qml:133
 #, kde-format
@@ -110,7 +110,9 @@ msgid "Run command:"
 msgstr "运行命令："
 
 #: configGeneral.qml:119
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@placeholder"
+#| msgid "kdialog --msgbox 'Timer finished'"
 msgctxt "@placeholder, only translate the message in single quotes"
 msgid "kdialog --msgbox 'Timer finished'"
 msgstr "kdialog --msgbox '计时结束'"
@@ -122,11 +124,14 @@ msgid "Add"
 msgstr "添加"
 
 #: configTimes.qml:81
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "If you add predefined timers here, they will appear in plasmoid context "
+#| "menu."
 msgid ""
 "If you add predefined timers here, they will appear in the widget’s context "
 "menu."
-msgstr "在此处添加计时器预设后，它们将显示在计时器小部件的右键菜单中。"
+msgstr "在此处添加计时器预设后，它们将显示在 Plasma 小程序的右键菜单中。"
 
 #: configTimes.qml:119
 #, kde-format

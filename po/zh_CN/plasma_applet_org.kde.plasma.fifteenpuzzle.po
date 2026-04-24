@@ -14,9 +14,9 @@ msgstr ""
 "X-Crowdin-Project: kdeorg\n"
 "X-Crowdin-Project-ID: 269464\n"
 "X-Crowdin-Language: zh-CN\n"
-"X-Crowdin-File: /kf6-stable/messages/kdeplasma-addons/plasma_applet_org.kde."
+"X-Crowdin-File: /kf6-trunk/messages/kdeplasma-addons/plasma_applet_org.kde."
 "plasma.fifteenpuzzle.pot\n"
-"X-Crowdin-File-ID: 49938\n"
+"X-Crowdin-File-ID: 42733\n"
 
 #: qml/config.qml:13
 #, kde-format
@@ -85,7 +85,9 @@ msgid "Color:"
 msgstr "颜色："
 
 #: qml/configAppearance.qml:163
-#, kde-format
+#, fuzzy, kde-format
+#| msgctxt "@option:check"
+#| msgid "Hide on image backgrounds"
 msgctxt "@option:check Hide tile labels"
 msgid "Hide on image backgrounds"
 msgstr "在图像背景上隐藏"
