@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: plasma_applet_fifteenPuzzle\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-24 00:45+0000\n"
-"PO-Revision-Date: 2025-08-12 10:42+0200\n"
+"PO-Revision-Date: 2026-04-25 08:00+0200\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: fr\n"
 "Language: fr\n"
@@ -92,9 +92,7 @@ msgid "Color:"
 msgstr "Couleur :"
 
 #: qml/configAppearance.qml:163
-#, fuzzy, kde-format
-#| msgctxt "@option:check"
-#| msgid "Hide on image backgrounds"
+#, kde-format
 msgctxt "@option:check Hide tile labels"
 msgid "Hide on image backgrounds"
 msgstr "Masquer sur l'arrière-plan de l'image"
