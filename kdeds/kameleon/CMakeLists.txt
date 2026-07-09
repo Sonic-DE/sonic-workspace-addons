@@ -53,5 +53,5 @@ ecm_qt_declare_logging_category(kameleonhelper
 
 # FreeBSD is missing dependencies to CI.
 if(NOT CMAKE_SYSTEM_NAME MATCHES FreeBSD)
-    add_subdirectory(qmk/kameleon-qmk-helper)
+    add_subdirectory(qmk/qmk-dbus-helper)
 endif()
