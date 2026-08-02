@@ -98,7 +98,7 @@
         "FormFactors": [
             "desktop"
         ],
-        "Icon": "start-here-kde",
+        "Icon": "start-here-sonicde",
         "Id": "org.kde.plasma.kickerdash",
         "License": "GPL-2.0+",
         "Name": "Application Dashboard",
