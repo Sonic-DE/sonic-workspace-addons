@@ -93,6 +93,8 @@ AllowShortLambdasOnASingleLine: Empty
 
 # We do not want clang-format to put all arguments on a new line
 AllowAllArgumentsOnNextLine: false
+
+# SonicDE uses spaces and places function opening braces on a new line.
 UseTab: Never
 BraceWrapping:
   AfterFunction: true
