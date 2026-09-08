@@ -5,7 +5,7 @@
  */
 
 import QtQuick
-import Qt5Compat.GraphicalEffects
+import QtQuick.Effects
 import QtQuick.Layouts
 import QtQuick.Window
 
@@ -44,8 +44,11 @@ KWin.TabBoxSwitcher {
             outputName: window.screen.name
 
             layer.enabled: true
-            layer.effect: FastBlur {
-                radius: enableBlur ? 64 : 0
+            layer.effect: MultiEffect {
+                blurEnabled: true
+                blur: enableBlur ? 1 : 0
+                blurMax: 64
+                blurMultiplier: 0
             }
         }
 

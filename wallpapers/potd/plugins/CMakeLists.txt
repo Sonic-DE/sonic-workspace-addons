@@ -36,6 +36,11 @@ target_link_libraries(plasma_wallpaper_potdplugin PRIVATE plasmapotdprovidercore
 )
 ecm_finalize_qml_module(plasma_wallpaper_potdplugin)
 
+qt_add_shaders(plasma_wallpaper_potdplugin "potd_huesaturation_shader"
+    PREFIX "/qt/qml/org/kde/plasma/wallpapers/potd"
+    FILES shaders/huesaturation.frag
+)
+
 ########### plugin core library ############
 set(POTDPROVIDER_VERSION 2.0.0)
 set(POTDPROVIDER_VERSION_MAJOR 2)
