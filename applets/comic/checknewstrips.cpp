@@ -23,8 +23,8 @@ CheckNewStrips::CheckNewStrips(const QStringList &identifiers, ComicEngine *engi
     timer->start();
 
     // start at once, that way the user does not have to wait for minutes to get the initial result
-    start();
     connect(mEngine, &ComicEngine::requestFinished, this, &CheckNewStrips::dataUpdated);
+    start();
 }
 
 void CheckNewStrips::dataUpdated(const ComicMetaData &data)
@@ -32,7 +32,12 @@ void CheckNewStrips::dataUpdated(const ComicMetaData &data)
     const QString source = data.identifier;
     QString lastIdentifierSuffix;
 
-    if (data.reason != RequestReason::Check) {
+    if (data.reason != RequestReason::Check || !mChecking || mIndex >= mIdentifiers.count()) {
+        return;
+    }
+
+    // misbehaving comic plugins might end up sending multiple responses, which breaks our tracking and causes it to loop updates forever
+    if (data.identifier.left(data.identifier.indexOf(QLatin1Char(':'))) != mIdentifiers[mIndex]) {
         return;
     }
 
@@ -52,6 +57,7 @@ void CheckNewStrips::dataUpdated(const ComicMetaData &data)
         const QString newSource = mIdentifiers[mIndex] + QLatin1Char(':');
         mEngine->requestSource(newSource, RequestReason::Check);
     } else {
+        mChecking = false;
         mIndex = 0;
     }
 }
@@ -59,12 +65,11 @@ void CheckNewStrips::dataUpdated(const ComicMetaData &data)
 void CheckNewStrips::start()
 {
     // already running, do nothing
-    if (mIndex) {
+    if (mChecking || mIdentifiers.isEmpty()) {
         return;
     }
 
-    if (mIndex < mIdentifiers.count()) {
-        const QString newSource = mIdentifiers[mIndex] + QLatin1Char(':');
-        mEngine->requestSource(newSource, RequestReason::Check);
-    }
+    mChecking = true;
+    const QString newSource = mIdentifiers[mIndex] + QLatin1Char(':');
+    mEngine->requestSource(newSource, RequestReason::Check);
 }
