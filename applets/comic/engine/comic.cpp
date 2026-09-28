@@ -91,13 +91,13 @@ bool ComicEngine::requestSource(const QString &identifier, RequestReason reason)
         connect(provider, &ComicProvider::error, this, &ComicEngine::error);
         return true;
     }
-    // Struct with just error=true is fine!
+    // Preserve the request identifier so callers can match errors to their requests.
     QT_WARNING_PUSH
     QT_WARNING_DISABLE_GCC("-Wmissing-designated-field-initializers");
     QT_WARNING_DISABLE_CLANG("-Wmissing-designated-field-initializers");
     // ... start a new query otherwise
     if (parts.count() < 2) {
-        Q_EMIT requestFinished(ComicMetaData{.reason = reason, .error = true});
+        Q_EMIT requestFinished(ComicMetaData{.reason = reason, .identifier = identifier, .error = true});
         qCWarning(PLASMA_COMIC) << "Less than two arguments specified.";
         return false;
     }
@@ -105,7 +105,7 @@ bool ComicEngine::requestSource(const QString &identifier, RequestReason reason)
         // User might have installed more from GHNS
         loadProviders();
         if (!mProviders.contains(parts[0])) {
-            Q_EMIT requestFinished(ComicMetaData{.reason = reason, .error = true});
+            Q_EMIT requestFinished(ComicMetaData{.reason = reason, .identifier = identifier, .error = true});
             qCWarning(PLASMA_COMIC) << identifier << "comic plugin does not seem to be installed.";
             return false;
         }

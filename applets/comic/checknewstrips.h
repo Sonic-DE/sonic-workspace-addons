@@ -44,6 +44,7 @@ private:
     int mIndex;
     ComicEngine *mEngine;
     const QStringList mIdentifiers;
+    bool mChecking = false;
 };
 
 #endif
