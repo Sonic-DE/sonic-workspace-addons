@@ -113,7 +113,7 @@ PlasmoidItem {
         }
 
         if (!forecastControl.forecast?.station?.place) {
-            return "";
+            return i18nc("@info:placeholder", "Unable to load weather forecast")
         }
 
         const tooltips = [];
