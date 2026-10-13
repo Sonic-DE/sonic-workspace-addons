@@ -427,6 +427,8 @@ void UKMETIon::places_slotJobFinished(KJob *job)
 
 void UKMETIon::places_slotJobAutoFinished(KJob *job)
 {
+    --m_pendingSearchCount;
+
     if (m_locationPromise->isCanceled()) {
         if (!m_pendingSearchCount) {
             m_locationPromise->finish();
@@ -434,8 +436,6 @@ void UKMETIon::places_slotJobAutoFinished(KJob *job)
         }
         return;
     }
-
-    --m_pendingSearchCount;
 
     // If Redirected, don't go to this routine
     if (!job->error()) {
@@ -514,11 +514,12 @@ void UKMETIon::forecast_slotJobFinished(KJob *job)
             }
         }
     } else {
-        readForecast(doc);
+        if (readForecast(doc)) {
+            updateWeather();
+        }
     }
 
     m_retryAttempts = 0;
-    updateWeather();
 
     m_forecastPromise->finish();
     clearForecastData();
@@ -582,6 +583,7 @@ bool UKMETIon::readForecast(const QJsonDocument &doc)
     const QJsonArray info = doc[u"forecasts"_s].toArray();
     if (info.isEmpty()) {
         qCDebug(WEATHER::ION::BBCUKMET) << "Malformed forecast report" << doc;
+        return false;
     }
 
     WeatherData &weatherData = *m_weatherData;
