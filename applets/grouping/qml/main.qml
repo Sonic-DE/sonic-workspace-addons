@@ -17,10 +17,10 @@ ContainmentItem {
     id: root
 
     //be at least the same size as the system tray popup
-    Layout.minimumWidth: Kirigami.Units.gridUnit * 24
-    Layout.minimumHeight: Kirigami.Units.gridUnit * 21
-    Layout.preferredWidth: Layout.minimumWidth
-    Layout.preferredHeight: Layout.minimumHeight * 1.5
+    Layout.minimumWidth: Kirigami.Units.gridUnit * 2
+    Layout.minimumHeight: Kirigami.Units.gridUnit * 2
+    Layout.preferredWidth: Layout.minimumWidth * 5
+    Layout.preferredHeight: Layout.minimumHeight * 5
 
     property Component plasmoidItemComponent
 
