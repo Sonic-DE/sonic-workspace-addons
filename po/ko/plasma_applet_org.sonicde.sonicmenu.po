@@ -1,0 +1,128 @@
+# Korean translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations (Claude) and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Korean\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"메뉴 구조를 JSON으로 편집합니다. 각 항목에는 name, icon, command(셸을 통해 "
+"실행) 또는 action(세션 동작: lock, logout, leave, switchUser, suspend, "
+"hibernate, reboot, shutdown), submenu(항목 배열), separator(true)를 지정할 "
+"수 있습니다."
+
+msgid "Icon:"
+msgstr "아이콘:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "선택…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "아이콘 지우기"
+
+msgid "General:"
+msgstr "일반:"
+
+msgid "Show icons in the menu"
+msgstr "메뉴에 아이콘 표시"
+
+msgid "Menu Width:"
+msgstr "메뉴 너비:"
+
+msgid "Button Height:"
+msgstr "단추 높이:"
+
+msgid "General"
+msgstr "일반"
+
+msgid "Edit Menu"
+msgstr "메뉴 편집"
+
+msgid "Edit JSON"
+msgstr "JSON 편집"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "분류 열기"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "실행"
+
+msgid "Add Item"
+msgstr "항목 추가"
+
+msgid "Add Folder"
+msgstr "폴더 추가"
+
+msgid "Add Separator"
+msgstr "구분자 추가"
+
+msgid "No item selected"
+msgstr "선택한 항목 없음"
+
+msgid "Separator selected"
+msgstr "구분자 선택됨"
+
+msgid "Name:"
+msgstr "이름:"
+
+msgid "Runs:"
+msgstr "실행 대상:"
+
+msgid "A command"
+msgstr "명령"
+
+msgid "Command:"
+msgstr "명령:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "화면 잠금"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "로그아웃"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "떠나기… (모든 옵션)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "사용자 전환"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "절전"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "최대 절전"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "다시 시작"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "시스템 끄기"
+
+msgid "Unnamed"
+msgstr "이름 없음"

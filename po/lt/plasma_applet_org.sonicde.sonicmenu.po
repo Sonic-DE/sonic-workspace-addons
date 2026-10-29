@@ -1,0 +1,129 @@
+# Lithuanian translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Lithuanian\n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Taisyti meniu struktūrą kaip JSON. Kiekvienas elementas gali turėti: name, "
+"icon, command (vykdoma per apvalkalą) arba action (seanso veiksmas: lock, "
+"logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu "
+"(elementų masyvas) arba separator (true)."
+
+msgid "Icon:"
+msgstr "Piktograma:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Pasirinkti…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Išvalyti piktogramą"
+
+msgid "General:"
+msgstr "Bendra:"
+
+msgid "Show icons in the menu"
+msgstr "Rodyti piktogramas meniu"
+
+msgid "Menu Width:"
+msgstr "Meniu plotis:"
+
+msgid "Button Height:"
+msgstr "Mygtuko aukštis:"
+
+msgid "General"
+msgstr "Bendra"
+
+msgid "Edit Menu"
+msgstr "Taisyti meniu"
+
+msgid "Edit JSON"
+msgstr "Taisyti JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Atverti kategoriją"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Paleisti"
+
+msgid "Add Item"
+msgstr "Pridėti elementą"
+
+msgid "Add Folder"
+msgstr "Pridėti aplanką"
+
+msgid "Add Separator"
+msgstr "Pridėti skirtuką"
+
+msgid "No item selected"
+msgstr "Nepasirinktas joks elementas"
+
+msgid "Separator selected"
+msgstr "Pasirinktas skirtukas"
+
+msgid "Name:"
+msgstr "Pavadinimas:"
+
+msgid "Runs:"
+msgstr "Vykdo:"
+
+msgid "A command"
+msgstr "Komandą"
+
+msgid "Command:"
+msgstr "Komanda:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Užrakinti ekraną"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Atsijungti"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Išeiti… (visos parinktys)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Perjungti naudotoją"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Užmigdyti"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Hibernuoti"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Paleisti iš naujo"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Išjungti"
+
+msgid "Unnamed"
+msgstr "Be pavadinimo"

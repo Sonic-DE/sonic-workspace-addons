@@ -1,0 +1,124 @@
+# plasma_applet_org.sonicde.sonicmenu translation into ja for SonicDE.
+# These are machine translations and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 12:00+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: ja\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr "メニュー構造を JSON として編集します。各項目には次を指定できます: name、icon、command (シェル経由で実行) または action (セッション操作: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown)、submenu (項目の配列)、または separator (true)。"
+
+msgid "Icon:"
+msgstr "アイコン:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "選択…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "アイコンをクリア"
+
+msgid "General:"
+msgstr "全般:"
+
+msgid "Show icons in the menu"
+msgstr "メニューにアイコンを表示"
+
+msgid "Menu Width:"
+msgstr "メニューの幅:"
+
+msgid "Button Height:"
+msgstr "ボタンの高さ:"
+
+msgid "General"
+msgstr "全般"
+
+msgid "Edit Menu"
+msgstr "メニューを編集"
+
+msgid "Edit JSON"
+msgstr "JSON を編集"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "カテゴリを開く"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "起動"
+
+msgid "Add Item"
+msgstr "項目を追加"
+
+msgid "Add Folder"
+msgstr "フォルダを追加"
+
+msgid "Add Separator"
+msgstr "区切りを追加"
+
+msgid "No item selected"
+msgstr "項目が選択されていません"
+
+msgid "Separator selected"
+msgstr "区切りが選択されています"
+
+msgid "Name:"
+msgstr "名前:"
+
+msgid "Runs:"
+msgstr "実行内容:"
+
+msgid "A command"
+msgstr "コマンド"
+
+msgid "Command:"
+msgstr "コマンド:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "画面をロック"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "ログアウト"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "退出… (すべてのオプション)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "ユーザを切り替え"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "スリープ"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "ハイバネート"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "再起動"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "シャットダウン"
+
+msgid "Unnamed"
+msgstr "名前なし"

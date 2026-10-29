@@ -1,0 +1,129 @@
+# Arabic translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations (Claude) and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"حرّر بنية القائمة بصيغة JSON. يمكن أن يحتوي كل عنصر على: name، icon، command "
+"(يُنفَّذ عبر الصدفة) أو action (إجراء جلسة: lock، logout، leave، switchUser، "
+"suspend، hibernate، reboot، shutdown)، submenu (مصفوفة من العناصر) أو "
+"separator (true)."
+
+msgid "Icon:"
+msgstr "الأيقونة:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "اختر…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "امسح الأيقونة"
+
+msgid "General:"
+msgstr "عامّ:"
+
+msgid "Show icons in the menu"
+msgstr "اعرض الأيقونات في القائمة"
+
+msgid "Menu Width:"
+msgstr "عرض القائمة:"
+
+msgid "Button Height:"
+msgstr "ارتفاع الأزرار:"
+
+msgid "General"
+msgstr "عامّ"
+
+msgid "Edit Menu"
+msgstr "حرّر القائمة"
+
+msgid "Edit JSON"
+msgstr "حرّر JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "افتح الفئة"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "أطلق"
+
+msgid "Add Item"
+msgstr "أضف عنصرًا"
+
+msgid "Add Folder"
+msgstr "أضف مجلدًا"
+
+msgid "Add Separator"
+msgstr "أضف فاصلًا"
+
+msgid "No item selected"
+msgstr "لم يُحدَّد أي عنصر"
+
+msgid "Separator selected"
+msgstr "حُدِّد فاصل"
+
+msgid "Name:"
+msgstr "الاسم:"
+
+msgid "Runs:"
+msgstr "يشغّل:"
+
+msgid "A command"
+msgstr "أمرًا"
+
+msgid "Command:"
+msgstr "الأمر:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "اقفل الشاشة"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "اخرج"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "غادر… (كل الخيارات)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "بدّل المستخدم"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "علّق"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "أسبت"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "أعد التشغيل"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "أطفئ"
+
+msgid "Unnamed"
+msgstr "غير مسمّى"

@@ -1,0 +1,128 @@
+# Interlingua translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Interlingua\n"
+"Language: ia\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Modifica le structura del menu como JSON. Cata elemento pote haber: name, "
+"icon, command (executate per le shell) o action (un action de session: "
+"lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), "
+"submenu (array de elementos) o separator (true)."
+
+msgid "Icon:"
+msgstr "Icone:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Selige…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Netta icone"
+
+msgid "General:"
+msgstr "General:"
+
+msgid "Show icons in the menu"
+msgstr "Monstra icones in le menu"
+
+msgid "Menu Width:"
+msgstr "Largessa de menu:"
+
+msgid "Button Height:"
+msgstr "Altessa de button:"
+
+msgid "General"
+msgstr "General"
+
+msgid "Edit Menu"
+msgstr "Modifica menu"
+
+msgid "Edit JSON"
+msgstr "Modifica JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Aperi categoria"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Lancea"
+
+msgid "Add Item"
+msgstr "Adde elemento"
+
+msgid "Add Folder"
+msgstr "Adde dossier"
+
+msgid "Add Separator"
+msgstr "Adde separator"
+
+msgid "No item selected"
+msgstr "Nulle elemento seligite"
+
+msgid "Separator selected"
+msgstr "Separator seligite"
+
+msgid "Name:"
+msgstr "Nomine:"
+
+msgid "Runs:"
+msgstr "Executa:"
+
+msgid "A command"
+msgstr "Un commando"
+
+msgid "Command:"
+msgstr "Commando:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Bloca schermo"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Clausura session"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Lassa… (tote optiones)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Commuta usator"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Dormi"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Hiberna"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Reinitia"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Stoppa"
+
+msgid "Unnamed"
+msgstr "Sin nomine"

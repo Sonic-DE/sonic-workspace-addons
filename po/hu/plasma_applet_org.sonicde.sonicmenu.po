@@ -1,0 +1,128 @@
+# Hungarian translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Hungarian\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"A menüszerkezet szerkesztése JSON formátumban. Minden elemnek lehet: name, "
+"icon, command (a parancsértelmezőn keresztül futtatva) vagy action "
+"(munkamenet-művelet: lock, logout, leave, switchUser, suspend, hibernate, "
+"reboot, shutdown), submenu (elemek tömbje) vagy separator (true)."
+
+msgid "Icon:"
+msgstr "Ikon:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Kiválasztás…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Ikon törlése"
+
+msgid "General:"
+msgstr "Általános:"
+
+msgid "Show icons in the menu"
+msgstr "Ikonok megjelenítése a menüben"
+
+msgid "Menu Width:"
+msgstr "Menüszélesség:"
+
+msgid "Button Height:"
+msgstr "Gombmagasság:"
+
+msgid "General"
+msgstr "Általános"
+
+msgid "Edit Menu"
+msgstr "Menü szerkesztése"
+
+msgid "Edit JSON"
+msgstr "JSON szerkesztése"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Kategória megnyitása"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Indítás"
+
+msgid "Add Item"
+msgstr "Elem hozzáadása"
+
+msgid "Add Folder"
+msgstr "Mappa hozzáadása"
+
+msgid "Add Separator"
+msgstr "Elválasztó hozzáadása"
+
+msgid "No item selected"
+msgstr "Nincs kijelölt elem"
+
+msgid "Separator selected"
+msgstr "Elválasztó kijelölve"
+
+msgid "Name:"
+msgstr "Név:"
+
+msgid "Runs:"
+msgstr "Futtatja:"
+
+msgid "A command"
+msgstr "Egy parancsot"
+
+msgid "Command:"
+msgstr "Parancs:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Képernyő zárolása"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Kijelentkezés"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Kilépés… (minden lehetőség)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Felhasználóváltás"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Alvó állapot"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Hibernálás"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Újraindítás"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Leállítás"
+
+msgid "Unnamed"
+msgstr "Névtelen"

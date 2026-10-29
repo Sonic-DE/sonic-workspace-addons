@@ -1,0 +1,128 @@
+# Swedish translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations (Claude) and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Swedish\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Redigera menystrukturen som JSON. Varje objekt kan ha: name, icon, command "
+"(körs via skalet) eller action (en sessionsåtgärd: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (fält av objekt) "
+"eller separator (true)."
+
+msgid "Icon:"
+msgstr "Ikon:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Välj…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Rensa ikon"
+
+msgid "General:"
+msgstr "Allmänt:"
+
+msgid "Show icons in the menu"
+msgstr "Visa ikoner i menyn"
+
+msgid "Menu Width:"
+msgstr "Menybredd:"
+
+msgid "Button Height:"
+msgstr "Knapphöjd:"
+
+msgid "General"
+msgstr "Allmänt"
+
+msgid "Edit Menu"
+msgstr "Redigera meny"
+
+msgid "Edit JSON"
+msgstr "Redigera JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Öppna kategori"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Starta"
+
+msgid "Add Item"
+msgstr "Lägg till objekt"
+
+msgid "Add Folder"
+msgstr "Lägg till katalog"
+
+msgid "Add Separator"
+msgstr "Lägg till avskiljare"
+
+msgid "No item selected"
+msgstr "Inget objekt markerat"
+
+msgid "Separator selected"
+msgstr "Avskiljare markerad"
+
+msgid "Name:"
+msgstr "Namn:"
+
+msgid "Runs:"
+msgstr "Kör:"
+
+msgid "A command"
+msgstr "Ett kommando"
+
+msgid "Command:"
+msgstr "Kommando:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Lås skärmen"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Logga ut"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Lämna… (alla alternativ)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Byt användare"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Viloläge"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Dvala"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Starta om"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Stäng av"
+
+msgid "Unnamed"
+msgstr "Namnlös"

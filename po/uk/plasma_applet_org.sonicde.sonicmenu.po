@@ -1,0 +1,161 @@
+# Ukrainian translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Ukrainian\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#: ConfigEditJson.qml:24
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Редагуйте структуру меню у форматі JSON. Кожен пункт може мати: name, icon, "
+"command (виконується через оболонку) або action (дія сеансу: lock, logout, "
+"leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (масив "
+"пунктів) або separator (true)."
+
+#: ConfigGeneral.qml:36
+msgid "Icon:"
+msgstr "Піктограма:"
+
+#: ConfigGeneral.qml:114 MenuBuilder.qml:868
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Вибрати…"
+
+#: ConfigGeneral.qml:119 MenuBuilder.qml:873
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Очистити піктограму"
+
+#: ConfigGeneral.qml:137
+msgid "General:"
+msgstr "Загальне:"
+
+#: ConfigGeneral.qml:138
+msgid "Show icons in the menu"
+msgstr "Показувати піктограми у меню"
+
+#: ConfigGeneral.qml:147
+msgid "Menu Width:"
+msgstr "Ширина меню:"
+
+#: ConfigGeneral.qml:157
+msgid "Button Height:"
+msgstr "Висота кнопок:"
+
+#: config.qml:7
+msgid "General"
+msgstr "Загальне"
+
+#: config.qml:12
+msgid "Edit Menu"
+msgstr "Редагувати меню"
+
+#: config.qml:17
+msgid "Edit JSON"
+msgstr "Редагувати JSON"
+
+#: ItemListDelegate.qml:107
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Відкрити категорію"
+
+#: ItemListDelegate.qml:108
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Запустити"
+
+#: MenuBuilder.qml:437
+msgid "Add Item"
+msgstr "Додати пункт"
+
+#: MenuBuilder.qml:507
+msgid "Add Folder"
+msgstr "Додати теку"
+
+#: MenuBuilder.qml:583
+msgid "Add Separator"
+msgstr "Додати роздільник"
+
+#: MenuBuilder.qml:752
+msgid "No item selected"
+msgstr "Не позначено жодного пункту"
+
+#: MenuBuilder.qml:760
+msgid "Separator selected"
+msgstr "Позначено роздільник"
+
+#: MenuBuilder.qml:768
+msgid "Name:"
+msgstr "Назва:"
+
+#: MenuBuilder.qml:903
+msgid "Runs:"
+msgstr "Виконує:"
+
+#: MenuBuilder.qml:910
+msgid "A command"
+msgstr "Команду"
+
+#: MenuBuilder.qml:928
+msgid "Command:"
+msgstr "Команда:"
+
+#: SessionActions.qml:27
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Заблокувати екран"
+
+#: SessionActions.qml:28
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Вийти"
+
+#: SessionActions.qml:29
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Вийти… (усі варіанти)"
+
+#: SessionActions.qml:30
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Змінити користувача"
+
+#: SessionActions.qml:31
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Призупинити"
+
+#: SessionActions.qml:32
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Приспати"
+
+#: SessionActions.qml:33
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Перезапустити"
+
+#: SessionActions.qml:34
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Вимкнути"
+
+#: TreeItemDelegate.qml:251
+msgid "Unnamed"
+msgstr "Без назви"

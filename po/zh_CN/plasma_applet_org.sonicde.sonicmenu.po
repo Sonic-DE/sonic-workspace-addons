@@ -1,0 +1,159 @@
+# Simplified Chinese translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Chinese Simplified\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ConfigEditJson.qml:24
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"以 JSON 格式编辑菜单结构。每个项目可以包含：name、icon、command（通过 shell "
+"运行）或 action（会话操作：lock、logout、leave、switchUser、suspend、"
+"hibernate、reboot、shutdown）、submenu（项目数组）或 separator（true）。"
+
+#: ConfigGeneral.qml:36
+msgid "Icon:"
+msgstr "图标："
+
+#: ConfigGeneral.qml:114 MenuBuilder.qml:868
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "选择…"
+
+#: ConfigGeneral.qml:119 MenuBuilder.qml:873
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "清除图标"
+
+#: ConfigGeneral.qml:137
+msgid "General:"
+msgstr "常规："
+
+#: ConfigGeneral.qml:138
+msgid "Show icons in the menu"
+msgstr "在菜单中显示图标"
+
+#: ConfigGeneral.qml:147
+msgid "Menu Width:"
+msgstr "菜单宽度："
+
+#: ConfigGeneral.qml:157
+msgid "Button Height:"
+msgstr "按钮高度："
+
+#: config.qml:7
+msgid "General"
+msgstr "常规"
+
+#: config.qml:12
+msgid "Edit Menu"
+msgstr "编辑菜单"
+
+#: config.qml:17
+msgid "Edit JSON"
+msgstr "编辑 JSON"
+
+#: ItemListDelegate.qml:107
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "打开类别"
+
+#: ItemListDelegate.qml:108
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "启动"
+
+#: MenuBuilder.qml:437
+msgid "Add Item"
+msgstr "添加项目"
+
+#: MenuBuilder.qml:507
+msgid "Add Folder"
+msgstr "添加文件夹"
+
+#: MenuBuilder.qml:583
+msgid "Add Separator"
+msgstr "添加分隔符"
+
+#: MenuBuilder.qml:752
+msgid "No item selected"
+msgstr "未选择项目"
+
+#: MenuBuilder.qml:760
+msgid "Separator selected"
+msgstr "已选择分隔符"
+
+#: MenuBuilder.qml:768
+msgid "Name:"
+msgstr "名称："
+
+#: MenuBuilder.qml:903
+msgid "Runs:"
+msgstr "运行："
+
+#: MenuBuilder.qml:910
+msgid "A command"
+msgstr "一条命令"
+
+#: MenuBuilder.qml:928
+msgid "Command:"
+msgstr "命令："
+
+#: SessionActions.qml:27
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "锁定屏幕"
+
+#: SessionActions.qml:28
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "注销"
+
+#: SessionActions.qml:29
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "离开…（所有选项）"
+
+#: SessionActions.qml:30
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "切换用户"
+
+#: SessionActions.qml:31
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "睡眠"
+
+#: SessionActions.qml:32
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "休眠"
+
+#: SessionActions.qml:33
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "重启"
+
+#: SessionActions.qml:34
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "关机"
+
+#: TreeItemDelegate.qml:251
+msgid "Unnamed"
+msgstr "未命名"

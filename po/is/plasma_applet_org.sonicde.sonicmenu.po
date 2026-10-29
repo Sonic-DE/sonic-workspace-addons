@@ -1,0 +1,128 @@
+# Icelandic translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Icelandic\n"
+"Language: is\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Breyta uppbyggingu valmyndarinnar sem JSON. Hvert atriði getur haft: name, "
+"icon, command (keyrt í gegnum skel) eða action (setuaðgerð: lock, logout, "
+"leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (fylki "
+"atriða) eða separator (true)."
+
+msgid "Icon:"
+msgstr "Táknmynd:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Velja…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Hreinsa táknmynd"
+
+msgid "General:"
+msgstr "Almennt:"
+
+msgid "Show icons in the menu"
+msgstr "Birta táknmyndir í valmyndinni"
+
+msgid "Menu Width:"
+msgstr "Breidd valmyndar:"
+
+msgid "Button Height:"
+msgstr "Hæð hnappa:"
+
+msgid "General"
+msgstr "Almennt"
+
+msgid "Edit Menu"
+msgstr "Breyta valmynd"
+
+msgid "Edit JSON"
+msgstr "Breyta JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Opna flokk"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Ræsa"
+
+msgid "Add Item"
+msgstr "Bæta við atriði"
+
+msgid "Add Folder"
+msgstr "Bæta við möppu"
+
+msgid "Add Separator"
+msgstr "Bæta við skilju"
+
+msgid "No item selected"
+msgstr "Ekkert atriði valið"
+
+msgid "Separator selected"
+msgstr "Skilja valin"
+
+msgid "Name:"
+msgstr "Heiti:"
+
+msgid "Runs:"
+msgstr "Keyrir:"
+
+msgid "A command"
+msgstr "Skipun"
+
+msgid "Command:"
+msgstr "Skipun:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Læsa skjá"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Skrá út"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Hætta… (allir valkostir)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Skipta um notanda"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Svæfa"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Leggja í dvala"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Endurræsa"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Slökkva"
+
+msgid "Unnamed"
+msgstr "Ónefnt"

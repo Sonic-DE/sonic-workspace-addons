@@ -1,0 +1,128 @@
+# Finnish translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Finnish\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Muokkaa valikon rakennetta JSON-muodossa. Jokaisella kohteella voi olla: "
+"name, icon, command (suoritetaan komentotulkin kautta) tai action "
+"(istuntotoiminto: lock, logout, leave, switchUser, suspend, hibernate, "
+"reboot, shutdown), submenu (kohteiden taulukko) tai separator (true)."
+
+msgid "Icon:"
+msgstr "Kuvake:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Valitse…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Tyhjennä kuvake"
+
+msgid "General:"
+msgstr "Yleistä:"
+
+msgid "Show icons in the menu"
+msgstr "Näytä kuvakkeet valikossa"
+
+msgid "Menu Width:"
+msgstr "Valikon leveys:"
+
+msgid "Button Height:"
+msgstr "Painikkeen korkeus:"
+
+msgid "General"
+msgstr "Yleistä"
+
+msgid "Edit Menu"
+msgstr "Muokkaa valikkoa"
+
+msgid "Edit JSON"
+msgstr "Muokkaa JSONia"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Avaa luokka"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Käynnistä"
+
+msgid "Add Item"
+msgstr "Lisää kohde"
+
+msgid "Add Folder"
+msgstr "Lisää kansio"
+
+msgid "Add Separator"
+msgstr "Lisää erotin"
+
+msgid "No item selected"
+msgstr "Kohdetta ei ole valittu"
+
+msgid "Separator selected"
+msgstr "Erotin valittu"
+
+msgid "Name:"
+msgstr "Nimi:"
+
+msgid "Runs:"
+msgstr "Suorittaa:"
+
+msgid "A command"
+msgstr "Komennon"
+
+msgid "Command:"
+msgstr "Komento:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Lukitse näyttö"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Kirjaudu ulos"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Poistu… (kaikki valinnat)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Vaihda käyttäjää"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Valmiustila"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Lepotila"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Käynnistä uudelleen"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Sammuta"
+
+msgid "Unnamed"
+msgstr "Nimetön"

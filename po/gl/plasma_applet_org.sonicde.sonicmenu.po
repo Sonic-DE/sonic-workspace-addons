@@ -1,0 +1,124 @@
+# plasma_applet_org.sonicde.sonicmenu translation into gl for SonicDE.
+# These are machine translations and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 12:00+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: gl\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr "Edite a estrutura do menú como JSON. Cada elemento pode ter: name, icon, command (executado mediante a shell) ou action (unha acción de sesión: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (matriz de elementos) ou separator (true)."
+
+msgid "Icon:"
+msgstr "Icona:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Escoller…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Limpar a icona"
+
+msgid "General:"
+msgstr "Xeral:"
+
+msgid "Show icons in the menu"
+msgstr "Mostrar iconas no menú"
+
+msgid "Menu Width:"
+msgstr "Largura do menú:"
+
+msgid "Button Height:"
+msgstr "Altura dos botóns:"
+
+msgid "General"
+msgstr "Xeral"
+
+msgid "Edit Menu"
+msgstr "Editar o menú"
+
+msgid "Edit JSON"
+msgstr "Editar o JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Abrir a categoría"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Iniciar"
+
+msgid "Add Item"
+msgstr "Engadir un elemento"
+
+msgid "Add Folder"
+msgstr "Engadir un cartafol"
+
+msgid "Add Separator"
+msgstr "Engadir un separador"
+
+msgid "No item selected"
+msgstr "Non hai ningún elemento seleccionado"
+
+msgid "Separator selected"
+msgstr "Seleccionouse un separador"
+
+msgid "Name:"
+msgstr "Nome:"
+
+msgid "Runs:"
+msgstr "Executa:"
+
+msgid "A command"
+msgstr "Unha orde"
+
+msgid "Command:"
+msgstr "Orde:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Bloquear a pantalla"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Saír"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Saír… (todas as opcións)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Cambiar de usuario"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Suspender"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Hibernar"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Reiniciar"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Apagar"
+
+msgid "Unnamed"
+msgstr "Sen nome"

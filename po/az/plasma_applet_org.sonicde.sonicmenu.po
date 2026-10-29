@@ -1,0 +1,124 @@
+# plasma_applet_org.sonicde.sonicmenu translation into az for SonicDE.
+# These are machine translations and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 12:00+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: az\n"
+"Language: az\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr "Menyu strukturuna JSON kimi düzəliş edin. Hər bir elementdə bunlar ola bilər: name, icon, command (shell vasitəsilə icra olunur) və ya action (sessiya əməli: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (elementlər massivi) və ya separator (true)."
+
+msgid "Icon:"
+msgstr "Nişan:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Seçin…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Nişanı təmizləmək"
+
+msgid "General:"
+msgstr "Əsas:"
+
+msgid "Show icons in the menu"
+msgstr "Menyuda nişanları göstərmək"
+
+msgid "Menu Width:"
+msgstr "Menyunun eni:"
+
+msgid "Button Height:"
+msgstr "Düymənin hündürlüyü:"
+
+msgid "General"
+msgstr "Əsas"
+
+msgid "Edit Menu"
+msgstr "Menyuya düzəliş etmək"
+
+msgid "Edit JSON"
+msgstr "JSON-a düzəliş etmək"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Kateqoriyanı açmaq"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Başlatmaq"
+
+msgid "Add Item"
+msgstr "Element əlavə etmək"
+
+msgid "Add Folder"
+msgstr "Qovluq əlavə etmək"
+
+msgid "Add Separator"
+msgstr "Ayırıcı əlavə etmək"
+
+msgid "No item selected"
+msgstr "Heç bir element seçilməyib"
+
+msgid "Separator selected"
+msgstr "Ayırıcı seçilib"
+
+msgid "Name:"
+msgstr "Adı:"
+
+msgid "Runs:"
+msgstr "İcra edir:"
+
+msgid "A command"
+msgstr "Əmr"
+
+msgid "Command:"
+msgstr "Əmr:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Ekranı kilidləmək"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Çıxış"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Çıxış… (bütün seçimlər)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "İstifadəçini dəyişmək"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Yuxu rejimi"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Hibernasiya"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Yenidən başlatmaq"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Söndürmək"
+
+msgid "Unnamed"
+msgstr "Adsız"

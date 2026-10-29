@@ -1,0 +1,128 @@
+# Georgian translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Georgian\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"მენიუს სტრუქტურის ჩასწორება JSON-ის სახით. თითოეულ ელემენტს შეიძლება ჰქონდეს: "
+"name, icon, command (გაეშვება გარსით) ან action (სესიის ქმედება: lock, "
+"logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu "
+"(ელემენტების მასივი) ან separator (true)."
+
+msgid "Icon:"
+msgstr "ხატულა:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "არჩევა…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "ხატულის გასუფთავება"
+
+msgid "General:"
+msgstr "ზოგადი:"
+
+msgid "Show icons in the menu"
+msgstr "ხატულების ჩვენება მენიუში"
+
+msgid "Menu Width:"
+msgstr "მენიუს სიგანე:"
+
+msgid "Button Height:"
+msgstr "ღილაკის სიმაღლე:"
+
+msgid "General"
+msgstr "ზოგადი"
+
+msgid "Edit Menu"
+msgstr "მენიუს ჩასწორება"
+
+msgid "Edit JSON"
+msgstr "JSON-ის ჩასწორება"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "კატეგორიის გახსნა"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "გაშვება"
+
+msgid "Add Item"
+msgstr "ელემენტის დამატება"
+
+msgid "Add Folder"
+msgstr "საქაღალდის დამატება"
+
+msgid "Add Separator"
+msgstr "გამყოფის დამატება"
+
+msgid "No item selected"
+msgstr "ელემენტი არჩეული არაა"
+
+msgid "Separator selected"
+msgstr "არჩეულია გამყოფი"
+
+msgid "Name:"
+msgstr "სახელი:"
+
+msgid "Runs:"
+msgstr "უშვებს:"
+
+msgid "A command"
+msgstr "ბრძანებას"
+
+msgid "Command:"
+msgstr "ბრძანება:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "ეკრანის დაბლოკვა"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "გასვლა"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "დატოვება… (ყველა პარამეტრი)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "მომხმარებლის გადართვა"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "ძილი"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "ჰიბერნაცია"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "გადატვირთვა"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "გამორთვა"
+
+msgid "Unnamed"
+msgstr "უსახელო"

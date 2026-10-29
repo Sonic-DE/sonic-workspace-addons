@@ -1,0 +1,128 @@
+# Dutch translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Dutch\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Bewerk de menustructuur als JSON. Elk item kan hebben: name, icon, command "
+"(uitgevoerd via de shell) of action (een sessieactie: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array van "
+"items) of separator (true)."
+
+msgid "Icon:"
+msgstr "Pictogram:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Kiezen…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Pictogram wissen"
+
+msgid "General:"
+msgstr "Algemeen:"
+
+msgid "Show icons in the menu"
+msgstr "Pictogrammen in het menu tonen"
+
+msgid "Menu Width:"
+msgstr "Menubreedte:"
+
+msgid "Button Height:"
+msgstr "Knophoogte:"
+
+msgid "General"
+msgstr "Algemeen"
+
+msgid "Edit Menu"
+msgstr "Menu bewerken"
+
+msgid "Edit JSON"
+msgstr "JSON bewerken"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Categorie openen"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Starten"
+
+msgid "Add Item"
+msgstr "Item toevoegen"
+
+msgid "Add Folder"
+msgstr "Map toevoegen"
+
+msgid "Add Separator"
+msgstr "Scheiding toevoegen"
+
+msgid "No item selected"
+msgstr "Geen item geselecteerd"
+
+msgid "Separator selected"
+msgstr "Scheiding geselecteerd"
+
+msgid "Name:"
+msgstr "Naam:"
+
+msgid "Runs:"
+msgstr "Voert uit:"
+
+msgid "A command"
+msgstr "Een commando"
+
+msgid "Command:"
+msgstr "Commando:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Scherm vergrendelen"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Afmelden"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Verlaten… (alle opties)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Gebruiker wisselen"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Slapen"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Slapen naar schijf"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Herstarten"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Uitschakelen"
+
+msgid "Unnamed"
+msgstr "Naamloos"

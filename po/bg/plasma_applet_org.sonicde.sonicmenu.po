@@ -1,0 +1,128 @@
+# Bulgarian translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations (Claude) and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Bulgarian\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Редактиране на структурата на менюто като JSON. Всеки елемент може да има: "
+"name, icon, command (изпълнява се чрез обвивката) или action (действие на "
+"сесията: lock, logout, leave, switchUser, suspend, hibernate, reboot, "
+"shutdown), submenu (масив от елементи) или separator (true)."
+
+msgid "Icon:"
+msgstr "Икона:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Избиране…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Изчистване на иконата"
+
+msgid "General:"
+msgstr "Общи:"
+
+msgid "Show icons in the menu"
+msgstr "Показване на икони в менюто"
+
+msgid "Menu Width:"
+msgstr "Ширина на менюто:"
+
+msgid "Button Height:"
+msgstr "Височина на бутоните:"
+
+msgid "General"
+msgstr "Общи"
+
+msgid "Edit Menu"
+msgstr "Редактиране на менюто"
+
+msgid "Edit JSON"
+msgstr "Редактиране на JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Отваряне на категория"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Стартиране"
+
+msgid "Add Item"
+msgstr "Добавяне на елемент"
+
+msgid "Add Folder"
+msgstr "Добавяне на папка"
+
+msgid "Add Separator"
+msgstr "Добавяне на разделител"
+
+msgid "No item selected"
+msgstr "Няма избран елемент"
+
+msgid "Separator selected"
+msgstr "Избран е разделител"
+
+msgid "Name:"
+msgstr "Име:"
+
+msgid "Runs:"
+msgstr "Изпълнява:"
+
+msgid "A command"
+msgstr "Команда"
+
+msgid "Command:"
+msgstr "Команда:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Заключване на екрана"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Излизане"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Напускане… (всички опции)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Смяна на потребител"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Приспиване"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Хибернация"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Рестартиране"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Изключване"
+
+msgid "Unnamed"
+msgstr "Без име"

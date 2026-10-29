@@ -1,0 +1,129 @@
+# Irish translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Irish\n"
+"Language: ga\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n < 11 ? 3 : "
+"4\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Cuir struchtúr an roghchláir in eagar mar JSON. Is féidir na nithe seo a "
+"bheith ag gach mír: name, icon, command (rite tríd an bhlaosc) nó action "
+"(gníomh seisiúin: lock, logout, leave, switchUser, suspend, hibernate, "
+"reboot, shutdown), submenu (eagar míreanna) nó separator (true)."
+
+msgid "Icon:"
+msgstr "Deilbhín:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Roghnaigh…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Glan an Deilbhín"
+
+msgid "General:"
+msgstr "Ginearálta:"
+
+msgid "Show icons in the menu"
+msgstr "Taispeáin deilbhíní sa roghchlár"
+
+msgid "Menu Width:"
+msgstr "Leithead an Roghchláir:"
+
+msgid "Button Height:"
+msgstr "Airde na gCnaipí:"
+
+msgid "General"
+msgstr "Ginearálta"
+
+msgid "Edit Menu"
+msgstr "Cuir an Roghchlár in Eagar"
+
+msgid "Edit JSON"
+msgstr "Cuir JSON in Eagar"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Oscail catagóir"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Tosaigh"
+
+msgid "Add Item"
+msgstr "Cuir Mír Leis"
+
+msgid "Add Folder"
+msgstr "Cuir Fillteán Leis"
+
+msgid "Add Separator"
+msgstr "Cuir Deighilteoir Leis"
+
+msgid "No item selected"
+msgstr "Níl aon mhír roghnaithe"
+
+msgid "Separator selected"
+msgstr "Deighilteoir roghnaithe"
+
+msgid "Name:"
+msgstr "Ainm:"
+
+msgid "Runs:"
+msgstr "Ritheann:"
+
+msgid "A command"
+msgstr "Ordú"
+
+msgid "Command:"
+msgstr "Ordú:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Cuir an Scáileán Faoi Ghlas"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Logáil Amach"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Fág… (gach rogha)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Athraigh Úsáideoir"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Codladh"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Geimhrigh"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Atosaigh"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Múch"
+
+msgid "Unnamed"
+msgstr "Gan Ainm"

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+      http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+  <kcfgfile name=""/>
+
+  <group name="General">
+    <entry name="icon" type="String">
+      <label>The name of the icon to use for the compact representation (e.g. on a small panel).</label>
+      <default>menu_new-symbolic</default>
+    </entry>
+    <entry name="useCustomButtonImage" type="Bool">
+      <label>Whether to use a custom image instead of an icon in the compact representation (e.g. on a small panel).</label>
+      <default>false</default>
+    </entry>
+    <entry name="customButtonImage" type="Url">
+      <label>The URL of the custom image to use instead of an icon in the compact representation (e.g. on a small panel).</label>
+      <default></default>
+    </entry>
+    <entry name="showIcons" type="Bool">
+      <label>Whether to show icons in the menu.</label>
+      <default>false</default>
+    </entry>
+    <entry name="menuWidth" type="Int">
+      <label>Width of the menu dropdown in pixels. Use 0 for default width.</label>
+      <default>240</default>
+    </entry>
+    <entry name="buttonHeight" type="Int">
+      <label>Height of each menu item (button) in pixels. Use 0 for default height.</label>
+      <default>28</default>
+    </entry>
+    <!-- The menu editor also falls back to this default (cfg_menuJsonDefault) when the menu is emptied -->
+    <entry name="menuJson" type="String">
+      <label>JSON array defining the menu. Each item can have: name, icon, command (run through the shell), action (a session action: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), separator (bool).</label>
+      <default>[
+        {
+          "name": "About This Computer",
+          "icon": "help-hint",
+          "command": "kinfocenter"
+        },
+        {
+          "separator": true
+        },
+        {
+          "name": "System Settings...",
+          "icon": "settings-configure",
+          "command": "systemsettings"
+        },
+        {
+          "name": "System Monitor...",
+          "icon": "utilities-system-monitor",
+          "command": "plasma-systemmonitor"
+        },
+        {
+          "name": "System Log...",
+          "icon": "utilities-log-viewer",
+          "command": "ksystemlog"
+        },
+        {
+          "separator": true
+        },
+        {
+          "name": "Force Quit...",
+          "icon": "error",
+          "command": "xkill"
+        },
+        {
+          "separator": true
+        },
+        {
+          "name": "Sleep",
+          "icon": "system-suspend",
+          "action": "suspend"
+        },
+        {
+          "name": "Restart...",
+          "icon": "system-reboot",
+          "action": "reboot"
+        },
+        {
+          "name": "Shut Down...",
+          "icon": "system-shutdown",
+          "action": "shutdown"
+        },
+        {
+          "separator": true
+        },
+        {
+          "name": "Lock Screen",
+          "icon": "system-lock-screen",
+          "action": "lock"
+        },
+        {
+          "name": "Log Out",
+          "icon": "system-log-out",
+          "action": "logout"
+        }
+      ]</default>
+    </entry>
+
+  </group>
+</kcfg>

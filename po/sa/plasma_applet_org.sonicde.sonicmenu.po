@@ -1,0 +1,124 @@
+# plasma_applet_org.sonicde.sonicmenu translation into sa for SonicDE.
+# These are machine translations and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 12:00+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: sa\n"
+"Language: sa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>2);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr "मेनू-संरचनां JSON रूपेण सम्पादयतु। प्रत्येकस्मिन् वस्तुनि एतानि भवितुम् अर्हन्ति: name, icon, command (शेल्-द्वारा चाल्यते) अथवा action (सत्र-क्रिया: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (वस्तूनां सरणी), अथवा separator (true)।"
+
+msgid "Icon:"
+msgstr "चिह्नम्:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "चिनोतु…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "चिह्नं स्वच्छं कुर्वन्तु"
+
+msgid "General:"
+msgstr "सामान्यम्:"
+
+msgid "Show icons in the menu"
+msgstr "मेनू मध्ये चिह्नानि दर्शयतु"
+
+msgid "Menu Width:"
+msgstr "मेनू-विस्तारः:"
+
+msgid "Button Height:"
+msgstr "बटन-उच्चता:"
+
+msgid "General"
+msgstr "सामान्यम्"
+
+msgid "Edit Menu"
+msgstr "मेनू सम्पादयतु"
+
+msgid "Edit JSON"
+msgstr "JSON सम्पादयतु"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "वर्गम् उद्घाटयतु"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "प्रक्षेपणं कुर्वन्तु"
+
+msgid "Add Item"
+msgstr "वस्तु योजयतु"
+
+msgid "Add Folder"
+msgstr "पुटं योजयतु"
+
+msgid "Add Separator"
+msgstr "विभाजकं योजयतु"
+
+msgid "No item selected"
+msgstr "किमपि वस्तु न चितम्"
+
+msgid "Separator selected"
+msgstr "विभाजकः चितः"
+
+msgid "Name:"
+msgstr "नाम:"
+
+msgid "Runs:"
+msgstr "चालयति:"
+
+msgid "A command"
+msgstr "आदेशः"
+
+msgid "Command:"
+msgstr "आदेशः:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "पटलं तालयतु"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "निर्गच्छतु"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "त्यजतु… (सर्वे विकल्पाः)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "उपयोक्तारं परिवर्तयतु"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "निद्रा"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "शीतनिद्रा"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "पुनः आरभत"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "निष्क्रियं कुर्वन्तु"
+
+msgid "Unnamed"
+msgstr "अनामकम्"

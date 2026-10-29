@@ -72,6 +72,8 @@ find_package(KF6 ${KF6_MIN_VERSION} REQUIRED COMPONENTS
 find_package(Plasma ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
 
+find_package(SonicLogging ${KF6_MIN_VERSION} REQUIRED)
+
 find_package(KF6Purpose CONFIG QUIET)
 set_package_properties(KF6Purpose PROPERTIES
     DESCRIPTION "Framework for cross-application services and actions"

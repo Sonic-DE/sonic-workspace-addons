@@ -1,0 +1,129 @@
+# Latvian translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations that need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 15:30+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Latvian\n"
+"Language: lv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"2);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Rediģēt izvēlnes struktūru kā JSON. Katram vienumam var būt: name, icon, "
+"command (izpilda caur čaulu) vai action (sesijas darbība: lock, logout, "
+"leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (vienumu "
+"masīvs) vai separator (true)."
+
+msgid "Icon:"
+msgstr "Ikona:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Izvēlēties…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Notīrīt ikonu"
+
+msgid "General:"
+msgstr "Vispārīgi:"
+
+msgid "Show icons in the menu"
+msgstr "Rādīt ikonas izvēlnē"
+
+msgid "Menu Width:"
+msgstr "Izvēlnes platums:"
+
+msgid "Button Height:"
+msgstr "Pogas augstums:"
+
+msgid "General"
+msgstr "Vispārīgi"
+
+msgid "Edit Menu"
+msgstr "Rediģēt izvēlni"
+
+msgid "Edit JSON"
+msgstr "Rediģēt JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Atvērt kategoriju"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Palaist"
+
+msgid "Add Item"
+msgstr "Pievienot vienumu"
+
+msgid "Add Folder"
+msgstr "Pievienot mapi"
+
+msgid "Add Separator"
+msgstr "Pievienot atdalītāju"
+
+msgid "No item selected"
+msgstr "Nav izvēlēts neviens vienums"
+
+msgid "Separator selected"
+msgstr "Izvēlēts atdalītājs"
+
+msgid "Name:"
+msgstr "Nosaukums:"
+
+msgid "Runs:"
+msgstr "Izpilda:"
+
+msgid "A command"
+msgstr "Komandu"
+
+msgid "Command:"
+msgstr "Komanda:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Slēgt ekrānu"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Izrakstīties"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Iziet… (visas iespējas)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Pārslēgt lietotāju"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Iemidzināt"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Hibernēt"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Pārstartēt"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Izslēgt"
+
+msgid "Unnamed"
+msgstr "Bez nosaukuma"

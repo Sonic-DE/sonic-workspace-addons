@@ -1,0 +1,128 @@
+# Basque translation of plasma_applet_org.sonicde.sonicmenu.
+# These are machine translations (Claude) and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Basque\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr ""
+"Editatu menuaren egitura JSON gisa. Elementu bakoitzak hauek izan ditzake: "
+"name, icon, command (shell-aren bidez exekutatua) edo action (saio-ekintza "
+"bat: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), "
+"submenu (elementuen array bat) edo separator (true)."
+
+msgid "Icon:"
+msgstr "Ikonoa:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Aukeratu…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Garbitu ikonoa"
+
+msgid "General:"
+msgstr "Orokorra:"
+
+msgid "Show icons in the menu"
+msgstr "Erakutsi ikonoak menuan"
+
+msgid "Menu Width:"
+msgstr "Menuaren zabalera:"
+
+msgid "Button Height:"
+msgstr "Botoien altuera:"
+
+msgid "General"
+msgstr "Orokorra"
+
+msgid "Edit Menu"
+msgstr "Editatu menua"
+
+msgid "Edit JSON"
+msgstr "Editatu JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Ireki kategoria"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Abiarazi"
+
+msgid "Add Item"
+msgstr "Gehitu elementua"
+
+msgid "Add Folder"
+msgstr "Gehitu karpeta"
+
+msgid "Add Separator"
+msgstr "Gehitu bereizlea"
+
+msgid "No item selected"
+msgstr "Ez dago elementurik hautatuta"
+
+msgid "Separator selected"
+msgstr "Bereizlea hautatuta"
+
+msgid "Name:"
+msgstr "Izena:"
+
+msgid "Runs:"
+msgstr "Exekutatzen du:"
+
+msgid "A command"
+msgstr "Komando bat"
+
+msgid "Command:"
+msgstr "Komandoa:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Giltzatu pantaila"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Amaitu saioa"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Utzi… (aukera guztiak)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Aldatu erabiltzailea"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Egin lo"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Hibernatu"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Berrabiarazi"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Itzali"
+
+msgid "Unnamed"
+msgstr "Izengabea"

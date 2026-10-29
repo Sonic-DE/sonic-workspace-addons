@@ -1,0 +1,124 @@
+# plasma_applet_org.sonicde.sonicmenu translation into vi for SonicDE.
+# These are machine translations and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 12:00+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: vi\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr "Sửa cấu trúc trình đơn dưới dạng JSON. Mỗi mục có thể có: name, icon, command (chạy qua shell) hoặc action (một hành động phiên: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (mảng các mục), hoặc separator (true)."
+
+msgid "Icon:"
+msgstr "Biểu tượng:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Chọn…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Xoá biểu tượng"
+
+msgid "General:"
+msgstr "Chung:"
+
+msgid "Show icons in the menu"
+msgstr "Hiện biểu tượng trong trình đơn"
+
+msgid "Menu Width:"
+msgstr "Độ rộng trình đơn:"
+
+msgid "Button Height:"
+msgstr "Độ cao nút:"
+
+msgid "General"
+msgstr "Chung"
+
+msgid "Edit Menu"
+msgstr "Sửa trình đơn"
+
+msgid "Edit JSON"
+msgstr "Sửa JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Mở hạng mục"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Khởi chạy"
+
+msgid "Add Item"
+msgstr "Thêm mục"
+
+msgid "Add Folder"
+msgstr "Thêm thư mục"
+
+msgid "Add Separator"
+msgstr "Thêm đường phân cách"
+
+msgid "No item selected"
+msgstr "Không có mục nào được chọn"
+
+msgid "Separator selected"
+msgstr "Đã chọn đường phân cách"
+
+msgid "Name:"
+msgstr "Tên:"
+
+msgid "Runs:"
+msgstr "Chạy:"
+
+msgid "A command"
+msgstr "Một lệnh"
+
+msgid "Command:"
+msgstr "Lệnh:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Khoá màn hình"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Đăng xuất"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Rời khỏi… (tất cả các lựa chọn)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Chuyển người dùng"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Ngủ"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Ngủ đông"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Khởi động lại"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Tắt máy"
+
+msgid "Unnamed"
+msgstr "Không tên"

@@ -1,0 +1,113 @@
+/*
+    SPDX-FileCopyrightText: 2024 51n7
+    SPDX-FileCopyrightText: 2026 Joseph Crowell <joseph.w.crowell@gmail.com>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
+
+// Sonic Menu, based on kMenu by 51n7 (https://github.com/51n7/kMenu)
+
+pragma ComponentBehavior: Bound
+
+import QtQuick
+import QtQuick.Layouts
+
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.plasmoid
+import org.kde.plasma.private.kicker as Kicker
+
+PlasmoidItem {
+    id: kicker
+
+    anchors.fill: parent
+
+    signal reset
+    signal modelRefreshed
+
+    switchWidth: !fullRepresentationItem ? 0 : fullRepresentationItem.Layout.minimumWidth
+    switchHeight: !fullRepresentationItem ? 0 : fullRepresentationItem.Layout.minimumHeight
+
+    fullRepresentation: menuRepresentationComponent
+
+    readonly property Component itemListDialogComponent: Component {
+        ItemListDialog {}
+    }
+
+    property Item dragSource: null
+
+    Plasmoid.icon: Plasmoid.configuration.useCustomButtonImage ? Plasmoid.configuration.customButtonImage : Plasmoid.configuration.icon
+
+    Component {
+        id: menuRepresentationComponent
+        MenuRepresentation {
+            rootModel: rootModel
+            itemListDialogComponent: kicker.itemListDialogComponent
+            onInteractionConcluded: kicker.expanded = false
+        }
+    }
+
+    JsonMenuModel {
+        id: rootModel
+
+        jsonData: Plasmoid.configuration.menuJson || ""
+        sorted: false
+        executable: executable
+
+        onRefreshed: {
+            kicker.modelRefreshed();
+        }
+    }
+
+    Connections {
+        target: Plasmoid.configuration
+
+        function onMenuJsonChanged() {
+            rootModel.jsonData = Plasmoid.configuration.menuJson;
+        }
+    }
+
+    Kicker.DragHelper {
+        id: dragHelper
+
+        dragIconSize: Kirigami.Units.iconSizes.medium
+    }
+
+    // Runs the items: session actions, or shell commands
+    SessionActions {
+        id: executable
+
+        // Session actions the system can't do are left out of the menu
+        onAvailabilityChanged: rootModel.refresh()
+    }
+
+    Kicker.WindowSystem { // only for X11; TODO Plasma 6.8: remove (also from plasma-workspace)
+        id: windowSystem
+    }
+
+    Connections {
+        target: kicker
+
+        function onExpandedChanged(expanded) {
+            if (!expanded) {
+                kicker.reset();
+            }
+        }
+    }
+
+    function resetDragSource() {
+        dragSource = null;
+    }
+
+    Component.onCompleted: {
+        if (Plasmoid.hasOwnProperty("activationTogglesExpanded")) {
+            Plasmoid.activationTogglesExpanded = true
+        }
+
+        rootModel.refreshed.connect(modelRefreshed);
+
+        dragHelper.dropped.connect(resetDragSource);
+    }
+}
+

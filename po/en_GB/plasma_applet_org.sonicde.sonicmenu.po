@@ -1,0 +1,124 @@
+# plasma_applet_org.sonicde.sonicmenu translation into en_GB for SonicDE.
+# These are machine translations and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 12:00+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: en_GB\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr "Edit the menu structure as JSON. Each item can have: name, icon, command (run through the shell) or action (a session action: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), or separator (true)."
+
+msgid "Icon:"
+msgstr "Icon:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Choose…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Clear Icon"
+
+msgid "General:"
+msgstr "General:"
+
+msgid "Show icons in the menu"
+msgstr "Show icons in the menu"
+
+msgid "Menu Width:"
+msgstr "Menu Width:"
+
+msgid "Button Height:"
+msgstr "Button Height:"
+
+msgid "General"
+msgstr "General"
+
+msgid "Edit Menu"
+msgstr "Edit Menu"
+
+msgid "Edit JSON"
+msgstr "Edit JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Open category"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Launch"
+
+msgid "Add Item"
+msgstr "Add Item"
+
+msgid "Add Folder"
+msgstr "Add Folder"
+
+msgid "Add Separator"
+msgstr "Add Separator"
+
+msgid "No item selected"
+msgstr "No item selected"
+
+msgid "Separator selected"
+msgstr "Separator selected"
+
+msgid "Name:"
+msgstr "Name:"
+
+msgid "Runs:"
+msgstr "Runs:"
+
+msgid "A command"
+msgstr "A command"
+
+msgid "Command:"
+msgstr "Command:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Lock Screen"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Log Out"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Leave… (all options)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Switch User"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Sleep"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Hibernate"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Restart"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Shut Down"
+
+msgid "Unnamed"
+msgstr "Unnamed"

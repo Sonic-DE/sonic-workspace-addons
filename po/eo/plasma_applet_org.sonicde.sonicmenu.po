@@ -1,0 +1,124 @@
+# plasma_applet_org.sonicde.sonicmenu translation into eo for SonicDE.
+# These are machine translations and need review by a native speaker.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-28 15:09+1000\n"
+"PO-Revision-Date: 2026-10-28 12:00+1000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: eo\n"
+"Language: eo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid ""
+"Edit the menu structure as JSON. Each item can have: name, icon, command "
+"(run through the shell) or action (a session action: lock, logout, leave, "
+"switchUser, suspend, hibernate, reboot, shutdown), submenu (array of items), "
+"or separator (true)."
+msgstr "Redakti la menustrukturon kiel JSON. Ĉiu ero povas havi: name, icon, command (rulata per la ŝelo) aŭ action (seanca ago: lock, logout, leave, switchUser, suspend, hibernate, reboot, shutdown), submenu (tabelo de eroj), aŭ separator (true)."
+
+msgid "Icon:"
+msgstr "Piktogramo:"
+
+msgctxt "@item:inmenu Open icon chooser dialog"
+msgid "Choose…"
+msgstr "Elekti…"
+
+msgctxt "@item:inmenu Reset icon to default"
+msgid "Clear Icon"
+msgstr "Forigi piktogramon"
+
+msgid "General:"
+msgstr "Ĝenerale:"
+
+msgid "Show icons in the menu"
+msgstr "Montri piktogramojn en la menuo"
+
+msgid "Menu Width:"
+msgstr "Menua larĝo:"
+
+msgid "Button Height:"
+msgstr "Butona alto:"
+
+msgid "General"
+msgstr "Ĝenerala"
+
+msgid "Edit Menu"
+msgstr "Redakti menuon"
+
+msgid "Edit JSON"
+msgstr "Redakti JSON"
+
+msgctxt "@action:inmenu accessible description for opening submenu"
+msgid "Open category"
+msgstr "Malfermi kategorion"
+
+msgctxt "@action:inmenu accessible description for opening app or file"
+msgid "Launch"
+msgstr "Lanĉi"
+
+msgid "Add Item"
+msgstr "Aldoni eron"
+
+msgid "Add Folder"
+msgstr "Aldoni dosierujon"
+
+msgid "Add Separator"
+msgstr "Aldoni apartigilon"
+
+msgid "No item selected"
+msgstr "Neniu ero elektita"
+
+msgid "Separator selected"
+msgstr "Apartigilo elektita"
+
+msgid "Name:"
+msgstr "Nomo:"
+
+msgid "Runs:"
+msgstr "Rulas:"
+
+msgid "A command"
+msgstr "Komandon"
+
+msgid "Command:"
+msgstr "Komando:"
+
+msgctxt "@item:inlistbox session action"
+msgid "Lock Screen"
+msgstr "Ŝlosi ekranon"
+
+msgctxt "@item:inlistbox session action"
+msgid "Log Out"
+msgstr "Elsaluti"
+
+msgctxt "@item:inlistbox session action"
+msgid "Leave… (all options)"
+msgstr "Foriri… (ĉiuj elektoj)"
+
+msgctxt "@item:inlistbox session action"
+msgid "Switch User"
+msgstr "Ŝanĝi uzanton"
+
+msgctxt "@item:inlistbox session action"
+msgid "Sleep"
+msgstr "Dormi"
+
+msgctxt "@item:inlistbox session action"
+msgid "Hibernate"
+msgstr "Travintri"
+
+msgctxt "@item:inlistbox session action"
+msgid "Restart"
+msgstr "Restartigi"
+
+msgctxt "@item:inlistbox session action"
+msgid "Shut Down"
+msgstr "Malŝalti"
+
+msgid "Unnamed"
+msgstr "Sennoma"
