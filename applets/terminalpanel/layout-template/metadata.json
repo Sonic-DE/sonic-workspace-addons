@@ -1,0 +1,22 @@
+{
+    "KPackageStructure": "Plasma/LayoutTemplate",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "joseph.w.crowell@gmail.com",
+                "Name": "Joseph Crowell"
+            }
+        ],
+        "Category": "",
+        "Description": "A top panel with a terminal that hides itself",
+        "EnabledByDefault": true,
+        "Id": "org.sonicde.plasma.desktop.terminalPanel",
+        "License": "GPL-2.0+",
+        "Name": "Terminal Panel",
+        "Website": "https://sonicde.org"
+    },
+    "X-Plasma-ContainmentCategories": [
+        "panel"
+    ],
+    "X-Plasma-Shell": "sonicshell"
+}

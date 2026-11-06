@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "joseph.w.crowell@gmail.com",
+                "Name": "Joseph Crowell"
+            }
+        ],
+        "Category": "System Information",
+        "Description": "A terminal in a panel",
+        "Icon": "utilities-terminal",
+        "Id": "org.sonicde.terminalpanel",
+        "License": "GPL-2.0+",
+        "Name": "Terminal Panel",
+        "Website": "https://sonicde.org"
+    },
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

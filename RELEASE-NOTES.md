@@ -4,6 +4,7 @@ Extra desktop widgets, wallpaper plugins and helpers that add more ways to perso
 
 ## Unreleased
 
+- New Terminal Panel widget and panel: Sonic Terminal with its tabs, split views and find, in a panel. "Terminal Panel" under Add Panel creates a top panel that hides itself and comes down when you need it, and opening a terminal anywhere brings it down with a new tab. Your color scheme's transparency and blur apply behind the terminal text, while the tabs and toolbar keep the panel's look.
 - Now presents itself with SonicDE names and identity throughout the desktop.
 - New Sonic Menu widget, based on kMenu: a compact system menu for your panel with About This Computer, System Settings, System Monitor, System Log, Force Quit, and sleep, restart, shut down, lock and log out. Its power and session entries work with any init system and are hidden when your system can't do them, and you can edit the whole menu, including your own commands and submenus, in its settings.
 
