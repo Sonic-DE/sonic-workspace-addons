@@ -1,12 +1,10 @@
 # Italian translation of plasma_applet_org.sonicde.sonicmenu.
-# These are machine translations that need review by a native speaker.
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_org.sonicde.sonicmenu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-28 15:09+1000\n"
 "PO-Revision-Date: 2026-10-28 15:30+1000\n"
-"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
 "Language-Team: Italian\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
