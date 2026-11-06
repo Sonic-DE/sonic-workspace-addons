@@ -1,0 +1,28 @@
+# Bulgarian translation of plasma_applet_org.sonicde.terminalpanel.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.terminalpanel\n"
+"PO-Revision-Date: 2026-11-06 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Bulgarian\n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "General"
+msgstr "Общи"
+
+msgid "Minimum width:"
+msgstr "Минимална ширина:"
+
+msgid "Profile:"
+msgstr "Профил:"
+
+msgid "Default profile"
+msgstr "Профил по подразбиране"
+
+msgctxt "@action:inmenu"
+msgid "Configure Terminal…"
+msgstr "Настройване на терминала…"

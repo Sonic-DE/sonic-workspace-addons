@@ -1,0 +1,28 @@
+# Romanian translation of plasma_applet_org.sonicde.terminalpanel.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.terminalpanel\n"
+"PO-Revision-Date: 2026-11-06 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Romanian\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2;\n"
+
+msgid "General"
+msgstr "General"
+
+msgid "Minimum width:"
+msgstr "Lățime minimă:"
+
+msgid "Profile:"
+msgstr "Profil:"
+
+msgid "Default profile"
+msgstr "Profil implicit"
+
+msgctxt "@action:inmenu"
+msgid "Configure Terminal…"
+msgstr "Configurează terminalul…"

@@ -1,0 +1,28 @@
+# Slovenian translation of plasma_applet_org.sonicde.terminalpanel.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.terminalpanel\n"
+"PO-Revision-Date: 2026-11-06 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: Slovenian\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+
+msgid "General"
+msgstr "Splošno"
+
+msgid "Minimum width:"
+msgstr "Najmanjša širina:"
+
+msgid "Profile:"
+msgstr "Profil:"
+
+msgid "Default profile"
+msgstr "Privzeti profil"
+
+msgctxt "@action:inmenu"
+msgid "Configure Terminal…"
+msgstr "Nastavi terminal…"

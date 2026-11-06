@@ -1,0 +1,28 @@
+# plasma_applet_org.sonicde.terminalpanel translation into ast for SonicDE.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.terminalpanel\n"
+"PO-Revision-Date: 2026-11-06 00:00+0000\n"
+"Last-Translator: Claude (machine translation, needs review by a native speaker)\n"
+"Language-Team: ast\n"
+"Language: ast\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "General"
+msgstr "Xeneral"
+
+msgid "Minimum width:"
+msgstr "Anchor mínimu:"
+
+msgid "Profile:"
+msgstr "Perfil:"
+
+msgid "Default profile"
+msgstr "Perfil predetermináu"
+
+msgctxt "@action:inmenu"
+msgid "Configure Terminal…"
+msgstr "Configurar la terminal…"
