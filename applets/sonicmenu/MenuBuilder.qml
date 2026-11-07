@@ -15,7 +15,7 @@ import org.kde.iconthemes as KIconThemes
 /**
  * MenuBuilder - Visual menu editor with hierarchical tree view and property editor
  * 
- * This component provides a KDE Menu Editor-like interface for editing the JSON menu structure.
+ * This component provides a SonicDE Menu Editor-like interface for editing the JSON menu structure.
  * It features:
  * - Left pane: Hierarchical tree view with expandable/collapsible items
  * - Right pane: Property editor for the selected menu item
