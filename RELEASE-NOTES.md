@@ -2,13 +2,14 @@
 
 Extra desktop widgets, wallpaper plugins and helpers that add more ways to personalise your SonicDE workspace.
 
-## Unreleased
+## 6.8.2 (2026-11-10)
 
 - New Terminal Panel widget and panel: Sonic Terminal with its tabs, split views and find, in a panel. "Terminal Panel" under Add Panel creates a top panel that hides itself and comes down when you need it, and opening a terminal anywhere brings it down with a new tab. Your color scheme's transparency and blur apply behind the terminal text, while the tabs and toolbar keep the panel's look.
 - Now presents itself with SonicDE names and identity throughout the desktop.
 - Fixed the Cover Switch and Flip Switch task switchers not appearing when you press Alt+Tab.
 - The Grouping widget can now be made much smaller, instead of taking up about a third of the width and half the height of a 1080p screen at its smallest. It also starts out smaller.
 - New Sonic Menu widget, based on kMenu: a compact system menu for your panel with About This Computer, System Settings, System Monitor, System Log, Force Quit, and sleep, restart, shut down, lock and log out. Its power and session entries work with any init system and are hidden when your system can't do them, and you can edit the whole menu, including your own commands and submenus, in its settings.
+- Behind the scenes: removed automated tests that need Wayland, and tidied the translations.
 
 ## 6.8.0 (2026-10-20)
 
