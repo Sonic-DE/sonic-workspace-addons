@@ -18,5 +18,9 @@
     "X-Plasma-ContainmentCategories": [
         "panel"
     ],
-    "X-Plasma-Shell": "sonicshell"
+    "X-Plasma-Shell": "sonicshell",
+    "X-SonicDE-HiddenWhilePlaced": [
+        "org.sonicde.terminalpanel",
+        "org.sonicde.terminalapplet"
+    ]
 }

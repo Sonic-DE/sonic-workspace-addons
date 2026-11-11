@@ -2,6 +2,12 @@
 
 Extra desktop widgets, wallpaper plugins and helpers that add more ways to personalise your SonicDE workspace.
 
+## Unreleased
+
+- New Terminal widget: Sonic Terminal with its tabs, split views and find, in a popup from a panel button. Resize the popup and it keeps its size; give it a keyboard shortcut in its settings to open and close it from anywhere. Opening a terminal anywhere opens the popup with a new tab, and your color scheme's transparency and blur apply behind the terminal text.
+- Typing `exit` in the last tab of Terminal Panel now closes the panel, with a new terminal ready for next time; the Terminal widget's popup closes the same way.
+- Terminal Panel is now only offered under Add Panel and holds only the terminal. You can have one terminal there or in the Terminal widget, not several: once one is added, neither is offered again until it's removed.
+
 ## 6.8.2 (2026-11-10)
 
 - New Terminal Panel widget and panel: Sonic Terminal with its tabs, split views and find, in a panel. "Terminal Panel" under Add Panel creates a top panel that hides itself and comes down when you need it, and opening a terminal anywhere brings it down with a new tab. Your color scheme's transparency and blur apply behind the terminal text, while the tabs and toolbar keep the panel's look.

@@ -1,0 +1,24 @@
+# Hebrew translation of plasma_applet_org.sonicde.terminalapplet.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.terminalapplet\n"
+"PO-Revision-Date: 2026-11-11 00:00+0000\n"
+"Language-Team: Hebrew\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && n % 10 == 0) ? 2 : 3));\n"
+
+msgid "General"
+msgstr "כללי"
+
+msgid "Profile:"
+msgstr "פרופיל:"
+
+msgid "Default profile"
+msgstr "פרופיל ברירת מחדל"
+
+msgctxt "@action:inmenu"
+msgid "Configure Terminal…"
+msgstr "הגדרת המסוף…"

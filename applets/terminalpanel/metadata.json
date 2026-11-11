@@ -14,5 +14,11 @@
         "Name": "Terminal Panel",
         "Website": "https://sonicde.org"
     },
-    "X-Plasma-API-Minimum-Version": "6.0"
+    "NoDisplay": true,
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-SonicDE-AloneInContainment": true,
+    "X-SonicDE-HiddenWhilePlaced": [
+        "org.sonicde.terminalpanel",
+        "org.sonicde.terminalapplet"
+    ]
 }

@@ -1,0 +1,24 @@
+# plasma_applet_org.sonicde.terminalapplet translation into en_GB for SonicDE.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_org.sonicde.terminalapplet\n"
+"PO-Revision-Date: 2026-11-11 00:00+0000\n"
+"Language-Team: en_GB\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgid "General"
+msgstr "General"
+
+msgid "Profile:"
+msgstr "Profile:"
+
+msgid "Default profile"
+msgstr "Default profile"
+
+msgctxt "@action:inmenu"
+msgid "Configure Terminal…"
+msgstr "Configure Terminal…"

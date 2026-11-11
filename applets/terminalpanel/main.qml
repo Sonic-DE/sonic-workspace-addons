@@ -99,7 +99,11 @@ PlasmoidItem {
                     const place = item.mapToItem(representation, position);
                     toolBarMenu.open(place.x, place.y);
                 }
-                onFinished: restart.start()
+                // The last shell ended: the panel closes, as Escape closes it.
+                onFinished: {
+                    Plasmoid.status = PlasmaCore.Types.PassiveStatus;
+                    restart.start();
+                }
             }
         }
 
@@ -118,10 +122,6 @@ PlasmoidItem {
             id: toolBarMenu
             visualParent: representation
 
-            PlasmaExtras.MenuItem {
-                action: Plasmoid.containment.internalAction("add widgets")
-                visible: action !== null
-            }
             PlasmaExtras.MenuItem {
                 action: Plasmoid.containment.internalAction("configure")
                 visible: action !== null
