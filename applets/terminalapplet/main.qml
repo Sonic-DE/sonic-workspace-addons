@@ -13,13 +13,11 @@ import org.kde.plasma.extras as PlasmaExtras
 import org.kde.plasma.plasmoid
 import org.sonicde.terminal.app
 
-// The terminal of the Terminal Panel widget, in a popup from a panel button. The widget's keyboard
-// shortcut opens and closes the popup.
+// The terminal of the Terminal Panel widget, in a popup from a panel button.
 PlasmoidItem {
     id: root
 
     Plasmoid.icon: "utilities-terminal"
-    activationTogglesExpanded: true
     // A click elsewhere closes it, as it lets the Terminal Panel hide.
     hideOnWindowDeactivate: true
 

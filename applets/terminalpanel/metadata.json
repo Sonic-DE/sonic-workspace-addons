@@ -20,5 +20,6 @@
     "X-SonicDE-HiddenWhilePlaced": [
         "org.sonicde.terminalpanel",
         "org.sonicde.terminalapplet"
-    ]
+    ],
+    "X-SonicDE-NoGlobalShortcut": true
 }

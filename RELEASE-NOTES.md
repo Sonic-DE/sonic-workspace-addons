@@ -4,7 +4,7 @@ Extra desktop widgets, wallpaper plugins and helpers that add more ways to perso
 
 ## Unreleased
 
-- New Terminal widget: Sonic Terminal with its tabs, split views and find, in a popup from a panel button. Resize the popup and it keeps its size; give it a keyboard shortcut in its settings to open and close it from anywhere. Opening a terminal anywhere opens the popup with a new tab, and your color scheme's transparency and blur apply behind the terminal text.
+- New Terminal widget: Sonic Terminal with its tabs, split views and find, in a popup from a panel button. Resize the popup and it keeps its size. Opening a terminal anywhere opens the popup with a new tab, and your color scheme's transparency and blur apply behind the terminal text.
 - Typing `exit` in the last tab of Terminal Panel now closes the panel, with a new terminal ready for next time; the Terminal widget's popup closes the same way.
 - Terminal Panel is now only offered under Add Panel and holds only the terminal. You can have one terminal there or in the Terminal widget, not several: once one is added, neither is offered again until it's removed.
 
