@@ -13,7 +13,12 @@ target_link_libraries(kcm_krunner_dictionary KF6::Runner KF6::I18n KF6::KCMUtils
 # now.
 # TODO: Drop this when KF6_MIN_VERSION >= 6.27.0
 if(KF6KCMUtils_VERSION VERSION_GREATER_EQUAL "6.27.0")
-    add_test(NAME kcm_krunner_dictionary_smoketest COMMAND kcmshell6 --smoke-test kf6/krunner/kcms/kcm_krunner_dictionary)
+    # The kcmshell6 of the KCMUtils built against, never another desktop's on PATH.
+    find_program(KCMSHELL6_EXECUTABLE kcmshell6
+        PATHS ${KF6KCMUtils_DIR}/../../../bin ${KF6KCMUtils_DIR}/../../../../bin
+        NO_DEFAULT_PATH REQUIRED
+    )
+    add_test(NAME kcm_krunner_dictionary_smoketest COMMAND ${KCMSHELL6_EXECUTABLE} --smoke-test kf6/krunner/kcms/kcm_krunner_dictionary)
     set_tests_properties(kcm_krunner_dictionary_smoketest PROPERTIES
         ENVIRONMENT_MODIFICATION QT_PLUGIN_PATH=path_list_prepend:${CMAKE_BINARY_DIR}/bin
     )

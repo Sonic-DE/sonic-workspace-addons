@@ -31,6 +31,8 @@ private Q_SLOTS:
 
 void ConverterRunnerTest::initTestCase()
 {
+    // The expected texts are written with en_US number formatting.
+    QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
     initProperties();
 
     Converter converter;
