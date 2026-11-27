@@ -1,10 +1,10 @@
+.pragma library
+
 /*
  *  SPDX-FileCopyrightText: 2015 Kai Uwe Broulik <kde@privat.broulik.de>
  *
  *  SPDX-License-Identifier: GPL-2.0-or-later
  */
-
-.pragma library
 
 var copyToClipboardText = "Copy to Clipboard";
 
