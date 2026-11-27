@@ -94,6 +94,7 @@ bool ComicEngine::requestSource(const QString &identifier, RequestReason reason)
     // Preserve the request identifier so callers can match errors to their requests.
     QT_WARNING_PUSH
     QT_WARNING_DISABLE_GCC("-Wmissing-designated-field-initializers");
+    QT_WARNING_DISABLE_GCC("-Wmissing-field-initializers"); // GCC before 16 reports them under this name
     QT_WARNING_DISABLE_CLANG("-Wmissing-designated-field-initializers");
     // ... start a new query otherwise
     if (parts.count() < 2) {
